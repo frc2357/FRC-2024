@@ -35,8 +35,14 @@ jobs:
 
     # Runs a Spotless command to check for code lint
     - name: Lint robot code
-      run: ./robotbase/gradlew :spotlessCheck
+      uses: gradle/gradle-build-action@v2
+      with:
+        build-root-directory: ./robotbase
+        arguments: :spotlessCheck
 
     # Runs a single command using the runners shell
     - name: Compile and run tests on robot code
-      run: ./robotbase/gradlew build
+      uses: gradle/gradle-build-action@v2
+      with:
+        build-root-directory: ./robotbase
+        arguments: build
