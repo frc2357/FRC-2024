@@ -10,7 +10,9 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.ClosedLoopOutputType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants.SteerFeedbackType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.util.Units;
+import java.util.function.BooleanSupplier;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -165,5 +167,19 @@ public final class Constants {
     public static final double BACK_RIGHT_ENCODER_OFFSET = 0.37841796875;
     public static final double BACK_RIGHT_X_POSITION_INCHES = -9.375;
     public static final double BACK_RIGHT_Y_POSITION_INCHES = -9.375;
+  }
+
+  public static class CHOREO {
+    public static final PIDController CHOREO_X_CONTROLLER = new PIDController(0.5, 0, 0);
+    public static final PIDController CHOREO_Y_CONTROLLER = new PIDController(0.5, 0, 0);
+    public static final PIDController CHOREO_ROTATION_CONTROLLER = new PIDController(0.5, 0, 0);
+
+    public static final BooleanSupplier CHOREO_AUTO_MIRROR_PATHS =
+        new BooleanSupplier() {
+          @Override
+          public boolean getAsBoolean() {
+            return false;
+          }
+        };
   }
 }

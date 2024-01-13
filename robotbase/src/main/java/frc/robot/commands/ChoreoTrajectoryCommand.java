@@ -1,36 +1,41 @@
 package frc.robot.commands;
 
 import com.choreo.lib.*;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import java.util.Set;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants.CHOREO;
+import frc.robot.Robot;
 
-public class ChoreoTrajectoryCommand implements Command {
+public class ChoreoTrajectoryCommand extends SequentialCommandGroup {
 
-  private boolean stopMotorsWhenFinished;
   private String trajectoryFileName;
+  private ChoreoTrajectory traj;
 
-  public ChoreoTrajectoryCommand(String trajectoryFileName, boolean stopMotorsWhenFinished) {
-    this.stopMotorsWhenFinished = stopMotorsWhenFinished;
+  /**
+   * A utility command to run a Choreo path correctlly.
+   *
+   * @param trajectoryFileName The name of the path file with '.traj' excluded
+   */
+  public ChoreoTrajectoryCommand(String trajectoryFileName) {
     this.trajectoryFileName = trajectoryFileName;
+    traj = Choreo.getTrajectory(trajectoryFileName);
+    new Choreo();
+    addCommands(
+        new InstantCommand(() -> Robot.drive.setPose(traj.getInitialPose())),
+        Choreo.choreoSwerveCommand(
+          Choreo.getTrajectory(trajectoryFileName),
+          Robot.drive.getPoseSupplier(),
+          Choreo.choreoSwerveController(
+            CHOREO.CHOREO_X_CONTROLLER,
+            CHOREO.CHOREO_Y_CONTROLLER,
+            CHOREO.CHOREO_ROTATION_CONTROLLER),
+          Robot.drive.getChassisSpeedsConsumer(),
+          CHOREO.CHOREO_AUTO_MIRROR_PATHS,
+          Robot.drive));
   }
 
   @Override
-  public void initialize() {
-    // TODO: finish this when swerve subsystem is done |new
-    // Choreo().choreoSwerveCommand(Choreo.getTrajectory(trajectoryFileName));
-  }
-
-  @Override
-  public void end(boolean interrupted) {
-    if (stopMotorsWhenFinished) {
-      // TODO: add the stop swerve motors method call here, once its made.
-    }
-  }
-
-  @Override
-  public Set<Subsystem> getRequirements() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getRequirements'");
+  public String toString() {
+    return trajectoryFileName;
   }
 }
