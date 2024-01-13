@@ -176,3 +176,6 @@ logs/
 
 # Folder that has CTRE Phoenix Sim device config storage
 ctre_sim/
+
+# Malformed Choreo trajectory saving location, may happen on occasion
+deploy/choreo/
