@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import java.util.Set;
 
-public class ChoreoTrajectoryCommand implements Command {
+public class ChoreoTrajectoryCommand extends Command {
 
   private boolean stopMotorsWhenFinished;
   private String trajectoryFileName;
