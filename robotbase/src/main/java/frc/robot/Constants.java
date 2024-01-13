@@ -110,7 +110,7 @@ public final class Constants {
       .withPigeon2Id(CAN_ID.PIGEON_ID).withCANbusName("");
   }
   public static class SWERVE{
-    public static final double MAX_SPEED_METERS_PER_SECOND = 6;
+    public static final double MAX_SPEED_METERS_PER_SECOND = 4.7;
     public static final double MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND = Math.PI;
 
     public static final double DRIVE_GEAR_RATIO = 6.746031746031747;

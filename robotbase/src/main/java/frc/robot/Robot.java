@@ -22,7 +22,7 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  public static CommandSwerveDrivetrain m_drive;
+  public static CommandSwerveDrivetrain drive;
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -31,7 +31,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    m_drive = new CommandSwerveDrivetrain(Constants.PHEONIX_TUNER.DRIVETRAIN_CONSTANTS, new SwerveModuleConstants[] {
+    drive = new CommandSwerveDrivetrain(Constants.PHEONIX_TUNER.DRIVETRAIN_CONSTANTS, new SwerveModuleConstants[] {
       Constants.PHEONIX_TUNER.FRONT_LEFT_MODULE_CONSTANTS, Constants.PHEONIX_TUNER.FRONT_RIGHT_MODULE_CONSTANTS, 
       Constants.PHEONIX_TUNER.BACK_LEFT_MODULE_CONSTANTS, Constants.PHEONIX_TUNER.BACK_RIGHT_MODULE_CONSTANTS});
       m_robotContainer = new RobotContainer();

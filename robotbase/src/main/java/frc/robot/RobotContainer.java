@@ -26,23 +26,23 @@ public class RobotContainer {
   // private final Telemetry logger = new Telemetry(); // This puts a TON of stuff on shuffleboard.
 
   private void configureBindings() {
-    Robot.m_drive.setDefaultCommand( // Robot.m_drive will execute this command periodically
-        Robot.m_drive.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND) 
+    Robot.drive.setDefaultCommand( // Robot.drive will execute this command periodically
+        Robot.drive.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND) 
         // Drive forward with negative Y (forward)
           .withVelocityY(-joystick.getLeftX() * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND) // Drive left with negative X (left)
           .withRotationalRate(-joystick.getRightX() * Constants.SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND) 
           // Drive counterclockwise with negative X (left)
         ));
 
-    joystick.a().whileTrue(Robot.m_drive.applyRequest(() -> brake));
-    joystick.b().whileTrue(Robot.m_drive
+    joystick.a().whileTrue(Robot.drive.applyRequest(() -> brake));
+    joystick.b().whileTrue(Robot.drive
         .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
 
     // reset the field-centric heading on left bumper press
-    joystick.leftBumper().onTrue(Robot.m_drive.runOnce(() -> Robot.m_drive.seedFieldRelative()));
-    joystick.back().onTrue(new InstantCommand(() -> {Robot.m_drive.tareEverything();}));
+    joystick.leftBumper().onTrue(Robot.drive.runOnce(() -> Robot.drive.seedFieldRelative()));
+    joystick.back().onTrue(new InstantCommand(() -> {Robot.drive.tareEverything();}));
 
-    // Robot.m_drive.register Telemetry(logger::telemeterize); //Shuffleboard fanatic
+    // Robot.drive.register Telemetry(logger::telemeterize); //Shuffleboard fanatic
   }
 
   public RobotContainer() {
