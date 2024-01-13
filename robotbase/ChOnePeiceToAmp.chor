@@ -339,14 +339,14 @@
                         "first"
                     ],
                     "type": "StopPoint",
-                    "uuid": "367a5333-515f-47ea-8225-f20546d15390"
+                    "uuid": "7f80a686-f5ae-413d-8400-5cc1ed7e3567"
                 },
                 {
                     "scope": [
                         "last"
                     ],
                     "type": "StopPoint",
-                    "uuid": "e1fd8010-91ce-469a-accd-e0dfac278830"
+                    "uuid": "a6523544-cb64-41fa-bd6a-4a9d41502c3d"
                 }
             ],
             "usesControlIntervalGuessing": true,

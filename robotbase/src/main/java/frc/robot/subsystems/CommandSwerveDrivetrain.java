@@ -93,7 +93,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
       public void accept(ChassisSpeeds speeds) {
         for (int i = 0; i < modules.length; i++) {
           SwerveModuleState[] statesToApply = kinematics.toSwerveModuleStates(speeds);
-          modules[i].apply(statesToApply[i], DriveRequestType.Velocity);
+          modules[i].apply(statesToApply[i], DriveRequestType.OpenLoopVoltage);
         }
       }
     };

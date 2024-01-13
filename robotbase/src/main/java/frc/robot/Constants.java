@@ -171,8 +171,8 @@ public final class Constants {
 
   public static class CHOREO {
     public static final PIDController CHOREO_X_CONTROLLER = new PIDController(0.5, 0, 0);
-    public static final PIDController CHOREO_Y_CONTROLLER = new PIDController(0.5, 0, 0);
-    public static final PIDController CHOREO_ROTATION_CONTROLLER = new PIDController(0.5, 0, 0);
+    public static final PIDController CHOREO_Y_CONTROLLER = new PIDController(0.0, 0, 0);
+    public static final PIDController CHOREO_ROTATION_CONTROLLER = new PIDController(0.0, 0, 0);
 
     public static final BooleanSupplier CHOREO_AUTO_MIRROR_PATHS =
         new BooleanSupplier() {

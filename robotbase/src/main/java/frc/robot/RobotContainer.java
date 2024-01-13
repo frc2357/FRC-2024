@@ -6,11 +6,12 @@ package frc.robot;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.ChoreoTrajectoryCommand;
 
 public class RobotContainer {
   /* Setting up bindings for necessary control of the swerve drive platform */
@@ -26,6 +27,12 @@ public class RobotContainer {
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
+  private AutoCommandChooser m_autoCommandChooser;
+
+  public RobotContainer() {
+    configureBindings();
+    m_autoCommandChooser = new AutoCommandChooser();
+  }
   // private final Telemetry logger = new Telemetry(); // This puts a TON of stuff on shuffleboard.
 
   private void configureBindings() {
@@ -68,11 +75,7 @@ public class RobotContainer {
     // Robot.drive.register Telemetry(logger::telemeterize); //Shuffleboard fanatic
   }
 
-  public RobotContainer() {
-    configureBindings();
-  }
-
   public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
+    return new ChoreoTrajectoryCommand("ChTestPath");
   }
 }

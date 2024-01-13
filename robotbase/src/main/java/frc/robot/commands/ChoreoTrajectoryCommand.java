@@ -1,6 +1,9 @@
 package frc.robot.commands;
 
 import com.choreo.lib.*;
+
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.CHOREO;
@@ -10,6 +13,7 @@ public class ChoreoTrajectoryCommand extends SequentialCommandGroup {
 
   private String trajectoryFileName;
   private ChoreoTrajectory traj;
+  private static boolean hasScheduledOnThisRun = false;
 
   /**
    * A utility command to run a Choreo path correctlly.
@@ -18,12 +22,12 @@ public class ChoreoTrajectoryCommand extends SequentialCommandGroup {
    */
   public ChoreoTrajectoryCommand(String trajectoryFileName) {
     this.trajectoryFileName = trajectoryFileName;
-    traj = Choreo.getTrajectory(trajectoryFileName);
-    new Choreo();
+    this.traj = Choreo.getTrajectory(trajectoryFileName);
     addCommands(
         new InstantCommand(() -> Robot.drive.setPose(traj.getInitialPose())),
-        Choreo.choreoSwerveCommand(
-          Choreo.getTrajectory(trajectoryFileName),
+        new InstantCommand(() -> Robot.drive.zeroGyro()),
+        new Choreo().choreoSwerveCommand(
+          new Choreo().getTrajectory(trajectoryFileName),
           Robot.drive.getPoseSupplier(),
           Choreo.choreoSwerveController(
             CHOREO.CHOREO_X_CONTROLLER,
@@ -33,6 +37,7 @@ public class ChoreoTrajectoryCommand extends SequentialCommandGroup {
           CHOREO.CHOREO_AUTO_MIRROR_PATHS,
           Robot.drive));
   }
+
 
   @Override
   public String toString() {
