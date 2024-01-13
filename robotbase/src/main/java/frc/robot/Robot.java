@@ -31,10 +31,10 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
     m_drive = new CommandSwerveDrivetrain(Constants.PHEONIX_TUNER.DRIVETRAIN_CONSTANTS, new SwerveModuleConstants[] {
       Constants.PHEONIX_TUNER.FRONT_LEFT_MODULE_CONSTANTS, Constants.PHEONIX_TUNER.FRONT_RIGHT_MODULE_CONSTANTS, 
       Constants.PHEONIX_TUNER.BACK_LEFT_MODULE_CONSTANTS, Constants.PHEONIX_TUNER.BACK_RIGHT_MODULE_CONSTANTS});
+      m_robotContainer = new RobotContainer();
   }
 
   /**

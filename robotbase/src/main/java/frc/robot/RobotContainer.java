@@ -23,7 +23,7 @@ public class RobotContainer {
                                                                // driving in open loop
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
-  private final Telemetry logger = new Telemetry();
+  // private final Telemetry logger = new Telemetry(); // This puts a TON of stuff on shuffleboard.
 
   private void configureBindings() {
     Robot.m_drive.setDefaultCommand( // Robot.m_drive will execute this command periodically
@@ -42,7 +42,7 @@ public class RobotContainer {
     joystick.leftBumper().onTrue(Robot.m_drive.runOnce(() -> Robot.m_drive.seedFieldRelative()));
     joystick.back().onTrue(new InstantCommand(() -> {Robot.m_drive.tareEverything();}));
 
-    Robot.m_drive.registerTelemetry(logger::telemeterize);
+    // Robot.m_drive.register Telemetry(logger::telemeterize); //Shuffleboard fanatic
   }
 
   public RobotContainer() {
