@@ -26,46 +26,12 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 /**
  * Controls the limelight camera options.
  */
 public class LimelightSubsystem extends SubsystemBase {
-
-  public static class Configuration {
-
-    public int m_humanPipelineIndex = 2;
-
-    public int m_targetingPipelineIndex = 0;
-
-    public int m_aprilTagPipelineIndex = 1;
-    public boolean m_isLimelightPrimaryStream = true;
-
-    /** Angle of the Limelight axis from horizontal (degrees) */
-    public double m_LimelightMountingAngle = 0;
-
-    /** Height of the Limelight lens center from the floor (inches) */
-    public double m_LimelightMountingHeightInches = 0;
-
-    /** Default value to return if the camera can't be polled */
-    public double m_DefaultReturnValue = 0;
-
-    /** Tolerance in degrees for skew to be considered head on */
-    public double m_HeadOnTolerance = 1e-4;
-
-    /** Target width in inches */
-    public double m_TargetWidth = 1;
-
-    /** Target height in inches */
-    public double m_TargetHeight = 1;
-
-    public double m_targetHeightFromFloor = 0;
-  }
-
-  private static LimelightSubsystem instance = null;
-
-  private Configuration m_Configuration = new Configuration();
-
   protected NetworkTable m_table;
 
   private DoublePublisher m_streamPub;
@@ -99,13 +65,13 @@ public class LimelightSubsystem extends SubsystemBase {
     m_streamPub = m_table.getDoubleTopic("stream").publish();
     m_pipelinePub = m_table.getDoubleTopic("pipeline").publish();
     m_pipelineSub = m_table.getDoubleTopic("pipeline").subscribe(Double.NaN);
-    m_TvSub = m_table.getDoubleTopic("tv").subscribe(m_Configuration.m_DefaultReturnValue);
-    m_TxSub = m_table.getDoubleTopic("tx").subscribe(m_Configuration.m_DefaultReturnValue);
-    m_TySub = m_table.getDoubleTopic("ty").subscribe(m_Configuration.m_DefaultReturnValue);
-    m_TaSub = m_table.getDoubleTopic("ta").subscribe(m_Configuration.m_DefaultReturnValue);
-    m_TsSub = m_table.getDoubleTopic("ts").subscribe(m_Configuration.m_DefaultReturnValue);
-    m_ThorSub = m_table.getDoubleTopic("thor").subscribe(m_Configuration.m_DefaultReturnValue);
-    m_TvertSub = m_table.getDoubleTopic("tvert").subscribe(m_Configuration.m_DefaultReturnValue);
+    m_TvSub = m_table.getDoubleTopic("tv").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
+    m_TxSub = m_table.getDoubleTopic("tx").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
+    m_TySub = m_table.getDoubleTopic("ty").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
+    m_TaSub = m_table.getDoubleTopic("ta").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
+    m_TsSub = m_table.getDoubleTopic("ts").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
+    m_ThorSub = m_table.getDoubleTopic("thor").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
+    m_TvertSub = m_table.getDoubleTopic("tvert").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
     m_Tid = m_table.getIntegerTopic("tid").subscribe(-1);
 
     m_botposeWpiRed = m_table.getDoubleArrayTopic("botpose_wpired").subscribe(null, PubSubOption.keepDuplicates(true));
@@ -116,15 +82,11 @@ public class LimelightSubsystem extends SubsystemBase {
     m_limelightPoseInfoSub = limelightPoseInfo.subscribe(null,
         PubSubOption.keepDuplicates(true));
 
-    instance = this;
   }
 
-  public void setConfiguration(Configuration configuration) {
-    m_Configuration = configuration;
-
+  public void configure() {
     setHumanPipelineActive();
-    // setTargetingPipelineActive();
-    setStream(configuration.m_isLimelightPrimaryStream);
+    setStream(Constants.SHOOTER_LIMELIGHT.IS_PRIMARY_STREAM);
   }
 
   /**
@@ -171,7 +133,7 @@ public class LimelightSubsystem extends SubsystemBase {
   }
 
   public boolean isHumanPipelineActive() {
-    return getPipeline() == m_Configuration.m_humanPipelineIndex;
+    return getPipeline() == Constants.SHOOTER_LIMELIGHT.HUMAN_PIPELINE_INDEX;
   }
 
   protected void setPipeline(int index) {
@@ -179,23 +141,23 @@ public class LimelightSubsystem extends SubsystemBase {
   }
 
   public void setHumanPipelineActive() {
-    m_pipelinePub.set(m_Configuration.m_humanPipelineIndex);
+    m_pipelinePub.set(Constants.SHOOTER_LIMELIGHT.HUMAN_PIPELINE_INDEX);
   }
 
   public boolean isTargetingPipelineActive() {
-    return getPipeline() == m_Configuration.m_targetingPipelineIndex;
+    return getPipeline() == Constants.SHOOTER_LIMELIGHT.TARGETING_PIPELINE_INDEX;
   }
 
   public void setTargetingPipelineActive() {
-    m_pipelinePub.set(m_Configuration.m_targetingPipelineIndex);
+    m_pipelinePub.set(Constants.SHOOTER_LIMELIGHT.TARGETING_PIPELINE_INDEX);
   }
 
   public boolean isAprilTagPipelineActive() {
-    return getPipeline() == m_Configuration.m_aprilTagPipelineIndex;
+    return getPipeline() == Constants.SHOOTER_LIMELIGHT.APRIL_PIPELINE_INDEX;
   }
 
   public void setAprilTagPipelineActive() {
-    m_pipelinePub.set(m_Configuration.m_aprilTagPipelineIndex);
+    m_pipelinePub.set(Constants.SHOOTER_LIMELIGHT.APRIL_PIPELINE_INDEX);
   }
 
   private int getPipeline() {
@@ -269,8 +231,8 @@ public class LimelightSubsystem extends SubsystemBase {
     }
 
     double skew = getSkew();
-    return (-m_Configuration.m_HeadOnTolerance <= skew &&
-        skew <= m_Configuration.m_HeadOnTolerance);
+    return (Constants.SHOOTER_LIMELIGHT.HEAD_ON_TOLERANCE <= skew &&
+        skew <= Constants.SHOOTER_LIMELIGHT.HEAD_ON_TOLERANCE);
   }
 
   public boolean isToLeft() {
@@ -278,7 +240,7 @@ public class LimelightSubsystem extends SubsystemBase {
       return false;
     }
 
-    return getSkew() > m_Configuration.m_HeadOnTolerance;
+    return getSkew() > Constants.SHOOTER_LIMELIGHT.HEAD_ON_TOLERANCE;
   }
 
   public boolean isToRight() {
@@ -286,7 +248,7 @@ public class LimelightSubsystem extends SubsystemBase {
       return false;
     }
 
-    return getSkew() < m_Configuration.m_HeadOnTolerance;
+    return getSkew() < Constants.SHOOTER_LIMELIGHT.HEAD_ON_TOLERANCE;
   }
 
   public double getTargetRotationDegrees() {
@@ -310,8 +272,8 @@ public class LimelightSubsystem extends SubsystemBase {
 
     double proportion = getTHOR() / getTVERT();
     double factor = proportion *
-        m_Configuration.m_TargetHeight /
-        m_Configuration.m_TargetWidth;
+        Constants.SHOOTER_LIMELIGHT.TARGET_HEIGHT /
+        Constants.SHOOTER_LIMELIGHT.TARGET_WIDTH;
     return 90.0 * (1 - factor);
   }
 
@@ -320,10 +282,10 @@ public class LimelightSubsystem extends SubsystemBase {
       return Double.NaN;
     }
 
-    double angleDegrees = Math.abs(getTY()) + m_Configuration.m_LimelightMountingAngle;
+    double angleDegrees = Math.abs(getTY()) + Constants.SHOOTER_LIMELIGHT.MOUNTING_ANGLE_DEGREES;
 
-    double heightDifference = m_Configuration.m_LimelightMountingHeightInches -
-        m_Configuration.m_targetHeightFromFloor;
+    double heightDifference = Constants.SHOOTER_LIMELIGHT.MOUNTING_HEIGHT_INCHES -
+        Constants.SHOOTER_LIMELIGHT.TARGET_HEIGHT_FROM_FLOOR;
     double distance = heightDifference / Math.tan(Math.toRadians(angleDegrees));
 
     return distance;
