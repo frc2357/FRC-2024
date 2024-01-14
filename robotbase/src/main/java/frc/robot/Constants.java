@@ -74,7 +74,7 @@ public final class Constants {
 
     // Theoretical free speed (m/s) at 12v applied output;
     // This needs to be tuned to your individual robot
-    public static final double SPEED_AT_12_VOLTS = 6.0;
+    public static final double SPEED_AT_12_VOLTS = 4.7;
 
     // Every 1 rotation of the azimuth results in COUPLE_RATIO drive motor turns;
     // This may need to be tuned to your individual robot
@@ -133,7 +133,8 @@ public final class Constants {
             SWERVE.INVERT_RIGHT_SIDE);
 
     public static final SwerveDrivetrainConstants DRIVETRAIN_CONSTANTS =
-        new SwerveDrivetrainConstants().withPigeon2Id(CAN_ID.PIGEON_ID).withCANbusName("");
+        new SwerveDrivetrainConstants().withPigeon2Id(CAN_ID.PIGEON_ID).withCANbusName("")
+        .withPigeon2Id(CAN_ID.PIGEON_ID);
   }
 
   public static class SWERVE {
@@ -167,12 +168,15 @@ public final class Constants {
     public static final double BACK_RIGHT_ENCODER_OFFSET = 0.37841796875;
     public static final double BACK_RIGHT_X_POSITION_INCHES = -9.375;
     public static final double BACK_RIGHT_Y_POSITION_INCHES = -9.375;
+
+    public static final double SWERVE_TRANSLATIONAL_DEADBAND = 0.05;
+    public static final double SWERVE_ROTATIONAL_DEADBAND = 0.05;
   }
 
   public static class CHOREO {
     public static final PIDController CHOREO_X_CONTROLLER = new PIDController(0.5, 0, 0);
-    public static final PIDController CHOREO_Y_CONTROLLER = new PIDController(0.0, 0, 0);
-    public static final PIDController CHOREO_ROTATION_CONTROLLER = new PIDController(0.0, 0, 0);
+    public static final PIDController CHOREO_Y_CONTROLLER = new PIDController(0.5, 0, 0);
+    public static final PIDController CHOREO_ROTATION_CONTROLLER = new PIDController(0.5, 0, 0);
 
     public static final BooleanSupplier CHOREO_AUTO_MIRROR_PATHS =
         new BooleanSupplier() {

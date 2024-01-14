@@ -1,20 +1,21 @@
 package frc.robot.subsystems;
 
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+import frc.robot.Constants.SWERVE;
 
 /**
  * Class that extends the Phoenix SwerveDrivetrain class and implements subsystem so it can be used
@@ -26,7 +27,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
       double OdometryUpdateFrequency,
       SwerveModuleConstants... modules) {
     super(driveTrainConstants, OdometryUpdateFrequency, modules);
-    super.tareEverything();
+    zeroAll();
   }
 
   public CommandSwerveDrivetrain(
@@ -34,8 +35,27 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     this(driveTrainConstants, 0, modules);
   }
 
-  public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
+  public void applyRequest(Supplier<SwerveRequest> requestSupplier) {
+    this.setControl(requestSupplier.get());
+  }
+
+  public Command applyRequestCommand(Supplier<SwerveRequest> requestSupplier) {
     return run(() -> this.setControl(requestSupplier.get()));
+  }
+
+  public void drive(double velocityX, double velocityY, double rotationRate) {
+    SwerveRequest driveRequest = new SwerveRequest.FieldCentric()
+                .withDeadband(
+                    SWERVE.MAX_SPEED_METERS_PER_SECOND
+                        * SWERVE.SWERVE_TRANSLATIONAL_DEADBAND)
+                .withRotationalDeadband(
+                    SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND
+                        * SWERVE.SWERVE_ROTATIONAL_DEADBAND)
+                .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
+                .withVelocityX(velocityX)
+                .withVelocityY(velocityY)
+                .withRotationalRate(rotationRate);
+    applyRequest(() -> driveRequest);
   }
 
   /**
@@ -44,6 +64,14 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
    */
   public SwerveModulePosition[] getModulePositions() {
     return super.m_modulePositions;
+  }
+
+  public SwerveModuleState[] getModuleStates() {
+    return super.getState().ModuleStates;
+  }
+
+  public SwerveModuleState[] getModuleTargets() {
+    return super.getState().ModuleTargets;
   }
 
   public Pose2d getPose() {
@@ -60,7 +88,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     };
   }
 
-  public void zeroOdometryAndPose() {
+  public void zeroAll() {
     super.tareEverything();
   }
 
@@ -68,33 +96,23 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     super.getPigeon2().reset();
   }
 
-  public void stopMotors() {
-    SwerveModule[] modules = super.Modules;
-    for (int i = 0; i < modules.length; i++) {
-      modules[i].apply(
-          new SwerveModuleState(0, modules[i].getCurrentState().angle), DriveRequestType.Velocity);
-    }
+  public void stopMotorsIntoX() {
+    applyRequest(() -> new SwerveRequest.SwerveDriveBrake());
   }
 
-  /**
-   * Sets the pose of the robot to the specified position, this is for field-relative maneuvers.
-   *
-   * @param poseToSet The pose that is set for the swerve
-   */
+  public void stopMotors(){
+    drive(0, 0, 0);
+  }
+
   public void setPose(Pose2d poseToSet) {
     super.seedFieldRelative(poseToSet);
   }
 
   public Consumer<ChassisSpeeds> getChassisSpeedsConsumer() {
-    SwerveModule[] modules = super.Modules;
-    SwerveDriveKinematics kinematics = super.m_kinematics;
     return new Consumer<ChassisSpeeds>() {
       @Override
       public void accept(ChassisSpeeds speeds) {
-        for (int i = 0; i < modules.length; i++) {
-          SwerveModuleState[] statesToApply = kinematics.toSwerveModuleStates(speeds);
-          modules[i].apply(statesToApply[i], DriveRequestType.OpenLoopVoltage);
-        }
+        drive(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond);
       }
     };
   }
