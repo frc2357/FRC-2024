@@ -193,4 +193,24 @@ public final class Constants {
     public static final double BOTTOM_MOTOR_D = 0.0;
     public static final double BOTTOM_MOTOR_FF = 0.0;
   }
+
+  public static final class SHOOTER_LIMELIGHT {
+    public static final int HUMAN_PIPELINE_INDEX = 0;
+    public static final int TARGETING_PIPELINE_INDEX = 0;
+    public static final int APRIL_PIPELINE_INDEX = 0;
+
+    public static final boolean IS_PRIMARY_STREAM = false;
+
+    public static final double MOUNTING_ANGLE_DEGREES = 0.0;
+    public static final double MOUNTING_HEIGHT_INCHES = 0.0;
+
+    public static final double DEFAULT_RETURN_VALUE = 0.0;
+
+    public static final double HEAD_ON_TOLERANCE = 0.0;
+
+    public static final double TARGET_WIDTH = 0.0;
+    public static final double TARGET_HEIGHT = 0.0;
+
+    public static final double TARGET_HEIGHT_FROM_FLOOR = 0.0;
+  }
 }
