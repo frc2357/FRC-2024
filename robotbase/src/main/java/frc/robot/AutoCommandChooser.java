@@ -14,7 +14,7 @@ public class AutoCommandChooser {
 
     m_autoCommands =
         new Command[] {
-          new ChoreoTrajectoryCommand("ChOnePeiceToAmp"), 
+          new ChoreoTrajectoryCommand("ChOnePeiceToAmp"),
           new ChoreoTrajectoryCommand("ChTestPath"),
           new ChoreoTrajectoryCommand("ChClose3ToSpeaker")
         };

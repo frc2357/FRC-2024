@@ -133,8 +133,10 @@ public final class Constants {
             SWERVE.INVERT_RIGHT_SIDE);
 
     public static final SwerveDrivetrainConstants DRIVETRAIN_CONSTANTS =
-        new SwerveDrivetrainConstants().withPigeon2Id(CAN_ID.PIGEON_ID).withCANbusName("")
-        .withPigeon2Id(CAN_ID.PIGEON_ID);
+        new SwerveDrivetrainConstants()
+            .withPigeon2Id(CAN_ID.PIGEON_ID)
+            .withCANbusName("")
+            .withPigeon2Id(CAN_ID.PIGEON_ID);
   }
 
   public static class SWERVE {

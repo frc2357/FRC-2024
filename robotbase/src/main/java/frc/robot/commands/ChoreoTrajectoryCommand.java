@@ -23,17 +23,16 @@ public class ChoreoTrajectoryCommand extends SequentialCommandGroup {
     addCommands(
         new InstantCommand(() -> Robot.drive.setPose(traj.getInitialPose())),
         new InstantCommand(() -> Robot.drive.zeroGyro()),
-       Choreo
-            .choreoSwerveCommand(
-                Choreo.getTrajectory(trajectoryFileName),
-                Robot.drive.getPoseSupplier(),
-                Choreo.choreoSwerveController(
-                    CHOREO.CHOREO_X_CONTROLLER,
-                    CHOREO.CHOREO_Y_CONTROLLER,
-                    CHOREO.CHOREO_ROTATION_CONTROLLER),
-                Robot.drive.getChassisSpeedsConsumer(),
-                CHOREO.CHOREO_AUTO_MIRROR_PATHS,
-                Robot.drive));
+        Choreo.choreoSwerveCommand(
+            Choreo.getTrajectory(trajectoryFileName),
+            Robot.drive.getPoseSupplier(),
+            Choreo.choreoSwerveController(
+                CHOREO.CHOREO_X_CONTROLLER,
+                CHOREO.CHOREO_Y_CONTROLLER,
+                CHOREO.CHOREO_ROTATION_CONTROLLER),
+            Robot.drive.getChassisSpeedsConsumer(),
+            CHOREO.CHOREO_AUTO_MIRROR_PATHS,
+            Robot.drive));
   }
 
   @Override
