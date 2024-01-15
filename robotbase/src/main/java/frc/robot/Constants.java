@@ -134,7 +134,7 @@ public final class Constants {
         new SwerveDrivetrainConstants().withPigeon2Id(CAN_ID.PIGEON_ID).withCANbusName("");
   }
 
-  public static class SWERVE {
+  public static final class SWERVE {
     public static final double MAX_SPEED_METERS_PER_SECOND = 4.7;
     public static final double MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND = Math.PI;
 
@@ -165,5 +165,14 @@ public final class Constants {
     public static final double BACK_RIGHT_ENCODER_OFFSET = 0.37841796875;
     public static final double BACK_RIGHT_X_POSITION_INCHES = -9.375;
     public static final double BACK_RIGHT_Y_POSITION_INCHES = -9.375;
+
+    public static final double TRANSLATION_RAMP_EXPONENT = 2;
+  }
+
+  public static final class CONTROLLER {
+    public static final int DRIVE_CONTROLLER_PORT = 0;
+    public static final double DRIVE_CONTROLLER_DEADBAND = 0.1;
+    public static final int CODRIVER_CONTROLLER_PORT = 1;
+    public static final double CODRIVE_CONTROLLER_DEADBAND = 0.1;
   }
 }

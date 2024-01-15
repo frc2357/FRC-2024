@@ -21,12 +21,11 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     super(driveTrainConstants, OdometryUpdateFrequency, modules);
   }
 
-  public CommandSwerveDrivetrain(
-      SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
-    super(driveTrainConstants, modules);
-  }
+    public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
+        return run(() -> this.setControl(requestSupplier.get()));
+    }
 
-  public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
-    return run(() -> this.setControl(requestSupplier.get()));
-  }
+    public void setYaw(double yaw) {
+        getPigeon2().setYaw(yaw);
+    }
 }
