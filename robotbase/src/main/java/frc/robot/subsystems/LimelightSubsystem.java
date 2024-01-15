@@ -7,9 +7,6 @@
 
 package frc.robot.subsystems;
 
-import java.util.EnumSet;
-import java.util.function.Consumer;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -19,18 +16,13 @@ import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.networktables.IntegerSubscriber;
 import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEvent;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.PubSubOption;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-/**
- * Controls the limelight camera options.
- */
+/** Controls the limelight camera options. */
 public class LimelightSubsystem extends SubsystemBase {
   protected NetworkTable m_table;
 
@@ -54,34 +46,42 @@ public class LimelightSubsystem extends SubsystemBase {
 
   /**
    * Sets the camera stream.
-   * 
+   *
    * @param limelightName Name of the desired limelight's shuffleboard table
    */
   public LimelightSubsystem(String limelightName) {
-    m_table = NetworkTableInstance
-        .getDefault()
-        .getTable(limelightName);
+    m_table = NetworkTableInstance.getDefault().getTable(limelightName);
 
     m_streamPub = m_table.getDoubleTopic("stream").publish();
     m_pipelinePub = m_table.getDoubleTopic("pipeline").publish();
     m_pipelineSub = m_table.getDoubleTopic("pipeline").subscribe(Double.NaN);
-    m_TvSub = m_table.getDoubleTopic("tv").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
-    m_TxSub = m_table.getDoubleTopic("tx").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
-    m_TySub = m_table.getDoubleTopic("ty").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
-    m_TaSub = m_table.getDoubleTopic("ta").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
-    m_TsSub = m_table.getDoubleTopic("ts").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
-    m_ThorSub = m_table.getDoubleTopic("thor").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
-    m_TvertSub = m_table.getDoubleTopic("tvert").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
+    m_TvSub =
+        m_table.getDoubleTopic("tv").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
+    m_TxSub =
+        m_table.getDoubleTopic("tx").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
+    m_TySub =
+        m_table.getDoubleTopic("ty").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
+    m_TaSub =
+        m_table.getDoubleTopic("ta").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
+    m_TsSub =
+        m_table.getDoubleTopic("ts").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
+    m_ThorSub =
+        m_table.getDoubleTopic("thor").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
+    m_TvertSub =
+        m_table.getDoubleTopic("tvert").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
     m_Tid = m_table.getIntegerTopic("tid").subscribe(-1);
 
-    m_botposeWpiRed = m_table.getDoubleArrayTopic("botpose_wpired").subscribe(null, PubSubOption.keepDuplicates(true));
-    m_botposeWpiBlue = m_table.getDoubleArrayTopic("botpose_wpiblue").subscribe(null,
-        PubSubOption.keepDuplicates(true));
+    m_botposeWpiRed =
+        m_table
+            .getDoubleArrayTopic("botpose_wpired")
+            .subscribe(null, PubSubOption.keepDuplicates(true));
+    m_botposeWpiBlue =
+        m_table
+            .getDoubleArrayTopic("botpose_wpiblue")
+            .subscribe(null, PubSubOption.keepDuplicates(true));
 
     DoubleArrayTopic limelightPoseInfo = m_table.getDoubleArrayTopic("botpose");
-    m_limelightPoseInfoSub = limelightPoseInfo.subscribe(null,
-        PubSubOption.keepDuplicates(true));
-
+    m_limelightPoseInfoSub = limelightPoseInfo.subscribe(null, PubSubOption.keepDuplicates(true));
   }
 
   public void configure() {
@@ -94,7 +94,6 @@ public class LimelightSubsystem extends SubsystemBase {
   }
 
   /**
-   * 
    * @param id Id of the desired april tag
    * @return If the limelight sees the april tag
    */
@@ -125,7 +124,7 @@ public class LimelightSubsystem extends SubsystemBase {
 
   /**
    * Whether the camera has a valid target
-   * 
+   *
    * @return 1 for true, 0 for false
    */
   public double getTV() {
@@ -162,10 +161,7 @@ public class LimelightSubsystem extends SubsystemBase {
     return m_TvertSub.get();
   }
 
-  /**
-   * Skew of target in degrees. Positive values are to the left, negative to the
-   * right
-   */
+  /** Skew of target in degrees. Positive values are to the left, negative to the right */
   public double getSkew() {
     if (!validTargetExists()) {
       return Double.NaN;
@@ -185,8 +181,8 @@ public class LimelightSubsystem extends SubsystemBase {
     }
 
     double skew = getSkew();
-    return (Constants.SHOOTER_LIMELIGHT.HEAD_ON_TOLERANCE <= skew &&
-        skew <= Constants.SHOOTER_LIMELIGHT.HEAD_ON_TOLERANCE);
+    return (Constants.SHOOTER_LIMELIGHT.HEAD_ON_TOLERANCE <= skew
+        && skew <= Constants.SHOOTER_LIMELIGHT.HEAD_ON_TOLERANCE);
   }
 
   public boolean isToLeft() {
@@ -225,9 +221,10 @@ public class LimelightSubsystem extends SubsystemBase {
     }
 
     double proportion = getTHOR() / getTVERT();
-    double factor = proportion *
-        Constants.SHOOTER_LIMELIGHT.TARGET_HEIGHT /
-        Constants.SHOOTER_LIMELIGHT.TARGET_WIDTH;
+    double factor =
+        proportion
+            * Constants.SHOOTER_LIMELIGHT.TARGET_HEIGHT
+            / Constants.SHOOTER_LIMELIGHT.TARGET_WIDTH;
     return 90.0 * (1 - factor);
   }
 
@@ -238,8 +235,9 @@ public class LimelightSubsystem extends SubsystemBase {
 
     double angleDegrees = Math.abs(getTY()) + Constants.SHOOTER_LIMELIGHT.MOUNTING_ANGLE_DEGREES;
 
-    double heightDifference = Constants.SHOOTER_LIMELIGHT.MOUNTING_HEIGHT_INCHES -
-        Constants.SHOOTER_LIMELIGHT.TARGET_HEIGHT_FROM_FLOOR;
+    double heightDifference =
+        Constants.SHOOTER_LIMELIGHT.MOUNTING_HEIGHT_INCHES
+            - Constants.SHOOTER_LIMELIGHT.TARGET_HEIGHT_FROM_FLOOR;
     double distance = heightDifference / Math.tan(Math.toRadians(angleDegrees));
 
     return distance;
@@ -270,15 +268,15 @@ public class LimelightSubsystem extends SubsystemBase {
   }
 
   public double calculateTimestamp(double[] botpose) {
-    if(botpose == null) {
+    if (botpose == null) {
       return 0;
     }
 
-    return Timer.getFPGATimestamp() - (botpose[6]/1000);
+    return Timer.getFPGATimestamp() - (botpose[6] / 1000);
   }
 
   public static Pose2d botposeToPose2d(double[] botpose) {
-    if(botpose == null) {
+    if (botpose == null) {
       return null;
     }
 
