@@ -89,36 +89,6 @@ public class LimelightSubsystem extends SubsystemBase {
     setStream(Constants.SHOOTER_LIMELIGHT.IS_PRIMARY_STREAM);
   }
 
-  /**
-   * Sets up a consumer to fire when the botpose changes
-   * Will automatically determine if red or blue botpose should be used
-   * 
-   * @param consumer A consumer with prototype consumer(double[] botpose)
-   */
-  public void addBotposeEvent(Consumer<double[]> consumer) {
-
-    Consumer<NetworkTableEvent> botposeConsumer = (NetworkTableEvent event) -> {
-      double[] botpose = event.valueData.value.getDoubleArray();
-
-      consumer.accept(botpose);
-    };
-
-    NetworkTableInstance inst = NetworkTableInstance.getDefault();
-
-    // TODO: FIX THIS!!!!!
-    // if (DriverStation.getAlliance() == Alliance.Blue) {
-      m_poseListenerHandle = inst.addListener(
-          m_botposeWpiBlue,
-          EnumSet.of(NetworkTableEvent.Kind.kValueAll),
-          botposeConsumer);
-    // } else if (Buttonboard.getInstance().getAlliance() == Alliance.Red) {
-    //   m_poseListenerHandle = inst.addListener(
-    //       m_botposeWpiRed,
-    //       EnumSet.of(NetworkTableEvent.Kind.kValueAll),
-    //       botposeConsumer);
-    // }
-  }
-
   public boolean validTargetExists() {
     return 0 < getTV();
   }
@@ -142,22 +112,6 @@ public class LimelightSubsystem extends SubsystemBase {
 
   public void setHumanPipelineActive() {
     m_pipelinePub.set(Constants.SHOOTER_LIMELIGHT.HUMAN_PIPELINE_INDEX);
-  }
-
-  public boolean isTargetingPipelineActive() {
-    return getPipeline() == Constants.SHOOTER_LIMELIGHT.TARGETING_PIPELINE_INDEX;
-  }
-
-  public void setTargetingPipelineActive() {
-    m_pipelinePub.set(Constants.SHOOTER_LIMELIGHT.TARGETING_PIPELINE_INDEX);
-  }
-
-  public boolean isAprilTagPipelineActive() {
-    return getPipeline() == Constants.SHOOTER_LIMELIGHT.APRIL_PIPELINE_INDEX;
-  }
-
-  public void setAprilTagPipelineActive() {
-    m_pipelinePub.set(Constants.SHOOTER_LIMELIGHT.APRIL_PIPELINE_INDEX);
   }
 
   private int getPipeline() {
@@ -307,34 +261,12 @@ public class LimelightSubsystem extends SubsystemBase {
     return botposeToPose2d(m_botposeWpiBlue.get());
   }
 
-  public Pose2d getCurrentAllianceLimelightPose() {
-    // if (Buttonboard.getInstance().getAlliance() == Alliance.Blue) {
-      //TODO: FIX THIS TOO!!!!
-      return getBluePose();
-    // } else if (Buttonboard.getInstance().getAlliance() == Alliance.Red) {
-    //   return getRedPose();
-    // } else {
-    //   return null;
-    // }
-  }
-
   public double getBlueBotposeTimestamp() {
     return calculateTimestamp(m_botposeWpiBlue.get());
   }
 
   public double getRedBotposeTimestamp() {
     return calculateTimestamp(m_botposeWpiRed.get());
-  }
-
-  public double getCurrentAllianceBotposeTimestamp() {
-    // if (Buttonboard.getInstance().getAlliance() == Alliance.Blue) {
-      //TODO: AND THIS!!!!!
-      return getBlueBotposeTimestamp();
-    // } else if (Buttonboard.getInstance().getAlliance() == Alliance.Red) {
-    //   return getRedBotposeTimestamp();
-    // } else {
-    //   return Double.NaN;
-    // }
   }
 
   public double calculateTimestamp(double[] botpose) {

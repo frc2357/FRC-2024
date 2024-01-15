@@ -196,8 +196,9 @@ public final class Constants {
 
   public static final class SHOOTER_LIMELIGHT {
     public static final int HUMAN_PIPELINE_INDEX = 0;
-    public static final int TARGETING_PIPELINE_INDEX = 0;
-    public static final int APRIL_PIPELINE_INDEX = 0;
+
+    public static final int RED_SPEAKER_APRILTAG_PIPELINE_INDEX = 1; // id 4
+    public static final int BLUE_SPEAKER_APRILTAG_PIPELINE_INDEX = 2; // id 7
 
     public static final boolean IS_PRIMARY_STREAM = false;
 
