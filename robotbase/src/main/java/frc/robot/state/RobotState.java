@@ -3,8 +3,6 @@ package frc.robot.state;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class RobotState {
-  private static final RobotState s_instance = new RobotState();
-
   public static enum State {
     ROBOT_INIT, // Robot is initializing
     ROBOT_DISABLED, // Robot is in disabled mode and no alliance is selected
@@ -15,52 +13,52 @@ public class RobotState {
     ROBOT_CENTRIC // Manual control of the robot is robot centric
   }
 
-  public static Alliance getAlliance() {
-    return s_instance.m_alliance;
+  public Alliance getAlliance() {
+    return m_alliance;
   }
 
-  public static State getState() {
-    return s_instance.m_currentState;
+  public State getState() {
+    return m_currentState;
   }
 
-  public static boolean isZeroed() {
-    return s_instance.m_zeroed;
+  public boolean isZeroed() {
+    return m_zeroed;
   }
 
-  public static void setRobotZeroed(boolean zeroed) {
-    s_instance.setZeroed(zeroed);
+  public void setRobotZeroed(boolean zeroed) {
+    setZeroed(zeroed);
   }
 
-  public static boolean isInState(State state) {
-    return s_instance.m_currentState == state;
+  public boolean isInState(State state) {
+    return m_currentState == state;
   }
 
-  public static void onDriverAllianceSelect(Alliance alliance) {
-    s_instance.setAlliance(alliance);
+  public void onDriverAllianceSelect(Alliance alliance) {
+    setAlliance(alliance);
   }
 
-  public static void robotInit() {
+  public void robotInit() {
     setState(State.ROBOT_INIT);
   }
 
-  public static void disabledInit() {
+  public void disabledInit() {
     setState(State.ROBOT_DISABLED);
   }
 
-  public static void setState(State newState) {
-    s_instance.setCurrentState(newState);
+  public void setState(State newState) {
+    setCurrentState(newState);
   }
 
-  public static boolean isFieldRelative() {
-    return s_instance.m_currentDriveControlState == DriveControlState.FIELD_RELATIVE;
+  public boolean isFieldRelative() {
+    return m_currentDriveControlState == DriveControlState.FIELD_RELATIVE;
   }
 
-  public static DriveControlState getDriveControlState() {
-    return s_instance.m_currentDriveControlState;
+  public DriveControlState getDriveControlState() {
+    return m_currentDriveControlState;
   }
 
-  public static void setDriveControlState(DriveControlState driveControlState) {
-    s_instance.setCurrentDriveControlState(driveControlState);
+  public void setDriveControlState(DriveControlState driveControlState) {
+    setCurrentDriveControlState(driveControlState);
   }
 
   private Alliance m_alliance;
@@ -68,7 +66,7 @@ public class RobotState {
   private DriveControlState m_currentDriveControlState;
   private boolean m_zeroed;
 
-  private RobotState() {
+  public RobotState() {
     m_alliance = null;
     m_currentState = State.ROBOT_INIT;
     m_currentDriveControlState = DriveControlState.FIELD_RELATIVE;

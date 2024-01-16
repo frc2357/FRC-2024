@@ -22,6 +22,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+  private RobotState robotState;
 
   public static CommandSwerveDrivetrain drive;
 
@@ -34,6 +35,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
     // autonomous chooser on the dashboard.
+    robotState = new RobotState();
     drive =
         new CommandSwerveDrivetrain(
             Constants.PHEONIX_TUNER.DRIVETRAIN_CONSTANTS,
@@ -66,7 +68,7 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putString(
         "Alliance",
-        RobotState.getAlliance() == null ? "None" : RobotState.getAlliance().toString());
+        robotState.getAlliance() == null ? "None" : robotState.getAlliance().toString());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
