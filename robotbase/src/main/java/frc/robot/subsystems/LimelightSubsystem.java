@@ -105,7 +105,7 @@ public class LimelightSubsystem extends SubsystemBase {
     return getPipeline() == Constants.SHOOTER_LIMELIGHT.HUMAN_PIPELINE_INDEX;
   }
 
-  protected void setPipeline(int index) {
+  public void setPipeline(int index) {
     m_pipelinePub.set(index);
   }
 

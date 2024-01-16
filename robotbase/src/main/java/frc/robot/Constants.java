@@ -195,6 +195,8 @@ public final class Constants {
   }
 
   public static final class SHOOTER_LIMELIGHT {
+    public static final String NAME = "";
+
     public static final int HUMAN_PIPELINE_INDEX = 0;
 
     public static final int RED_SPEAKER_APRILTAG_PIPELINE_INDEX = 1; // id 4

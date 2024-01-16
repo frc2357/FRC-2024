@@ -6,6 +6,10 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
+import frc.robot.util.PipelineManager;
+import frc.robot.util.RobotMath;
+import frc.robot.util.Utility;
 
 public class ShooterSubsystem extends SubsystemBase {
   // {ty, pivotRotations, topRPMs, bottomRPMs}
@@ -16,6 +20,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private SparkPIDController m_topPIDController;
   private SparkPIDController m_bottomPIDController;
+
+  private boolean m_isClosedLoopEnabled = false;
 
   public ShooterSubsystem() {
     m_topShooterMotor =
@@ -63,11 +69,13 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void set(double topPO, double bottomPO) {
+    m_isClosedLoopEnabled = false;
     m_topShooterMotor.set(topPO);
     m_bottomShooterMotor.set(bottomPO);
   }
 
   public void stopShooterMotors() {
+    m_isClosedLoopEnabled = false;
     m_topShooterMotor.set(0.0);
     m_bottomShooterMotor.set(0.0);
   }
@@ -78,5 +86,72 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public double getBottomVelocity() {
     return m_bottomShooterMotor.getEncoder().getVelocity();
+  }
+
+  public boolean isAtRPMs(double topRPMs, double bottomRPMs) {
+    return Utility.isWithinTolerance(getTopVelocity(), topRPMs, 100)
+        && Utility.isWithinTolerance(getBottomVelocity(), bottomRPMs, 100);
+  }
+
+  public boolean hasTarget() {
+    return Robot.shooterLimelight.validTargetExists();
+  }
+
+  @Override
+  public void periodic() {
+    if (m_isClosedLoopEnabled) {
+      visionShotPeriodic();
+    }
+  }
+
+  public void startVisionShooting() {
+    m_isClosedLoopEnabled = true;
+    Robot.shooterLimelight.setPipeline(PipelineManager.speakerPipeline());
+  }
+
+  public void endVisionShooting() {
+    m_isClosedLoopEnabled = false;
+    Robot.shooterLimelight.setHumanPipelineActive();
+  }
+
+  private void visionShotPeriodic() {
+    if (hasTarget()) {
+      setVisionShotRPMs(Robot.shooterLimelight.getTY());
+    } else {
+      System.err.println("----- No vision target -----");
+    }
+  }
+
+  private void setVisionShotRPMs(double ty) {
+    int curveIndex = RobotMath.getCurveSegmentIndex(m_shooterCurve, ty);
+    if (curveIndex == -1) {
+      System.err.println("----- Curve segment index out of bounds -----");
+      return;
+    }
+
+    double[] high = m_shooterCurve[curveIndex];
+    double[] low = m_shooterCurve[curveIndex + 1];
+
+    double highTY = high[0];
+    double lowTY = low[0];
+    double highPivotAngle = high[1];
+    double lowPivotAngle = low[1];
+    double highBottomRPMs = high[2];
+    double lowBottomRPMs = low[2];
+    double highTopRPMs = high[3];
+    double lowTopRPMs = low[3];
+
+    double topRPMs = RobotMath.linearlyInterpolate(highTopRPMs, lowTopRPMs, highTY, lowTY, ty);
+    double bottomRPMs =
+        RobotMath.linearlyInterpolate(highBottomRPMs, lowBottomRPMs, highTY, lowTY, ty);
+    double pivotAngle =
+        RobotMath.linearlyInterpolate(highPivotAngle, lowPivotAngle, highTY, lowTY, ty);
+
+    if (Double.isNaN(pivotAngle) || Double.isNaN(topRPMs) || Double.isNaN(bottomRPMs)) {
+      System.err.println("----- Invalid shooter values -----");
+      return;
+    }
+
+    setRPMS(topRPMs, bottomRPMs);
   }
 }
