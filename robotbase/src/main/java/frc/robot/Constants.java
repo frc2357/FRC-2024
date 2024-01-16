@@ -46,6 +46,8 @@ public final class Constants {
 
     public static final int TOP_SHOOTER_MOTOR_ID = -1;
     public static final int BOTTOM_SHOOTER_MOTOR_ID = -1;
+
+    public static final int SHOOTER_PIVOT_MOTOR_ID = -1;
   }
 
   public static class PHEONIX_TUNER {
@@ -215,5 +217,26 @@ public final class Constants {
     public static final double TARGET_HEIGHT = 0.0;
 
     public static final double TARGET_HEIGHT_FROM_FLOOR = 0.0;
+  }
+  
+  public static final class SHOOTER_PIVOT {
+    public static final boolean MOTOR_INVERTED = false;
+
+    public static final IdleMode IDLE_MODE = IdleMode.kBrake;
+
+    public static final int MOTOR_STALL_LIMIT_AMPS = 40;
+    public static final int MOTOR_FREE_LIMIT_AMPS = 40;
+
+    public static final double PIVOT_P = 0.0;
+    public static final double PIVOT_I = 0.0;
+    public static final double PIVOT_D = 0.0;
+    public static final double PIVOT_FF = 0.0;
+
+    public static final int SMART_MOTION_MAX_VEL_RPM = 0;
+    public static final int SMART_MOTION_MIN_VEL_RPM = 0;
+    public static final int SMART_MOTION_MAX_ACC_RPM = 0;
+    public static final int SMART_MOTION_ALLOWED_ERROR = 0;
+
+    public static final double AXIS_MAX_SPEED = 0.25;
   }
 }

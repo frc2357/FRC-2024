@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.state.RobotState;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.ShooterPivotSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 /**
@@ -26,8 +27,11 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
 
   public static RobotState state;
+
   public static CommandSwerveDrivetrain drive;
   public static ShooterSubsystem shooter;
+  public static ShooterPivotSubsystem pivot;
+
   public static LimelightSubsystem shooterLimelight;
 
   /**
@@ -40,6 +44,7 @@ public class Robot extends TimedRobot {
     // and put our
     // autonomous chooser on the dashboard.
     state = new RobotState();
+
     drive =
         new CommandSwerveDrivetrain(
             Constants.PHEONIX_TUNER.DRIVETRAIN_CONSTANTS,
@@ -51,7 +56,10 @@ public class Robot extends TimedRobot {
             });
 
     shooter = new ShooterSubsystem();
+    pivot = new ShooterPivotSubsystem();
+
     shooterLimelight = new LimelightSubsystem(Constants.SHOOTER_LIMELIGHT.NAME);
+
     m_robotContainer = new RobotContainer();
   }
 
