@@ -11,6 +11,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants.SteerFeedbackType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 import edu.wpi.first.math.controller.PIDController;
+import com.revrobotics.CANSparkBase.IdleMode;
 import edu.wpi.first.math.util.Units;
 import java.util.function.BooleanSupplier;
 
@@ -44,6 +45,9 @@ public final class Constants {
     public static final int BACK_RIGHT_DRIVE_MOTOR_ID = 17;
     public static final int BACK_RIGHT_STEER_MOTOR_ID = 18;
     public static final int BACK_RIGHT_ENCODER_ID = 22;
+
+    public static final int TOP_SHOOTER_MOTOR_ID = -1;
+    public static final int BOTTOM_SHOOTER_MOTOR_ID = -1;
   }
 
   public static class PHEONIX_TUNER {
@@ -184,5 +188,51 @@ public final class Constants {
             return false;
           }
         };
+  }
+
+  public static final class SHOOTER {
+    public static final IdleMode IDLE_MODE = IdleMode.kCoast;
+
+    public static final boolean TOP_MOTOR_INVERTED = false;
+    public static final boolean BOTTOM_MOTOR_INVERTED = false;
+
+    public static final int TOP_MOTOR_STALL_LIMIT_AMPS = 40;
+    public static final int TOP_MOTOR_FREE_LIMIT_AMPS = 40;
+
+    public static final int BOTTOM_MOTOR_STALL_LIMIT_AMPS = 40;
+    public static final int BOTTOM_MOTOR_FREE_LIMIT_AMPS = 40;
+
+    public static final double TOP_MOTOR_P = 0.0;
+    public static final double TOP_MOTOR_I = 0.0;
+    public static final double TOP_MOTOR_D = 0.0;
+    public static final double TOP_MOTOR_FF = 0.0;
+
+    public static final double BOTTOM_MOTOR_P = 0.0;
+    public static final double BOTTOM_MOTOR_I = 0.0;
+    public static final double BOTTOM_MOTOR_D = 0.0;
+    public static final double BOTTOM_MOTOR_FF = 0.0;
+  }
+
+  public static final class SHOOTER_LIMELIGHT {
+    public static final String NAME = "";
+
+    public static final int HUMAN_PIPELINE_INDEX = 0;
+
+    public static final int RED_SPEAKER_APRILTAG_PIPELINE_INDEX = 1; // id 4
+    public static final int BLUE_SPEAKER_APRILTAG_PIPELINE_INDEX = 2; // id 7
+
+    public static final boolean IS_PRIMARY_STREAM = false;
+
+    public static final double MOUNTING_ANGLE_DEGREES = 0.0;
+    public static final double MOUNTING_HEIGHT_INCHES = 0.0;
+
+    public static final double DEFAULT_RETURN_VALUE = 0.0;
+
+    public static final double HEAD_ON_TOLERANCE = 0.0;
+
+    public static final double TARGET_WIDTH = 0.0;
+    public static final double TARGET_HEIGHT = 0.0;
+
+    public static final double TARGET_HEIGHT_FROM_FLOOR = 0.0;
   }
 }
