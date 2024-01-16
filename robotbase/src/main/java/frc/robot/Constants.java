@@ -134,7 +134,6 @@ public final class Constants {
 
     public static final SwerveDrivetrainConstants DRIVETRAIN_CONSTANTS =
         new SwerveDrivetrainConstants()
-            .withPigeon2Id(CAN_ID.PIGEON_ID)
             .withCANbusName("")
             .withPigeon2Id(CAN_ID.PIGEON_ID);
   }
