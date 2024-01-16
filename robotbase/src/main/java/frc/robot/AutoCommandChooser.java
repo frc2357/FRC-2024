@@ -16,7 +16,8 @@ public class AutoCommandChooser {
         new Command[] {
           new ChoreoTrajectoryCommand("ChOnePeiceToAmp"),
           new ChoreoTrajectoryCommand("ChTestPath"),
-          new ChoreoTrajectoryCommand("ChClose3ToSpeaker")
+          new ChoreoTrajectoryCommand("ChClose3ToSpeaker"),
+          new ChoreoTrajectoryCommand("ChRotationTest"),
         };
 
     m_chooser = new SendableChooser<>();
