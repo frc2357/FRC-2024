@@ -8,9 +8,9 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.*;
 
 public class RobotContainer {
   /* Setting up bindings for necessary control of the swerve drive platform */
@@ -20,17 +20,24 @@ public class RobotContainer {
       new SwerveRequest.FieldCentric()
           .withDeadband(Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND * 0.1)
           .withRotationalDeadband(
-              Constants.SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND * 0.1) // Add a 10% deadband
+              SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND * 0.1) // Add a 10% deadband
           .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
   // driving in open loop
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
+  private AutoCommandChooser m_autoCommandChooser;
+
+  public RobotContainer() {
+    configureBindings();
+    m_autoCommandChooser = new AutoCommandChooser();
+  }
+
   // private final Telemetry logger = new Telemetry(); // This puts a TON of stuff on shuffleboard.
 
   private void configureBindings() {
-    Robot.drive.setDefaultCommand( // Robot.drive will execute this command periodically
-        Robot.drive.applyRequest(
+    Robot.drive.setDefaultCommand(
+        Robot.drive.applyRequestCommand(
             () ->
                 drive
                     .withVelocityX(
@@ -46,11 +53,11 @@ public class RobotContainer {
             // Drive counterclockwise with negative X (left)
             ));
 
-    joystick.a().whileTrue(Robot.drive.applyRequest(() -> brake));
+    joystick.a().whileTrue(Robot.drive.applyRequestCommand(() -> brake));
     joystick
         .b()
         .whileTrue(
-            Robot.drive.applyRequest(
+            Robot.drive.applyRequestCommand(
                 () ->
                     point.withModuleDirection(
                         new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
@@ -68,11 +75,7 @@ public class RobotContainer {
     // Robot.drive.register Telemetry(logger::telemeterize); //Shuffleboard fanatic
   }
 
-  public RobotContainer() {
-    configureBindings();
-  }
-
   public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
+    return m_autoCommandChooser.getSelectedAutoCommand();
   }
 }
