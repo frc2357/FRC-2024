@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.state.RobotState;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -25,6 +28,9 @@ public class Robot extends TimedRobot {
 
   public static RobotState state;
   public static CommandSwerveDrivetrain drive;
+  public static ShooterSubsystem shooter;
+  public static IntakeSubsystem intake;
+  public static LimelightSubsystem shooterLimelight;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -45,6 +51,10 @@ public class Robot extends TimedRobot {
               Constants.PHEONIX_TUNER.BACK_LEFT_MODULE_CONSTANTS,
               Constants.PHEONIX_TUNER.BACK_RIGHT_MODULE_CONSTANTS
             });
+
+    shooter = new ShooterSubsystem();
+    intake = new IntakeSubsystem();
+    shooterLimelight = new LimelightSubsystem(Constants.SHOOTER_LIMELIGHT.NAME);
     m_robotContainer = new RobotContainer();
   }
 

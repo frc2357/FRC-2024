@@ -11,16 +11,22 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.controls.CodriverControls;
 import frc.robot.controls.DriverControls;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.*;
 
 public class RobotContainer {
   private final SwerveRequest.FieldCentric drive =
       new SwerveRequest.FieldCentric()
           .withDeadband(Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND * 0.1)
           .withRotationalDeadband(
-              Constants.SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND * 0.1) // Add a 10% deadband
+              SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND * 0.1) // Add a 10% deadband
           .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
 
+  private AutoCommandChooser m_autoCommandChooser;
+  
   public RobotContainer() {
+    m_autoCommandChooser = new AutoCommandChooser();
     configureBindings();
   }
 
@@ -44,6 +50,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
+    return m_autoCommandChooser.getSelectedAutoCommand();
   }
 }
