@@ -11,7 +11,9 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants.SteerFeedbackType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 import com.revrobotics.CANSparkBase.IdleMode;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.util.Units;
+import java.util.function.BooleanSupplier;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -48,6 +50,9 @@ public final class Constants {
     public static final int BOTTOM_SHOOTER_MOTOR_ID = -1;
 
     public static final int SHOOTER_PIVOT_MOTOR_ID = -1;
+
+    public static final int TOP_INTAKE_MOTOR_ID = -1;
+    public static final int BOTTOM_INTAKE_MOTOR_ID = -1;
   }
 
   public static class PHEONIX_TUNER {
@@ -78,7 +83,7 @@ public final class Constants {
 
     // Theoretical free speed (m/s) at 12v applied output;
     // This needs to be tuned to your individual robot
-    public static final double SPEED_AT_12_VOLTS = 6.0;
+    public static final double SPEED_AT_12_VOLTS = 4.7;
 
     // Every 1 rotation of the azimuth results in COUPLE_RATIO drive motor turns;
     // This may need to be tuned to your individual robot
@@ -137,10 +142,10 @@ public final class Constants {
             SWERVE.INVERT_RIGHT_SIDE);
 
     public static final SwerveDrivetrainConstants DRIVETRAIN_CONSTANTS =
-        new SwerveDrivetrainConstants().withPigeon2Id(CAN_ID.PIGEON_ID).withCANbusName("");
+        new SwerveDrivetrainConstants().withCANbusName("").withPigeon2Id(CAN_ID.PIGEON_ID);
   }
 
-  public static class SWERVE {
+  public static final class SWERVE {
     public static final double MAX_SPEED_METERS_PER_SECOND = 4.7;
     public static final double MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND = Math.PI;
 
@@ -171,6 +176,31 @@ public final class Constants {
     public static final double BACK_RIGHT_ENCODER_OFFSET = 0.37841796875;
     public static final double BACK_RIGHT_X_POSITION_INCHES = -9.375;
     public static final double BACK_RIGHT_Y_POSITION_INCHES = -9.375;
+
+    public static final double TRANSLATION_RAMP_EXPONENT = 2;
+  }
+
+  public static final class CONTROLLER {
+    public static final int DRIVE_CONTROLLER_PORT = 0;
+    public static final double DRIVE_CONTROLLER_DEADBAND = 0.1;
+    public static final int CODRIVER_CONTROLLER_PORT = 1;
+    public static final double CODRIVE_CONTROLLER_DEADBAND = 0.1;
+    public static final double SWERVE_TRANSLATIONAL_DEADBAND = 0.05;
+    public static final double SWERVE_ROTATIONAL_DEADBAND = 0.05;
+  }
+
+  public static final class CHOREO {
+    public static final PIDController CHOREO_X_CONTROLLER = new PIDController(0.5, 0, 0);
+    public static final PIDController CHOREO_Y_CONTROLLER = new PIDController(0.5, 0, 0);
+    public static final PIDController CHOREO_ROTATION_CONTROLLER = new PIDController(0.5, 0, 0);
+
+    public static final BooleanSupplier CHOREO_AUTO_MIRROR_PATHS =
+        new BooleanSupplier() {
+          @Override
+          public boolean getAsBoolean() {
+            return false;
+          }
+        };
   }
 
   public static final class SHOOTER {
@@ -194,6 +224,19 @@ public final class Constants {
     public static final double BOTTOM_MOTOR_I = 0.0;
     public static final double BOTTOM_MOTOR_D = 0.0;
     public static final double BOTTOM_MOTOR_FF = 0.0;
+  }
+
+  public static final class INTAKE {
+    public static final IdleMode IDLE_MODE = IdleMode.kCoast;
+
+    public static final boolean TOP_MOTOR_INVERTED = false;
+    public static final boolean BOTTOM_MOTOR_INVERTED = false;
+
+    public static final int TOP_MOTOR_STALL_LIMIT_AMPS = 40;
+    public static final int TOP_MOTOR_FREE_LIMIT_AMPS = 40;
+
+    public static final int BOTTOM_MOTOR_STALL_LIMIT_AMPS = 40;
+    public static final int BOTTOM_MOTOR_FREE_LIMIT_AMPS = 40;
   }
 
   public static final class SHOOTER_LIMELIGHT {
