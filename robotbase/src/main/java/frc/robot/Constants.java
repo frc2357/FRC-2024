@@ -186,7 +186,7 @@ public final class Constants {
     public static final double SWERVE_ROTATIONAL_DEADBAND = 0.05;
   }
 
-  public static class CHOREO {
+  public static final class CHOREO {
     public static final PIDController CHOREO_X_CONTROLLER = new PIDController(0.5, 0, 0);
     public static final PIDController CHOREO_Y_CONTROLLER = new PIDController(0.5, 0, 0);
     public static final PIDController CHOREO_ROTATION_CONTROLLER = new PIDController(0.5, 0, 0);
