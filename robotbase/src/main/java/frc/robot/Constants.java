@@ -48,6 +48,8 @@ public final class Constants {
 
     public static final int TOP_SHOOTER_MOTOR_ID = -1;
     public static final int BOTTOM_SHOOTER_MOTOR_ID = -1;
+    public static final int TOP_INTAKE_MOTOR_ID = -1;
+    public static final int BOTTOM_INTAKE_MOTOR_ID = -1;
   }
 
   public static class PHEONIX_TUNER {
@@ -211,6 +213,19 @@ public final class Constants {
     public static final double BOTTOM_MOTOR_I = 0.0;
     public static final double BOTTOM_MOTOR_D = 0.0;
     public static final double BOTTOM_MOTOR_FF = 0.0;
+  }
+
+  public static final class INTAKE {
+    public static final IdleMode IDLE_MODE = IdleMode.kCoast;
+
+    public static final boolean TOP_MOTOR_INVERTED = false;
+    public static final boolean BOTTOM_MOTOR_INVERTED = false;
+
+    public static final int TOP_MOTOR_STALL_LIMIT_AMPS = 40;
+    public static final int TOP_MOTOR_FREE_LIMIT_AMPS = 40;
+
+    public static final int BOTTOM_MOTOR_STALL_LIMIT_AMPS = 40;
+    public static final int BOTTOM_MOTOR_FREE_LIMIT_AMPS = 40;
   }
 
   public static final class SHOOTER_LIMELIGHT {
