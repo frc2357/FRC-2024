@@ -218,7 +218,7 @@ public final class Constants {
 
     public static final double TARGET_HEIGHT_FROM_FLOOR = 0.0;
   }
-  
+
   public static final class SHOOTER_PIVOT {
     public static final boolean MOTOR_INVERTED = false;
 
