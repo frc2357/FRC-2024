@@ -32,9 +32,9 @@ public class ShooterPivotSubsystem extends SubsystemBase {
     m_pivotPIDController = m_pivotMotor.getPIDController();
 
     m_pivotPIDController.setP(Constants.SHOOTER_PIVOT.PIVOT_P);
-    m_pivotPIDController.setP(Constants.SHOOTER_PIVOT.PIVOT_I);
-    m_pivotPIDController.setP(Constants.SHOOTER_PIVOT.PIVOT_D);
-    m_pivotPIDController.setP(Constants.SHOOTER_PIVOT.PIVOT_FF);
+    m_pivotPIDController.setI(Constants.SHOOTER_PIVOT.PIVOT_I);
+    m_pivotPIDController.setD(Constants.SHOOTER_PIVOT.PIVOT_D);
+    m_pivotPIDController.setFF(Constants.SHOOTER_PIVOT.PIVOT_FF);
 
     m_pivotPIDController.setOutputRange(-1, 1);
     m_pivotPIDController.setSmartMotionMaxVelocity(
