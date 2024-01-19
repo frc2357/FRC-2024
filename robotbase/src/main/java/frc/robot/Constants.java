@@ -141,8 +141,8 @@ public final class Constants {
   }
 
   public static class SWERVE {
-    public static final double MAX_SPEED_METERS_PER_SECOND = 4.7;
-    public static final double MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND = Math.PI;
+    public static final double MAX_SPEED_METERS_PER_SECOND = 4.023;
+    public static final double MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND = 10.826;
 
     public static final double DRIVE_GEAR_RATIO = 6.746031746031747;
     public static final double STEER_GEAR_RATIO = 21.428571428571427;
@@ -172,12 +172,12 @@ public final class Constants {
     public static final double BACK_RIGHT_X_POSITION_INCHES = -9.375;
     public static final double BACK_RIGHT_Y_POSITION_INCHES = -9.375;
 
-    public static final double SWERVE_TRANSLATIONAL_DEADBAND = 0.05;
-    public static final double SWERVE_ROTATIONAL_DEADBAND = 0.05;
+    public static final double SWERVE_TRANSLATIONAL_DEADBAND = 0.1;
+    public static final double SWERVE_ROTATIONAL_DEADBAND = 0.1;
   }
 
   public static class CHOREO {
-    public static final PIDController CHOREO_X_CONTROLLER = new PIDController(0.5, 0, 0);
+    public static final PIDController CHOREO_X_CONTROLLER = new PIDController(1, 0, 0);
     public static final PIDController CHOREO_Y_CONTROLLER = new PIDController(0.5, 0, 0);
     public static final PIDController CHOREO_ROTATION_CONTROLLER = new PIDController(0.5, 0, 0);
 

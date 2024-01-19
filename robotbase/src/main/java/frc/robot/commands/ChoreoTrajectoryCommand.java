@@ -21,8 +21,8 @@ public class ChoreoTrajectoryCommand extends SequentialCommandGroup {
     this.traj = Choreo.getTrajectory(trajectoryFileName);
     new Choreo();
     addCommands(
+        new InstantCommand(() -> Robot.drive.tareEverything()),
         new InstantCommand(() -> Robot.drive.setPose(traj.getInitialPose())),
-        new InstantCommand(() -> Robot.drive.zeroGyro()),
         Choreo.choreoSwerveCommand(
             Choreo.getTrajectory(trajectoryFileName),
             Robot.drive.getPoseSupplier(),
@@ -32,7 +32,8 @@ public class ChoreoTrajectoryCommand extends SequentialCommandGroup {
                 CHOREO.CHOREO_ROTATION_CONTROLLER),
             Robot.drive.getChassisSpeedsConsumer(),
             CHOREO.CHOREO_AUTO_MIRROR_PATHS,
-            Robot.drive));
+            Robot.drive),
+        new InstantCommand(() -> System.out.println("Robot Pose: " + Robot.drive.getPose())));
   }
 
   @Override
