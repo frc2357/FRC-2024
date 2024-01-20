@@ -11,8 +11,6 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.Constants;
-import frc.robot.Constants.SWERVE;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -49,12 +47,12 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   public void drive(double velocityX, double velocityY, double rotationRate) {
     SwerveRequest driveRequest =
         new SwerveRequest.FieldCentric()
-            .withDeadband(
-                SWERVE.MAX_SPEED_METERS_PER_SECOND
-                    * Constants.CONTROLLER.SWERVE_TRANSLATIONAL_DEADBAND)
-            .withRotationalDeadband(
-                SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND
-                    * Constants.CONTROLLER.SWERVE_ROTATIONAL_DEADBAND)
+            // .withDeadband(
+            //     SWERVE.MAX_SPEED_METERS_PER_SECOND
+            //         * Constants.CONTROLLER.SWERVE_TRANSLATIONAL_DEADBAND)
+            // .withRotationalDeadband(
+            //     SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND
+            //         * Constants.CONTROLLER.SWERVE_ROTATIONAL_DEADBAND)
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
             .withVelocityX(velocityX)
             .withVelocityY(velocityY)

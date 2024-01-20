@@ -21,7 +21,7 @@ public class DriverControls implements RumbleInterface {
     m_deadband = deadband;
 
     m_backButton = new JoystickButton(m_controller, Button.kBack.value);
-    m_backButton = new JoystickButton(m_controller, Button.kStart.value);
+    m_startButton = new JoystickButton(m_controller, Button.kStart.value);
 
     mapControls();
   }
