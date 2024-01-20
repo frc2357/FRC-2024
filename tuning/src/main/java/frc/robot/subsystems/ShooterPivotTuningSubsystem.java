@@ -7,9 +7,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class ShooterPivotTuningSubsystem extends SubsystemBase {
+public class ShooterPivotTuningSubsystem {
     private CANSparkMax m_motor;
 
     private SparkPIDController m_pid;

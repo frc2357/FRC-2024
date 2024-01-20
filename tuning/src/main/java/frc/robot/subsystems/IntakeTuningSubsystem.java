@@ -7,9 +7,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class IntakeTuningSubsystem extends SubsystemBase {
+public class IntakeTuningSubsystem {
     private CANSparkMax m_topMotor;
     private CANSparkMax m_bottomMotor;
 
