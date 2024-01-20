@@ -5,8 +5,14 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.subsystems.IntakeTuningSubsystem;
+import frc.robot.subsystems.ShooterPivotTuningSubsystem;
+import frc.robot.subsystems.ShooterTuningSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -19,6 +25,18 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+  private XboxController m_controller;
+
+  private static IntakeTuningSubsystem intake;
+  private static ShooterTuningSubsystem shooter;
+  private static ShooterPivotTuningSubsystem pivot;
+
+  private JoystickButton m_rightBumper;
+  private JoystickButton m_leftBumper;
+
+  private boolean m_intakeInverted = false;
+  private boolean m_shooterInverted = false;
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -28,6 +46,15 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+
+    m_controller = new XboxController(0);
+
+    intake = new IntakeTuningSubsystem();
+    shooter = new ShooterTuningSubsystem();
+    pivot = new ShooterPivotTuningSubsystem();
+
+    m_rightBumper = new JoystickButton(m_controller, XboxRaw.BumperRight.value);
+    m_leftBumper = new JoystickButton(m_controller, XboxRaw.BumperLeft.value);
   }
 
   /**
@@ -81,7 +108,11 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    intake.update();
+    shooter.update();
+    pivot.update();
+  }
 
   @Override
   public void testInit() {
@@ -91,7 +122,19 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during test mode. */
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+    double leftTrigger = m_controller.getLeftTriggerAxis();
+    intake.axisRun(leftTrigger, leftTrigger, m_intakeInverted);
+
+    double rightTrigger = m_controller.getRightTriggerAxis();
+    shooter.axisRun(rightTrigger, rightTrigger, m_shooterInverted);
+
+    double rightJoystick = m_controller.getRightY();
+    pivot.axisRun(rightJoystick);
+
+    m_rightBumper.onTrue(new InstantCommand(() -> m_shooterInverted = !m_shooterInverted));
+    m_leftBumper.onTrue(new InstantCommand(() -> m_intakeInverted = !m_intakeInverted));
+  }
 
   /** This function is called once when the robot is first started up. */
   @Override
