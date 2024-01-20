@@ -204,6 +204,8 @@ public final class Constants {
   }
 
   public static final class SHOOTER {
+    public static final double SHOOTER_AXIS_STEP_INTERVAL = 0.1;
+
     public static final IdleMode IDLE_MODE = IdleMode.kCoast;
 
     public static final boolean TOP_MOTOR_INVERTED = false;

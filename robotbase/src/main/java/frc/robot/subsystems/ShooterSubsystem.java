@@ -68,13 +68,13 @@ public class ShooterSubsystem extends SubsystemBase {
     m_bottomPIDController.setReference(bottomRPMS, ControlType.kVelocity);
   }
 
-  public void set(double topPO, double bottomPO) {
+  public void setAxisSpeed(double top, double bottom) {
     m_isClosedLoopEnabled = false;
-    m_topShooterMotor.set(topPO);
-    m_bottomShooterMotor.set(bottomPO);
+    m_topShooterMotor.set(top);
+    m_bottomShooterMotor.set(bottom);
   }
 
-  public void stopShooterMotors() {
+  public void stop() {
     m_isClosedLoopEnabled = false;
     m_topShooterMotor.set(0.0);
     m_bottomShooterMotor.set(0.0);
