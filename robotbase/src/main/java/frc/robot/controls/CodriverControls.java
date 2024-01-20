@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.commands.pivot.ShooterPivotAxisCommand;
 import frc.robot.commands.shooter.ShooterRollerStepAxisCommand;
 import frc.robot.controls.util.AxisInterface;
 import frc.robot.controls.util.AxisThresholdTrigger;
@@ -175,6 +176,7 @@ public class CodriverControls implements RumbleInterface {
     leftDPadAndLeftTrigger.whileTrue(
         new ShooterRollerStepAxisCommand(
             shooterRollerReverseAxis, Constants.SHOOTER.SHOOTER_AXIS_STEP_INTERVAL));
+    leftDPadOnly.whileTrue(new ShooterPivotAxisCommand(axisRightStickY));
   }
 
   @Override

@@ -59,7 +59,7 @@ public class ShooterPivotSubsystem extends SubsystemBase {
     m_pivotMotor.set(motorSpeed);
   }
 
-  public void stopPivotMotor() {
+  public void stop() {
     m_isClosedLoopEnabled = false;
     m_pivotMotor.set(0.0);
   }
