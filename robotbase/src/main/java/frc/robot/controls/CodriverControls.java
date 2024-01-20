@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Axis;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
@@ -14,7 +15,6 @@ import frc.robot.commands.shooter.ShooterRollerStepAxisCommand;
 import frc.robot.controls.util.AxisInterface;
 import frc.robot.controls.util.AxisThresholdTrigger;
 import frc.robot.controls.util.RumbleInterface;
-import frc.robot.controls.util.XboxRaw;
 import frc.robot.util.Utility;
 
 public class CodriverControls implements RumbleInterface {
@@ -63,15 +63,15 @@ public class CodriverControls implements RumbleInterface {
     m_rightTrigger = new AxisThresholdTrigger(controller, Axis.kRightTrigger, .1);
 
     // Buttons
-    m_leftStickButton = new JoystickButton(controller, XboxRaw.StickPressLeft.value);
-    m_backButton = new JoystickButton(controller, XboxRaw.Back.value);
-    m_startButton = new JoystickButton(controller, XboxRaw.Start.value);
-    m_leftBumper = new JoystickButton(controller, XboxRaw.BumperLeft.value);
-    m_rightBumper = new JoystickButton(controller, XboxRaw.BumperRight.value);
-    m_aButton = new JoystickButton(controller, XboxRaw.A.value);
-    m_bButton = new JoystickButton(controller, XboxRaw.B.value);
-    m_xButton = new JoystickButton(controller, XboxRaw.X.value);
-    m_yButton = new JoystickButton(controller, XboxRaw.Y.value);
+    m_leftStickButton = new JoystickButton(controller, Button.kLeftStick.value);
+    m_backButton = new JoystickButton(controller, Button.kBack.value);
+    m_startButton = new JoystickButton(controller, Button.kStart.value);
+    m_leftBumper = new JoystickButton(controller, Button.kLeftBumper.value);
+    m_rightBumper = new JoystickButton(controller, Button.kRightBumper.value);
+    m_aButton = new JoystickButton(controller, Button.kA.value);
+    m_bButton = new JoystickButton(controller, Button.kB.value);
+    m_xButton = new JoystickButton(controller, Button.kX.value);
+    m_yButton = new JoystickButton(controller, Button.kY.value);
 
     // Dpad
     m_upDPad = new POVButton(controller, 0);
