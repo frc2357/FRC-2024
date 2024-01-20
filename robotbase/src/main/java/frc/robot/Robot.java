@@ -6,9 +6,12 @@ package frc.robot;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.controls.CodriverControls;
+import frc.robot.controls.DriverControls;
 import frc.robot.state.RobotState;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -35,6 +38,9 @@ public class Robot extends TimedRobot {
   public static ShooterPivotSubsystem pivot;
   public static IntakeSubsystem intake;
   public static ClimberSubsystem climber;
+
+  public static DriverControls driverControls;
+  public static CodriverControls codriverControls;
 
   public static LimelightSubsystem shooterLimelight;
 
@@ -65,6 +71,15 @@ public class Robot extends TimedRobot {
     climber = new ClimberSubsystem();
 
     shooterLimelight = new LimelightSubsystem(Constants.SHOOTER_LIMELIGHT.NAME);
+
+    driverControls =
+        new DriverControls(
+            new XboxController(Constants.CONTROLLER.DRIVE_CONTROLLER_PORT),
+            Constants.CONTROLLER.DRIVE_CONTROLLER_DEADBAND);
+    codriverControls =
+        new CodriverControls(
+            new XboxController(Constants.CONTROLLER.CODRIVER_CONTROLLER_PORT),
+            Constants.CONTROLLER.CODRIVE_CONTROLLER_DEADBAND);
 
     m_robotContainer = new RobotContainer();
   }
