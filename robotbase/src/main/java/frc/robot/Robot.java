@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.state.RobotState;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
@@ -33,6 +34,7 @@ public class Robot extends TimedRobot {
   public static ShooterSubsystem shooter;
   public static ShooterPivotSubsystem pivot;
   public static IntakeSubsystem intake;
+  public static ClimberSubsystem climber;
 
   public static LimelightSubsystem shooterLimelight;
 
@@ -60,6 +62,7 @@ public class Robot extends TimedRobot {
     shooter = new ShooterSubsystem();
     pivot = new ShooterPivotSubsystem();
     intake = new IntakeSubsystem();
+    climber = new ClimberSubsystem();
 
     shooterLimelight = new LimelightSubsystem(Constants.SHOOTER_LIMELIGHT.NAME);
 

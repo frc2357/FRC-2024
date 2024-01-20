@@ -46,13 +46,16 @@ public final class Constants {
     public static final int BACK_RIGHT_STEER_MOTOR_ID = 18;
     public static final int BACK_RIGHT_ENCODER_ID = 22;
 
-    public static final int TOP_SHOOTER_MOTOR_ID = -1;
-    public static final int BOTTOM_SHOOTER_MOTOR_ID = -1;
+    public static final int TOP_SHOOTER_MOTOR_ID = 25;
+    public static final int BOTTOM_SHOOTER_MOTOR_ID = 26;
 
-    public static final int SHOOTER_PIVOT_MOTOR_ID = -1;
+    public static final int SHOOTER_PIVOT_MOTOR_ID = 29;
 
-    public static final int TOP_INTAKE_MOTOR_ID = -1;
-    public static final int BOTTOM_INTAKE_MOTOR_ID = -1;
+    public static final int TOP_INTAKE_MOTOR_ID = 23;
+    public static final int BOTTOM_INTAKE_MOTOR_ID = 24;
+
+    public static final int RIGHT_CLIMBER_MOTOR_ID = 27;
+    public static final int LEFT_CLIMBER_MOTOR_ID = 28;
   }
 
   public static class PHEONIX_TUNER {
@@ -283,5 +286,13 @@ public final class Constants {
     public static final int SMART_MOTION_ALLOWED_ERROR = 0;
 
     public static final double AXIS_MAX_SPEED = 0.25;
+  }
+
+  public static final class CLIMBER {
+    public static final boolean RIGHT_MOTOR_INVERTED = false;
+    public static final boolean LEFT_MOTOR_INVERTED = false;
+
+    public static final int MOTOR_FREE_LIMIT_AMPS = 40;
+    public static final int MOTOR_STALL_LIMIT_AMPS = 40;
   }
 }
