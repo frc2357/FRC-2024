@@ -1,13 +1,13 @@
 package frc.robot.controls;
 
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.controls.util.RumbleInterface;
-import frc.robot.controls.util.XboxRaw;
 
 public class DriverControls implements RumbleInterface {
   private XboxController m_controller;
@@ -20,8 +20,8 @@ public class DriverControls implements RumbleInterface {
     m_controller = controller;
     m_deadband = deadband;
 
-    m_backButton = new JoystickButton(m_controller, XboxRaw.Back.value);
-    m_backButton = new JoystickButton(m_controller, XboxRaw.Start.value);
+    m_backButton = new JoystickButton(m_controller, Button.kBack.value);
+    m_backButton = new JoystickButton(m_controller, Button.kStart.value);
 
     mapControls();
   }
