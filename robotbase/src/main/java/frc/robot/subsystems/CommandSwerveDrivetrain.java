@@ -1,18 +1,22 @@
 package frc.robot.subsystems;
 
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+import frc.robot.Constants;
+import frc.robot.Robot;
 
 /**
  * Class that extends the Phoenix SwerveDrivetrain class and implements subsystem so it can be used
@@ -117,5 +121,11 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         drive(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond);
       }
     };
+  }
+
+  public double getSpeakerLockRotation() {
+    double tx = Robot.shooterLimelight.getTX();
+    double yaw = super.getPigeon2().getYaw().getValueAsDouble();
+    return Constants.SWERVE.SPEAKER_LOCK_PID_CONTROLLER.calculate(yaw, tx);
   }
 }

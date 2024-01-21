@@ -181,6 +181,8 @@ public final class Constants {
     public static final double BACK_RIGHT_Y_POSITION_INCHES = -9.375;
 
     public static final double TRANSLATION_RAMP_EXPONENT = 2;
+
+    public static final PIDController SPEAKER_LOCK_PID_CONTROLLER = new PIDController(0, 0, 0);
   }
 
   public static final class CONTROLLER {
