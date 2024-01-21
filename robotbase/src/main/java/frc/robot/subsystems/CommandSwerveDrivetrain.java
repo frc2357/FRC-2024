@@ -6,6 +6,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -20,6 +21,16 @@ import java.util.function.Supplier;
  * in command-based projects easily.
  */
 public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsystem {
+
+  private final SwerveRequest.ApplyChassisSpeeds chassisSpeedRequest =
+      new SwerveRequest.ApplyChassisSpeeds();
+
+  private final SwerveRequest.FieldCentric driveRequest =
+      new SwerveRequest.FieldCentric()
+          .withDeadband(SWERVE.MAX_SPEED_METERS_PER_SECOND * SWERVE.SWERVE_TRANSLATIONAL_DEADBAND)
+          .withRotationalDeadband(
+              SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND * SWERVE.SWERVE_ROTATIONAL_DEADBAND)
+          .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
   public CommandSwerveDrivetrain(
       SwerveDrivetrainConstants driveTrainConstants,
@@ -43,21 +54,17 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   }
 
   public void drive(double velocityX, double velocityY, double rotationRate) {
-    SwerveRequest driveRequest =
-        new SwerveRequest.FieldCentric()
-            .withDeadband(SWERVE.MAX_SPEED_METERS_PER_SECOND * SWERVE.SWERVE_TRANSLATIONAL_DEADBAND)
-            .withRotationalDeadband(
-                SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND * SWERVE.SWERVE_ROTATIONAL_DEADBAND)
-            .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
-            .withVelocityX(velocityX)
-            .withVelocityY(velocityY)
-            .withRotationalRate(rotationRate);
-    applyRequest(() -> driveRequest);
+    applyRequest(
+        () ->
+            driveRequest
+                .withVelocityX(velocityX)
+                .withVelocityY(velocityY)
+                .withRotationalRate(rotationRate));
   }
 
   /**
    * @return A list of the module positions in the order Front Left, Front Right, Back Left, Back
-   *     right
+   *     Right
    */
   public SwerveModulePosition[] getModulePositions() {
     return super.m_modulePositions;
@@ -86,11 +93,12 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   }
 
   public void zeroAll() {
-    super.tareEverything();
+    zeroGyro();
+    setPose(new Pose2d(0, 0, new Rotation2d(0)));
   }
 
   public void zeroGyro() {
-    super.getPigeon2().reset();
+    super.getPigeon2().setYaw(0);
   }
 
   public void stopMotorsIntoX() {
@@ -109,7 +117,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     return new Consumer<ChassisSpeeds>() {
       @Override
       public void accept(ChassisSpeeds speeds) {
-        applyRequest(() -> new SwerveRequest.ApplyChassisSpeeds().withSpeeds(speeds));
+        applyRequest(() -> chassisSpeedRequest.withSpeeds(speeds));
       }
     };
   }

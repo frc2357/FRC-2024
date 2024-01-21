@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.*;
+import frc.robot.commands.PIDTestCommand;
+import frc.robot.util.Utility;
 
 public class RobotContainer {
   /* Setting up bindings for necessary control of the swerve drive platform */
@@ -41,19 +43,19 @@ public class RobotContainer {
             () ->
                 drive
                     .withVelocityX(
-                        -joystick.getLeftY() * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
+                        -Utility.deadband(joystick.getLeftY(), SWERVE.SWERVE_TRANSLATIONAL_DEADBAND)
+                            * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
                     // Drive forward with negative Y (forward)
                     .withVelocityY(
-                        -joystick.getLeftX()
+                        -Utility.deadband(joystick.getLeftX(), SWERVE.SWERVE_TRANSLATIONAL_DEADBAND)
                             * Constants.SWERVE
                                 .MAX_SPEED_METERS_PER_SECOND) // Drive left with negative X (left)
                     .withRotationalRate(
-                        -joystick.getRightX()
+                        -Utility.deadband(joystick.getRightX(), SWERVE.SWERVE_ROTATIONAL_DEADBAND)
                             * Constants.SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND)
             // Drive counterclockwise with negative X (left)
             ));
 
-    joystick.a().whileTrue(Robot.drive.applyRequestCommand(() -> brake));
     joystick
         .b()
         .whileTrue(
@@ -61,7 +63,7 @@ public class RobotContainer {
                 () ->
                     point.withModuleDirection(
                         new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
-
+    joystick.rightTrigger(0.5).onTrue(new PIDTestCommand());
     // reset the field-centric heading on left bumper press
     joystick.leftBumper().onTrue(Robot.drive.runOnce(() -> Robot.drive.seedFieldRelative()));
     joystick
@@ -69,9 +71,13 @@ public class RobotContainer {
         .onTrue(
             new InstantCommand(
                 () -> {
-                  Robot.drive.tareEverything();
+                  Robot.drive.zeroAll();
+                  Robot.drive.zeroAll();
                 }));
-
+    joystick
+        .a()
+        .onTrue(
+            new InstantCommand(() -> System.out.println("Robot Pose: " + Robot.drive.getPose())));
     // Robot.drive.register Telemetry(logger::telemeterize); //Shuffleboard fanatic
   }
 

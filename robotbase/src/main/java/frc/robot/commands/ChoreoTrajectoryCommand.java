@@ -21,7 +21,7 @@ public class ChoreoTrajectoryCommand extends SequentialCommandGroup {
     this.traj = Choreo.getTrajectory(trajectoryFileName);
     new Choreo();
     addCommands(
-        new InstantCommand(() -> Robot.drive.tareEverything()),
+        new InstantCommand(() -> Robot.drive.zeroAll()),
         new InstantCommand(() -> Robot.drive.setPose(traj.getInitialPose())),
         Choreo.choreoSwerveCommand(
             Choreo.getTrajectory(trajectoryFileName),
