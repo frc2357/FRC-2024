@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.commands.EnableSpeakerLockCommand;
 import frc.robot.controls.util.AxisThresholdTrigger;
 import frc.robot.controls.util.RumbleInterface;
-import frc.robot.state.RobotState.DriveControlState;
 
 public class DriverControls implements RumbleInterface {
   private XboxController m_controller;
@@ -39,11 +39,7 @@ public class DriverControls implements RumbleInterface {
     m_backButton.onTrue(new InstantCommand(() -> Robot.drive.setYaw(0)));
     m_startButton.onTrue(new InstantCommand(() -> Robot.drive.setYaw(180)));
 
-    m_rightTriggerPrime.whileTrue(
-        new InstantCommand(() -> Robot.state.setDriveControlState(DriveControlState.SPEAKER_LOCK)));
-    m_rightTriggerPrime.onFalse(
-        new InstantCommand(
-            () -> Robot.state.setDriveControlState(DriveControlState.FIELD_RELATIVE)));
+    m_rightTriggerPrime.whileTrue(new EnableSpeakerLockCommand());
   }
 
   public double getX() {

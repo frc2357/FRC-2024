@@ -59,7 +59,9 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
             .withVelocityX(velocityX)
             .withVelocityY(velocityY)
             .withRotationalRate(
-                Robot.state.isSpeakerLock() ? getSpeakerLockRotation() : rotationRate);
+                Robot.state.isSpeakerLock() && Robot.shooterLimelight.validTargetExists()
+                    ? getSpeakerLockRotation()
+                    : rotationRate);
     applyRequest(() -> driveRequest);
   }
 
