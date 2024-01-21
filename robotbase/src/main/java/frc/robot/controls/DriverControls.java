@@ -39,8 +39,11 @@ public class DriverControls implements RumbleInterface {
     m_backButton.onTrue(new InstantCommand(() -> Robot.drive.setYaw(0)));
     m_startButton.onTrue(new InstantCommand(() -> Robot.drive.setYaw(180)));
 
-    m_rightTriggerPrime.whileTrue(new InstantCommand(() -> Robot.state.setDriveControlState(DriveControlState.SPEAKER_LOCK)));
-    m_rightTriggerPrime.onFalse(new InstantCommand(() -> Robot.state.setDriveControlState(DriveControlState.FIELD_RELATIVE)));
+    m_rightTriggerPrime.whileTrue(
+        new InstantCommand(() -> Robot.state.setDriveControlState(DriveControlState.SPEAKER_LOCK)));
+    m_rightTriggerPrime.onFalse(
+        new InstantCommand(
+            () -> Robot.state.setDriveControlState(DriveControlState.FIELD_RELATIVE)));
   }
 
   public double getX() {
@@ -52,11 +55,7 @@ public class DriverControls implements RumbleInterface {
   }
 
   public double getRotation() {
-    if (Robot.state.isSpeakerLock()) {
-      return Robot.drive.getSpeakerLockRotation();
-    } else {
-      return -modifyAxis(m_controller.getRightX());
-    }
+    return -modifyAxis(m_controller.getRightX());
   }
 
   public double deadband(double value, double deadband) {
