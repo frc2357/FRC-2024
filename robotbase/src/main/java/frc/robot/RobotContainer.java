@@ -5,12 +5,17 @@
 package frc.robot;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
+
+import java.util.function.Supplier;
+
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.*;
+import frc.robot.commands.ChoreoTrajectoryCommand;
 import frc.robot.commands.PIDTestCommand;
 import frc.robot.util.Utility;
 
@@ -63,9 +68,11 @@ public class RobotContainer {
                 () ->
                     point.withModuleDirection(
                         new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
-    joystick.rightTrigger(0.5).onTrue(new PIDTestCommand());
     // reset the field-centric heading on left bumper press
     joystick.leftBumper().onTrue(Robot.drive.runOnce(() -> Robot.drive.seedFieldRelative()));
+    
+    joystick.leftTrigger(0.9).whileTrue(new ChoreoTrajectoryCommand("ChTestPath"));
+    
     joystick
         .back()
         .onTrue(
@@ -77,7 +84,13 @@ public class RobotContainer {
     joystick
         .a()
         .onTrue(
-            new InstantCommand(() -> System.out.println("Robot Pose: " + Robot.drive.getPose())));
+            new InstantCommand(() -> {
+                var pose = Robot.drive.getPose();
+                System.out.println("Robot Pose");
+                System.out.println("--X: " + pose.getX());
+                System.out.println("--Y: " + pose.getY());
+                System.out.println("--Roto: " + pose.getRotation().getRadians());
+            }));
     // Robot.drive.register Telemetry(logger::telemeterize); //Shuffleboard fanatic
   }
 

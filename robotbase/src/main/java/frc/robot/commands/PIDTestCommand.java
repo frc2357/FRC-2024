@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.CHOREO;
@@ -28,10 +29,11 @@ public class PIDTestCommand extends Command {
   @Override
   public void execute() {
     numOfLoops++;
-    double output = CHOREO.CHOREO_X_CONTROLLER.calculate(supplier.get().getX(), 1);
+    double output = CHOREO.X_CONTROLLER.calculate(supplier.get().getX(), 1);
     consumer.accept(new ChassisSpeeds(output, 0, 0));
     if (numOfLoops % 5 == 0) {
       System.out.println("Robot Pose X: " + Robot.drive.getPose().getX());
+      System.out.println("PID Output: " + output);
     }
   }
 
@@ -43,11 +45,13 @@ public class PIDTestCommand extends Command {
   @Override
   public void end(boolean interupted) {
     Robot.drive.stopMotors();
-    System.out.println(
-        "Robot Pose Reported On Finish | Interrupted = "
-            + interupted
-            + "\n "
-            + Robot.drive.getPose().toString());
+    var pose = Robot.drive.getPose();
+          var poseError = new Pose2d(1, 0,new Rotation2d(0)).minus(pose);
+          System.out.println("Pose & Error ---");
+          System.out.println("--X: " + pose.getX() + "\n| - Err: " + poseError.getX());
+          System.out.println("--Y: " + pose.getY() + "\n| - Err: " + poseError.getY());
+          System.out.println("--Roto: " + pose.getRotation().getRadians()
+            + "\n| - Err: " + poseError.getRotation().getRadians());
   }
 
   @Override
