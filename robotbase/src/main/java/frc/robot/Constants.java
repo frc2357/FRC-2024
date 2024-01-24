@@ -172,13 +172,16 @@ public final class Constants {
     public static final double BACK_RIGHT_X_POSITION_INCHES = -9.375;
     public static final double BACK_RIGHT_Y_POSITION_INCHES = -9.375;
 
-    public static final double SWERVE_TRANSLATIONAL_DEADBAND = 0.1;
-    public static final double SWERVE_ROTATIONAL_DEADBAND = 0.1;
+    public static final double TRANSLATIONAL_DEADBAND = 0.1;
+    public static final double ROTATIONAL_DEADBAND = 0.1;
+
+    public static final double STATIC_FEEDFORWARD = 0.100135;
   }
 
   public static final class CHOREO {
-    public static final PIDController X_CONTROLLER = new PIDController(0.00001, 0, 0);
-    public static final PIDController Y_CONTROLLER = new PIDController(1, 0, 0);
+    public static final PIDController X_CONTROLLER = new PIDController(0.045,0, 0);
+    public static final PIDController Y_CONTROLLER = new PIDController(0.045
+    , 0, 0);
     public static final PIDController ROTATION_CONTROLLER = new PIDController(1, 0, 0);
 
     public static final BooleanSupplier CHOREO_AUTO_MIRROR_PATHS =

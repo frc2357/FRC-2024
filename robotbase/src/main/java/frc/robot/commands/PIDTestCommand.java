@@ -5,6 +5,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.CHOREO;
+import frc.robot.Constants.SWERVE;
 import frc.robot.Robot;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -30,10 +31,12 @@ public class PIDTestCommand extends Command {
   public void execute() {
     numOfLoops++;
     double output = CHOREO.X_CONTROLLER.calculate(supplier.get().getX(), 1);
+    output = Math.copySign(SWERVE.STATIC_FEEDFORWARD, output) + output;
     consumer.accept(new ChassisSpeeds(output, 0, 0));
     if (numOfLoops % 5 == 0) {
       System.out.println("Robot Pose X: " + Robot.drive.getPose().getX());
       System.out.println("PID Output: " + output);
+      System.out.println("PID Out - feedforward: " + (output - SWERVE.STATIC_FEEDFORWARD));
     }
   }
 

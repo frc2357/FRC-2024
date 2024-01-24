@@ -48,15 +48,15 @@ public class RobotContainer {
             () ->
                 drive
                     .withVelocityX(
-                        -Utility.deadband(joystick.getLeftY(), SWERVE.SWERVE_TRANSLATIONAL_DEADBAND)
+                        -Utility.deadband(joystick.getLeftY(), SWERVE.TRANSLATIONAL_DEADBAND)
                             * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
                     // Drive forward with negative Y (forward)
                     .withVelocityY(
-                        -Utility.deadband(joystick.getLeftX(), SWERVE.SWERVE_TRANSLATIONAL_DEADBAND)
+                        -Utility.deadband(joystick.getLeftX(), SWERVE.TRANSLATIONAL_DEADBAND)
                             * Constants.SWERVE
                                 .MAX_SPEED_METERS_PER_SECOND) // Drive left with negative X (left)
                     .withRotationalRate(
-                        -Utility.deadband(joystick.getRightX(), SWERVE.SWERVE_ROTATIONAL_DEADBAND)
+                        -Utility.deadband(joystick.getRightX(), SWERVE.ROTATIONAL_DEADBAND)
                             * Constants.SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND)
             // Drive counterclockwise with negative X (left)
             ));
@@ -71,7 +71,7 @@ public class RobotContainer {
     // reset the field-centric heading on left bumper press
     joystick.leftBumper().onTrue(Robot.drive.runOnce(() -> Robot.drive.seedFieldRelative()));
     
-    joystick.leftTrigger(0.9).whileTrue(new ChoreoTrajectoryCommand("ChTestPath"));
+    joystick.leftTrigger(0.9).whileTrue(new PIDTestCommand());
     
     joystick
         .back()

@@ -18,7 +18,9 @@ public class AutoCommandChooser {
           new ChoreoTrajectoryCommand("ChTestPath"),
           new ChoreoTrajectoryCommand("ChClose3ToSpeaker"),
           new ChoreoTrajectoryCommand("ChRotationTest"),
-          new ChoreoTrajectoryCommand("Ch3MeterTest"),
+          new ChoreoTrajectoryCommand("Ch3MeterXTest"),
+          new ChoreoTrajectoryCommand("Ch1MeterYTest"),
+          new ChoreoTrajectoryCommand("Ch3MeterYTest")
         };
 
     m_chooser = new SendableChooser<>();

@@ -27,9 +27,9 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
   private final SwerveRequest.FieldCentric driveRequest =
       new SwerveRequest.FieldCentric()
-          .withDeadband(SWERVE.MAX_SPEED_METERS_PER_SECOND * SWERVE.SWERVE_TRANSLATIONAL_DEADBAND)
+          .withDeadband(SWERVE.MAX_SPEED_METERS_PER_SECOND * SWERVE.TRANSLATIONAL_DEADBAND)
           .withRotationalDeadband(
-              SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND * SWERVE.SWERVE_ROTATIONAL_DEADBAND)
+              SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND * SWERVE.ROTATIONAL_DEADBAND)
           .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
   public CommandSwerveDrivetrain(
@@ -114,10 +114,14 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   }
 
   public Consumer<ChassisSpeeds> getChassisSpeedsConsumer() {
+    final ChassisSpeeds feedforwardSpeed = 
+      new ChassisSpeeds(SWERVE.STATIC_FEEDFORWARD, 
+      SWERVE.STATIC_FEEDFORWARD, 
+      SWERVE.STATIC_FEEDFORWARD);
     return new Consumer<ChassisSpeeds>() {
       @Override
       public void accept(ChassisSpeeds speeds) {
-        applyRequest(() -> chassisSpeedRequest.withSpeeds(speeds));
+        applyRequest(() -> chassisSpeedRequest.withSpeeds(speeds.plus(feedforwardSpeed)));
       }
     };
   }
