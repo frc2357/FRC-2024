@@ -114,14 +114,14 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   }
 
   public Consumer<ChassisSpeeds> getChassisSpeedsConsumer() {
-    final ChassisSpeeds feedforwardSpeed = 
-      new ChassisSpeeds(SWERVE.STATIC_FEEDFORWARD, 
-      SWERVE.STATIC_FEEDFORWARD, 
-      SWERVE.STATIC_FEEDFORWARD);
     return new Consumer<ChassisSpeeds>() {
       @Override
       public void accept(ChassisSpeeds speeds) {
-        applyRequest(() -> chassisSpeedRequest.withSpeeds(speeds.plus(feedforwardSpeed)));
+        
+        applyRequest(
+            () ->
+                chassisSpeedRequest.withSpeeds(
+                    speeds.plus(SWERVE.STATIC_FEEDFORWARD_CHASSIS_SPEEDS)));
       }
     };
   }

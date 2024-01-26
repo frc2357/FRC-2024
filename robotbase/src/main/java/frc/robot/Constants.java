@@ -12,6 +12,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants.SteerFeedbackTy
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 import com.revrobotics.CANSparkBase.IdleMode;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
 import java.util.function.BooleanSupplier;
 
@@ -57,7 +58,7 @@ public final class Constants {
     // The steer motor uses any SwerveModule.SteerRequestType control request with the
     // output type specified by SwerveModuleConstants.SteerMotorClosedLoopOutput
     public static final Slot0Configs STEER_GAINS =
-        new Slot0Configs().withKP(100).withKI(0).withKD(0.05).withKS(0).withKV(1.5).withKA(0);
+        new Slot0Configs().withKP(1).withKI(0).withKD(0.05).withKS(0).withKV(1.5).withKA(0);
     // When using closed-loop control, the drive motor uses the control
     // output type specified by SwerveModuleConstants.DriveMotorClosedLoopOutput
     public static final Slot0Configs DRIVE_GAINS =
@@ -175,14 +176,17 @@ public final class Constants {
     public static final double TRANSLATIONAL_DEADBAND = 0.1;
     public static final double ROTATIONAL_DEADBAND = 0.1;
 
-    public static final double STATIC_FEEDFORWARD = 0.100135;
+    public static final double X_STATIC_FEEDFORWARD    = 0.05;
+    public static final double Y_STATIC_FEEDFORWARD    = 0.05;
+    public static final double ROTO_STATIC_FEEDFORWARD = 0.01;
+    public static final ChassisSpeeds STATIC_FEEDFORWARD_CHASSIS_SPEEDS =
+      new ChassisSpeeds(X_STATIC_FEEDFORWARD, Y_STATIC_FEEDFORWARD, ROTO_STATIC_FEEDFORWARD);
   }
 
   public static final class CHOREO {
-    public static final PIDController X_CONTROLLER = new PIDController(0.045,0, 0);
-    public static final PIDController Y_CONTROLLER = new PIDController(0.045
-    , 0, 0);
-    public static final PIDController ROTATION_CONTROLLER = new PIDController(1, 0, 0);
+    public static final PIDController X_CONTROLLER = new PIDController(0.15, 0, 0);
+    public static final PIDController Y_CONTROLLER = new PIDController(0.15, 0, 0);
+    public static final PIDController ROTATION_CONTROLLER = new PIDController(0.6, 0, 0);
 
     public static final BooleanSupplier CHOREO_AUTO_MIRROR_PATHS =
         new BooleanSupplier() {
