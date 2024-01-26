@@ -5,31 +5,29 @@ import frc.robot.Robot;
 import frc.robot.controls.util.AxisInterface;
 
 public class IntakeRollerAxisCommand extends Command {
-    private AxisInterface m_axis;
+  private AxisInterface m_axis;
 
-    public IntakeRollerAxisCommand(AxisInterface axis) {
-        m_axis = axis;
-        addRequirements(Robot.intake);
-    }
+  public IntakeRollerAxisCommand(AxisInterface axis) {
+    m_axis = axis;
+    addRequirements(Robot.intake);
+  }
 
-    @Override
-    public void initialize() {
+  @Override
+  public void initialize() {}
 
-    }
+  @Override
+  public void execute() {
+    double axisValue = m_axis.getValue();
+    Robot.intake.setAxisSpeed(axisValue, axisValue);
+  }
 
-    @Override
-    public void execute() {
-        double axisValue = m_axis.getValue();
-        Robot.intake.setAxisSpeed(axisValue,axisValue);
-    }
+  @Override
+  public boolean isFinished() {
+    return false;
+  }
 
-    @Override
-    public boolean isFinished() {
-        return false;
-    }
-
-    @Override
-    public void end(boolean interrupted) {
-        Robot.intake.stop();
-    }
+  @Override
+  public void end(boolean interrupted) {
+    Robot.intake.stop();
+  }
 }
