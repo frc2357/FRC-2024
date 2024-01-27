@@ -10,18 +10,30 @@ import frc.robot.Robot;
 public class ChoreoTrajectoryCommand extends SequentialCommandGroup {
 
   private String trajectoryFileName;
+  private String pathName;
   private ChoreoTrajectory traj;
   private Pose2d finalTargetPose;
 
   /**
-   * A utility command to run a Choreo path correctlly.
+   * A utility command to run a Choreo path correctly.
    *
-   * @param trajectoryFileName The name of the path file with '.traj' excluded
+   * @param trajectoryFileName The name of the path file with '.traj' excluded.
    */
   public ChoreoTrajectoryCommand(String trajectoryFileName) {
+    this(trajectoryFileName, trajectoryFileName);
+  }
+
+  /**
+   * A utility command to run a Choreo path correctly.
+   *
+   * @param trajectoryFileName The name of the path file with '.traj' excluded.
+   * @param pathName The name of the path, is returned in the toString for the auto command chooser.
+   */
+  public ChoreoTrajectoryCommand(String trajectoryFileName, String pathName) {
     this.trajectoryFileName = trajectoryFileName;
     this.traj = Choreo.getTrajectory(trajectoryFileName);
     this.finalTargetPose = traj.getFinalPose();
+    this.pathName = pathName;
     new Choreo();
     addCommands(
         new InstantCommand(() -> Robot.drive.zeroAll()),
@@ -51,6 +63,6 @@ public class ChoreoTrajectoryCommand extends SequentialCommandGroup {
 
   @Override
   public String toString() {
-    return trajectoryFileName;
+    return pathName;
   }
 }

@@ -8,6 +8,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -92,6 +93,10 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     };
   }
 
+  public SwerveDriveKinematics getKinematics() {
+    return super.m_kinematics;
+  }
+
   public void zeroAll() {
     zeroGyro();
     setPose(new Pose2d(0, 0, new Rotation2d(0)));
@@ -117,11 +122,11 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     return new Consumer<ChassisSpeeds>() {
       @Override
       public void accept(ChassisSpeeds speeds) {
-        
-        applyRequest(
-            () ->
-                chassisSpeedRequest.withSpeeds(
-                    speeds.plus(SWERVE.STATIC_FEEDFORWARD_CHASSIS_SPEEDS)));
+        SwerveModuleState[] moduleStates = getKinematics().toSwerveModuleStates(speeds);
+        for (SwerveModuleState state : moduleStates) {
+          state.speedMetersPerSecond += SWERVE.STATIC_FEEDFORWARD_METERS_PER_SECOND;
+        }
+        setControl(chassisSpeedRequest.withSpeeds(getKinematics().toChassisSpeeds(moduleStates)));
       }
     };
   }
