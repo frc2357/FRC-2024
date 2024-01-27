@@ -46,8 +46,16 @@ public final class Constants {
     public static final int BACK_RIGHT_STEER_MOTOR_ID = 18;
     public static final int BACK_RIGHT_ENCODER_ID = 22;
 
-    public static final int TOP_SHOOTER_MOTOR_ID = -1;
-    public static final int BOTTOM_SHOOTER_MOTOR_ID = -1;
+    public static final int TOP_SHOOTER_MOTOR_ID = 25;
+    public static final int BOTTOM_SHOOTER_MOTOR_ID = 26;
+
+    public static final int SHOOTER_PIVOT_MOTOR_ID = 29;
+
+    public static final int TOP_INTAKE_MOTOR_ID = 23;
+    public static final int BOTTOM_INTAKE_MOTOR_ID = 24;
+
+    public static final int RIGHT_CLIMBER_MOTOR_ID = 27;
+    public static final int LEFT_CLIMBER_MOTOR_ID = 28;
   }
 
   public static final class PHEONIX_TUNER {
@@ -176,13 +184,14 @@ public final class Constants {
     public static final double ROTATIONAL_DEADBAND = 0.1;
 
     public static final double STATIC_FEEDFORWARD_METERS_PER_SECOND = 0.094545;
+    public static final double TRANSLATION_RAMP_EXPONENT = 2;
   }
 
   public static final class CHOREO {
     public static final PIDController X_CONTROLLER = new PIDController(0.15, 0, 0);
     public static final PIDController Y_CONTROLLER = new PIDController(0.15, 0, 0);
     public static final PIDController ROTATION_CONTROLLER = new PIDController(0.6, 0, 0);
-
+    
     public static final BooleanSupplier CHOREO_AUTO_MIRROR_PATHS =
         new BooleanSupplier() {
           @Override
@@ -192,7 +201,20 @@ public final class Constants {
         };
   }
 
+  public static final class CONTROLLER {
+    public static final int DRIVE_CONTROLLER_PORT = 0;
+    public static final double DRIVE_CONTROLLER_DEADBAND = 0.1;
+    public static final int CODRIVER_CONTROLLER_PORT = 1;
+    public static final double CODRIVE_CONTROLLER_DEADBAND = 0.1;
+    public static final double SWERVE_TRANSLATIONAL_DEADBAND = 0.05;
+    public static final double SWERVE_ROTATIONAL_DEADBAND = 0.05;
+  }
+
+   
+
   public static final class SHOOTER {
+    public static final double SHOOTER_AXIS_STEP_INTERVAL = 0.1;
+
     public static final IdleMode IDLE_MODE = IdleMode.kCoast;
 
     public static final boolean TOP_MOTOR_INVERTED = false;
@@ -213,6 +235,19 @@ public final class Constants {
     public static final double BOTTOM_MOTOR_I = 0.0;
     public static final double BOTTOM_MOTOR_D = 0.0;
     public static final double BOTTOM_MOTOR_FF = 0.0;
+  }
+
+  public static final class INTAKE {
+    public static final IdleMode IDLE_MODE = IdleMode.kCoast;
+
+    public static final boolean TOP_MOTOR_INVERTED = false;
+    public static final boolean BOTTOM_MOTOR_INVERTED = false;
+
+    public static final int TOP_MOTOR_STALL_LIMIT_AMPS = 40;
+    public static final int TOP_MOTOR_FREE_LIMIT_AMPS = 40;
+
+    public static final int BOTTOM_MOTOR_STALL_LIMIT_AMPS = 40;
+    public static final int BOTTOM_MOTOR_FREE_LIMIT_AMPS = 40;
   }
 
   public static final class SHOOTER_LIMELIGHT {
@@ -236,5 +271,34 @@ public final class Constants {
     public static final double TARGET_HEIGHT = 0.0;
 
     public static final double TARGET_HEIGHT_FROM_FLOOR = 0.0;
+  }
+
+  public static final class SHOOTER_PIVOT {
+    public static final boolean MOTOR_INVERTED = false;
+
+    public static final IdleMode IDLE_MODE = IdleMode.kBrake;
+
+    public static final int MOTOR_STALL_LIMIT_AMPS = 40;
+    public static final int MOTOR_FREE_LIMIT_AMPS = 40;
+
+    public static final double PIVOT_P = 0.0;
+    public static final double PIVOT_I = 0.0;
+    public static final double PIVOT_D = 0.0;
+    public static final double PIVOT_FF = 0.0;
+
+    public static final int SMART_MOTION_MAX_VEL_RPM = 0;
+    public static final int SMART_MOTION_MIN_VEL_RPM = 0;
+    public static final int SMART_MOTION_MAX_ACC_RPM = 0;
+    public static final int SMART_MOTION_ALLOWED_ERROR = 0;
+
+    public static final double AXIS_MAX_SPEED = 0.25;
+  }
+
+  public static final class CLIMBER {
+    public static final boolean RIGHT_MOTOR_INVERTED = false;
+    public static final boolean LEFT_MOTOR_INVERTED = false;
+
+    public static final int MOTOR_FREE_LIMIT_AMPS = 40;
+    public static final int MOTOR_STALL_LIMIT_AMPS = 40;
   }
 }

@@ -6,12 +6,18 @@ package frc.robot;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.controls.CodriverControls;
+import frc.robot.controls.DriverControls;
 import frc.robot.state.RobotState;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.ShooterPivotSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 /**
@@ -26,8 +32,16 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
 
   public static RobotState state;
+
   public static CommandSwerveDrivetrain drive;
   public static ShooterSubsystem shooter;
+  public static ShooterPivotSubsystem pivot;
+  public static IntakeSubsystem intake;
+  public static ClimberSubsystem climber;
+
+  public static DriverControls driverControls;
+  public static CodriverControls codriverControls;
+
   public static LimelightSubsystem shooterLimelight;
 
   /**
@@ -40,6 +54,7 @@ public class Robot extends TimedRobot {
     // and put our
     // autonomous chooser on the dashboard.
     state = new RobotState();
+
     drive =
         new CommandSwerveDrivetrain(
             Constants.PHEONIX_TUNER.DRIVETRAIN_CONSTANTS,
@@ -50,8 +65,22 @@ public class Robot extends TimedRobot {
               Constants.PHEONIX_TUNER.BACK_RIGHT_MODULE_CONSTANTS
             });
 
-    // shooter = new ShooterSubsystem();
-    // shooterLimelight = new LimelightSubsystem(Constants.SHOOTER_LIMELIGHT.NAME);
+    shooter = new ShooterSubsystem();
+    pivot = new ShooterPivotSubsystem();
+    intake = new IntakeSubsystem();
+    climber = new ClimberSubsystem();
+
+    shooterLimelight = new LimelightSubsystem(Constants.SHOOTER_LIMELIGHT.NAME);
+
+    driverControls =
+        new DriverControls(
+            new XboxController(Constants.CONTROLLER.DRIVE_CONTROLLER_PORT),
+            Constants.CONTROLLER.DRIVE_CONTROLLER_DEADBAND);
+    codriverControls =
+        new CodriverControls(
+            new XboxController(Constants.CONTROLLER.CODRIVER_CONTROLLER_PORT),
+            Constants.CONTROLLER.CODRIVE_CONTROLLER_DEADBAND);
+
     m_robotContainer = new RobotContainer();
   }
 
