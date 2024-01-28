@@ -189,9 +189,11 @@ public final class Constants {
     public static final double GAMEPIECE_TRACKING_TRANSLATION_SPEED = 0;
     public static final double GAMEPIECE_TRACKING_LOST_TARGET_ALLOWED_LOOPS = 3;
     public static final double GAMEPIECE_TRACKING_TRANSLATION_TOLERANCE = 0.1;
-    public static final double GAMEPIECE_TRACKING_TRANSLATION_OFFSET = 2;
+    public static final double GAMEPIECE_TRACKING_TRANSLATION_OFFSET = 0;
     public static final double GAMEPIECE_TRACKING_ROTATION_TOLERANCE = 0.1;
-    public static final double GAMEPIECE_TRACKING_ROTATION_OFFSET = 2;
+    public static final double GAMEPIECE_TRACKING_ROTATION_OFFSET = 0;
+    public static final PIDController GAMEPIECE_TRACKING_TRANSLATION_PID = new PIDController(1, 0, 0);
+    public static final PIDController GAMEPIECE_TRACKING_ROTATION_PID = new PIDController(0.1, 0, 0);
   }
 
   public static final class CHOREO {

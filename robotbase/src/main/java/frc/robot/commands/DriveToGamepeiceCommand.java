@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.Constants.SWERVE;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.util.Utility;
@@ -27,9 +28,9 @@ public class DriveToGamepeiceCommand extends Command{
     public void execute() {
         double rotationError = limelightSub.getTX();
         double translationError = limelightSub.getTY();
-        double translationSpeed = !Utility.isWithinTolerance(translationError, Constants.SWERVE.GAMEPIECE_TRACKING_TRANSLATION_OFFSET,
-                Constants.SWERVE.GAMEPIECE_TRACKING_TRANSLATION_TOLERANCE)? Constants.SWERVE.GAMEPIECE_TRACKING_TRANSLATION_SPEED : 0;
-        Robot.drive.drive(rotationError, translationSpeed, 0);
+        double rotationSpeed = SWERVE.GAMEPIECE_TRACKING_ROTATION_PID.calculate(rotationError, 0);
+        double translationSpeed = SWERVE.GAMEPIECE_TRACKING_TRANSLATION_PID.calculate(translationError, 0);
+        Robot.drive.drive(0, translationSpeed, rotationSpeed);
     }
 
     @Override
