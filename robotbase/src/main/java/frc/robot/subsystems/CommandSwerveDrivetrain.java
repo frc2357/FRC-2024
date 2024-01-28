@@ -11,11 +11,14 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.util.Utility;
 
@@ -25,15 +28,11 @@ import frc.robot.util.Utility;
  * in command-based projects easily.
  */
 public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsystem {
-  private PIDController m_speakerLockPIDController = new PIDController(0.035, 0.0, 0.0000);
-
   public CommandSwerveDrivetrain(
       SwerveDrivetrainConstants driveTrainConstants,
       double OdometryUpdateFrequency,
       SwerveModuleConstants... modules) {
     super(driveTrainConstants, OdometryUpdateFrequency, modules);
-    zeroAll();
-    m_speakerLockPIDController.setTolerance(1);
   }
 
   public CommandSwerveDrivetrain(
@@ -55,12 +54,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
   public void drive(double velocityX, double velocityY, double rotationRate) {
     SwerveRequest driveRequest = new SwerveRequest.FieldCentric()
-        // .withDeadband(
-        // SWERVE.MAX_SPEED_METERS_PER_SECOND
-        // * Constants.CONTROLLER.SWERVE_TRANSLATIONAL_DEADBAND)
-        // .withRotationalDeadband(
-        // SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND
-        // * Constants.CONTROLLER.SWERVE_ROTATIONAL_DEADBAND)
         .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
         .withVelocityX(velocityX)
         .withVelocityY(velocityY)
@@ -103,12 +96,21 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     };
   }
 
+  private SwerveDriveKinematics getKinematics() {
+    return super.m_kinematics;
+  }
+
   public void zeroAll() {
-    super.tareEverything();
+    zeroGyro();
+    resetPose();
   }
 
   public void zeroGyro() {
     super.getPigeon2().reset();
+  }
+
+  public void resetPose() {
+    setPose(new Pose2d(0, 0, new Rotation2d()));
   }
 
   public void stopMotorsIntoX() {
@@ -134,12 +136,24 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
   public double getSpeakerLockRotation() {
     double tx = Robot.shooterLimelight.getTX();
-    if (Utility.isWithinTolerance(tx, 0, 1)) {
+    if (Utility.isWithinTolerance(tx, 0, Constants.SWERVE.SPEAKER_LOCK_TOLERANCE)) {
       return 0;
     }
 
-    double rotation = -m_speakerLockPIDController.calculate(0, tx);
-    double output = rotation + Math.copySign(0.28, rotation);
+    // Increase kP based on horizontal velocity to reduce lag
+    double vy = getChassisSpeeds().vyMetersPerSecond; // Horizontal velocity
+    double kp = Constants.SWERVE.SPEAKER_LOCK_KP;
+    kp *= Math.max(1, vy);
+    Constants.SWERVE.SPEAKER_LOCK_PID_CONTROLLER.setP(kp);
+
+    double rotation = -Constants.SWERVE.SPEAKER_LOCK_PID_CONTROLLER.calculate(0, tx);
+    double feedforward = Constants.SWERVE.SPEAKER_LOCK_FEED_FORWARD;
+    double output = rotation + Math.copySign(feedforward, rotation);
     return output;
+  }
+
+  public ChassisSpeeds getChassisSpeeds() {
+    ChassisSpeeds chassisSpeeds = getKinematics().toChassisSpeeds(getModuleStates());
+    return chassisSpeeds;
   }
 }

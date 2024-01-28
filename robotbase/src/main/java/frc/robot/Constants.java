@@ -179,6 +179,16 @@ public final class Constants {
     public static final double BACK_RIGHT_Y_POSITION_INCHES = -9.375;
 
     public static final double TRANSLATION_RAMP_EXPONENT = 2;
+
+    // Speaker Lock
+    public static final double SPEAKER_LOCK_KP = 0.045;
+    public static final double SPEAKER_LOCK_KI = 0.0;
+    public static final double SPEAKER_LOCK_KD = 0.0;
+    public static final PIDController SPEAKER_LOCK_PID_CONTROLLER = new PIDController(SPEAKER_LOCK_KP, SPEAKER_LOCK_KI,
+        SPEAKER_LOCK_KD);
+
+    public static final double SPEAKER_LOCK_FEED_FORWARD = 0.28;
+    public static final double SPEAKER_LOCK_TOLERANCE = 0.75;
   }
 
   public static final class CONTROLLER {
@@ -191,9 +201,9 @@ public final class Constants {
   }
 
   public static final class CHOREO {
-    public static final PIDController CHOREO_X_CONTROLLER = new PIDController(0.5, 0, 0);
-    public static final PIDController CHOREO_Y_CONTROLLER = new PIDController(0.5, 0, 0);
-    public static final PIDController CHOREO_ROTATION_CONTROLLER = new PIDController(0.5, 0, 0);
+    public static final PIDController CHOREO_X_CONTROLLER = new PIDController(0.15, 0, 0);
+    public static final PIDController CHOREO_Y_CONTROLLER = new PIDController(0.15, 0, 0);
+    public static final PIDController CHOREO_ROTATION_CONTROLLER = new PIDController(0.6, 0, 0);
 
     public static final BooleanSupplier CHOREO_AUTO_MIRROR_PATHS = new BooleanSupplier() {
       @Override
