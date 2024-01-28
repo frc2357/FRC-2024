@@ -16,11 +16,15 @@ import edu.wpi.first.math.util.Units;
 import java.util.function.BooleanSupplier;
 
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants. This class should not be used for any other purpose. All constants should be declared
+ * The Constants class provides a convenient place for teams to hold robot-wide
+ * numerical or boolean
+ * constants. This class should not be used for any other purpose. All constants
+ * should be declared
  * globally (i.e. public static). Do not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
+ * <p>
+ * It is advised to statically import this class (or one of its inner classes)
+ * wherever the
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
@@ -62,23 +66,22 @@ public final class Constants {
 
     // Both sets of gains need to be tuned to your individual robot.
 
-    // The steer motor uses any SwerveModule.SteerRequestType control request with the
+    // The steer motor uses any SwerveModule.SteerRequestType control request with
+    // the
     // output type specified by SwerveModuleConstants.SteerMotorClosedLoopOutput
-    public static final Slot0Configs STEER_GAINS =
-        new Slot0Configs().withKP(100).withKI(0).withKD(0.05).withKS(0).withKV(1.5).withKA(0);
+    public static final Slot0Configs STEER_GAINS = new Slot0Configs().withKP(100).withKI(0).withKD(0.05).withKS(0)
+        .withKV(1.5).withKA(0);
     // When using closed-loop control, the drive motor uses the control
     // output type specified by SwerveModuleConstants.DriveMotorClosedLoopOutput
-    public static final Slot0Configs DRIVE_GAINS =
-        new Slot0Configs().withKP(3).withKI(0).withKD(0).withKS(0).withKV(0).withKA(0);
+    public static final Slot0Configs DRIVE_GAINS = new Slot0Configs().withKP(3).withKI(0).withKD(0).withKS(0).withKV(0)
+        .withKA(0);
 
     // The closed-loop output type to use for the steer motors;
     // This affects the PID/FF gains for the steer motors
-    public static final ClosedLoopOutputType STEER_CLOSED_LOOP_OUTPUT =
-        ClosedLoopOutputType.Voltage;
+    public static final ClosedLoopOutputType STEER_CLOSED_LOOP_OUTPUT = ClosedLoopOutputType.Voltage;
     // The closed-loop output type to use for the drive motors;
     // This affects the PID/FF gains for the drive motors
-    public static final ClosedLoopOutputType DRIVE_CLOSED_LOOP_OUTPUT =
-        ClosedLoopOutputType.Voltage;
+    public static final ClosedLoopOutputType DRIVE_CLOSED_LOOP_OUTPUT = ClosedLoopOutputType.Voltage;
 
     // The stator current at which the wheels start to slip;
     // This needs to be tuned to your individual robot
@@ -92,60 +95,55 @@ public final class Constants {
     // This may need to be tuned to your individual robot
     public static final double COUPLE_RATIO = 3.5714285714285716;
 
-    private static final SwerveModuleConstantsFactory ConstantCreator =
-        new SwerveModuleConstantsFactory()
-            .withDriveMotorGearRatio(SWERVE.DRIVE_GEAR_RATIO)
-            .withSteerMotorGearRatio(SWERVE.STEER_GEAR_RATIO)
-            .withWheelRadius(SWERVE.WHEEL_RADIUS_INCHES)
-            .withSlipCurrent(SLIP_CURRENT_AMPS)
-            .withSteerMotorGains(STEER_GAINS)
-            .withDriveMotorGains(DRIVE_GAINS)
-            .withSteerMotorClosedLoopOutput(STEER_CLOSED_LOOP_OUTPUT)
-            .withDriveMotorClosedLoopOutput(DRIVE_CLOSED_LOOP_OUTPUT)
-            .withSpeedAt12VoltsMps(SPEED_AT_12_VOLTS)
-            .withFeedbackSource(SteerFeedbackType.FusedCANcoder)
-            .withCouplingGearRatio(COUPLE_RATIO)
-            .withSteerMotorInverted(SWERVE.STEER_MOTOR_INVERSED);
+    private static final SwerveModuleConstantsFactory ConstantCreator = new SwerveModuleConstantsFactory()
+        .withDriveMotorGearRatio(SWERVE.DRIVE_GEAR_RATIO)
+        .withSteerMotorGearRatio(SWERVE.STEER_GEAR_RATIO)
+        .withWheelRadius(SWERVE.WHEEL_RADIUS_INCHES)
+        .withSlipCurrent(SLIP_CURRENT_AMPS)
+        .withSteerMotorGains(STEER_GAINS)
+        .withDriveMotorGains(DRIVE_GAINS)
+        .withSteerMotorClosedLoopOutput(STEER_CLOSED_LOOP_OUTPUT)
+        .withDriveMotorClosedLoopOutput(DRIVE_CLOSED_LOOP_OUTPUT)
+        .withSpeedAt12VoltsMps(SPEED_AT_12_VOLTS)
+        .withFeedbackSource(SteerFeedbackType.FusedCANcoder)
+        .withCouplingGearRatio(COUPLE_RATIO)
+        .withSteerMotorInverted(SWERVE.STEER_MOTOR_INVERSED);
 
-    public static final SwerveModuleConstants FRONT_LEFT_MODULE_CONSTANTS =
-        ConstantCreator.createModuleConstants(
-            CAN_ID.FRONT_LEFT_STEER_MOTOR_ID,
-            CAN_ID.FRONT_LEFT_DRIVE_MOTOR_ID,
-            CAN_ID.FRONT_LEFT_ENCODER_ID,
-            SWERVE.FRONT_LEFT_ENCODER_OFFSET,
-            Units.inchesToMeters(SWERVE.FRONT_LEFT_X_POSITION_INCHES),
-            Units.inchesToMeters(SWERVE.FRONT_LEFT_Y_POSITION_INCHES),
-            SWERVE.INVERT_LEFT_SIDE);
-    public static final SwerveModuleConstants FRONT_RIGHT_MODULE_CONSTANTS =
-        ConstantCreator.createModuleConstants(
-            CAN_ID.FRONT_RIGHT_STEER_MOTOR_ID,
-            CAN_ID.FRONT_RIGHT_DRIVE_MOTOR_ID,
-            CAN_ID.FRONT_RIGHT_ENCODER_ID,
-            SWERVE.FRONT_RIGHT_ENCODER_OFFSET,
-            Units.inchesToMeters(SWERVE.FRONT_RIGHT_X_POSITION_INCHES),
-            Units.inchesToMeters(SWERVE.FRONT_RIGHT_Y_POSITION_INCHES),
-            SWERVE.INVERT_RIGHT_SIDE);
-    public static final SwerveModuleConstants BACK_LEFT_MODULE_CONSTANTS =
-        ConstantCreator.createModuleConstants(
-            CAN_ID.BACK_LEFT_STEER_MOTOR_ID,
-            CAN_ID.BACK_LEFT_DRIVE_MOTOR_ID,
-            CAN_ID.BACK_LEFT_ENCODER_ID,
-            SWERVE.BACK_LEFT_ENCODER_OFFSET,
-            Units.inchesToMeters(SWERVE.BACK_LEFT_X_POSITION_INCHES),
-            Units.inchesToMeters(SWERVE.BACK_LEFT_Y_POSITION_INCHES),
-            SWERVE.INVERT_LEFT_SIDE);
-    public static final SwerveModuleConstants BACK_RIGHT_MODULE_CONSTANTS =
-        ConstantCreator.createModuleConstants(
-            CAN_ID.BACK_RIGHT_STEER_MOTOR_ID,
-            CAN_ID.BACK_RIGHT_DRIVE_MOTOR_ID,
-            CAN_ID.BACK_RIGHT_ENCODER_ID,
-            SWERVE.BACK_RIGHT_ENCODER_OFFSET,
-            Units.inchesToMeters(SWERVE.BACK_RIGHT_X_POSITION_INCHES),
-            Units.inchesToMeters(SWERVE.BACK_RIGHT_Y_POSITION_INCHES),
-            SWERVE.INVERT_RIGHT_SIDE);
+    public static final SwerveModuleConstants FRONT_LEFT_MODULE_CONSTANTS = ConstantCreator.createModuleConstants(
+        CAN_ID.FRONT_LEFT_STEER_MOTOR_ID,
+        CAN_ID.FRONT_LEFT_DRIVE_MOTOR_ID,
+        CAN_ID.FRONT_LEFT_ENCODER_ID,
+        SWERVE.FRONT_LEFT_ENCODER_OFFSET,
+        Units.inchesToMeters(SWERVE.FRONT_LEFT_X_POSITION_INCHES),
+        Units.inchesToMeters(SWERVE.FRONT_LEFT_Y_POSITION_INCHES),
+        SWERVE.INVERT_LEFT_SIDE);
+    public static final SwerveModuleConstants FRONT_RIGHT_MODULE_CONSTANTS = ConstantCreator.createModuleConstants(
+        CAN_ID.FRONT_RIGHT_STEER_MOTOR_ID,
+        CAN_ID.FRONT_RIGHT_DRIVE_MOTOR_ID,
+        CAN_ID.FRONT_RIGHT_ENCODER_ID,
+        SWERVE.FRONT_RIGHT_ENCODER_OFFSET,
+        Units.inchesToMeters(SWERVE.FRONT_RIGHT_X_POSITION_INCHES),
+        Units.inchesToMeters(SWERVE.FRONT_RIGHT_Y_POSITION_INCHES),
+        SWERVE.INVERT_RIGHT_SIDE);
+    public static final SwerveModuleConstants BACK_LEFT_MODULE_CONSTANTS = ConstantCreator.createModuleConstants(
+        CAN_ID.BACK_LEFT_STEER_MOTOR_ID,
+        CAN_ID.BACK_LEFT_DRIVE_MOTOR_ID,
+        CAN_ID.BACK_LEFT_ENCODER_ID,
+        SWERVE.BACK_LEFT_ENCODER_OFFSET,
+        Units.inchesToMeters(SWERVE.BACK_LEFT_X_POSITION_INCHES),
+        Units.inchesToMeters(SWERVE.BACK_LEFT_Y_POSITION_INCHES),
+        SWERVE.INVERT_LEFT_SIDE);
+    public static final SwerveModuleConstants BACK_RIGHT_MODULE_CONSTANTS = ConstantCreator.createModuleConstants(
+        CAN_ID.BACK_RIGHT_STEER_MOTOR_ID,
+        CAN_ID.BACK_RIGHT_DRIVE_MOTOR_ID,
+        CAN_ID.BACK_RIGHT_ENCODER_ID,
+        SWERVE.BACK_RIGHT_ENCODER_OFFSET,
+        Units.inchesToMeters(SWERVE.BACK_RIGHT_X_POSITION_INCHES),
+        Units.inchesToMeters(SWERVE.BACK_RIGHT_Y_POSITION_INCHES),
+        SWERVE.INVERT_RIGHT_SIDE);
 
-    public static final SwerveDrivetrainConstants DRIVETRAIN_CONSTANTS =
-        new SwerveDrivetrainConstants().withCANbusName("").withPigeon2Id(CAN_ID.PIGEON_ID);
+    public static final SwerveDrivetrainConstants DRIVETRAIN_CONSTANTS = new SwerveDrivetrainConstants()
+        .withCANbusName("").withPigeon2Id(CAN_ID.PIGEON_ID);
   }
 
   public static final class SWERVE {
@@ -181,8 +179,6 @@ public final class Constants {
     public static final double BACK_RIGHT_Y_POSITION_INCHES = -9.375;
 
     public static final double TRANSLATION_RAMP_EXPONENT = 2;
-
-    public static final PIDController SPEAKER_LOCK_PID_CONTROLLER = new PIDController(0, 0, 0);
   }
 
   public static final class CONTROLLER {
@@ -199,13 +195,12 @@ public final class Constants {
     public static final PIDController CHOREO_Y_CONTROLLER = new PIDController(0.5, 0, 0);
     public static final PIDController CHOREO_ROTATION_CONTROLLER = new PIDController(0.5, 0, 0);
 
-    public static final BooleanSupplier CHOREO_AUTO_MIRROR_PATHS =
-        new BooleanSupplier() {
-          @Override
-          public boolean getAsBoolean() {
-            return false;
-          }
-        };
+    public static final BooleanSupplier CHOREO_AUTO_MIRROR_PATHS = new BooleanSupplier() {
+      @Override
+      public boolean getAsBoolean() {
+        return false;
+      }
+    };
   }
 
   public static final class SHOOTER {
@@ -247,7 +242,7 @@ public final class Constants {
   }
 
   public static final class SHOOTER_LIMELIGHT {
-    public static final String NAME = "";
+    public static final String NAME = "limelight-shooter";
 
     public static final int HUMAN_PIPELINE_INDEX = 0;
 

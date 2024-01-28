@@ -1,32 +1,39 @@
 package frc.robot.subsystems;
 
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.Constants;
 import frc.robot.Robot;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+import frc.robot.util.Utility;
 
 /**
- * Class that extends the Phoenix SwerveDrivetrain class and implements subsystem so it can be used
+ * Class that extends the Phoenix SwerveDrivetrain class and implements
+ * subsystem so it can be used
  * in command-based projects easily.
  */
 public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsystem {
+  private PIDController m_speakerLockPIDController = new PIDController(0.035, 0.0, 0.0000);
+
   public CommandSwerveDrivetrain(
       SwerveDrivetrainConstants driveTrainConstants,
       double OdometryUpdateFrequency,
       SwerveModuleConstants... modules) {
     super(driveTrainConstants, OdometryUpdateFrequency, modules);
     zeroAll();
+    m_speakerLockPIDController.setTolerance(1);
   }
 
   public CommandSwerveDrivetrain(
@@ -47,30 +54,31 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   }
 
   public void drive(double velocityX, double velocityY, double rotationRate) {
-    SwerveRequest driveRequest =
-        new SwerveRequest.FieldCentric()
-            // .withDeadband(
-            //     SWERVE.MAX_SPEED_METERS_PER_SECOND
-            //         * Constants.CONTROLLER.SWERVE_TRANSLATIONAL_DEADBAND)
-            // .withRotationalDeadband(
-            //     SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND
-            //         * Constants.CONTROLLER.SWERVE_ROTATIONAL_DEADBAND)
-            .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
-            .withVelocityX(velocityX)
-            .withVelocityY(velocityY)
-            .withRotationalRate(
-                (Robot.state.isSpeakerLock() && Robot.shooterLimelight.validTargetExists())
-                    ? getSpeakerLockRotation()
-                    : rotationRate);
+    SwerveRequest driveRequest = new SwerveRequest.FieldCentric()
+        // .withDeadband(
+        // SWERVE.MAX_SPEED_METERS_PER_SECOND
+        // * Constants.CONTROLLER.SWERVE_TRANSLATIONAL_DEADBAND)
+        // .withRotationalDeadband(
+        // SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND
+        // * Constants.CONTROLLER.SWERVE_ROTATIONAL_DEADBAND)
+        .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
+        .withVelocityX(velocityX)
+        .withVelocityY(velocityY)
+        .withRotationalRate(
+            (Robot.state.isSpeakerLock() && Robot.shooterLimelight.validTargetExists())
+                ? getSpeakerLockRotation()
+                : rotationRate);
     applyRequest(() -> driveRequest);
   }
 
   /**
-   * @return A list of the module positions in the order Front Left, Front Right, Back Left, Back
-   *     right
+   * @return A list of the module positions in the order Front Left, Front Right,
+   *         Back Left, Back
+   *         right
    */
   public SwerveModulePosition[] getModulePositions() {
     return super.m_modulePositions;
+
   }
 
   public SwerveModuleState[] getModuleStates() {
@@ -126,7 +134,12 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
   public double getSpeakerLockRotation() {
     double tx = Robot.shooterLimelight.getTX();
-    double yaw = super.getPigeon2().getYaw().getValueAsDouble();
-    return Constants.SWERVE.SPEAKER_LOCK_PID_CONTROLLER.calculate(yaw, tx);
+    if (Utility.isWithinTolerance(tx, 0, 1)) {
+      return 0;
+    }
+
+    double rotation = -m_speakerLockPIDController.calculate(0, tx);
+    double output = rotation + Math.copySign(0.28, rotation);
+    return output;
   }
 }

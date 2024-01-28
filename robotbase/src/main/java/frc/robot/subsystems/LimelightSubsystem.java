@@ -55,30 +55,21 @@ public class LimelightSubsystem extends SubsystemBase {
     m_streamPub = m_table.getDoubleTopic("stream").publish();
     m_pipelinePub = m_table.getDoubleTopic("pipeline").publish();
     m_pipelineSub = m_table.getDoubleTopic("pipeline").subscribe(Double.NaN);
-    m_TvSub =
-        m_table.getDoubleTopic("tv").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
-    m_TxSub =
-        m_table.getDoubleTopic("tx").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
-    m_TySub =
-        m_table.getDoubleTopic("ty").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
-    m_TaSub =
-        m_table.getDoubleTopic("ta").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
-    m_TsSub =
-        m_table.getDoubleTopic("ts").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
-    m_ThorSub =
-        m_table.getDoubleTopic("thor").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
-    m_TvertSub =
-        m_table.getDoubleTopic("tvert").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
+    m_TvSub = m_table.getDoubleTopic("tv").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
+    m_TxSub = m_table.getDoubleTopic("tx").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
+    m_TySub = m_table.getDoubleTopic("ty").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
+    m_TaSub = m_table.getDoubleTopic("ta").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
+    m_TsSub = m_table.getDoubleTopic("ts").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
+    m_ThorSub = m_table.getDoubleTopic("thor").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
+    m_TvertSub = m_table.getDoubleTopic("tvert").subscribe(Constants.SHOOTER_LIMELIGHT.DEFAULT_RETURN_VALUE);
     m_Tid = m_table.getIntegerTopic("tid").subscribe(-1);
 
-    m_botposeWpiRed =
-        m_table
-            .getDoubleArrayTopic("botpose_wpired")
-            .subscribe(null, PubSubOption.keepDuplicates(true));
-    m_botposeWpiBlue =
-        m_table
-            .getDoubleArrayTopic("botpose_wpiblue")
-            .subscribe(null, PubSubOption.keepDuplicates(true));
+    m_botposeWpiRed = m_table
+        .getDoubleArrayTopic("botpose_wpired")
+        .subscribe(null, PubSubOption.keepDuplicates(true));
+    m_botposeWpiBlue = m_table
+        .getDoubleArrayTopic("botpose_wpiblue")
+        .subscribe(null, PubSubOption.keepDuplicates(true));
 
     DoubleArrayTopic limelightPoseInfo = m_table.getDoubleArrayTopic("botpose");
     m_limelightPoseInfoSub = limelightPoseInfo.subscribe(null, PubSubOption.keepDuplicates(true));
@@ -113,7 +104,7 @@ public class LimelightSubsystem extends SubsystemBase {
     m_pipelinePub.set(Constants.SHOOTER_LIMELIGHT.HUMAN_PIPELINE_INDEX);
   }
 
-  private int getPipeline() {
+  public int getPipeline() {
     double value = m_pipelineSub.get();
     return (int) Math.round(value);
   }
@@ -161,7 +152,10 @@ public class LimelightSubsystem extends SubsystemBase {
     return m_TvertSub.get();
   }
 
-  /** Skew of target in degrees. Positive values are to the left, negative to the right */
+  /**
+   * Skew of target in degrees. Positive values are to the left, negative to the
+   * right
+   */
   public double getSkew() {
     if (!validTargetExists()) {
       return Double.NaN;
@@ -221,10 +215,9 @@ public class LimelightSubsystem extends SubsystemBase {
     }
 
     double proportion = getTHOR() / getTVERT();
-    double factor =
-        proportion
-            * Constants.SHOOTER_LIMELIGHT.TARGET_HEIGHT
-            / Constants.SHOOTER_LIMELIGHT.TARGET_WIDTH;
+    double factor = proportion
+        * Constants.SHOOTER_LIMELIGHT.TARGET_HEIGHT
+        / Constants.SHOOTER_LIMELIGHT.TARGET_WIDTH;
     return 90.0 * (1 - factor);
   }
 
@@ -235,9 +228,8 @@ public class LimelightSubsystem extends SubsystemBase {
 
     double angleDegrees = Math.abs(getTY()) + Constants.SHOOTER_LIMELIGHT.MOUNTING_ANGLE_DEGREES;
 
-    double heightDifference =
-        Constants.SHOOTER_LIMELIGHT.MOUNTING_HEIGHT_INCHES
-            - Constants.SHOOTER_LIMELIGHT.TARGET_HEIGHT_FROM_FLOOR;
+    double heightDifference = Constants.SHOOTER_LIMELIGHT.MOUNTING_HEIGHT_INCHES
+        - Constants.SHOOTER_LIMELIGHT.TARGET_HEIGHT_FROM_FLOOR;
     double distance = heightDifference / Math.tan(Math.toRadians(angleDegrees));
 
     return distance;
