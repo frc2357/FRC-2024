@@ -149,8 +149,8 @@ public final class Constants {
   }
 
   public static final class SWERVE {
-    public static final double MAX_SPEED_METERS_PER_SECOND = 4.023;
-    public static final double MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND = 10.826;
+    public static final double MAX_SPEED_METERS_PER_SECOND = 4.57;
+    public static final double MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND = Math.PI * 2;
 
     public static final double DRIVE_GEAR_RATIO = 6.74603175;
     public static final double STEER_GEAR_RATIO = 21.428571428571427;
@@ -191,7 +191,7 @@ public final class Constants {
     public static final PIDController X_CONTROLLER = new PIDController(0.15, 0, 0);
     public static final PIDController Y_CONTROLLER = new PIDController(0.15, 0, 0);
     public static final PIDController ROTATION_CONTROLLER = new PIDController(0.6, 0, 0);
-    
+
     public static final BooleanSupplier CHOREO_AUTO_MIRROR_PATHS =
         new BooleanSupplier() {
           @Override
@@ -209,8 +209,6 @@ public final class Constants {
     public static final double SWERVE_TRANSLATIONAL_DEADBAND = 0.05;
     public static final double SWERVE_ROTATIONAL_DEADBAND = 0.05;
   }
-
-   
 
   public static final class SHOOTER {
     public static final double SHOOTER_AXIS_STEP_INTERVAL = 0.1;

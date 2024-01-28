@@ -5,11 +5,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Constants.*;
-import frc.robot.commands.PIDTestCommand;
-import frc.robot.util.Utility;
 import frc.robot.commands.DefaultDriveCommand;
 
 public class RobotContainer {
@@ -17,12 +12,6 @@ public class RobotContainer {
 
   public RobotContainer() {
     m_autoCommandChooser = new AutoCommandChooser();
-    Robot.drive.setDefaultCommand(new DefaultDriveCommand());
-  }
-
-  // private final Telemetry logger = new Telemetry(); // This puts a TON of stuff on shuffleboard.
-
-  private void configureBindings() {
     Robot.drive.setDefaultCommand(new DefaultDriveCommand());
   }
 
