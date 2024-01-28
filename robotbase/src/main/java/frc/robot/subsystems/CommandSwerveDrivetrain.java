@@ -1,15 +1,10 @@
 package frc.robot.subsystems;
 
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
-
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -21,10 +16,11 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.util.Utility;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
- * Class that extends the Phoenix SwerveDrivetrain class and implements
- * subsystem so it can be used
+ * Class that extends the Phoenix SwerveDrivetrain class and implements subsystem so it can be used
  * in command-based projects easily.
  */
 public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsystem {
@@ -53,25 +49,24 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   }
 
   public void drive(double velocityX, double velocityY, double rotationRate) {
-    SwerveRequest driveRequest = new SwerveRequest.FieldCentric()
-        .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
-        .withVelocityX(velocityX)
-        .withVelocityY(velocityY)
-        .withRotationalRate(
-            (Robot.state.isSpeakerLock() && Robot.shooterLimelight.validTargetExists())
-                ? getSpeakerLockRotation()
-                : rotationRate);
+    SwerveRequest driveRequest =
+        new SwerveRequest.FieldCentric()
+            .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
+            .withVelocityX(velocityX)
+            .withVelocityY(velocityY)
+            .withRotationalRate(
+                (Robot.state.isSpeakerLock() && Robot.shooterLimelight.validTargetExists())
+                    ? getSpeakerLockRotation()
+                    : rotationRate);
     applyRequest(() -> driveRequest);
   }
 
   /**
-   * @return A list of the module positions in the order Front Left, Front Right,
-   *         Back Left, Back
-   *         right
+   * @return A list of the module positions in the order Front Left, Front Right, Back Left, Back
+   *     right
    */
   public SwerveModulePosition[] getModulePositions() {
     return super.m_modulePositions;
-
   }
 
   public SwerveModuleState[] getModuleStates() {

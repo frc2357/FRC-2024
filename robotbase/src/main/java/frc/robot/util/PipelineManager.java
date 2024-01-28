@@ -1,8 +1,5 @@
 package frc.robot.util;
 
-import frc.robot.Constants;
-import frc.robot.Robot;
-
 public class PipelineManager {
   public static int speakerPipeline() {
     return 4;
