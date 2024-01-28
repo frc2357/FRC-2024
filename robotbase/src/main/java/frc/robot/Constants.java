@@ -185,6 +185,13 @@ public final class Constants {
 
     public static final double STATIC_FEEDFORWARD_METERS_PER_SECOND = 0.094545;
     public static final double TRANSLATION_RAMP_EXPONENT = 2;
+
+    public static final double GAMEPIECE_TRACKING_TRANSLATION_SPEED = 0;
+    public static final double GAMEPIECE_TRACKING_LOST_TARGET_ALLOWED_LOOPS = 3;
+    public static final double GAMEPIECE_TRACKING_TRANSLATION_TOLERANCE = 0.1;
+    public static final double GAMEPIECE_TRACKING_TRANSLATION_OFFSET = 2;
+    public static final double GAMEPIECE_TRACKING_ROTATION_TOLERANCE = 0.1;
+    public static final double GAMEPIECE_TRACKING_ROTATION_OFFSET = 2;
   }
 
   public static final class CHOREO {
