@@ -6,11 +6,14 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.Constants.SWERVE;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -19,6 +22,17 @@ import java.util.function.Supplier;
  * in command-based projects easily.
  */
 public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsystem {
+
+  private final SwerveRequest.ApplyChassisSpeeds chassisSpeedRequest =
+      new SwerveRequest.ApplyChassisSpeeds();
+
+  private final SwerveRequest.FieldCentric driveRequest =
+      new SwerveRequest.FieldCentric()
+          .withDeadband(SWERVE.MAX_SPEED_METERS_PER_SECOND * SWERVE.TRANSLATIONAL_DEADBAND)
+          .withRotationalDeadband(
+              SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND * SWERVE.ROTATIONAL_DEADBAND)
+          .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+
   public CommandSwerveDrivetrain(
       SwerveDrivetrainConstants driveTrainConstants,
       double OdometryUpdateFrequency,
@@ -45,24 +59,17 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   }
 
   public void drive(double velocityX, double velocityY, double rotationRate) {
-    SwerveRequest driveRequest =
-        new SwerveRequest.FieldCentric()
-            // .withDeadband(
-            //     SWERVE.MAX_SPEED_METERS_PER_SECOND
-            //         * Constants.CONTROLLER.SWERVE_TRANSLATIONAL_DEADBAND)
-            // .withRotationalDeadband(
-            //     SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND
-            //         * Constants.CONTROLLER.SWERVE_ROTATIONAL_DEADBAND)
-            .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
-            .withVelocityX(velocityX)
-            .withVelocityY(velocityY)
-            .withRotationalRate(rotationRate);
-    applyRequest(() -> driveRequest);
+    applyRequest(
+        () ->
+            driveRequest
+                .withVelocityX(velocityX)
+                .withVelocityY(velocityY)
+                .withRotationalRate(rotationRate));
   }
 
   /**
    * @return A list of the module positions in the order Front Left, Front Right, Back Left, Back
-   *     right
+   *     Right
    */
   public SwerveModulePosition[] getModulePositions() {
     return super.m_modulePositions;
@@ -90,12 +97,17 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     };
   }
 
+  public SwerveDriveKinematics getKinematics() {
+    return super.m_kinematics;
+  }
+
   public void zeroAll() {
-    super.tareEverything();
+    zeroGyro();
+    setPose(new Pose2d(0, 0, new Rotation2d(0)));
   }
 
   public void zeroGyro() {
-    super.getPigeon2().reset();
+    super.getPigeon2().setYaw(0);
   }
 
   public void stopMotorsIntoX() {
@@ -114,7 +126,11 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     return new Consumer<ChassisSpeeds>() {
       @Override
       public void accept(ChassisSpeeds speeds) {
-        drive(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond);
+        SwerveModuleState[] moduleStates = getKinematics().toSwerveModuleStates(speeds);
+        for (SwerveModuleState state : moduleStates) {
+          state.speedMetersPerSecond += SWERVE.STATIC_FEEDFORWARD_METERS_PER_SECOND;
+        }
+        setControl(chassisSpeedRequest.withSpeeds(getKinematics().toChassisSpeeds(moduleStates)));
       }
     };
   }

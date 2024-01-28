@@ -28,7 +28,7 @@ public final class Constants {
     public static final int DRIVER_CONTROLLER_PORT = 0;
   }
 
-  public static class CAN_ID {
+  public static final class CAN_ID {
     public static final int PIGEON_ID = 5;
     public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 11;
     public static final int FRONT_LEFT_STEER_MOTOR_ID = 12;
@@ -58,7 +58,7 @@ public final class Constants {
     public static final int LEFT_CLIMBER_MOTOR_ID = 28;
   }
 
-  public static class PHEONIX_TUNER {
+  public static final class PHEONIX_TUNER {
 
     // Both sets of gains need to be tuned to your individual robot.
 
@@ -149,12 +149,12 @@ public final class Constants {
   }
 
   public static final class SWERVE {
-    public static final double MAX_SPEED_METERS_PER_SECOND = 4.7;
-    public static final double MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND = Math.PI;
+    public static final double MAX_SPEED_METERS_PER_SECOND = 4.57;
+    public static final double MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND = Math.PI * 2;
 
-    public static final double DRIVE_GEAR_RATIO = 6.746031746031747;
+    public static final double DRIVE_GEAR_RATIO = 6.74603175;
     public static final double STEER_GEAR_RATIO = 21.428571428571427;
-    public static final double WHEEL_RADIUS_INCHES = 4;
+    public static final double WHEEL_RADIUS_INCHES = 2;
 
     public static final boolean STEER_MOTOR_INVERSED = true;
     public static final boolean INVERT_LEFT_SIDE = false;
@@ -180,7 +180,25 @@ public final class Constants {
     public static final double BACK_RIGHT_X_POSITION_INCHES = -9.375;
     public static final double BACK_RIGHT_Y_POSITION_INCHES = -9.375;
 
+    public static final double TRANSLATIONAL_DEADBAND = 0.1;
+    public static final double ROTATIONAL_DEADBAND = 0.1;
+
+    public static final double STATIC_FEEDFORWARD_METERS_PER_SECOND = 0.094545;
     public static final double TRANSLATION_RAMP_EXPONENT = 2;
+  }
+
+  public static final class CHOREO {
+    public static final PIDController X_CONTROLLER = new PIDController(0.15, 0, 0);
+    public static final PIDController Y_CONTROLLER = new PIDController(0.15, 0, 0);
+    public static final PIDController ROTATION_CONTROLLER = new PIDController(0.6, 0, 0);
+
+    public static final BooleanSupplier CHOREO_AUTO_MIRROR_PATHS =
+        new BooleanSupplier() {
+          @Override
+          public boolean getAsBoolean() {
+            return false;
+          }
+        };
   }
 
   public static final class CONTROLLER {
@@ -190,20 +208,6 @@ public final class Constants {
     public static final double CODRIVE_CONTROLLER_DEADBAND = 0.1;
     public static final double SWERVE_TRANSLATIONAL_DEADBAND = 0.05;
     public static final double SWERVE_ROTATIONAL_DEADBAND = 0.05;
-  }
-
-  public static final class CHOREO {
-    public static final PIDController CHOREO_X_CONTROLLER = new PIDController(0.5, 0, 0);
-    public static final PIDController CHOREO_Y_CONTROLLER = new PIDController(0.5, 0, 0);
-    public static final PIDController CHOREO_ROTATION_CONTROLLER = new PIDController(0.5, 0, 0);
-
-    public static final BooleanSupplier CHOREO_AUTO_MIRROR_PATHS =
-        new BooleanSupplier() {
-          @Override
-          public boolean getAsBoolean() {
-            return false;
-          }
-        };
   }
 
   public static final class SHOOTER {
