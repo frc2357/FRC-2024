@@ -68,7 +68,10 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
             driveRequest
                 .withVelocityX(velocityX)
                 .withVelocityY(velocityY)
-                .withRotationalRate(rotationRate));
+                .withRotationalRate(
+                    (Robot.state.isTargetLock() && Robot.shooterLimelight.validTargetExists())
+                        ? getTargetLockRotation()
+                        : rotationRate));
   }
 
   /**
@@ -148,7 +151,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     return chassisSpeeds;
   }
 
-  public double getTargetLockRotations() {
+  public double getTargetLockRotation() {
     double tx = Robot.shooterLimelight.getTX();
     if (Utility.isWithinTolerance(tx, 0, Constants.SWERVE.TARGET_LOCK_TOLERANCE)) {
       return 0;
