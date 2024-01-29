@@ -31,7 +31,7 @@ public class IntakeSubsystem extends SubsystemBase {
         Constants.INTAKE.BOTTOM_MOTOR_FREE_LIMIT_AMPS);
   }
 
-  public void set(double topPO, double bottomPO) {
+  public void setAxisSpeed(double topPO, double bottomPO) {
     m_topIntakeMotor.set(topPO);
     m_bottomIntakeMotor.set(bottomPO);
   }

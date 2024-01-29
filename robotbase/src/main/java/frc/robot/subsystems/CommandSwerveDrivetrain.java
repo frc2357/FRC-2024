@@ -24,6 +24,20 @@ import java.util.function.Supplier;
  * in command-based projects easily.
  */
 public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsystem {
+
+  private final SwerveRequest.ApplyChassisSpeeds chassisSpeedRequest =
+      new SwerveRequest.ApplyChassisSpeeds();
+
+  private final SwerveRequest.FieldCentric driveRequest =
+      new SwerveRequest.FieldCentric()
+          .withDeadband(
+              Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND
+                  * Constants.SWERVE.TRANSLATIONAL_DEADBAND)
+          .withRotationalDeadband(
+              Constants.SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND
+                  * Constants.SWERVE.ROTATIONAL_DEADBAND)
+          .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+
   public CommandSwerveDrivetrain(
       SwerveDrivetrainConstants driveTrainConstants,
       double OdometryUpdateFrequency,
@@ -49,21 +63,17 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   }
 
   public void drive(double velocityX, double velocityY, double rotationRate) {
-    SwerveRequest driveRequest =
-        new SwerveRequest.FieldCentric()
-            .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
-            .withVelocityX(velocityX)
-            .withVelocityY(velocityY)
-            .withRotationalRate(
-                (Robot.state.isTargetLock() && Robot.shooterLimelight.validTargetExists())
-                    ? getTargetLockRotations()
-                    : rotationRate);
-    applyRequest(() -> driveRequest);
+    applyRequest(
+        () ->
+            driveRequest
+                .withVelocityX(velocityX)
+                .withVelocityY(velocityY)
+                .withRotationalRate(rotationRate));
   }
 
   /**
    * @return A list of the module positions in the order Front Left, Front Right, Back Left, Back
-   *     right
+   *     Right
    */
   public SwerveModulePosition[] getModulePositions() {
     return super.m_modulePositions;
@@ -101,7 +111,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   }
 
   public void zeroGyro() {
-    super.getPigeon2().reset();
+    super.getPigeon2().setYaw(0);
   }
 
   public void resetPose() {
@@ -124,7 +134,11 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     return new Consumer<ChassisSpeeds>() {
       @Override
       public void accept(ChassisSpeeds speeds) {
-        drive(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond);
+        SwerveModuleState[] moduleStates = getKinematics().toSwerveModuleStates(speeds);
+        for (SwerveModuleState state : moduleStates) {
+          state.speedMetersPerSecond += Constants.SWERVE.STATIC_FEEDFORWARD_METERS_PER_SECOND;
+        }
+        setControl(chassisSpeedRequest.withSpeeds(getKinematics().toChassisSpeeds(moduleStates)));
       }
     };
   }

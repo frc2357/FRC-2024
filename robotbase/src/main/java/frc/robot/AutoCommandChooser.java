@@ -14,10 +14,12 @@ public class AutoCommandChooser {
 
     m_autoCommands =
         new Command[] {
-          new ChoreoTrajectoryCommand("ChOnePeiceToAmp"),
-          new ChoreoTrajectoryCommand("ChTestPath"),
-          new ChoreoTrajectoryCommand("ChClose3ToSpeaker"),
+          new ChoreoTrajectoryCommand("ChClose3SpeakerPath"),
           new ChoreoTrajectoryCommand("ChRotationTest"),
+          new ChoreoTrajectoryCommand("Ch3MeterXTest"),
+          new ChoreoTrajectoryCommand("Ch1MeterYTest"),
+          new ChoreoTrajectoryCommand("Ch3MeterYTest"),
+          new ChoreoTrajectoryCommand("ChBoxTest"),
         };
 
     m_chooser = new SendableChooser<>();

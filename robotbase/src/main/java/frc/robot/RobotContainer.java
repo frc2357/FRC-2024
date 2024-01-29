@@ -12,7 +12,6 @@ public class RobotContainer {
 
   public RobotContainer() {
     m_autoCommandChooser = new AutoCommandChooser();
-
     Robot.drive.setDefaultCommand(new DefaultDriveCommand());
   }
 
