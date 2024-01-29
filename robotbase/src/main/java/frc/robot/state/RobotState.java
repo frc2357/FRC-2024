@@ -11,7 +11,7 @@ public class RobotState {
   public static enum DriveControlState {
     FIELD_RELATIVE, // Manual control of the robot is field relative
     ROBOT_CENTRIC, // Manual control of the robot is robot centric
-    SPEAKER_LOCK
+    TARGET_LOCK
   }
 
   public Alliance getAlliance() {
@@ -54,8 +54,8 @@ public class RobotState {
     return m_currentDriveControlState == DriveControlState.FIELD_RELATIVE;
   }
 
-  public boolean isSpeakerLock() {
-    return getDriveControlState() == DriveControlState.SPEAKER_LOCK;
+  public boolean isTargetLock() {
+    return getDriveControlState() == DriveControlState.TARGET_LOCK;
   }
 
   public DriveControlState getDriveControlState() {

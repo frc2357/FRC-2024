@@ -55,8 +55,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
             .withVelocityX(velocityX)
             .withVelocityY(velocityY)
             .withRotationalRate(
-                (Robot.state.isSpeakerLock() && Robot.shooterLimelight.validTargetExists())
-                    ? getSpeakerLockRotation()
+                (Robot.state.isTargetLock() && Robot.shooterLimelight.validTargetExists())
+                    ? getTargetLockRotations()
                     : rotationRate);
     applyRequest(() -> driveRequest);
   }
@@ -129,26 +129,25 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     };
   }
 
-  public double getSpeakerLockRotation() {
+  public ChassisSpeeds getChassisSpeeds() {
+    ChassisSpeeds chassisSpeeds = getKinematics().toChassisSpeeds(getModuleStates());
+    return chassisSpeeds;
+  }
+
+  public double getTargetLockRotations() {
     double tx = Robot.shooterLimelight.getTX();
-    if (Utility.isWithinTolerance(tx, 0, Constants.SWERVE.SPEAKER_LOCK_TOLERANCE)) {
+    if (Utility.isWithinTolerance(tx, 0, Constants.SWERVE.TARGET_LOCK_TOLERANCE)) {
       return 0;
     }
 
     // Increase kP based on horizontal velocity to reduce lag
     double vy = getChassisSpeeds().vyMetersPerSecond; // Horizontal velocity
-    double kp = Constants.SWERVE.SPEAKER_LOCK_KP;
+    double kp = Constants.SWERVE.TARGET_LOCK_KP;
     kp *= Math.max(1, vy);
-    Constants.SWERVE.SPEAKER_LOCK_PID_CONTROLLER.setP(kp);
+    Constants.SWERVE.TARGET_LOCK_PID_CONTROLLER.setP(kp);
 
-    double rotation = -Constants.SWERVE.SPEAKER_LOCK_PID_CONTROLLER.calculate(0, tx);
-    double feedforward = Constants.SWERVE.SPEAKER_LOCK_FEED_FORWARD;
-    double output = rotation + Math.copySign(feedforward, rotation);
+    double rotation = -Constants.SWERVE.TARGET_LOCK_PID_CONTROLLER.calculate(0, tx);
+    double output = rotation + Math.copySign(Constants.SWERVE.TARGET_LOCK_FEED_FORWARD, rotation);
     return output;
-  }
-
-  public ChassisSpeeds getChassisSpeeds() {
-    ChassisSpeeds chassisSpeeds = getKinematics().toChassisSpeeds(getModuleStates());
-    return chassisSpeeds;
   }
 }
