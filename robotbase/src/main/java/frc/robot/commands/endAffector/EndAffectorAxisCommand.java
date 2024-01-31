@@ -15,7 +15,7 @@ public class EndAffectorAxisCommand extends Command {
   @Override
   public void execute() {
     double axisSpeed = m_axis.getValue();
-    Robot.endAffector.setPivotAxisSpeed(axisSpeed);
+    Robot.endAffector.setAxisSpeed(axisSpeed);
   }
 
   @Override

@@ -1,10 +1,8 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-
+import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.CAN_ID;
 import frc.robot.Constants.END_AFFECTOR;
 
@@ -17,14 +15,15 @@ public class EndAffectorSubsystem extends SubsystemBase {
     configure();
   }
 
-  private void configure(){
+  private void configure() {
     m_motor.setInverted(END_AFFECTOR.IS_INVERTED);
     m_motor.setIdleMode(END_AFFECTOR.IDLE_MODE);
-    m_motor.setSmartCurrentLimit(END_AFFECTOR.MOTOR_STALL_LIMIT_AMPS, END_AFFECTOR.MOTOR_FREE_LIMIT_AMPS);
+    m_motor.setSmartCurrentLimit(
+        END_AFFECTOR.MOTOR_STALL_LIMIT_AMPS, END_AFFECTOR.MOTOR_FREE_LIMIT_AMPS);
     m_motor.enableVoltageCompensation(12);
   }
 
-  public void setPivotAxisSpeed(double axisSpeed) {
+  public void setAxisSpeed(double axisSpeed) {
     double motorSpeed = (-axisSpeed) * END_AFFECTOR.AXIS_MAX_SPEED;
     m_motor.set(motorSpeed);
   }
@@ -40,8 +39,6 @@ public class EndAffectorSubsystem extends SubsystemBase {
   public void stop() {
     m_motor.stopMotor();
   }
-
-
 
   public void getMotorSpeed() {
     m_motor.get();
