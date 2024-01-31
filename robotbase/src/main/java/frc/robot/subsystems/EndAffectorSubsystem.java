@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.CAN_ID;
 import frc.robot.Constants.END_AFFECTOR;
 
@@ -23,6 +24,10 @@ public class EndAffectorSubsystem extends SubsystemBase {
     m_motor.enableVoltageCompensation(12);
   }
 
+  public void setPivotAxisSpeed(double axisSpeed) {
+    double motorSpeed = (-axisSpeed) * END_AFFECTOR.AXIS_MAX_SPEED;
+    m_motor.set(motorSpeed);
+  }
 
   public void setSpeed(double speedPercentage) {
     m_motor.set(speedPercentage);
@@ -32,7 +37,7 @@ public class EndAffectorSubsystem extends SubsystemBase {
     m_motor.setVoltage(outputVoltage);
   }
 
-  public void stopMotor() {
+  public void stop() {
     m_motor.stopMotor();
   }
 
