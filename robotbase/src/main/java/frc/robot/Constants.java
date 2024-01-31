@@ -56,6 +56,8 @@ public final class Constants {
 
     public static final int RIGHT_CLIMBER_MOTOR_ID = 27;
     public static final int LEFT_CLIMBER_MOTOR_ID = 28;
+
+    public static final int END_AFFECTOR_MOTOR_ID = 30;
   }
 
   public static final class PHEONIX_TUNER {
@@ -298,5 +300,13 @@ public final class Constants {
 
     public static final int MOTOR_FREE_LIMIT_AMPS = 40;
     public static final int MOTOR_STALL_LIMIT_AMPS = 40;
+  }
+
+  public static final class END_AFFECTOR {
+    public static final boolean IS_INVERTED = false;
+    
+    public static final boolean ELIMINATE_DEADBAND = true;
+    
+    public static final boolean IS_MOTOR_SAFTEY_ENFORCED = true;
   }
 }
