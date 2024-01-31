@@ -304,9 +304,9 @@ public final class Constants {
 
   public static final class END_AFFECTOR {
     public static final boolean IS_INVERTED = false;
-    
+
     public static final boolean ELIMINATE_DEADBAND = true;
-    
+
     public static final boolean IS_MOTOR_SAFTEY_ENFORCED = true;
   }
 }

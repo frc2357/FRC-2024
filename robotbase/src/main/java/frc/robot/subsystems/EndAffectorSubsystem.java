@@ -7,35 +7,36 @@ import frc.robot.Constants.END_AFFECTOR;
 
 public class EndAffectorSubsystem extends SubsystemBase {
 
-    private Talon m_motor;
-    public EndAffectorSubsystem(){
-        m_motor = new Talon(CAN_ID.END_AFFECTOR_MOTOR_ID);
-        m_motor.setInverted(END_AFFECTOR.IS_INVERTED);
-        m_motor.enableDeadbandElimination(END_AFFECTOR.ELIMINATE_DEADBAND);
-        m_motor.setSafetyEnabled(END_AFFECTOR.IS_MOTOR_SAFTEY_ENFORCED);
-    }
+  private Talon m_motor;
 
-    public void setSpeed(double speedPercentage){
-        m_motor.set(speedPercentage);
-    }
+  public EndAffectorSubsystem() {
+    m_motor = new Talon(CAN_ID.END_AFFECTOR_MOTOR_ID);
+    m_motor.setInverted(END_AFFECTOR.IS_INVERTED);
+    m_motor.enableDeadbandElimination(END_AFFECTOR.ELIMINATE_DEADBAND);
+    m_motor.setSafetyEnabled(END_AFFECTOR.IS_MOTOR_SAFTEY_ENFORCED);
+  }
 
-    public void setVoltage(double outputVoltage){
-        m_motor.setVoltage(outputVoltage);
-    }
+  public void setSpeed(double speedPercentage) {
+    m_motor.set(speedPercentage);
+  }
 
-    public void stopMotor(){
-        m_motor.stopMotor();
-    }
+  public void setVoltage(double outputVoltage) {
+    m_motor.setVoltage(outputVoltage);
+  }
 
-    public void feedMotorSafety(){
-        m_motor.feed();
-    }
+  public void stopMotor() {
+    m_motor.stopMotor();
+  }
 
-    public void checkMotor(){
-        m_motor.check();
-    }
+  public void feedMotorSafety() {
+    m_motor.feed();
+  }
 
-    public void getMotorSpeed(){
-        m_motor.get();
-    }
+  public void checkMotor() {
+    m_motor.check();
+  }
+
+  public void getMotorSpeed() {
+    m_motor.get();
+  }
 }
