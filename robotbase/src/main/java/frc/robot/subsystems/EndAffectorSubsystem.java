@@ -1,20 +1,28 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CAN_ID;
 import frc.robot.Constants.END_AFFECTOR;
 
 public class EndAffectorSubsystem extends SubsystemBase {
 
-  private Talon m_motor;
+  private CANSparkMax m_motor;
 
   public EndAffectorSubsystem() {
-    m_motor = new Talon(CAN_ID.END_AFFECTOR_MOTOR_ID);
-    m_motor.setInverted(END_AFFECTOR.IS_INVERTED);
-    m_motor.enableDeadbandElimination(END_AFFECTOR.ELIMINATE_DEADBAND);
-    m_motor.setSafetyEnabled(END_AFFECTOR.IS_MOTOR_SAFTEY_ENFORCED);
+    m_motor = new CANSparkMax(CAN_ID.END_AFFECTOR_MOTOR_ID, MotorType.kBrushed);
+    configure();
   }
+
+  private void configure(){
+    m_motor.setInverted(END_AFFECTOR.IS_INVERTED);
+    m_motor.setIdleMode(END_AFFECTOR.IDLE_MODE);
+    m_motor.setSmartCurrentLimit(END_AFFECTOR.MOTOR_STALL_LIMIT_AMPS, END_AFFECTOR.MOTOR_FREE_LIMIT_AMPS);
+    m_motor.enableVoltageCompensation(12);
+  }
+
 
   public void setSpeed(double speedPercentage) {
     m_motor.set(speedPercentage);
@@ -28,13 +36,7 @@ public class EndAffectorSubsystem extends SubsystemBase {
     m_motor.stopMotor();
   }
 
-  public void feedMotorSafety() {
-    m_motor.feed();
-  }
 
-  public void checkMotor() {
-    m_motor.check();
-  }
 
   public void getMotorSpeed() {
     m_motor.get();

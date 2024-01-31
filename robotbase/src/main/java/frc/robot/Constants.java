@@ -11,6 +11,8 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants.SteerFeedbackType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.util.Units;
 import java.util.function.BooleanSupplier;
@@ -305,8 +307,10 @@ public final class Constants {
   public static final class END_AFFECTOR {
     public static final boolean IS_INVERTED = false;
 
-    public static final boolean ELIMINATE_DEADBAND = true;
+    public static final IdleMode IDLE_MODE = IdleMode.kBrake;
 
-    public static final boolean IS_MOTOR_SAFTEY_ENFORCED = true;
+    public static final int MOTOR_FREE_LIMIT_AMPS = 20;
+    public static final int MOTOR_STALL_LIMIT_AMPS = 20;
+
   }
 }
