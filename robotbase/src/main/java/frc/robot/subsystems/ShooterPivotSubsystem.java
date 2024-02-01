@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkPIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -13,7 +14,7 @@ public class ShooterPivotSubsystem extends SubsystemBase {
 
   private CANSparkMax m_pivotMotor;
   private SparkPIDController m_pivotPIDController;
-
+  private SparkAbsoluteEncoder m_absoluteEncoder;
   private double m_targetRotations;
 
   public ShooterPivotSubsystem() {
@@ -45,6 +46,11 @@ public class ShooterPivotSubsystem extends SubsystemBase {
         Constants.SHOOTER_PIVOT.SMART_MOTION_MAX_ACC_RPM, 0);
     m_pivotPIDController.setSmartMotionAllowedClosedLoopError(
         Constants.SHOOTER_PIVOT.SMART_MOTION_ALLOWED_ERROR, 0);
+    
+    m_absoluteEncoder = m_pivotMotor.getAbsoluteEncoder(SparkAbsoluteEncoder.Type.kDutyCycle);
+    m_absoluteEncoder.setInverted(Constants.SHOOTER_PIVOT.ENCODER_INVERTED);
+    m_absoluteEncoder.setPositionConversionFactor(Constants.SHOOTER_PIVOT.ENCODER_POSITION_CONVERSION_FACTOR);
+    m_absoluteEncoder.setVelocityConversionFactor(Constants.SHOOTER_PIVOT.ENCODER_VELOCITY_CONVERSION_FACTOR);
   }
 
   public void setPivotRotations(double rotations) {
@@ -71,6 +77,10 @@ public class ShooterPivotSubsystem extends SubsystemBase {
 
   public double getPivotRotations() {
     return m_pivotMotor.getEncoder().getPosition();
+  }
+
+  public double getAngle(){
+    return m_absoluteEncoder.getPosition();
   }
 
   public boolean isPivotAtRotations() {

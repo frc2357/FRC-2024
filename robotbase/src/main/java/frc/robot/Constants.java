@@ -273,6 +273,7 @@ public final class Constants {
 
   public static final class SHOOTER_PIVOT {
     public static final boolean MOTOR_INVERTED = false;
+    public static final boolean ENCODER_INVERTED = false;
 
     public static final IdleMode IDLE_MODE = IdleMode.kBrake;
 
@@ -290,6 +291,9 @@ public final class Constants {
     public static final int SMART_MOTION_ALLOWED_ERROR = 0;
 
     public static final double AXIS_MAX_SPEED = 0.25;
+
+    public static final double ENCODER_POSITION_CONVERSION_FACTOR = 1;
+    public static final double ENCODER_VELOCITY_CONVERSION_FACTOR = 1;
   }
 
   public static final class CLIMBER {
