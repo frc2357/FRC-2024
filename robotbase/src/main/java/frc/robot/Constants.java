@@ -56,7 +56,7 @@ public final class Constants {
     public static final int LEFT_CLIMBER_MOTOR_ID = 28;
 
     public static final int SHOOTER_PIVOT_MOTOR_ID = 29;
-    
+
     public static final int END_AFFECTOR_MOTOR_ID = 30;
 
     public static final int TRAP_AMP_ARM_MOTOR_ID = 31;

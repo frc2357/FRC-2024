@@ -1,21 +1,20 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
-import com.revrobotics.CANSparkBase.ControlType;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.TRAP_AMP_ARM;
 import frc.robot.util.Utility;
 
 public class TrapAmpArmSubsystem extends SubsystemBase {
-    private boolean m_isClosedLoopEnabled = false;
+  private boolean m_isClosedLoopEnabled = false;
 
-    private CANSparkMax m_motor;
-    private SparkPIDController m_PIDController;
-    private double m_targetRotations;
+  private CANSparkMax m_motor;
+  private SparkPIDController m_PIDController;
+  private double m_targetRotations;
 
   public TrapAmpArmSubsystem() {
     m_motor = new CANSparkMax(Constants.CAN_ID.TRAP_AMP_ARM_MOTOR_ID, MotorType.kBrushless);
@@ -37,12 +36,9 @@ public class TrapAmpArmSubsystem extends SubsystemBase {
     m_PIDController.setFF(TRAP_AMP_ARM.MOTOR_PID_FF);
 
     m_PIDController.setOutputRange(-1, 1);
-    m_PIDController.setSmartMotionMaxVelocity(
-        TRAP_AMP_ARM.SMART_MOTION_MAX_VEL_RPM, 0);
-    m_PIDController.setSmartMotionMinOutputVelocity(
-        TRAP_AMP_ARM.SMART_MOTION_MIN_VEL_RPM, 0);
-    m_PIDController.setSmartMotionMaxAccel(
-        TRAP_AMP_ARM.SMART_MOTION_MAX_ACC_RPM, 0);
+    m_PIDController.setSmartMotionMaxVelocity(TRAP_AMP_ARM.SMART_MOTION_MAX_VEL_RPM, 0);
+    m_PIDController.setSmartMotionMinOutputVelocity(TRAP_AMP_ARM.SMART_MOTION_MIN_VEL_RPM, 0);
+    m_PIDController.setSmartMotionMaxAccel(TRAP_AMP_ARM.SMART_MOTION_MAX_ACC_RPM, 0);
     m_PIDController.setSmartMotionAllowedClosedLoopError(
         TRAP_AMP_ARM.SMART_MOTION_ALLOWED_ERROR, 0);
   }
@@ -52,7 +48,7 @@ public class TrapAmpArmSubsystem extends SubsystemBase {
     m_motor.set(speed);
   }
 
-  public void setTargetRotations(double targetRotations){
+  public void setTargetRotations(double targetRotations) {
     m_targetRotations = targetRotations;
     m_isClosedLoopEnabled = true;
     m_PIDController.setReference(m_targetRotations, ControlType.kSmartMotion);
@@ -73,15 +69,15 @@ public class TrapAmpArmSubsystem extends SubsystemBase {
     return m_motor.getEncoder().getPosition();
   }
 
-  public boolean isAtTargetRotations(){
+  public boolean isAtTargetRotations() {
     return Utility.isWithinTolerance(
         getMotorRotations(), m_targetRotations, TRAP_AMP_ARM.SMART_MOTION_ALLOWED_ERROR);
   }
 
   @Override
-  public void periodic(){
+  public void periodic() {
     if (m_isClosedLoopEnabled && isAtTargetRotations()) {
-        m_isClosedLoopEnabled = false;
-      }
+      m_isClosedLoopEnabled = false;
+    }
   }
 }
