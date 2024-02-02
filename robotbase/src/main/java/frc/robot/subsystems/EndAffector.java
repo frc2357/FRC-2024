@@ -6,11 +6,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CAN_ID;
 import frc.robot.Constants.END_AFFECTOR;
 
-public class EndAffectorSubsystem extends SubsystemBase {
+public class EndAffector extends SubsystemBase {
 
   private CANSparkMax m_motor;
 
-  public EndAffectorSubsystem() {
+  public EndAffector() {
     m_motor = new CANSparkMax(CAN_ID.END_AFFECTOR_MOTOR_ID, MotorType.kBrushed);
     configure();
   }

@@ -9,14 +9,14 @@ import frc.robot.Constants;
 import frc.robot.Constants.TRAP_AMP_ARM;
 import frc.robot.util.Utility;
 
-public class TrapAmpArmSubsystem extends SubsystemBase {
+public class TrapAmpArm extends SubsystemBase {
   private boolean m_isClosedLoopEnabled = false;
 
   private CANSparkMax m_motor;
   private SparkPIDController m_PIDController;
   private double m_targetRotations;
 
-  public TrapAmpArmSubsystem() {
+  public TrapAmpArm() {
     m_motor = new CANSparkMax(Constants.CAN_ID.TRAP_AMP_ARM_MOTOR_ID, MotorType.kBrushless);
     configure();
   }

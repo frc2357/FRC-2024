@@ -327,9 +327,9 @@ public final class Constants {
     public static final int MOTOR_STALL_LIMIT_AMPS = 20;
     public static final int MOTOR_FREE_LIMIT_AMPS = 20;
 
-    public static final double MOTOR_PID_P = 1;
-    public static final double MOTOR_PID_I = 1;
-    public static final double MOTOR_PID_D = 1;
+    public static final double MOTOR_PID_P = 0;
+    public static final double MOTOR_PID_I = 0;
+    public static final double MOTOR_PID_D = 0;
     public static final double MOTOR_PID_FF = 0;
 
     public static final int SMART_MOTION_MAX_VEL_RPM = 0;

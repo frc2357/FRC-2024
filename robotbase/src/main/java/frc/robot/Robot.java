@@ -13,14 +13,14 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.controls.CodriverControls;
 import frc.robot.controls.DriverControls;
 import frc.robot.state.RobotState;
-import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.EndAffectorSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.LimelightSubsystem;
-import frc.robot.subsystems.ShooterPivotSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.TrapAmpArmSubsystem;
+import frc.robot.subsystems.EndAffector;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterPivot;
+import frc.robot.subsystems.TrapAmpArm;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -36,19 +36,19 @@ public class Robot extends TimedRobot {
   public static RobotState state;
 
   public static CommandSwerveDrivetrain drive;
-  public static ShooterSubsystem shooter;
-  public static ShooterPivotSubsystem pivot;
-  public static IntakeSubsystem intake;
-  public static ClimberSubsystem climber;
+  public static Shooter shooter;
+  public static ShooterPivot pivot;
+  public static Intake intake;
+  public static Climber climber;
 
   public static DriverControls driverControls;
   public static CodriverControls codriverControls;
 
-  public static LimelightSubsystem shooterLimelight;
+  public static Limelight shooterLimelight;
 
-  public static EndAffectorSubsystem endAffector;
+  public static EndAffector endAffector;
 
-  public static TrapAmpArmSubsystem trapAmpArm;
+  public static TrapAmpArm trapAmpArm;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -71,14 +71,14 @@ public class Robot extends TimedRobot {
               Constants.PHEONIX_TUNER.BACK_RIGHT_MODULE_CONSTANTS
             });
 
-    shooter = new ShooterSubsystem();
-    pivot = new ShooterPivotSubsystem();
-    intake = new IntakeSubsystem();
-    climber = new ClimberSubsystem();
-    endAffector = new EndAffectorSubsystem();
-    trapAmpArm = new TrapAmpArmSubsystem();
+    shooter = new Shooter();
+    pivot = new ShooterPivot();
+    intake = new Intake();
+    climber = new Climber();
+    endAffector = new EndAffector();
+    trapAmpArm = new TrapAmpArm();
 
-    shooterLimelight = new LimelightSubsystem(Constants.SHOOTER_LIMELIGHT.NAME);
+    shooterLimelight = new Limelight(Constants.SHOOTER_LIMELIGHT.NAME);
 
     driverControls =
         new DriverControls(

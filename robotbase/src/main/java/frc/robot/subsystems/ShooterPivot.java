@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.util.Utility;
 
-public class ShooterPivotSubsystem extends SubsystemBase {
+public class ShooterPivot extends SubsystemBase {
   private boolean m_isClosedLoopEnabled = false;
 
   private CANSparkMax m_pivotMotor;
@@ -17,7 +17,7 @@ public class ShooterPivotSubsystem extends SubsystemBase {
   private SparkAbsoluteEncoder m_absoluteEncoder;
   private double m_targetRotations;
 
-  public ShooterPivotSubsystem() {
+  public ShooterPivot() {
     m_pivotMotor = new CANSparkMax(Constants.CAN_ID.SHOOTER_PIVOT_MOTOR_ID, MotorType.kBrushless);
     configure();
   }
