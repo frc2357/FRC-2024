@@ -46,11 +46,13 @@ public class ShooterPivotSubsystem extends SubsystemBase {
         Constants.SHOOTER_PIVOT.SMART_MOTION_MAX_ACC_RPM, 0);
     m_pivotPIDController.setSmartMotionAllowedClosedLoopError(
         Constants.SHOOTER_PIVOT.SMART_MOTION_ALLOWED_ERROR, 0);
-    
+
     m_absoluteEncoder = m_pivotMotor.getAbsoluteEncoder(SparkAbsoluteEncoder.Type.kDutyCycle);
     m_absoluteEncoder.setInverted(Constants.SHOOTER_PIVOT.ENCODER_INVERTED);
-    m_absoluteEncoder.setPositionConversionFactor(Constants.SHOOTER_PIVOT.ENCODER_POSITION_CONVERSION_FACTOR);
-    m_absoluteEncoder.setVelocityConversionFactor(Constants.SHOOTER_PIVOT.ENCODER_VELOCITY_CONVERSION_FACTOR);
+    m_absoluteEncoder.setPositionConversionFactor(
+        Constants.SHOOTER_PIVOT.ENCODER_POSITION_CONVERSION_FACTOR);
+    m_absoluteEncoder.setVelocityConversionFactor(
+        Constants.SHOOTER_PIVOT.ENCODER_VELOCITY_CONVERSION_FACTOR);
   }
 
   public void setPivotRotations(double rotations) {
@@ -79,7 +81,7 @@ public class ShooterPivotSubsystem extends SubsystemBase {
     return m_pivotMotor.getEncoder().getPosition();
   }
 
-  public double getAngle(){
+  public double getAngle() {
     return m_absoluteEncoder.getPosition();
   }
 
