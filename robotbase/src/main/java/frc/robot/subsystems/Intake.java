@@ -5,11 +5,11 @@ import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class IntakeSubsystem extends SubsystemBase {
+public class Intake extends SubsystemBase {
   private CANSparkMax m_topIntakeMotor;
   private CANSparkMax m_bottomIntakeMotor;
 
-  public IntakeSubsystem() {
+  public Intake() {
     m_topIntakeMotor = new CANSparkMax(Constants.CAN_ID.TOP_INTAKE_MOTOR_ID, MotorType.kBrushless);
     m_bottomIntakeMotor =
         new CANSparkMax(Constants.CAN_ID.BOTTOM_INTAKE_MOTOR_ID, MotorType.kBrushless);

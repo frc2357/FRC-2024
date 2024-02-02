@@ -11,7 +11,7 @@ import frc.robot.util.PipelineManager;
 import frc.robot.util.RobotMath;
 import frc.robot.util.Utility;
 
-public class ShooterSubsystem extends SubsystemBase {
+public class Shooter extends SubsystemBase {
   // {ty, pivotRotations, topRPMs, bottomRPMs}
   private static final double[][] m_shooterCurve = {{0.0, 0.0, 0, 0}};
 
@@ -23,7 +23,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private boolean m_isClosedLoopEnabled = false;
 
-  public ShooterSubsystem() {
+  public Shooter() {
     m_topShooterMotor =
         new CANSparkMax(Constants.CAN_ID.TOP_SHOOTER_MOTOR_ID, MotorType.kBrushless);
     m_bottomShooterMotor =

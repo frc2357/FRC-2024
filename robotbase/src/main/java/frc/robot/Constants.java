@@ -46,18 +46,20 @@ public final class Constants {
     public static final int BACK_RIGHT_STEER_MOTOR_ID = 18;
     public static final int BACK_RIGHT_ENCODER_ID = 22;
 
-    public static final int TOP_SHOOTER_MOTOR_ID = 25;
-    public static final int BOTTOM_SHOOTER_MOTOR_ID = 26;
-
-    public static final int SHOOTER_PIVOT_MOTOR_ID = 29;
-
     public static final int TOP_INTAKE_MOTOR_ID = 23;
     public static final int BOTTOM_INTAKE_MOTOR_ID = 24;
+
+    public static final int TOP_SHOOTER_MOTOR_ID = 25;
+    public static final int BOTTOM_SHOOTER_MOTOR_ID = 26;
 
     public static final int RIGHT_CLIMBER_MOTOR_ID = 27;
     public static final int LEFT_CLIMBER_MOTOR_ID = 28;
 
+    public static final int SHOOTER_PIVOT_MOTOR_ID = 29;
+
     public static final int END_AFFECTOR_MOTOR_ID = 30;
+
+    public static final int TRAP_AMP_ARM_MOTOR_ID = 31;
   }
 
   public static final class PHEONIX_TUNER {
@@ -313,6 +315,27 @@ public final class Constants {
 
     public static final int MOTOR_FREE_LIMIT_AMPS = 20;
     public static final int MOTOR_STALL_LIMIT_AMPS = 20;
+
+    public static final double AXIS_MAX_SPEED = 0.25;
+  }
+
+  public static final class TRAP_AMP_ARM {
+    public static final boolean MOTOR_IS_INVERTED = false;
+
+    public static final IdleMode MOTOR_IDLE_MODE = IdleMode.kBrake;
+
+    public static final int MOTOR_STALL_LIMIT_AMPS = 20;
+    public static final int MOTOR_FREE_LIMIT_AMPS = 20;
+
+    public static final double MOTOR_PID_P = 0;
+    public static final double MOTOR_PID_I = 0;
+    public static final double MOTOR_PID_D = 0;
+    public static final double MOTOR_PID_FF = 0;
+
+    public static final int SMART_MOTION_MAX_VEL_RPM = 0;
+    public static final int SMART_MOTION_MIN_VEL_RPM = 0;
+    public static final int SMART_MOTION_MAX_ACC_RPM = 0;
+    public static final int SMART_MOTION_ALLOWED_ERROR = 0;
 
     public static final double AXIS_MAX_SPEED = 0.25;
   }
