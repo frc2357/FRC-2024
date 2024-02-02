@@ -15,6 +15,7 @@ import frc.robot.controls.DriverControls;
 import frc.robot.state.RobotState;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.EndAffectorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterPivotSubsystem;
@@ -44,6 +45,8 @@ public class Robot extends TimedRobot {
 
   public static LimelightSubsystem shooterLimelight;
 
+  public static EndAffectorSubsystem endAffector;
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -69,6 +72,7 @@ public class Robot extends TimedRobot {
     pivot = new ShooterPivotSubsystem();
     intake = new IntakeSubsystem();
     climber = new ClimberSubsystem();
+    endAffector = new EndAffectorSubsystem();
 
     shooterLimelight = new LimelightSubsystem(Constants.SHOOTER_LIMELIGHT.NAME);
 
