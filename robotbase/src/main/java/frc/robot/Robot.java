@@ -20,6 +20,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterPivotSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.TrapAmpArmSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -47,6 +48,8 @@ public class Robot extends TimedRobot {
 
   public static EndAffectorSubsystem endAffector;
 
+  public static TrapAmpArmSubsystem trapAmpArm;
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -73,6 +76,7 @@ public class Robot extends TimedRobot {
     intake = new IntakeSubsystem();
     climber = new ClimberSubsystem();
     endAffector = new EndAffectorSubsystem();
+    trapAmpArm = new TrapAmpArmSubsystem();
 
     shooterLimelight = new LimelightSubsystem(Constants.SHOOTER_LIMELIGHT.NAME);
 

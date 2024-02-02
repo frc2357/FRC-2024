@@ -58,6 +58,8 @@ public final class Constants {
     public static final int LEFT_CLIMBER_MOTOR_ID = 28;
 
     public static final int END_AFFECTOR_MOTOR_ID = 30;
+
+    public static final int TRAP_AMP_ARM_MOTOR_ID = 31;
   }
 
   public static final class PHEONIX_TUNER {
@@ -313,6 +315,27 @@ public final class Constants {
 
     public static final int MOTOR_FREE_LIMIT_AMPS = 20;
     public static final int MOTOR_STALL_LIMIT_AMPS = 20;
+
+    public static final double AXIS_MAX_SPEED = 0.25;
+  }
+
+  public static final class TRAP_AMP_ARM {
+    public static final boolean MOTOR_IS_INVERTED = false;
+
+    public static final IdleMode MOTOR_IDLE_MODE = IdleMode.kBrake;
+
+    public static final int MOTOR_STALL_LIMIT_AMPS = 20;
+    public static final int MOTOR_FREE_LIMIT_AMPS = 20;
+
+    public static final double MOTOR_PID_P = 1;
+    public static final double MOTOR_PID_I = 1;
+    public static final double MOTOR_PID_D = 1;
+    public static final double MOTOR_PID_FF = 0;
+
+    public static final int SMART_MOTION_MAX_VEL_RPM = 0;
+    public static final int SMART_MOTION_MIN_VEL_RPM = 0;
+    public static final int SMART_MOTION_MAX_ACC_RPM = 0;
+    public static final int SMART_MOTION_ALLOWED_ERROR = 0;
 
     public static final double AXIS_MAX_SPEED = 0.25;
   }
