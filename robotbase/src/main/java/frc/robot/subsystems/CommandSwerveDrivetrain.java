@@ -11,7 +11,6 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -29,14 +28,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
       new SwerveRequest.ApplyChassisSpeeds();
 
   private final SwerveRequest.FieldCentric driveRequest =
-      new SwerveRequest.FieldCentric()
-          .withDeadband(
-              Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND
-                  * Constants.SWERVE.TRANSLATIONAL_DEADBAND)
-          .withRotationalDeadband(
-              Constants.SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND
-                  * Constants.SWERVE.ROTATIONAL_DEADBAND)
-          .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+      new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
   public CommandSwerveDrivetrain(
       SwerveDrivetrainConstants driveTrainConstants,
@@ -54,24 +46,23 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     this.setControl(requestSupplier.get());
   }
 
-  public Command applyRequestCommand(Supplier<SwerveRequest> requestSupplier) {
-    return run(() -> this.setControl(requestSupplier.get()));
-  }
-
   public void setYaw(double yaw) {
     getPigeon2().setYaw(yaw);
   }
 
-  public void drive(double velocityX, double velocityY, double rotationRate) {
+  public void drive(
+      double velocityXMetersPerSecond,
+      double velocityYMetersPerSecond,
+      double rotationRateRadiansPerSecond) {
     applyRequest(
         () ->
             driveRequest
-                .withVelocityX(velocityX)
-                .withVelocityY(velocityY)
+                .withVelocityX(velocityXMetersPerSecond)
+                .withVelocityY(velocityYMetersPerSecond)
                 .withRotationalRate(
                     (Robot.state.isTargetLock() && Robot.shooterLimelight.validTargetExists())
                         ? getTargetLockRotation()
-                        : rotationRate));
+                        : rotationRateRadiansPerSecond));
   }
 
   /**
