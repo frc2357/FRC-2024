@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.commands.TargetLockCommand;
 import frc.robot.controls.util.AxisThresholdTrigger;
