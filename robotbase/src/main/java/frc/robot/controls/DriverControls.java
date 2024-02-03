@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.commands.TargetLockCommand;
 import frc.robot.controls.util.AxisThresholdTrigger;
@@ -48,6 +47,7 @@ public class DriverControls implements RumbleInterface {
   }
 
   public double getY() {
+    System.out.println(-modifyAxis(m_controller.getLeftY()));
     return -modifyAxis(m_controller.getLeftY());
   }
 
@@ -69,7 +69,8 @@ public class DriverControls implements RumbleInterface {
 
   public double modifyAxis(double value) {
     value = deadband(value, m_deadband);
-    value = Math.copySign(Math.pow(value, Constants.SWERVE.TRANSLATION_RAMP_EXPONENT), value);
+    // value = Math.copySign(Math.pow(value,
+    // Constants.SWERVE.TRANSLATION_RAMP_EXPONENT), value);
     return value;
   }
 
