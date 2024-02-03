@@ -66,7 +66,8 @@ public final class Constants {
 
     // Both sets of gains need to be tuned to your individual robot.
 
-    // The steer motor uses any SwerveModule.SteerRequestType control request with the
+    // The steer motor uses any SwerveModule.SteerRequestType control request with
+    // the
     // output type specified by SwerveModuleConstants.SteerMotorClosedLoopOutput
     public static final Slot0Configs STEER_GAINS =
         new Slot0Configs().withKP(100).withKI(0).withKD(0.05).withKS(0).withKV(1.5).withKA(0);
@@ -184,8 +185,8 @@ public final class Constants {
     public static final double BACK_RIGHT_X_POSITION_INCHES = -9.375;
     public static final double BACK_RIGHT_Y_POSITION_INCHES = -9.375;
 
-    public static final double TRANSLATIONAL_DEADBAND = 0.1;
-    public static final double ROTATIONAL_DEADBAND = 0.1;
+    public static final double TRANSLATIONAL_DEADBAND = 0.0;
+    public static final double ROTATIONAL_DEADBAND = 0.0;
 
     public static final double STATIC_FEEDFORWARD_METERS_PER_SECOND = 0.094545;
     public static final double TRANSLATION_RAMP_EXPONENT = 2;
@@ -210,8 +211,8 @@ public final class Constants {
     public static final double DRIVE_CONTROLLER_DEADBAND = 0.1;
     public static final int CODRIVER_CONTROLLER_PORT = 1;
     public static final double CODRIVE_CONTROLLER_DEADBAND = 0.1;
-    public static final double SWERVE_TRANSLATIONAL_DEADBAND = 0.05;
-    public static final double SWERVE_ROTATIONAL_DEADBAND = 0.05;
+    public static final double SWERVE_TRANSLATIONAL_DEADBAND = 0.0;
+    public static final double SWERVE_ROTATIONAL_DEADBAND = 0.0;
   }
 
   public static final class SHOOTER {
