@@ -27,8 +27,7 @@ public class ShooterPivot extends SubsystemBase {
     m_pivotMotor.setInverted(SHOOTER_PIVOT.MOTOR_INVERTED);
     m_pivotMotor.setIdleMode(SHOOTER_PIVOT.IDLE_MODE);
     m_pivotMotor.setSmartCurrentLimit(
-        SHOOTER_PIVOT.MOTOR_STALL_LIMIT_AMPS,
-        SHOOTER_PIVOT.MOTOR_FREE_LIMIT_AMPS);
+        SHOOTER_PIVOT.MOTOR_STALL_LIMIT_AMPS, SHOOTER_PIVOT.MOTOR_FREE_LIMIT_AMPS);
     m_pivotMotor.enableVoltageCompensation(12);
 
     m_pivotPIDController = m_pivotMotor.getPIDController();
@@ -41,10 +40,8 @@ public class ShooterPivot extends SubsystemBase {
     m_pivotPIDController.setOutputRange(-1, 1);
     m_absoluteEncoder = m_pivotMotor.getAbsoluteEncoder(SparkAbsoluteEncoder.Type.kDutyCycle);
     m_absoluteEncoder.setInverted(SHOOTER_PIVOT.ENCODER_INVERTED);
-    m_absoluteEncoder.setPositionConversionFactor(
-        SHOOTER_PIVOT.ENCODER_POSITION_CONVERSION_FACTOR);
-    m_absoluteEncoder.setVelocityConversionFactor(
-        SHOOTER_PIVOT.ENCODER_VELOCITY_CONVERSION_FACTOR);
+    m_absoluteEncoder.setPositionConversionFactor(SHOOTER_PIVOT.ENCODER_POSITION_CONVERSION_FACTOR);
+    m_absoluteEncoder.setVelocityConversionFactor(SHOOTER_PIVOT.ENCODER_VELOCITY_CONVERSION_FACTOR);
   }
 
   public void setPivotRotations(double rotations) {
