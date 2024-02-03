@@ -7,7 +7,6 @@ import com.revrobotics.SparkPIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.util.PipelineManager;
 import frc.robot.util.RobotMath;
 import frc.robot.util.Utility;
 
@@ -106,7 +105,7 @@ public class Shooter extends SubsystemBase {
 
   public void startVisionShooting() {
     m_isClosedLoopEnabled = true;
-    Robot.shooterLimelight.setPipeline(PipelineManager.speakerPipeline());
+    Robot.shooterLimelight.setPipeline(Constants.SHOOTER_LIMELIGHT.SPEAKER_PIPELINE_INDEX);
   }
 
   public void endVisionShooting() {

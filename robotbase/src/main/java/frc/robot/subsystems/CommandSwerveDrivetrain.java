@@ -13,7 +13,9 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.Constants.SWERVE;
+import frc.robot.Constants;
+import frc.robot.Robot;
+import frc.robot.util.Utility;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -28,9 +30,12 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
   private final SwerveRequest.FieldCentric driveRequest =
       new SwerveRequest.FieldCentric()
-          .withDeadband(SWERVE.MAX_SPEED_METERS_PER_SECOND * SWERVE.TRANSLATIONAL_DEADBAND)
+          .withDeadband(
+              Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND
+                  * Constants.SWERVE.TRANSLATIONAL_DEADBAND)
           .withRotationalDeadband(
-              SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND * SWERVE.ROTATIONAL_DEADBAND)
+              Constants.SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND
+                  * Constants.SWERVE.ROTATIONAL_DEADBAND)
           .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
   public CommandSwerveDrivetrain(
@@ -38,7 +43,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
       double OdometryUpdateFrequency,
       SwerveModuleConstants... modules) {
     super(driveTrainConstants, OdometryUpdateFrequency, modules);
-    zeroAll();
   }
 
   public CommandSwerveDrivetrain(
@@ -64,7 +68,10 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
             driveRequest
                 .withVelocityX(velocityX)
                 .withVelocityY(velocityY)
-                .withRotationalRate(rotationRate));
+                .withRotationalRate(
+                    (Robot.state.isTargetLock() && Robot.shooterLimelight.validTargetExists())
+                        ? getTargetLockRotation()
+                        : rotationRate));
   }
 
   /**
@@ -97,17 +104,21 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     };
   }
 
-  public SwerveDriveKinematics getKinematics() {
+  private SwerveDriveKinematics getKinematics() {
     return super.m_kinematics;
   }
 
   public void zeroAll() {
     zeroGyro();
-    setPose(new Pose2d(0, 0, new Rotation2d(0)));
+    resetPose();
   }
 
   public void zeroGyro() {
     super.getPigeon2().setYaw(0);
+  }
+
+  public void resetPose() {
+    setPose(new Pose2d(0, 0, new Rotation2d()));
   }
 
   public void stopMotorsIntoX() {
@@ -128,10 +139,32 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
       public void accept(ChassisSpeeds speeds) {
         SwerveModuleState[] moduleStates = getKinematics().toSwerveModuleStates(speeds);
         for (SwerveModuleState state : moduleStates) {
-          state.speedMetersPerSecond += SWERVE.STATIC_FEEDFORWARD_METERS_PER_SECOND;
+          state.speedMetersPerSecond += Constants.SWERVE.STATIC_FEEDFORWARD_METERS_PER_SECOND;
         }
         setControl(chassisSpeedRequest.withSpeeds(getKinematics().toChassisSpeeds(moduleStates)));
       }
     };
+  }
+
+  public ChassisSpeeds getChassisSpeeds() {
+    ChassisSpeeds chassisSpeeds = getKinematics().toChassisSpeeds(getModuleStates());
+    return chassisSpeeds;
+  }
+
+  public double getTargetLockRotation() {
+    double tx = Robot.shooterLimelight.getTX();
+    if (Utility.isWithinTolerance(tx, 0, Constants.SWERVE.TARGET_LOCK_TOLERANCE)) {
+      return 0;
+    }
+
+    // Increase kP based on horizontal velocity to reduce lag
+    double vy = getChassisSpeeds().vyMetersPerSecond; // Horizontal velocity
+    double kp = Constants.SWERVE.TARGET_LOCK_KP;
+    kp *= Math.max(1, vy);
+    Constants.SWERVE.TARGET_LOCK_PID_CONTROLLER.setP(kp);
+
+    double rotation = -Constants.SWERVE.TARGET_LOCK_PID_CONTROLLER.calculate(0, tx);
+    double output = rotation + Math.copySign(Constants.SWERVE.TARGET_LOCK_FEED_FORWARD, rotation);
+    return output;
   }
 }

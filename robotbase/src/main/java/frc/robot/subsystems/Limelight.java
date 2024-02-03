@@ -113,7 +113,7 @@ public class Limelight extends SubsystemBase {
     m_pipelinePub.set(Constants.SHOOTER_LIMELIGHT.HUMAN_PIPELINE_INDEX);
   }
 
-  private int getPipeline() {
+  public int getPipeline() {
     double value = m_pipelineSub.get();
     return (int) Math.round(value);
   }
