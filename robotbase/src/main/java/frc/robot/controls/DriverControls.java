@@ -36,6 +36,7 @@ public class DriverControls implements RumbleInterface {
   }
 
   public double getY() {
+    System.out.println(-modifyAxis(m_controller.getLeftY()));
     return -modifyAxis(m_controller.getLeftY());
   }
 
@@ -57,7 +58,8 @@ public class DriverControls implements RumbleInterface {
 
   public double modifyAxis(double value) {
     value = deadband(value, m_deadband);
-    value = Math.copySign(Math.pow(value, Constants.SWERVE.TRANSLATION_RAMP_EXPONENT), value);
+    // value = Math.copySign(Math.pow(value,
+    // Constants.SWERVE.TRANSLATION_RAMP_EXPONENT), value);
     return value;
   }
 
