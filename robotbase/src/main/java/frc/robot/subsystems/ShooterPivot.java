@@ -58,7 +58,7 @@ public class ShooterPivot extends SubsystemBase {
   public void setPivotRotations(double rotations) {
     m_isClosedLoopEnabled = true;
     m_targetRotations = rotations;
-    m_pivotPIDController.setReference(m_targetRotations, ControlType.kSmartMotion);
+    m_pivotPIDController.setReference(m_targetRotations, ControlType.kPosition);
   }
 
   public void setPivotAxisSpeed(double axisSpeed) {
@@ -69,7 +69,7 @@ public class ShooterPivot extends SubsystemBase {
 
   public void stop() {
     m_isClosedLoopEnabled = false;
-    m_pivotMotor.set(0.0);
+    m_pivotMotor.stopMotor();
   }
 
   public void resetEncoder() {
@@ -87,7 +87,7 @@ public class ShooterPivot extends SubsystemBase {
 
   public boolean isPivotAtRotations() {
     return Utility.isWithinTolerance(
-        getPivotRotations(), m_targetRotations, Constants.SHOOTER_PIVOT.SMART_MOTION_ALLOWED_ERROR);
+        getAngle(), m_targetRotations, Constants.SHOOTER_PIVOT.SMART_MOTION_ALLOWED_ERROR);
   }
 
   @Override

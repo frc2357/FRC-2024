@@ -182,15 +182,15 @@ public final class Constants {
     public static final int MOTOR_STALL_LIMIT_AMPS = 40;
     public static final int MOTOR_FREE_LIMIT_AMPS = 40;
 
-    public static final double PIVOT_P = 0.0;
-    public static final double PIVOT_I = 0.0;
-    public static final double PIVOT_D = 0.0;
-    public static final double PIVOT_FF = 0.0;
+    public static final double PIVOT_P = 0.02;
+    public static final double PIVOT_I = 0;
+    public static final double PIVOT_D = 0;
+    public static final double PIVOT_FF = 0.045;
 
-    public static final int SMART_MOTION_MAX_VEL_RPM = 0;
-    public static final int SMART_MOTION_MIN_VEL_RPM = 0;
-    public static final int SMART_MOTION_MAX_ACC_RPM = 0;
-    public static final int SMART_MOTION_ALLOWED_ERROR = 0;
+    public static final double SMART_MOTION_MAX_VEL_RPM = 1;
+    public static final double SMART_MOTION_MIN_VEL_RPM = 0;
+    public static final double SMART_MOTION_MAX_ACC_RPM = 0.25;
+    public static final double SMART_MOTION_ALLOWED_ERROR = 0.1;
 
     public static final double AXIS_MAX_SPEED = 0.25;
 
