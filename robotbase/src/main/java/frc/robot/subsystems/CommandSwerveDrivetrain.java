@@ -18,19 +18,20 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- * Class that extends the Phoenix SwerveDrivetrain class and implements
- * subsystem so it can be used
+ * Class that extends the Phoenix SwerveDrivetrain class and implements subsystem so it can be used
  * in command-based projects easily.
  */
 public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsystem {
 
-  private final SwerveRequest.ApplyChassisSpeeds chassisSpeedRequest = new SwerveRequest.ApplyChassisSpeeds();
+  private final SwerveRequest.ApplyChassisSpeeds chassisSpeedRequest =
+      new SwerveRequest.ApplyChassisSpeeds();
 
-  private final SwerveRequest.FieldCentric driveRequest = new SwerveRequest.FieldCentric()
-      .withDeadband(SWERVE.MAX_SPEED_METERS_PER_SECOND * SWERVE.TRANSLATIONAL_DEADBAND)
-      .withRotationalDeadband(
-          SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND * SWERVE.ROTATIONAL_DEADBAND)
-      .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+  private final SwerveRequest.FieldCentric driveRequest =
+      new SwerveRequest.FieldCentric()
+          .withDeadband(SWERVE.MAX_SPEED_METERS_PER_SECOND * SWERVE.TRANSLATIONAL_DEADBAND)
+          .withRotationalDeadband(
+              SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND * SWERVE.ROTATIONAL_DEADBAND)
+          .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
   public CommandSwerveDrivetrain(
       SwerveDrivetrainConstants driveTrainConstants,
@@ -59,16 +60,16 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
   public void drive(double velocityX, double velocityY, double rotationRate) {
     applyRequest(
-        () -> driveRequest
-            .withVelocityX(velocityX)
-            .withVelocityY(velocityY)
-            .withRotationalRate(rotationRate));
+        () ->
+            driveRequest
+                .withVelocityX(velocityX)
+                .withVelocityY(velocityY)
+                .withRotationalRate(rotationRate));
   }
 
   /**
-   * @return A list of the module positions in the order Front Left, Front Right,
-   *         Back Left, Back
-   *         Right
+   * @return A list of the module positions in the order Front Left, Front Right, Back Left, Back
+   *     Right
    */
   public SwerveModulePosition[] getModulePositions() {
     return super.m_modulePositions;
