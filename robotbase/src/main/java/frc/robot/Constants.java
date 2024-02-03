@@ -187,10 +187,8 @@ public final class Constants {
     public static final double PIVOT_D = 0;
     public static final double PIVOT_FF = 0.045;
 
-    public static final double SMART_MOTION_MAX_VEL_RPM = 1;
-    public static final double SMART_MOTION_MIN_VEL_RPM = 0;
-    public static final double SMART_MOTION_MAX_ACC_RPM = 0.25;
-    public static final double SMART_MOTION_ALLOWED_ERROR = 0.1;
+    public static final double POSITION_ALLOWED_ERROR = 0.1;
+    public static final boolean POSITION_PID_WRAPPING_ENABLED = false;
 
     public static final double AXIS_MAX_SPEED = 0.25;
 
