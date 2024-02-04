@@ -4,7 +4,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.drive.ChoreoTrajectoryCommand;
+import frc.robot.commands.ChoreoTrajectoryCommand;
+import frc.robot.commands.auto.SplicingSeperatePathsTestCommand;
+import frc.robot.commands.auto.SplicingStopGroupTestCommand;
 
 public class AutoCommandChooser {
   private Command[] m_autoCommands;
@@ -20,6 +22,8 @@ public class AutoCommandChooser {
           new ChoreoTrajectoryCommand("Ch1MeterYTest"),
           new ChoreoTrajectoryCommand("Ch3MeterYTest"),
           new ChoreoTrajectoryCommand("ChBoxTest"),
+          new SplicingSeperatePathsTestCommand(),
+          new SplicingStopGroupTestCommand()
         };
 
     m_chooser = new SendableChooser<>();
