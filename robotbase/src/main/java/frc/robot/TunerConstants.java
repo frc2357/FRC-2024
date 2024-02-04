@@ -15,11 +15,18 @@ public class TunerConstants {
     // The steer motor uses any SwerveModule.SteerRequestType control request with
     // the
     // output type specified by SwerveModuleConstants.SteerMotorClosedLoopOutput
+
+    // Voltage
     private static final Slot0Configs steerGains = new Slot0Configs().withKP(100).withKI(0).withKD(0.2).withKS(0)
             .withKV(1.5).withKA(0);
+    // TorqueCurrentFOC - Not fully tuned
+    // private static final Slot0Configs steerGains = new
+    // Slot0Configs().withKP(80).withKI(0).withKD(0).withKS(4)
+    // .withKV(0).withKA(0);
+
     // When using closed-loop control, the drive motor uses the control
     // output type specified by SwerveModuleConstants.DriveMotorClosedLoopOutput
-    private static final Slot0Configs driveGains = new Slot0Configs().withKP(9).withKI(0).withKD(0).withKS(3.0)
+    private static final Slot0Configs driveGains = new Slot0Configs().withKP(9).withKI(0).withKD(0).withKS(3)
             .withKV(0)
             .withKA(0);
 
@@ -150,6 +157,7 @@ public class TunerConstants {
             Units.inchesToMeters(kBackRightYPosInches),
             kInvertRightSide);
 
-    public static final CommandSwerveDrivetrain DriveTrain = new CommandSwerveDrivetrain(DrivetrainConstants, FrontLeft,
+    public static final CommandSwerveDrivetrain DriveTrain = new CommandSwerveDrivetrain(DrivetrainConstants,
+            FrontLeft,
             FrontRight, BackLeft, BackRight);
 }
