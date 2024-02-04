@@ -23,15 +23,16 @@ public class DriveToGamepeiceCommand extends Command {
   public void initialize() {
     limelightSub.setPipeline(1);
     Robot.state.setDriveControlState(DriveControlState.ROBOT_RELATIVE);
+    SWERVE.ROTATION_PID_CONTROLLER.reset();
   }
 
   @Override
   public void execute() {
     double rotationError = limelightSub.getTX();
     double translationError = limelightSub.getTY();
-    double rotationSpeed = SWERVE.GAMEPIECE_TRACKING_ROTATION_PID.calculate(rotationError, 0);
-    double translationSpeed = SWERVE.GAMEPIECE_TRACKING_TRANSLATION_PID.calculate(translationError, 0);
-    Robot.drive.drive(0, translationSpeed, rotationSpeed);
+    double rotationSpeed = SWERVE.ROTATION_PID_CONTROLLER.calculate(rotationError, 0);
+    // double translationSpeed = ;
+    Robot.drive.drive(0, 0, rotationSpeed);
   }
 
   @Override

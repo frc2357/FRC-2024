@@ -22,6 +22,7 @@ public class DriverControls implements RumbleInterface {
 
   private AxisThresholdTrigger m_rightTriggerPrime;
   private AxisThresholdTrigger m_rightTriggerShoot;
+  private AxisThresholdTrigger m_leftTrigger;
 
   public DriverControls(XboxController controller, double deadband) {
     m_controller = controller;
@@ -32,6 +33,7 @@ public class DriverControls implements RumbleInterface {
 
     m_rightTriggerPrime = new AxisThresholdTrigger(m_controller, Axis.kRightTrigger, .1);
     m_rightTriggerShoot = new AxisThresholdTrigger(m_controller, Axis.kRightTrigger, .6);
+    m_leftTrigger = new AxisThresholdTrigger(m_controller, Axis.kLeftTrigger, .1);
 
     mapControls();
   }
@@ -40,9 +42,9 @@ public class DriverControls implements RumbleInterface {
     m_backButton.onTrue(new InstantCommand(() -> Robot.drive.setYaw(0)));
     m_startButton.onTrue(new InstantCommand(() -> Robot.drive.setYaw(180)));
 
-    // m_rightTriggerPrime.whileTrue(
-    // new TargetLockCommand(Constants.SHOOTER_LIMELIGHT.SPEAKER_PIPELINE_INDEX));
-    m_rightTriggerPrime.whileTrue(new DriveToGamepeiceCommand());
+    m_rightTriggerPrime.whileTrue(
+        new TargetLockCommand(Constants.SHOOTER_LIMELIGHT.SPEAKER_PIPELINE_INDEX));
+    // m_rightTriggerPrime.whileTrue(new DriveToGamepeiceCommand());
   }
 
   public double getX() {

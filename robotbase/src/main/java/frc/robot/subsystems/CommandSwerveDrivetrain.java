@@ -57,7 +57,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
       double velocityXMetersPerSecond,
       double velocityYMetersPerSecond,
       double rotationRateRadiansPerSecond) {
-    System.out.println(rotationRateRadiansPerSecond);
     switch (Robot.state.getDriveControlState()) {
       case ROBOT_RELATIVE:
         applyRequest(
@@ -65,18 +64,21 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
                 .withVelocityX(velocityXMetersPerSecond)
                 .withVelocityY(velocityYMetersPerSecond)
                 .withRotationalRate(rotationRateRadiansPerSecond));
+        break;
       case FIELD_RELATIVE:
         applyRequest(
             () -> fieldRelative
                 .withVelocityX(velocityXMetersPerSecond)
                 .withVelocityY(velocityYMetersPerSecond)
                 .withRotationalRate(rotationRateRadiansPerSecond));
+        break;
       case TARGET_LOCK:
         applyRequest(
             () -> fieldRelative
                 .withVelocityX(velocityXMetersPerSecond)
                 .withVelocityY(velocityYMetersPerSecond)
                 .withRotationalRate(getTargetLockRotation()));
+        break;
     }
   }
 
@@ -160,18 +162,18 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
   public double getTargetLockRotation() {
     double tx = Robot.shooterLimelight.getTX();
-    if (Robot.shooterLimelight.validTargetExists()
+    if (!Robot.shooterLimelight.validTargetExists()
         || Utility.isWithinTolerance(tx, 0, Constants.SWERVE.TARGET_LOCK_TOLERANCE)) {
       return 0;
     }
 
     // Increase kP based on horizontal velocity to reduce lag
     double vy = getChassisSpeeds().vyMetersPerSecond; // Horizontal velocity
-    double kp = Constants.SWERVE.TARGET_LOCK_KP;
+    double kp = Constants.SWERVE.ROTATION_KP;
     kp *= Math.max(1, vy * 1);
-    Constants.SWERVE.TARGET_LOCK_PID_CONTROLLER.setP(kp);
+    Constants.SWERVE.ROTATION_PID_CONTROLLER.setP(kp);
 
-    double rotation = -Constants.SWERVE.TARGET_LOCK_PID_CONTROLLER.calculate(0, tx);
+    double rotation = -Constants.SWERVE.ROTATION_PID_CONTROLLER.calculate(0, tx);
     double output = rotation + Math.copySign(Constants.SWERVE.TARGET_LOCK_FEED_FORWARD, rotation);
     return output;
   }
