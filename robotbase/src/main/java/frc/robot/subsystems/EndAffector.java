@@ -11,7 +11,8 @@ public class EndAffector extends SubsystemBase {
   private CANSparkMax m_motor;
 
   public EndAffector() {
-    m_motor = new CANSparkMax(CAN_ID.END_AFFECTOR_MOTOR_ID, MotorType.kBrushed);
+    m_motor = new CANSparkMax(CAN_ID.END_AFFECTOR_MOTOR_ID, MotorType.kBrushless); // TODO: Undo this. Robot won't run
+                                                                                   // if it's kBrushed
     configure();
   }
 

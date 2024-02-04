@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.commands.SteerMotorTuningTestCommand;
 import frc.robot.commands.TargetLockCommand;
 import frc.robot.controls.util.AxisThresholdTrigger;
 import frc.robot.controls.util.RumbleInterface;
@@ -39,8 +40,7 @@ public class DriverControls implements RumbleInterface {
     m_backButton.onTrue(new InstantCommand(() -> Robot.drive.setYaw(0)));
     m_startButton.onTrue(new InstantCommand(() -> Robot.drive.setYaw(180)));
 
-    m_rightTriggerPrime.whileTrue(
-        new TargetLockCommand(Constants.SHOOTER_LIMELIGHT.SPEAKER_PIPELINE_INDEX));
+    m_rightTriggerPrime.whileTrue(new SteerMotorTuningTestCommand());
   }
 
   public double getX() {
@@ -48,7 +48,6 @@ public class DriverControls implements RumbleInterface {
   }
 
   public double getY() {
-    System.out.println(-modifyAxis(m_controller.getLeftY()));
     return -modifyAxis(m_controller.getLeftY());
   }
 
