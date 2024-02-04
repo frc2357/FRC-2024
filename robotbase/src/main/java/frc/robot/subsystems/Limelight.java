@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 /** Controls the limelight camera options. */
-public class LimelightSubsystem extends SubsystemBase {
+public class Limelight extends SubsystemBase {
   protected NetworkTable m_table;
 
   private DoublePublisher m_streamPub;
@@ -49,7 +49,7 @@ public class LimelightSubsystem extends SubsystemBase {
    *
    * @param limelightName Name of the desired limelight's shuffleboard table
    */
-  public LimelightSubsystem(String limelightName) {
+  public Limelight(String limelightName) {
     m_table = NetworkTableInstance.getDefault().getTable(limelightName);
 
     m_streamPub = m_table.getDoubleTopic("stream").publish();
@@ -113,7 +113,7 @@ public class LimelightSubsystem extends SubsystemBase {
     m_pipelinePub.set(Constants.SHOOTER_LIMELIGHT.HUMAN_PIPELINE_INDEX);
   }
 
-  private int getPipeline() {
+  public int getPipeline() {
     double value = m_pipelineSub.get();
     return (int) Math.round(value);
   }

@@ -4,23 +4,20 @@
 
 package frc.robot;
 
-import com.ctre.phoenix6.configs.Slot0Configs;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.ClosedLoopOutputType;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants.SteerFeedbackType;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 import com.revrobotics.CANSparkBase.IdleMode;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.util.Units;
 import java.util.function.BooleanSupplier;
 
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants. This class should not be used for any other purpose. All constants should be declared
+ * The Constants class provides a convenient place for teams to hold robot-wide
+ * numerical or boolean
+ * constants. This class should not be used for any other purpose. All constants
+ * should be declared
  * globally (i.e. public static). Do not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
+ * <p>
+ * It is advised to statically import this class (or one of its inner classes)
+ * wherever the
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
@@ -46,106 +43,20 @@ public final class Constants {
     public static final int BACK_RIGHT_STEER_MOTOR_ID = 18;
     public static final int BACK_RIGHT_ENCODER_ID = 22;
 
-    public static final int TOP_SHOOTER_MOTOR_ID = 25;
-    public static final int BOTTOM_SHOOTER_MOTOR_ID = 26;
-
-    public static final int SHOOTER_PIVOT_MOTOR_ID = 29;
-
     public static final int TOP_INTAKE_MOTOR_ID = 23;
     public static final int BOTTOM_INTAKE_MOTOR_ID = 24;
 
+    public static final int TOP_SHOOTER_MOTOR_ID = 25;
+    public static final int BOTTOM_SHOOTER_MOTOR_ID = 26;
+
     public static final int RIGHT_CLIMBER_MOTOR_ID = 27;
     public static final int LEFT_CLIMBER_MOTOR_ID = 28;
-  }
 
-  public static final class PHEONIX_TUNER {
+    public static final int SHOOTER_PIVOT_MOTOR_ID = 29;
 
-    // Both sets of gains need to be tuned to your individual robot.
+    public static final int END_AFFECTOR_MOTOR_ID = 30;
 
-    // The steer motor uses any SwerveModule.SteerRequestType control request with the
-    // output type specified by SwerveModuleConstants.SteerMotorClosedLoopOutput
-    public static final Slot0Configs STEER_GAINS =
-        new Slot0Configs().withKP(100).withKI(0).withKD(0.05).withKS(0).withKV(1.5).withKA(0);
-    // When using closed-loop control, the drive motor uses the control
-    // output type specified by SwerveModuleConstants.DriveMotorClosedLoopOutput
-    public static final Slot0Configs DRIVE_GAINS =
-        new Slot0Configs().withKP(3).withKI(0).withKD(0).withKS(0).withKV(0).withKA(0);
-
-    // The closed-loop output type to use for the steer motors;
-    // This affects the PID/FF gains for the steer motors
-    public static final ClosedLoopOutputType STEER_CLOSED_LOOP_OUTPUT =
-        ClosedLoopOutputType.Voltage;
-    // The closed-loop output type to use for the drive motors;
-    // This affects the PID/FF gains for the drive motors
-    public static final ClosedLoopOutputType DRIVE_CLOSED_LOOP_OUTPUT =
-        ClosedLoopOutputType.Voltage;
-
-    // The stator current at which the wheels start to slip;
-    // This needs to be tuned to your individual robot
-    public static final double SLIP_CURRENT_AMPS = 300.0;
-
-    // Theoretical free speed (m/s) at 12v applied output;
-    // This needs to be tuned to your individual robot
-    public static final double SPEED_AT_12_VOLTS = 4.7;
-
-    // Every 1 rotation of the azimuth results in COUPLE_RATIO drive motor turns;
-    // This may need to be tuned to your individual robot
-    public static final double COUPLE_RATIO = 3.5714285714285716;
-
-    private static final SwerveModuleConstantsFactory ConstantCreator =
-        new SwerveModuleConstantsFactory()
-            .withDriveMotorGearRatio(SWERVE.DRIVE_GEAR_RATIO)
-            .withSteerMotorGearRatio(SWERVE.STEER_GEAR_RATIO)
-            .withWheelRadius(SWERVE.WHEEL_RADIUS_INCHES)
-            .withSlipCurrent(SLIP_CURRENT_AMPS)
-            .withSteerMotorGains(STEER_GAINS)
-            .withDriveMotorGains(DRIVE_GAINS)
-            .withSteerMotorClosedLoopOutput(STEER_CLOSED_LOOP_OUTPUT)
-            .withDriveMotorClosedLoopOutput(DRIVE_CLOSED_LOOP_OUTPUT)
-            .withSpeedAt12VoltsMps(SPEED_AT_12_VOLTS)
-            .withFeedbackSource(SteerFeedbackType.FusedCANcoder)
-            .withCouplingGearRatio(COUPLE_RATIO)
-            .withSteerMotorInverted(SWERVE.STEER_MOTOR_INVERSED);
-
-    public static final SwerveModuleConstants FRONT_LEFT_MODULE_CONSTANTS =
-        ConstantCreator.createModuleConstants(
-            CAN_ID.FRONT_LEFT_STEER_MOTOR_ID,
-            CAN_ID.FRONT_LEFT_DRIVE_MOTOR_ID,
-            CAN_ID.FRONT_LEFT_ENCODER_ID,
-            SWERVE.FRONT_LEFT_ENCODER_OFFSET,
-            Units.inchesToMeters(SWERVE.FRONT_LEFT_X_POSITION_INCHES),
-            Units.inchesToMeters(SWERVE.FRONT_LEFT_Y_POSITION_INCHES),
-            SWERVE.INVERT_LEFT_SIDE);
-    public static final SwerveModuleConstants FRONT_RIGHT_MODULE_CONSTANTS =
-        ConstantCreator.createModuleConstants(
-            CAN_ID.FRONT_RIGHT_STEER_MOTOR_ID,
-            CAN_ID.FRONT_RIGHT_DRIVE_MOTOR_ID,
-            CAN_ID.FRONT_RIGHT_ENCODER_ID,
-            SWERVE.FRONT_RIGHT_ENCODER_OFFSET,
-            Units.inchesToMeters(SWERVE.FRONT_RIGHT_X_POSITION_INCHES),
-            Units.inchesToMeters(SWERVE.FRONT_RIGHT_Y_POSITION_INCHES),
-            SWERVE.INVERT_RIGHT_SIDE);
-    public static final SwerveModuleConstants BACK_LEFT_MODULE_CONSTANTS =
-        ConstantCreator.createModuleConstants(
-            CAN_ID.BACK_LEFT_STEER_MOTOR_ID,
-            CAN_ID.BACK_LEFT_DRIVE_MOTOR_ID,
-            CAN_ID.BACK_LEFT_ENCODER_ID,
-            SWERVE.BACK_LEFT_ENCODER_OFFSET,
-            Units.inchesToMeters(SWERVE.BACK_LEFT_X_POSITION_INCHES),
-            Units.inchesToMeters(SWERVE.BACK_LEFT_Y_POSITION_INCHES),
-            SWERVE.INVERT_LEFT_SIDE);
-    public static final SwerveModuleConstants BACK_RIGHT_MODULE_CONSTANTS =
-        ConstantCreator.createModuleConstants(
-            CAN_ID.BACK_RIGHT_STEER_MOTOR_ID,
-            CAN_ID.BACK_RIGHT_DRIVE_MOTOR_ID,
-            CAN_ID.BACK_RIGHT_ENCODER_ID,
-            SWERVE.BACK_RIGHT_ENCODER_OFFSET,
-            Units.inchesToMeters(SWERVE.BACK_RIGHT_X_POSITION_INCHES),
-            Units.inchesToMeters(SWERVE.BACK_RIGHT_Y_POSITION_INCHES),
-            SWERVE.INVERT_RIGHT_SIDE);
-
-    public static final SwerveDrivetrainConstants DRIVETRAIN_CONSTANTS =
-        new SwerveDrivetrainConstants().withCANbusName("").withPigeon2Id(CAN_ID.PIGEON_ID);
+    public static final int TRAP_AMP_ARM_MOTOR_ID = 31;
   }
 
   public static final class SWERVE {
@@ -160,32 +71,10 @@ public final class Constants {
     public static final boolean INVERT_LEFT_SIDE = false;
     public static final boolean INVERT_RIGHT_SIDE = true;
 
-    // Front Left
-    public static final double FRONT_LEFT_ENCODER_OFFSET = 0.077392578125;
-    public static final double FRONT_LEFT_X_POSITION_INCHES = 9.375;
-    public static final double FRONT_LEFT_Y_POSITION_INCHES = 9.375;
-
-    // Front Right
-    public static final double FRONT_RIGHT_ENCODER_OFFSET = 0.473876953125;
-    public static final double FRONT_RIGHT_X_POSITION_INCHES = 9.375;
-    public static final double FRONT_RIGHT_Y_POSITION_INCHES = -9.375;
-
-    // Back Left
-    public static final double BACK_LEFT_ENCODER_OFFSET = 0.2294921875;
-    public static final double BACK_LEFT_X_POSITION_INCHES = -9.375;
-    public static final double BACK_LEFT_Y_POSITION_INCHES = 9.375;
-
-    // Back Right
-    public static final double BACK_RIGHT_ENCODER_OFFSET = 0.37841796875;
-    public static final double BACK_RIGHT_X_POSITION_INCHES = -9.375;
-    public static final double BACK_RIGHT_Y_POSITION_INCHES = -9.375;
-
-    public static final double TRANSLATIONAL_DEADBAND = 0.1;
-    public static final double ROTATIONAL_DEADBAND = 0.1;
-
     public static final double STATIC_FEEDFORWARD_METERS_PER_SECOND = 0.094545;
     public static final double TRANSLATION_RAMP_EXPONENT = 2;
 
+    // Gamepiece tracking
     public static final double GAMEPIECE_TRACKING_TRANSLATION_SPEED = 0;
     public static final double GAMEPIECE_TRACKING_LOST_TARGET_ALLOWED_LOOPS = 3;
     public static final double GAMEPIECE_TRACKING_TRANSLATION_TOLERANCE = 0.1;
@@ -194,6 +83,16 @@ public final class Constants {
     public static final double GAMEPIECE_TRACKING_ROTATION_OFFSET = 0;
     public static final PIDController GAMEPIECE_TRACKING_TRANSLATION_PID = new PIDController(1, 0, 0);
     public static final PIDController GAMEPIECE_TRACKING_ROTATION_PID = new PIDController(0.1, 0, 0);
+
+    // Target Lock
+    public static final double TARGET_LOCK_KP = 0.15;
+    public static final double TARGET_LOCK_KI = 0.0;
+    public static final double TARGET_LOCK_KD = 0.0;
+    public static final PIDController TARGET_LOCK_PID_CONTROLLER = new PIDController(TARGET_LOCK_KP, TARGET_LOCK_KI,
+        TARGET_LOCK_KD);
+
+    public static final double TARGET_LOCK_FEED_FORWARD = 0.0;
+    public static final double TARGET_LOCK_TOLERANCE = 0.25;
   }
 
   public static final class CHOREO {
@@ -201,22 +100,21 @@ public final class Constants {
     public static final PIDController Y_CONTROLLER = new PIDController(0.15, 0, 0);
     public static final PIDController ROTATION_CONTROLLER = new PIDController(0.6, 0, 0);
 
-    public static final BooleanSupplier CHOREO_AUTO_MIRROR_PATHS =
-        new BooleanSupplier() {
-          @Override
-          public boolean getAsBoolean() {
-            return false;
-          }
-        };
+    public static final BooleanSupplier CHOREO_AUTO_MIRROR_PATHS = new BooleanSupplier() {
+      @Override
+      public boolean getAsBoolean() {
+        return false;
+      }
+    };
   }
 
   public static final class CONTROLLER {
     public static final int DRIVE_CONTROLLER_PORT = 0;
-    public static final double DRIVE_CONTROLLER_DEADBAND = 0.1;
+    public static final double DRIVE_CONTROLLER_DEADBAND = 0.025;
     public static final int CODRIVER_CONTROLLER_PORT = 1;
-    public static final double CODRIVE_CONTROLLER_DEADBAND = 0.1;
-    public static final double SWERVE_TRANSLATIONAL_DEADBAND = 0.05;
-    public static final double SWERVE_ROTATIONAL_DEADBAND = 0.05;
+    public static final double CODRIVE_CONTROLLER_DEADBAND = 0.025;
+    public static final double SWERVE_TRANSLATIONAL_DEADBAND = 0.0;
+    public static final double SWERVE_ROTATIONAL_DEADBAND = 0.0;
   }
 
   public static final class SHOOTER {
@@ -257,13 +155,22 @@ public final class Constants {
     public static final int BOTTOM_MOTOR_FREE_LIMIT_AMPS = 40;
   }
 
+  /*
+   * TODO: Make Limelight pipelines match the following list
+   * 0: Human pipeline
+   * 1: Gamepiece pipeline
+   * 2: Speaker apriltag pipeline
+   * 3: Amp apriltag pipeline
+   * 4: Source apriltag pipeline
+   * 5: Stage apriltag pipeline
+   */
+
   public static final class SHOOTER_LIMELIGHT {
-    public static final String NAME = "";
+    public static final String NAME = "limelight-shooter";
 
     public static final int HUMAN_PIPELINE_INDEX = 0;
 
-    public static final int RED_SPEAKER_APRILTAG_PIPELINE_INDEX = 1; // id 4
-    public static final int BLUE_SPEAKER_APRILTAG_PIPELINE_INDEX = 2; // id 7
+    public static final int SPEAKER_PIPELINE_INDEX = 4; // ids 4 and 7
 
     public static final boolean IS_PRIMARY_STREAM = false;
 
@@ -282,6 +189,7 @@ public final class Constants {
 
   public static final class SHOOTER_PIVOT {
     public static final boolean MOTOR_INVERTED = false;
+    public static final boolean ENCODER_INVERTED = false;
 
     public static final IdleMode IDLE_MODE = IdleMode.kBrake;
 
@@ -299,6 +207,9 @@ public final class Constants {
     public static final int SMART_MOTION_ALLOWED_ERROR = 0;
 
     public static final double AXIS_MAX_SPEED = 0.25;
+
+    public static final double ENCODER_POSITION_CONVERSION_FACTOR = 1;
+    public static final double ENCODER_VELOCITY_CONVERSION_FACTOR = 1;
   }
 
   public static final class CLIMBER {
@@ -307,5 +218,37 @@ public final class Constants {
 
     public static final int MOTOR_FREE_LIMIT_AMPS = 40;
     public static final int MOTOR_STALL_LIMIT_AMPS = 40;
+  }
+
+  public static final class END_AFFECTOR {
+    public static final boolean IS_INVERTED = false;
+
+    public static final IdleMode IDLE_MODE = IdleMode.kBrake;
+
+    public static final int MOTOR_FREE_LIMIT_AMPS = 20;
+    public static final int MOTOR_STALL_LIMIT_AMPS = 20;
+
+    public static final double AXIS_MAX_SPEED = 0.25;
+  }
+
+  public static final class TRAP_AMP_ARM {
+    public static final boolean MOTOR_IS_INVERTED = false;
+
+    public static final IdleMode MOTOR_IDLE_MODE = IdleMode.kBrake;
+
+    public static final int MOTOR_STALL_LIMIT_AMPS = 20;
+    public static final int MOTOR_FREE_LIMIT_AMPS = 20;
+
+    public static final double MOTOR_PID_P = 0;
+    public static final double MOTOR_PID_I = 0;
+    public static final double MOTOR_PID_D = 0;
+    public static final double MOTOR_PID_FF = 0;
+
+    public static final int SMART_MOTION_MAX_VEL_RPM = 0;
+    public static final int SMART_MOTION_MIN_VEL_RPM = 0;
+    public static final int SMART_MOTION_MAX_ACC_RPM = 0;
+    public static final int SMART_MOTION_ALLOWED_ERROR = 0;
+
+    public static final double AXIS_MAX_SPEED = 0.25;
   }
 }

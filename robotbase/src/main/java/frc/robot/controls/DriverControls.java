@@ -2,11 +2,14 @@ package frc.robot.controls;
 
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.commands.TargetLockCommand;
+import frc.robot.controls.util.AxisThresholdTrigger;
 import frc.robot.controls.util.RumbleInterface;
 
 public class DriverControls implements RumbleInterface {
@@ -16,6 +19,9 @@ public class DriverControls implements RumbleInterface {
   private JoystickButton m_backButton;
   private JoystickButton m_startButton;
 
+  private AxisThresholdTrigger m_rightTriggerPrime;
+  private AxisThresholdTrigger m_rightTriggerShoot;
+
   public DriverControls(XboxController controller, double deadband) {
     m_controller = controller;
     m_deadband = deadband;
@@ -23,12 +29,18 @@ public class DriverControls implements RumbleInterface {
     m_backButton = new JoystickButton(m_controller, Button.kBack.value);
     m_startButton = new JoystickButton(m_controller, Button.kStart.value);
 
+    m_rightTriggerPrime = new AxisThresholdTrigger(m_controller, Axis.kRightTrigger, .1);
+    m_rightTriggerShoot = new AxisThresholdTrigger(m_controller, Axis.kRightTrigger, .6);
+
     mapControls();
   }
 
   public void mapControls() {
     m_backButton.onTrue(new InstantCommand(() -> Robot.drive.setYaw(0)));
     m_startButton.onTrue(new InstantCommand(() -> Robot.drive.setYaw(180)));
+
+    m_rightTriggerPrime.whileTrue(
+        new TargetLockCommand(Constants.SHOOTER_LIMELIGHT.SPEAKER_PIPELINE_INDEX));
   }
 
   public double getX() {
@@ -57,7 +69,8 @@ public class DriverControls implements RumbleInterface {
 
   public double modifyAxis(double value) {
     value = deadband(value, m_deadband);
-    value = Math.copySign(Math.pow(value, Constants.SWERVE.TRANSLATION_RAMP_EXPONENT), value);
+    // value = Math.copySign(Math.pow(value,
+    // Constants.SWERVE.TRANSLATION_RAMP_EXPONENT), value);
     return value;
   }
 
