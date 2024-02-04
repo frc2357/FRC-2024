@@ -23,5 +23,6 @@ public class TargetLockCommand extends Command {
   public void end(boolean interrupted) {
     Robot.state.setDriveControlState(DriveControlState.FIELD_RELATIVE);
     Robot.shooterLimelight.setHumanPipelineActive();
+    SWERVE.ROTATION_PID_CONTROLLER.setP(SWERVE.ROTATION_KP);
   }
 }

@@ -12,6 +12,7 @@ import frc.robot.commands.DriveToGamepeiceCommand;
 import frc.robot.commands.TargetLockCommand;
 import frc.robot.controls.util.AxisThresholdTrigger;
 import frc.robot.controls.util.RumbleInterface;
+import frc.robot.state.RobotState.DriveControlState;
 
 public class DriverControls implements RumbleInterface {
   private XboxController m_controller;
@@ -42,9 +43,11 @@ public class DriverControls implements RumbleInterface {
     m_backButton.onTrue(new InstantCommand(() -> Robot.drive.setYaw(0)));
     m_startButton.onTrue(new InstantCommand(() -> Robot.drive.setYaw(180)));
 
-    m_rightTriggerPrime.whileTrue(
+    m_leftTrigger.whileTrue(
         new TargetLockCommand(Constants.SHOOTER_LIMELIGHT.SPEAKER_PIPELINE_INDEX));
-    // m_rightTriggerPrime.whileTrue(new DriveToGamepeiceCommand());
+     m_rightTriggerPrime.whileTrue(new DriveToGamepeiceCommand());
+    // m_leftTrigger.onTrue(new InstantCommand(() -> Robot.state.setDriveControlState(DriveControlState.ROBOT_RELATIVE)))
+    //     .onFalse(new InstantCommand(() -> Robot.state.setDriveControlState(DriveControlState.FIELD_RELATIVE)));
   }
 
   public double getX() {
