@@ -14,7 +14,7 @@ public class DriveToGamepeiceCommand extends Command {
   private Pose2d m_initialPose;
 
   public DriveToGamepeiceCommand() {
-    addRequirements(Robot.drive, Robot.shooterLimelight);
+    addRequirements(Robot.swerve, Robot.shooterLimelight);
   }
 
   @Override
@@ -24,7 +24,7 @@ public class DriveToGamepeiceCommand extends Command {
     SWERVE.ROTATION_PID_CONTROLLER.reset();
     SWERVE.ROTATION_PID_CONTROLLER.setTolerance(SWERVE.PIECE_TRACKING_ROTATION_TOLERANCE);
 
-    m_initialPose = Robot.drive.getPose();
+    m_initialPose = Robot.swerve.getPose();
     m_canSeePieceDebouncer = new Debouncer(SWERVE.PIECE_DEBOUNCE_SECONDS, DebounceType.kFalling);
   }
 
@@ -32,7 +32,7 @@ public class DriveToGamepeiceCommand extends Command {
   public void execute() {
     if (!m_canSeePieceDebouncer.calculate(Robot.shooterLimelight.validTargetExists())) {
       System.out.println("No Gamepiece Detected");
-      Robot.drive.drive(0, 0, 0);
+      Robot.swerve.drive(0, 0, 0);
       return;
     }
 
@@ -43,7 +43,7 @@ public class DriveToGamepeiceCommand extends Command {
             ? SWERVE.PIECE_TRACKING_X_METERS_PER_SECOND / 2.0
             : SWERVE.PIECE_TRACKING_X_METERS_PER_SECOND;
 
-    Robot.drive.drive(translationSpeed, 0, rotationSpeed);
+    Robot.swerve.drive(translationSpeed, 0, rotationSpeed);
   }
 
   @Override
@@ -53,7 +53,7 @@ public class DriveToGamepeiceCommand extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    Robot.drive.drive(0, 0, 0);
+    Robot.swerve.drive(0, 0, 0);
     SWERVE.ROTATION_PID_CONTROLLER.setTolerance(0);
     Robot.state.setDriveControlState(DriveControlState.FIELD_RELATIVE);
     System.out.println(interrupted);
@@ -61,7 +61,7 @@ public class DriveToGamepeiceCommand extends Command {
 
   private double distanceTraveled() {
     return Math.abs(
-        Robot.drive.getPose().getTranslation().getDistance(m_initialPose.getTranslation()));
+        Robot.swerve.getPose().getTranslation().getDistance(m_initialPose.getTranslation()));
   }
 
   private boolean isDistanceTraveledTooFar() {

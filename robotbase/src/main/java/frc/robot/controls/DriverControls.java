@@ -39,8 +39,8 @@ public class DriverControls implements RumbleInterface {
   }
 
   public void mapControls() {
-    m_backButton.onTrue(new InstantCommand(() -> Robot.drive.setYaw(0)));
-    m_startButton.onTrue(new InstantCommand(() -> Robot.drive.setYaw(180)));
+    m_backButton.onTrue(new InstantCommand(() -> Robot.swerve.setYaw(0)));
+    m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.setYaw(180)));
 
     m_leftTrigger.whileTrue(
         new TargetLockCommand(Constants.SHOOTER_LIMELIGHT.SPEAKER_PIPELINE_INDEX));
