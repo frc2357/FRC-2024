@@ -5,7 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.auto.DefaultDriveCommand;
 
 public class RobotContainer {
   private AutoCommandChooser m_autoCommandChooser;

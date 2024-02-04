@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.ChoreoTrajectoryCommand;
+import frc.robot.commands.auto.ChoreoTrajectoryCommand;
 
 public class AutoCommandChooser {
   private Command[] m_autoCommands;

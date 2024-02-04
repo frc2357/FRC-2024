@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.auto;
 
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;

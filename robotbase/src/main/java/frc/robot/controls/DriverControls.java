@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.commands.DriveToGamepeiceCommand;
-import frc.robot.commands.TargetLockCommand;
+import frc.robot.commands.auto.DriveToGamepeiceCommand;
+import frc.robot.commands.auto.TargetLockCommand;
 import frc.robot.controls.util.AxisThresholdTrigger;
 import frc.robot.controls.util.RumbleInterface;
 
@@ -47,7 +47,7 @@ public class DriverControls implements RumbleInterface {
     m_rightTriggerPrime.whileTrue(new DriveToGamepeiceCommand());
     // m_leftTrigger.onTrue(new InstantCommand(() ->
     // Robot.state.setDriveControlState(DriveControlState.ROBOT_RELATIVE)))
-    //     .onFalse(new InstantCommand(() ->
+    // .onFalse(new InstantCommand(() ->
     // Robot.state.setDriveControlState(DriveControlState.FIELD_RELATIVE)));
   }
 
