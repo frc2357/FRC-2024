@@ -74,14 +74,14 @@ public final class Constants {
     public static final double STATIC_FEEDFORWARD_METERS_PER_SECOND = 0.094545;
 
     // Target Lock
-    public static final double TARGET_LOCK_KP = 0.045;
+    public static final double TARGET_LOCK_KP = 0.15;
     public static final double TARGET_LOCK_KI = 0.0;
     public static final double TARGET_LOCK_KD = 0.0;
     public static final PIDController TARGET_LOCK_PID_CONTROLLER = new PIDController(TARGET_LOCK_KP, TARGET_LOCK_KI,
         TARGET_LOCK_KD);
 
-    public static final double TARGET_LOCK_FEED_FORWARD = 0.28;
-    public static final double TARGET_LOCK_TOLERANCE = 0.75;
+    public static final double TARGET_LOCK_FEED_FORWARD = 0.0;
+    public static final double TARGET_LOCK_TOLERANCE = 0.25;
   }
 
   public static final class CHOREO {
@@ -159,7 +159,7 @@ public final class Constants {
 
     public static final int HUMAN_PIPELINE_INDEX = 0;
 
-    public static final int SPEAKER_PIPELINE_INDEX = 2; // ids 4 and 7
+    public static final int SPEAKER_PIPELINE_INDEX = 4; // ids 4 and 7
 
     public static final boolean IS_PRIMARY_STREAM = false;
 
