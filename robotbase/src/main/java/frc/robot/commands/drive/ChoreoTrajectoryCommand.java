@@ -50,8 +50,8 @@ public class ChoreoTrajectoryCommand extends SequentialCommandGroup {
     addCommands(
         new ConditionalCommand(
             new SequentialCommandGroup(
-              new InstantCommand(() -> Robot.swerve.zeroAll()), 
-              new InstantCommand(() -> Robot.swerve.setPose(traj.getInitialPose()))),
+                new InstantCommand(() -> Robot.swerve.zeroAll()),
+                new InstantCommand(() -> Robot.swerve.setPose(traj.getInitialPose()))),
             new InstantCommand(),
             () -> setPoseToStartTrajectory),
         Choreo.choreoSwerveCommand(
