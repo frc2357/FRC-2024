@@ -68,13 +68,24 @@ public final class Constants {
     public static final boolean INVERT_RIGHT_SIDE = true;
 
     public static final double STATIC_FEEDFORWARD_METERS_PER_SECOND = 0.094545;
+    public static final double TRANSLATION_RAMP_EXPONENT = 2;
+
+    // Gamepiece tracking
+    public static final double PIECE_TRACKING_TRANSLATION_SPEED = 0;
+    public static final double PIECE_DEBOUNCE_SECONDS = 0.1;
+    public static final double PIECE_TRACKING_ROTATION_TOLERANCE = 0.1;
+
+    public static final double PIECE_TRACKING_MAX_DISTANCE_METERS = 3.0; // In Meters
+    public static final double PIECE_TRACKING_SLOW_DOWN_METERS =
+        1.0; // Robot goes half speed once passed
+    public static final double PIECE_TRACKING_X_METERS_PER_SECOND = 2;
 
     // Target Lock
-    public static final double TARGET_LOCK_KP = 0.15;
-    public static final double TARGET_LOCK_KI = 0.0;
-    public static final double TARGET_LOCK_KD = 0.0;
-    public static final PIDController TARGET_LOCK_PID_CONTROLLER =
-        new PIDController(TARGET_LOCK_KP, TARGET_LOCK_KI, TARGET_LOCK_KD);
+    public static final double ROTATION_KP = 0.15;
+    public static final double ROTATION_KI = 0.0;
+    public static final double ROTATION_KD = 0.0;
+    public static final PIDController ROTATION_PID_CONTROLLER =
+        new PIDController(ROTATION_KP, ROTATION_KI, ROTATION_KD);
 
     public static final double TARGET_LOCK_FEED_FORWARD = 0.0;
     public static final double TARGET_LOCK_TOLERANCE = 0.25;
@@ -156,6 +167,7 @@ public final class Constants {
 
     public static final int HUMAN_PIPELINE_INDEX = 0;
 
+    public static final int GAMEPIECE_INDEX = 2;
     public static final int SPEAKER_PIPELINE_INDEX = 4; // ids 4 and 7
 
     public static final boolean IS_PRIMARY_STREAM = false;

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.commands.DriveToGamepeiceCommand;
 import frc.robot.commands.TargetLockCommand;
 import frc.robot.controls.util.AxisThresholdTrigger;
 import frc.robot.controls.util.RumbleInterface;
@@ -21,6 +22,7 @@ public class DriverControls implements RumbleInterface {
 
   private AxisThresholdTrigger m_rightTriggerPrime;
   private AxisThresholdTrigger m_rightTriggerShoot;
+  private AxisThresholdTrigger m_leftTrigger;
 
   public DriverControls(XboxController controller, double deadband) {
     m_controller = controller;
@@ -31,6 +33,7 @@ public class DriverControls implements RumbleInterface {
 
     m_rightTriggerPrime = new AxisThresholdTrigger(m_controller, Axis.kRightTrigger, .1);
     m_rightTriggerShoot = new AxisThresholdTrigger(m_controller, Axis.kRightTrigger, .6);
+    m_leftTrigger = new AxisThresholdTrigger(m_controller, Axis.kLeftTrigger, .1);
 
     mapControls();
   }
@@ -39,8 +42,13 @@ public class DriverControls implements RumbleInterface {
     m_backButton.onTrue(new InstantCommand(() -> Robot.drive.setYaw(0)));
     m_startButton.onTrue(new InstantCommand(() -> Robot.drive.setYaw(180)));
 
-    m_rightTriggerPrime.whileTrue(
+    m_leftTrigger.whileTrue(
         new TargetLockCommand(Constants.SHOOTER_LIMELIGHT.SPEAKER_PIPELINE_INDEX));
+    m_rightTriggerPrime.whileTrue(new DriveToGamepeiceCommand());
+    // m_leftTrigger.onTrue(new InstantCommand(() ->
+    // Robot.state.setDriveControlState(DriveControlState.ROBOT_RELATIVE)))
+    //     .onFalse(new InstantCommand(() ->
+    // Robot.state.setDriveControlState(DriveControlState.FIELD_RELATIVE)));
   }
 
   public double getX() {

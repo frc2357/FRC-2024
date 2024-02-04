@@ -27,8 +27,11 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   private final SwerveRequest.ApplyChassisSpeeds chassisSpeedRequest =
       new SwerveRequest.ApplyChassisSpeeds();
 
-  private final SwerveRequest.FieldCentric driveRequest =
+  private final SwerveRequest.FieldCentric fieldRelative =
       new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.Velocity);
+
+  private final SwerveRequest.RobotCentric robotRelative =
+      new SwerveRequest.RobotCentric().withDriveRequestType(DriveRequestType.Velocity);
 
   public CommandSwerveDrivetrain(
       SwerveDrivetrainConstants driveTrainConstants,
@@ -54,15 +57,32 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
       double velocityXMetersPerSecond,
       double velocityYMetersPerSecond,
       double rotationRateRadiansPerSecond) {
-    applyRequest(
-        () ->
-            driveRequest
-                .withVelocityX(velocityXMetersPerSecond)
-                .withVelocityY(velocityYMetersPerSecond)
-                .withRotationalRate(
-                    (Robot.state.isTargetLock() && Robot.shooterLimelight.validTargetExists())
-                        ? getTargetLockRotation()
-                        : rotationRateRadiansPerSecond));
+    switch (Robot.state.getDriveControlState()) {
+      case ROBOT_RELATIVE:
+        applyRequest(
+            () ->
+                robotRelative
+                    .withVelocityX(velocityXMetersPerSecond)
+                    .withVelocityY(velocityYMetersPerSecond)
+                    .withRotationalRate(rotationRateRadiansPerSecond));
+        break;
+      case FIELD_RELATIVE:
+        applyRequest(
+            () ->
+                fieldRelative
+                    .withVelocityX(velocityXMetersPerSecond)
+                    .withVelocityY(velocityYMetersPerSecond)
+                    .withRotationalRate(rotationRateRadiansPerSecond));
+        break;
+      case TARGET_LOCK:
+        applyRequest(
+            () ->
+                fieldRelative
+                    .withVelocityX(velocityXMetersPerSecond)
+                    .withVelocityY(velocityYMetersPerSecond)
+                    .withRotationalRate(getTargetLockRotation()));
+        break;
+    }
   }
 
   /**
@@ -144,17 +164,18 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
   public double getTargetLockRotation() {
     double tx = Robot.shooterLimelight.getTX();
-    if (Utility.isWithinTolerance(tx, 0, Constants.SWERVE.TARGET_LOCK_TOLERANCE)) {
+    if (!Robot.shooterLimelight.validTargetExists()
+        || Utility.isWithinTolerance(tx, 0, Constants.SWERVE.TARGET_LOCK_TOLERANCE)) {
       return 0;
     }
 
     // Increase kP based on horizontal velocity to reduce lag
     double vy = getChassisSpeeds().vyMetersPerSecond; // Horizontal velocity
-    double kp = Constants.SWERVE.TARGET_LOCK_KP;
+    double kp = Constants.SWERVE.ROTATION_KP;
     kp *= Math.max(1, vy * 1);
-    Constants.SWERVE.TARGET_LOCK_PID_CONTROLLER.setP(kp);
+    Constants.SWERVE.ROTATION_PID_CONTROLLER.setP(kp);
 
-    double rotation = -Constants.SWERVE.TARGET_LOCK_PID_CONTROLLER.calculate(0, tx);
+    double rotation = -Constants.SWERVE.ROTATION_PID_CONTROLLER.calculate(0, tx);
     double output = rotation + Math.copySign(Constants.SWERVE.TARGET_LOCK_FEED_FORWARD, rotation);
     return output;
   }
