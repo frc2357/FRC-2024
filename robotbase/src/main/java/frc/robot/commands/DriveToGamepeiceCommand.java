@@ -6,8 +6,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.SHOOTER_LIMELIGHT;
 import frc.robot.Constants.SWERVE;
-import frc.robot.state.RobotState.DriveControlState;
 import frc.robot.Robot;
+import frc.robot.state.RobotState.DriveControlState;
 
 public class DriveToGamepeiceCommand extends Command {
   private Debouncer m_canSeePieceDebouncer;
@@ -38,9 +38,10 @@ public class DriveToGamepeiceCommand extends Command {
 
     double rotationError = Robot.shooterLimelight.getTX();
     double rotationSpeed = SWERVE.ROTATION_PID_CONTROLLER.calculate(rotationError, 0);
-    double translationSpeed = distanceTraveled() > SWERVE.PIECE_TRACKING_SLOW_DOWN_METERS
-        ? SWERVE.PIECE_TRACKING_X_METERS_PER_SECOND / 2.0
-        : SWERVE.PIECE_TRACKING_X_METERS_PER_SECOND;
+    double translationSpeed =
+        distanceTraveled() > SWERVE.PIECE_TRACKING_SLOW_DOWN_METERS
+            ? SWERVE.PIECE_TRACKING_X_METERS_PER_SECOND / 2.0
+            : SWERVE.PIECE_TRACKING_X_METERS_PER_SECOND;
 
     Robot.drive.drive(translationSpeed, 0, rotationSpeed);
   }
