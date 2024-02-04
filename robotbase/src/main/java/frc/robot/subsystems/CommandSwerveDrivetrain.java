@@ -19,16 +19,19 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- * Class that extends the Phoenix SwerveDrivetrain class and implements subsystem so it can be used
+ * Class that extends the Phoenix SwerveDrivetrain class and implements
+ * subsystem so it can be used
  * in command-based projects easily.
  */
 public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsystem {
 
-  private final SwerveRequest.ApplyChassisSpeeds chassisSpeedRequest =
-      new SwerveRequest.ApplyChassisSpeeds();
+  private final SwerveRequest.ApplyChassisSpeeds chassisSpeedRequest = new SwerveRequest.ApplyChassisSpeeds();
 
-  private final SwerveRequest.FieldCentric driveRequest =
-      new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.Velocity);
+  private final SwerveRequest.FieldCentric fieldRelative = new SwerveRequest.FieldCentric()
+      .withDriveRequestType(DriveRequestType.Velocity);
+
+  private final SwerveRequest.RobotCentric robotRelative = new SwerveRequest.RobotCentric()
+      .withDriveRequestType(DriveRequestType.Velocity);
 
   public CommandSwerveDrivetrain(
       SwerveDrivetrainConstants driveTrainConstants,
@@ -54,20 +57,33 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
       double velocityXMetersPerSecond,
       double velocityYMetersPerSecond,
       double rotationRateRadiansPerSecond) {
-    applyRequest(
-        () ->
-            driveRequest
+    System.out.println(rotationRateRadiansPerSecond);
+    switch (Robot.state.getDriveControlState()) {
+      case ROBOT_RELATIVE:
+        applyRequest(
+            () -> robotRelative
                 .withVelocityX(velocityXMetersPerSecond)
                 .withVelocityY(velocityYMetersPerSecond)
-                .withRotationalRate(
-                    (Robot.state.isTargetLock() && Robot.shooterLimelight.validTargetExists())
-                        ? getTargetLockRotation()
-                        : rotationRateRadiansPerSecond));
+                .withRotationalRate(rotationRateRadiansPerSecond));
+      case FIELD_RELATIVE:
+        applyRequest(
+            () -> fieldRelative
+                .withVelocityX(velocityXMetersPerSecond)
+                .withVelocityY(velocityYMetersPerSecond)
+                .withRotationalRate(rotationRateRadiansPerSecond));
+      case TARGET_LOCK:
+        applyRequest(
+            () -> fieldRelative
+                .withVelocityX(velocityXMetersPerSecond)
+                .withVelocityY(velocityYMetersPerSecond)
+                .withRotationalRate(getTargetLockRotation()));
+    }
   }
 
   /**
-   * @return A list of the module positions in the order Front Left, Front Right, Back Left, Back
-   *     Right
+   * @return A list of the module positions in the order Front Left, Front Right,
+   *         Back Left, Back
+   *         Right
    */
   public SwerveModulePosition[] getModulePositions() {
     return super.m_modulePositions;
@@ -144,7 +160,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
   public double getTargetLockRotation() {
     double tx = Robot.shooterLimelight.getTX();
-    if (Utility.isWithinTolerance(tx, 0, Constants.SWERVE.TARGET_LOCK_TOLERANCE)) {
+    if (Robot.shooterLimelight.validTargetExists()
+        || Utility.isWithinTolerance(tx, 0, Constants.SWERVE.TARGET_LOCK_TOLERANCE)) {
       return 0;
     }
 
