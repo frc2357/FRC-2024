@@ -6,12 +6,12 @@ import frc.robot.Robot;
 
 public class DefaultDriveCommand extends Command {
   public DefaultDriveCommand() {
-    addRequirements(Robot.drive);
+    addRequirements(Robot.swerve);
   }
 
   @Override
   public void execute() {
-    Robot.drive.drive(
+    Robot.swerve.drive(
         Robot.driverControls.getY() * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND,
         Robot.driverControls.getX() * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND,
         Robot.driverControls.getRotation()
@@ -20,6 +20,6 @@ public class DefaultDriveCommand extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    Robot.drive.drive(0, 0, 0);
+    Robot.swerve.drive(0, 0, 0);
   }
 }

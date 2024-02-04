@@ -9,12 +9,12 @@ public class SteerMotorTuningTestCommand extends Command {
   // public double m_setSpeed = 2;
 
   public SteerMotorTuningTestCommand() {
-    addRequirements(Robot.drive);
+    addRequirements(Robot.swerve);
   }
 
   @Override
   public void initialize() {
-    Robot.drive.drive(1, 0, 0);
+    Robot.swerve.drive(1, 0, 0);
   }
 
   @Override
@@ -28,7 +28,7 @@ public class SteerMotorTuningTestCommand extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    Robot.drive.drive(0, 1, 0);
+    Robot.swerve.drive(0, 1, 0);
     // System.out.println("*****************************************************");
     // System.out.println(m_total / m_i);
     // System.out.println("*****************************************************");
