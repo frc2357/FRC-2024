@@ -55,6 +55,10 @@ public final class Constants {
     public static final int TRAP_AMP_ARM_MOTOR_ID = 31;
   }
 
+  public static final class DIGITAL_INPUT {
+    public static final int INTAKE_BEAM_BREAK_ID = 0;
+  }
+
   public static final class SWERVE {
     public static final double MAX_SPEED_METERS_PER_SECOND = 4.57;
     public static final double MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND = Math.PI * 2;
