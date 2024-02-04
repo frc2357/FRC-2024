@@ -28,7 +28,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
       new SwerveRequest.ApplyChassisSpeeds();
 
   private final SwerveRequest.FieldCentric driveRequest =
-      new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+      new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.Velocity);
 
   public CommandSwerveDrivetrain(
       SwerveDrivetrainConstants driveTrainConstants,
@@ -151,7 +151,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     // Increase kP based on horizontal velocity to reduce lag
     double vy = getChassisSpeeds().vyMetersPerSecond; // Horizontal velocity
     double kp = Constants.SWERVE.TARGET_LOCK_KP;
-    kp *= Math.max(1, vy);
+    kp *= Math.max(1, vy * 1);
     Constants.SWERVE.TARGET_LOCK_PID_CONTROLLER.setP(kp);
 
     double rotation = -Constants.SWERVE.TARGET_LOCK_PID_CONTROLLER.calculate(0, tx);

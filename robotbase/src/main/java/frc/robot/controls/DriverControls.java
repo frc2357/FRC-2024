@@ -48,7 +48,6 @@ public class DriverControls implements RumbleInterface {
   }
 
   public double getY() {
-    System.out.println(-modifyAxis(m_controller.getLeftY()));
     return -modifyAxis(m_controller.getLeftY());
   }
 
