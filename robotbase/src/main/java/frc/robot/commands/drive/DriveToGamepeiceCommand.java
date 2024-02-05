@@ -1,8 +1,4 @@
-<<<<<<<< Updated upstream:robotbase/src/main/java/frc/robot/commands/auto/DriveToGamepeiceCommand.java
-package frc.robot.commands.auto;
-========
 package frc.robot.commands.drive;
->>>>>>>> Stashed changes:robotbase/src/main/java/frc/robot/commands/drive/DriveToGamepeiceCommand.java
 
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
@@ -29,7 +25,8 @@ public class DriveToGamepeiceCommand extends Command {
     SWERVE.ROTATION_PID_CONTROLLER.setTolerance(SWERVE.PIECE_TRACKING_ROTATION_TOLERANCE);
 
     m_initialPose = Robot.drive.getPose();
-    m_canSeePieceDebouncer = new Debouncer(SWERVE.AUTO_TRANSLATE_DEBOUNCE_SECONDS, DebounceType.kFalling);
+    m_canSeePieceDebouncer =
+        new Debouncer(SWERVE.AUTO_TRANSLATE_DEBOUNCE_SECONDS, DebounceType.kFalling);
   }
 
   @Override
@@ -42,9 +39,10 @@ public class DriveToGamepeiceCommand extends Command {
 
     double rotationError = Robot.shooterLimelight.getTX();
     double rotationSpeed = SWERVE.ROTATION_PID_CONTROLLER.calculate(rotationError, 0);
-    double translationSpeed = distanceTraveled() > SWERVE.PIECE_TRACKING_SLOW_DOWN_METERS
-        ? SWERVE.PIECE_TRACKING_X_METERS_PER_SECOND / 2.0
-        : SWERVE.PIECE_TRACKING_X_METERS_PER_SECOND;
+    double translationSpeed =
+        distanceTraveled() > SWERVE.PIECE_TRACKING_SLOW_DOWN_METERS
+            ? SWERVE.PIECE_TRACKING_X_METERS_PER_SECOND / 2.0
+            : SWERVE.PIECE_TRACKING_X_METERS_PER_SECOND;
 
     Robot.drive.drive(translationSpeed, 0, rotationSpeed);
   }

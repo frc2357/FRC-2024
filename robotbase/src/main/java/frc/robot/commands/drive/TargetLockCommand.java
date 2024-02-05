@@ -1,8 +1,4 @@
-<<<<<<<< Updated upstream:robotbase/src/main/java/frc/robot/commands/auto/TargetLockCommand.java
-package frc.robot.commands.auto;
-========
 package frc.robot.commands.drive;
->>>>>>>> Stashed changes:robotbase/src/main/java/frc/robot/commands/drive/TargetLockCommand.java
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.SWERVE;

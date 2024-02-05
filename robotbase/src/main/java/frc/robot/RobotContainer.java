@@ -5,11 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
-<<<<<<< Updated upstream
-import frc.robot.commands.auto.DefaultDriveCommand;
-=======
 import frc.robot.commands.drive.DefaultDriveCommand;
->>>>>>> Stashed changes
 
 public class RobotContainer {
   private AutoCommandChooser m_autoCommandChooser;

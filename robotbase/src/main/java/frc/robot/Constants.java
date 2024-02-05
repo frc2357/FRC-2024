@@ -9,15 +9,11 @@ import edu.wpi.first.math.controller.PIDController;
 import java.util.function.BooleanSupplier;
 
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide
- * numerical or boolean
- * constants. This class should not be used for any other purpose. All constants
- * should be declared
+ * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
+ * constants. This class should not be used for any other purpose. All constants should be declared
  * globally (i.e. public static). Do not put anything functional in this class.
  *
- * <p>
- * It is advised to statically import this class (or one of its inner classes)
- * wherever the
+ * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
@@ -80,23 +76,27 @@ public final class Constants {
     public static final double PIECE_TRACKING_ROTATION_TOLERANCE = 0.1;
 
     public static final double PIECE_TRACKING_MAX_DISTANCE_METERS = 3.0; // In Meters
-    public static final double PIECE_TRACKING_SLOW_DOWN_METERS = 1.0; // Robot goes half speed once passed
+    public static final double PIECE_TRACKING_SLOW_DOWN_METERS =
+        1.0; // Robot goes half speed once passed
     public static final double PIECE_TRACKING_X_METERS_PER_SECOND = 2;
 
     // Target Lock
     public static final double ROTATION_KP = 0.15;
     public static final double ROTATION_KI = 0.0;
     public static final double ROTATION_KD = 0.0;
-    public static final PIDController ROTATION_PID_CONTROLLER = new PIDController(ROTATION_KP, ROTATION_KI,
-        ROTATION_KD);
+    public static final PIDController ROTATION_PID_CONTROLLER =
+        new PIDController(ROTATION_KP, ROTATION_KI, ROTATION_KD);
 
     public static final double TARGET_LOCK_FEED_FORWARD = 0.0;
     public static final double TARGET_LOCK_TOLERANCE = 0.25;
 
     // Translate to Apriltag
-    public static final PIDController APRILTAG_ROTATION_PID_CONTROLLER = new PIDController(3, 0, 0.01);
-    public static final PIDController APRILTAG_X_TRANSLATION_PID_CONTROLLER = new PIDController(0.05, 0, 0);
-    public static final PIDController APRILTAG_Y_TRANSLATION_PID_CONTROLLER = new PIDController(0.2, 0, 0);
+    public static final PIDController APRILTAG_ROTATION_PID_CONTROLLER =
+        new PIDController(3, 0, 0.01);
+    public static final PIDController APRILTAG_X_TRANSLATION_PID_CONTROLLER =
+        new PIDController(0.05, 0, 0);
+    public static final PIDController APRILTAG_Y_TRANSLATION_PID_CONTROLLER =
+        new PIDController(0.2, 0, 0);
 
     public static final double APRILTAG_X_TOLERANCE = 1.5;
     public static final double APRILTAG_Y_TOLERANCE = 0.5;
@@ -109,12 +109,13 @@ public final class Constants {
     public static final PIDController Y_CONTROLLER = new PIDController(0.15, 0, 0);
     public static final PIDController ROTATION_CONTROLLER = new PIDController(0.6, 0, 0);
 
-    public static final BooleanSupplier CHOREO_AUTO_MIRROR_PATHS = new BooleanSupplier() {
-      @Override
-      public boolean getAsBoolean() {
-        return false;
-      }
-    };
+    public static final BooleanSupplier CHOREO_AUTO_MIRROR_PATHS =
+        new BooleanSupplier() {
+          @Override
+          public boolean getAsBoolean() {
+            return false;
+          }
+        };
   }
 
   public static final class CONTROLLER {

@@ -1,8 +1,4 @@
-<<<<<<<< Updated upstream:robotbase/src/main/java/frc/robot/commands/auto/ChoreoTrajectoryCommand.java
-package frc.robot.commands.auto;
-========
 package frc.robot.commands.drive;
->>>>>>>> Stashed changes:robotbase/src/main/java/frc/robot/commands/drive/ChoreoTrajectoryCommand.java
 
 import com.choreo.lib.*;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -31,8 +27,7 @@ public class ChoreoTrajectoryCommand extends SequentialCommandGroup {
    * A utility command to run a Choreo path correctly.
    *
    * @param trajectoryFileName The name of the path file with '.traj' excluded.
-   * @param pathName           The name of the path, is returned in the toString
-   *                           for the auto command chooser.
+   * @param pathName The name of the path, is returned in the toString for the auto command chooser.
    */
   public ChoreoTrajectoryCommand(String trajectoryFileName, String pathName) {
     this.trajectoryFileName = trajectoryFileName;
