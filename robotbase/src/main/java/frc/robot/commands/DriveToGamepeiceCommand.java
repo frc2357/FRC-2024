@@ -25,7 +25,8 @@ public class DriveToGamepeiceCommand extends Command {
     SWERVE.ROTATION_PID_CONTROLLER.setTolerance(SWERVE.PIECE_TRACKING_ROTATION_TOLERANCE);
 
     m_initialPose = Robot.swerve.getPose();
-    m_canSeePieceDebouncer = new Debouncer(SWERVE.PIECE_DEBOUNCE_SECONDS, DebounceType.kFalling);
+    m_canSeePieceDebouncer =
+        new Debouncer(SWERVE.AUTO_TRANSLATE_DEBOUNCE_SECONDS, DebounceType.kFalling);
   }
 
   @Override

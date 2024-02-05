@@ -28,7 +28,7 @@ public class DriveToApriltagCommand extends Command {
     m_yController = Constants.SWERVE.APRILTAG_Y_TRANSLATION_PID_CONTROLLER;
     m_rotationController = Constants.SWERVE.APRILTAG_ROTATION_PID_CONTROLLER;
 
-    addRequirements(Robot.drive);
+    addRequirements(Robot.swerve);
   }
 
   @Override
@@ -54,13 +54,13 @@ public class DriveToApriltagCommand extends Command {
   public void execute() {
     if (!m_canSeePieceDebouncer.calculate(Robot.shooterLimelight.validTargetExists())) {
       System.out.println("No Target Detected");
-      Robot.drive.drive(0, 0, 0);
+      Robot.swerve.drive(0, 0, 0);
       return;
     }
 
     double tx = Robot.shooterLimelight.getTX();
     double ty = Robot.shooterLimelight.getTY();
-    double rotationError = Robot.drive.getPose().getRotation().getRadians();
+    double rotationError = Robot.swerve.getPose().getRotation().getRadians();
 
     // Increase tx tolerance when close to target since tx is more sensitive at
     // shorter distances
@@ -83,7 +83,7 @@ public class DriveToApriltagCommand extends Command {
       ty = m_tyOffset;
     }
 
-    Robot.drive.drive(
+    Robot.swerve.drive(
         -m_yController.calculate(ty + Constants.SWERVE.APRILTAG_TY_MAGIC_OFFSET),
         m_xController.calculate(tx),
         m_rotationController.calculate(rotationError));
@@ -91,6 +91,6 @@ public class DriveToApriltagCommand extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    Robot.drive.drive(0, 0, 0);
+    Robot.swerve.drive(0, 0, 0);
   }
 }
