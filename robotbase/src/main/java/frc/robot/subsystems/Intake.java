@@ -2,17 +2,21 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
   private CANSparkMax m_topIntakeMotor;
   private CANSparkMax m_bottomIntakeMotor;
+  private DigitalInput m_beamBreakSensor;
 
   public Intake() {
     m_topIntakeMotor = new CANSparkMax(Constants.CAN_ID.TOP_INTAKE_MOTOR_ID, MotorType.kBrushless);
     m_bottomIntakeMotor =
         new CANSparkMax(Constants.CAN_ID.BOTTOM_INTAKE_MOTOR_ID, MotorType.kBrushless);
+
+    m_beamBreakSensor = new DigitalInput(Constants.DIGITAL_INPUT.INTAKE_BEAM_BREAK_ID);
   }
 
   public void configure() {
@@ -34,6 +38,10 @@ public class Intake extends SubsystemBase {
   public void setAxisSpeed(double topPO, double bottomPO) {
     m_topIntakeMotor.set(topPO);
     m_bottomIntakeMotor.set(bottomPO);
+  }
+
+  public boolean getBeamBreakSensor() {
+    return m_beamBreakSensor.get();
   }
 
   public void stop() {

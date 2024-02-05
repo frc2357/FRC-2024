@@ -34,7 +34,7 @@ public class Robot extends TimedRobot {
 
   public static RobotState state;
 
-  public static CommandSwerveDrivetrain drive;
+  public static CommandSwerveDrivetrain swerve;
   public static Shooter shooter;
   public static ShooterPivot pivot;
   public static Intake intake;
@@ -60,7 +60,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     state = new RobotState();
 
-    drive = TunerConstants.DriveTrain;
+    swerve = TunerConstants.DriveTrain;
     shooter = new Shooter();
     pivot = new ShooterPivot();
     intake = new Intake();

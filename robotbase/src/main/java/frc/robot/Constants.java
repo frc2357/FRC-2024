@@ -55,6 +55,10 @@ public final class Constants {
     public static final int TRAP_AMP_ARM_MOTOR_ID = 31;
   }
 
+  public static final class DIGITAL_INPUT {
+    public static final int INTAKE_BEAM_BREAK_ID = 0;
+  }
+
   public static final class SWERVE {
     public static final double MAX_SPEED_METERS_PER_SECOND = 4.57;
     public static final double MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND = Math.PI * 2;
@@ -73,6 +77,7 @@ public final class Constants {
     // Gamepiece tracking
     public static final double AUTO_TRANSLATE_DEBOUNCE_SECONDS = 0.1;
     public static final double PIECE_TRACKING_TRANSLATION_SPEED = 0;
+    public static final double PIECE_DEBOUNCE_SECONDS = 0.1;
     public static final double PIECE_TRACKING_ROTATION_TOLERANCE = 0.1;
 
     public static final double PIECE_TRACKING_MAX_DISTANCE_METERS = 3.0; // In Meters
@@ -208,15 +213,13 @@ public final class Constants {
     public static final int MOTOR_STALL_LIMIT_AMPS = 40;
     public static final int MOTOR_FREE_LIMIT_AMPS = 40;
 
-    public static final double PIVOT_P = 0.0;
-    public static final double PIVOT_I = 0.0;
-    public static final double PIVOT_D = 0.0;
-    public static final double PIVOT_FF = 0.0;
+    public static final double PIVOT_P = 0.02;
+    public static final double PIVOT_I = 0;
+    public static final double PIVOT_D = 0;
+    public static final double PIVOT_FF = 0.045;
 
-    public static final int SMART_MOTION_MAX_VEL_RPM = 0;
-    public static final int SMART_MOTION_MIN_VEL_RPM = 0;
-    public static final int SMART_MOTION_MAX_ACC_RPM = 0;
-    public static final int SMART_MOTION_ALLOWED_ERROR = 0;
+    public static final double POSITION_ALLOWED_ERROR = 0.1;
+    public static final boolean POSITION_PID_WRAPPING_ENABLED = false;
 
     public static final double AXIS_MAX_SPEED = 0.25;
 

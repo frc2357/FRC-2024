@@ -36,19 +36,19 @@ public class ChoreoTrajectoryCommand extends SequentialCommandGroup {
     this.pathName = pathName;
     new Choreo();
     addCommands(
-        new InstantCommand(() -> Robot.drive.zeroAll()),
-        new InstantCommand(() -> Robot.drive.setPose(traj.getInitialPose())),
+        new InstantCommand(() -> Robot.swerve.zeroAll()),
+        new InstantCommand(() -> Robot.swerve.setPose(traj.getInitialPose())),
         Choreo.choreoSwerveCommand(
             Choreo.getTrajectory(trajectoryFileName),
-            Robot.drive.getPoseSupplier(),
+            Robot.swerve.getPoseSupplier(),
             Choreo.choreoSwerveController(
                 CHOREO.X_CONTROLLER, CHOREO.Y_CONTROLLER, CHOREO.ROTATION_CONTROLLER),
-            Robot.drive.getChassisSpeedsConsumer(),
+            Robot.swerve.getChassisSpeedsConsumer(),
             CHOREO.CHOREO_AUTO_MIRROR_PATHS,
-            Robot.drive),
+            Robot.swerve),
         new InstantCommand(
             () -> {
-              var pose = Robot.drive.getPose();
+              var pose = Robot.swerve.getPose();
               var poseError = finalTargetPose.minus(pose);
               System.out.println("Pose & Error | PathName: " + trajectoryFileName);
               System.out.println("|X: " + pose.getX() + " | Err: " + poseError.getX());
