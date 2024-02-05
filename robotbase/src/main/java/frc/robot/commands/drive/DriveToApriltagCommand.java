@@ -46,7 +46,8 @@ public class DriveToApriltagCommand extends Command {
     m_rotationController.setSetpoint(m_rotationGoal);
     m_rotationController.reset();
 
-    m_canSeePieceDebouncer = new Debouncer(Constants.SWERVE.AUTO_TRANSLATE_DEBOUNCE_SECONDS, DebounceType.kFalling);
+    m_canSeePieceDebouncer =
+        new Debouncer(Constants.SWERVE.AUTO_TRANSLATE_DEBOUNCE_SECONDS, DebounceType.kFalling);
   }
 
   @Override
