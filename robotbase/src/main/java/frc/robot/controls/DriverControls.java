@@ -42,7 +42,8 @@ public class DriverControls implements RumbleInterface {
     m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.setYaw(180)));
 
     m_rightTriggerPrime.whileTrue(
-        new DriveToApriltagCommand(-10, 0, Constants.SHOOTER_LIMELIGHT.AMP_PIPELINE_INDEX));
+        new DriveToApriltagCommand(Constants.SWERVE.AMP_TY_SETPOINT, Constants.SWERVE.AMP_ROTATION_SETPOINT,
+            Constants.SHOOTER_LIMELIGHT.AMP_PIPELINE_INDEX));
   }
 
   public double getX() {

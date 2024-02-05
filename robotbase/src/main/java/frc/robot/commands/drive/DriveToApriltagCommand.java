@@ -39,15 +39,14 @@ public class DriveToApriltagCommand extends Command {
     m_yController.setSetpoint(m_tyOffset + Constants.SWERVE.APRILTAG_TY_MAGIC_OFFSET);
     m_yController.reset();
 
-    m_xController.setSetpoint(0);
+    m_xController.setSetpoint(Constants.SWERVE.AMP_TX_SETPOINT);
     m_xController.reset();
 
     m_rotationController.enableContinuousInput(-Math.PI, Math.PI);
     m_rotationController.setSetpoint(m_rotationGoal);
     m_rotationController.reset();
 
-    m_canSeePieceDebouncer =
-        new Debouncer(Constants.SWERVE.AUTO_TRANSLATE_DEBOUNCE_SECONDS, DebounceType.kFalling);
+    m_canSeePieceDebouncer = new Debouncer(Constants.SWERVE.AUTO_TRANSLATE_DEBOUNCE_SECONDS, DebounceType.kFalling);
   }
 
   @Override
