@@ -4,7 +4,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+<<<<<<< Updated upstream
 import frc.robot.commands.auto.ChoreoTrajectoryCommand;
+=======
+import frc.robot.commands.drive.ChoreoTrajectoryCommand;
+>>>>>>> Stashed changes
 
 public class AutoCommandChooser {
   private Command[] m_autoCommands;
@@ -12,15 +16,14 @@ public class AutoCommandChooser {
 
   public AutoCommandChooser() {
 
-    m_autoCommands =
-        new Command[] {
-          new ChoreoTrajectoryCommand("ChClose3SpeakerPath"),
-          new ChoreoTrajectoryCommand("ChRotationTest"),
-          new ChoreoTrajectoryCommand("Ch3MeterXTest"),
-          new ChoreoTrajectoryCommand("Ch1MeterYTest"),
-          new ChoreoTrajectoryCommand("Ch3MeterYTest"),
-          new ChoreoTrajectoryCommand("ChBoxTest"),
-        };
+    m_autoCommands = new Command[] {
+        new ChoreoTrajectoryCommand("ChClose3SpeakerPath"),
+        new ChoreoTrajectoryCommand("ChRotationTest"),
+        new ChoreoTrajectoryCommand("Ch3MeterXTest"),
+        new ChoreoTrajectoryCommand("Ch1MeterYTest"),
+        new ChoreoTrajectoryCommand("Ch3MeterYTest"),
+        new ChoreoTrajectoryCommand("ChBoxTest"),
+    };
 
     m_chooser = new SendableChooser<>();
 
