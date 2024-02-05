@@ -74,7 +74,7 @@ public class RobotState {
   public RobotState() {
     m_alliance = null;
     m_currentState = State.ROBOT_INIT;
-    m_currentDriveControlState = DriveControlState.ROBOT_RELATIVE;
+    m_currentDriveControlState = DriveControlState.FIELD_RELATIVE;
     m_zeroed = false;
   }
 
