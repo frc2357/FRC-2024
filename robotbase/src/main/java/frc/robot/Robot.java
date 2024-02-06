@@ -74,10 +74,10 @@ public class Robot extends TimedRobot {
         new DriverControls(
             new XboxController(Constants.CONTROLLER.DRIVE_CONTROLLER_PORT),
             Constants.CONTROLLER.DRIVE_CONTROLLER_DEADBAND);
-    // codriverControls =
-    // new CodriverControls(
-    // new XboxController(Constants.CONTROLLER.CODRIVER_CONTROLLER_PORT),
-    // Constants.CONTROLLER.CODRIVE_CONTROLLER_DEADBAND);
+    codriverControls =
+        new CodriverControls(
+            new XboxController(Constants.CONTROLLER.CODRIVER_CONTROLLER_PORT),
+            Constants.CONTROLLER.CODRIVE_CONTROLLER_DEADBAND);
 
     m_robotContainer = new RobotContainer();
   }

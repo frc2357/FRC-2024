@@ -75,6 +75,7 @@ public final class Constants {
     public static final double TRANSLATION_RAMP_EXPONENT = 2;
 
     // Gamepiece tracking
+    public static final double AUTO_TRANSLATE_DEBOUNCE_SECONDS = 0.1;
     public static final double PIECE_TRACKING_TRANSLATION_SPEED = 0;
     public static final double PIECE_DEBOUNCE_SECONDS = 0.1;
     public static final double PIECE_TRACKING_ROTATION_TOLERANCE = 0.1;
@@ -93,6 +94,23 @@ public final class Constants {
 
     public static final double TARGET_LOCK_FEED_FORWARD = 0.0;
     public static final double TARGET_LOCK_TOLERANCE = 0.25;
+
+    // Translate to Apriltag
+    public static final PIDController APRILTAG_ROTATION_PID_CONTROLLER =
+        new PIDController(3, 0, 0.01);
+    public static final PIDController APRILTAG_X_TRANSLATION_PID_CONTROLLER =
+        new PIDController(0.05, 0, 0);
+    public static final PIDController APRILTAG_Y_TRANSLATION_PID_CONTROLLER =
+        new PIDController(0.2, 0, 0);
+
+    public static final double APRILTAG_X_TOLERANCE = 1.5;
+    public static final double APRILTAG_Y_TOLERANCE = 0.5;
+    public static final double APRILTAG_ROTATION_TOLERANCE = .025; // Radians
+    public static final double APRILTAG_TY_MAGIC_OFFSET = 12.5;
+
+    public static final double AMP_TX_SETPOINT = 0;
+    public static final double AMP_TY_SETPOINT = -10;
+    public static final double AMP_ROTATION_SETPOINT = Math.PI / 2;
   }
 
   public static final class CHOREO {
@@ -172,6 +190,7 @@ public final class Constants {
     public static final int HUMAN_PIPELINE_INDEX = 0;
 
     public static final int GAMEPIECE_INDEX = 2;
+    public static final int AMP_PIPELINE_INDEX = 3;
     public static final int SPEAKER_PIPELINE_INDEX = 4; // ids 4 and 7
 
     public static final boolean IS_PRIMARY_STREAM = false;
