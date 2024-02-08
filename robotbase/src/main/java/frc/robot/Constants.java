@@ -269,5 +269,9 @@ public final class Constants {
     public static final int SMART_MOTION_ALLOWED_ERROR = 0;
 
     public static final double AXIS_MAX_SPEED = 0.25;
+
+    public static final boolean ABSOLUTE_ENCODER_IS_INVERTED = false;
+    public static final double ABSOLUTE_ENCODER_POSITION_SCALE_FACTOR = 1;
+    public static final double ABSOLUTE_ENCODER_VELOCITY_SCALE_FACTOR = 1;
   }
 }
