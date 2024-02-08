@@ -4,19 +4,19 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
-public class TrapAmpArmZeroCommand extends Command{
-    
-    public TrapAmpArmZeroCommand(){
-        addRequirements(Robot.trapAmpArm);
-    }
+public class TrapAmpArmZeroCommand extends Command {
 
-    @Override
-    public void initialize(){
-        Robot.trapAmpArm.set(Constants.TRAP_AMP_ARM.ZERO_SPEED);
-    }
+  public TrapAmpArmZeroCommand() {
+    addRequirements(Robot.trapAmpArm);
+  }
 
-    @Override
-    public boolean isFinished(){
-        return Robot.trapAmpArm.get
-    }
+  @Override
+  public void initialize() {
+    Robot.trapAmpArm.set(Constants.TRAP_AMP_ARM.ZERO_SPEED);
+  }
+
+  @Override
+  public boolean isFinished() {
+    return Robot.trapAmpArm.getMotorVelocity() <= Constants.TRAP_AMP_ARM.ZERO_SPEED_STOP_TOLERANCE;
+  }
 }

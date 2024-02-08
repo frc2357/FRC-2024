@@ -300,5 +300,6 @@ public final class Constants {
     public static final double AMP_SCORE_ROTATIONS = 0;
     public static final double TRAP_SCORE_ROTATIONS = 0;
     public static final double ZERO_SPEED = 0;
+    public static final double ZERO_SPEED_STOP_TOLERANCE = 0;
   }
 }
