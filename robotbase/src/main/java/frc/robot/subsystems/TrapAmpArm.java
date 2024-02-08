@@ -5,8 +5,6 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkPIDController;
-
-import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.TRAP_AMP_ARM;
@@ -46,10 +44,12 @@ public class TrapAmpArm extends SubsystemBase {
     m_PIDController.setSmartMotionMaxAccel(TRAP_AMP_ARM.SMART_MOTION_MAX_ACC_RPM, 0);
     m_PIDController.setSmartMotionAllowedClosedLoopError(
         TRAP_AMP_ARM.SMART_MOTION_ALLOWED_ERROR, 0);
-    
+
     m_absoluteEncoder.setInverted(TRAP_AMP_ARM.ABSOLUTE_ENCODER_IS_INVERTED);
-    m_absoluteEncoder.setPositionConversionFactor(TRAP_AMP_ARM.ABSOLUTE_ENCODER_POSITION_SCALE_FACTOR);
-    m_absoluteEncoder.setVelocityConversionFactor(TRAP_AMP_ARM.ABSOLUTE_ENCODER_VELOCITY_SCALE_FACTOR);
+    m_absoluteEncoder.setPositionConversionFactor(
+        TRAP_AMP_ARM.ABSOLUTE_ENCODER_POSITION_SCALE_FACTOR);
+    m_absoluteEncoder.setVelocityConversionFactor(
+        TRAP_AMP_ARM.ABSOLUTE_ENCODER_VELOCITY_SCALE_FACTOR);
   }
 
   public void set(double speed) {
@@ -78,7 +78,7 @@ public class TrapAmpArm extends SubsystemBase {
     return m_absoluteEncoder.getPosition();
   }
 
-  public double getMotorVelocity(){
+  public double getMotorVelocity() {
     return m_absoluteEncoder.getVelocity();
   }
 
