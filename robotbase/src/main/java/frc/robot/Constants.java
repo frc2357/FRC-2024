@@ -162,6 +162,9 @@ public final class Constants {
   }
 
   public static final class INTAKE {
+    public static final double TOP_MOTOR_SPEED_PERCENT_OUTPUT = 0;
+    public static final double BOTTOM_MOTOR_SPEED_PERCENT_OUTPUT = 0;
+
     public static final IdleMode IDLE_MODE = IdleMode.kCoast;
 
     public static final boolean TOP_MOTOR_INVERTED = false;
