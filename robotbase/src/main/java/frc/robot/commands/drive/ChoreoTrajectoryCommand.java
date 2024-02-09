@@ -10,10 +10,9 @@ import frc.robot.Robot;
 
 public class ChoreoTrajectoryCommand extends SequentialCommandGroup {
 
-  private String trajectoryFileName;
-  private String pathName;
-  private ChoreoTrajectory traj;
-  private Pose2d finalTargetPose;
+  private String m_pathName;
+  private ChoreoTrajectory m_traj;
+  private Pose2d m_finalTargetPose;
 
   /**
    * A utility command to run a Choreo path correctly.
@@ -42,16 +41,15 @@ public class ChoreoTrajectoryCommand extends SequentialCommandGroup {
    */
   public ChoreoTrajectoryCommand(
       String trajectoryFileName, String pathName, boolean setPoseToStartTrajectory) {
-    this.trajectoryFileName = trajectoryFileName;
-    this.traj = Choreo.getTrajectory(trajectoryFileName);
-    this.finalTargetPose = traj.getFinalPose();
-    this.pathName = pathName;
+    m_traj = Choreo.getTrajectory(trajectoryFileName);
+    m_finalTargetPose = m_traj.getFinalPose();
+    m_pathName = pathName;
     new Choreo();
     addCommands(
         new ConditionalCommand(
             new SequentialCommandGroup(
                 new InstantCommand(() -> Robot.swerve.zeroAll()),
-                new InstantCommand(() -> Robot.swerve.setPose(traj.getInitialPose()))),
+                new InstantCommand(() -> Robot.swerve.setPose(m_traj.getInitialPose()))),
             new InstantCommand(),
             () -> setPoseToStartTrajectory),
         Choreo.choreoSwerveCommand(
@@ -65,7 +63,7 @@ public class ChoreoTrajectoryCommand extends SequentialCommandGroup {
         new InstantCommand(
             () -> {
               var pose = Robot.swerve.getPose();
-              var poseError = finalTargetPose.minus(pose);
+              var poseError = m_finalTargetPose.minus(pose);
               System.out.println("Pose & Error | PathName: " + trajectoryFileName);
               System.out.println("|X: " + pose.getX() + " | Err: " + poseError.getX());
               System.out.println("|Y: " + pose.getY() + " | Err: " + poseError.getY());
@@ -79,6 +77,6 @@ public class ChoreoTrajectoryCommand extends SequentialCommandGroup {
 
   @Override
   public String toString() {
-    return pathName;
+    return m_pathName;
   }
 }
