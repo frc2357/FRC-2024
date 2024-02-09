@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.commands.drive.DriveToApriltagCommand;
+import frc.robot.commands.intake.IntakeNote;
 import frc.robot.controls.util.AxisThresholdTrigger;
 import frc.robot.controls.util.RumbleInterface;
 
@@ -32,7 +33,7 @@ public class DriverControls implements RumbleInterface {
 
     m_rightTriggerPrime = new AxisThresholdTrigger(m_controller, Axis.kRightTrigger, .1);
     m_rightTriggerShoot = new AxisThresholdTrigger(m_controller, Axis.kRightTrigger, .6);
-    m_leftTrigger = new AxisThresholdTrigger(m_controller, Axis.kLeftTrigger, .1);
+    m_leftTrigger = new AxisThresholdTrigger(m_controller, Axis.kLeftTrigger, 0);
 
     mapControls();
   }
@@ -46,6 +47,8 @@ public class DriverControls implements RumbleInterface {
             Constants.SWERVE.AMP_TY_SETPOINT,
             Constants.SWERVE.AMP_ROTATION_SETPOINT,
             Constants.SHOOTER_LIMELIGHT.AMP_PIPELINE_INDEX));
+
+    m_leftTrigger.whileTrue(new IntakeNote());
   }
 
   public double getX() {
