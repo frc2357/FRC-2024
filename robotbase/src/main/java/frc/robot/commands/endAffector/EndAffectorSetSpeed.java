@@ -3,10 +3,10 @@ package frc.robot.commands.endAffector;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 
-public class SetEndAffectorSpeedCommand extends Command {
+public class EndAffectorSetSpeed extends Command {
   private double m_speed;
 
-  public SetEndAffectorSpeedCommand(double speed) {
+  public EndAffectorSetSpeed(double speed) {
     m_speed = speed;
     addRequirements(Robot.endAffector);
   }

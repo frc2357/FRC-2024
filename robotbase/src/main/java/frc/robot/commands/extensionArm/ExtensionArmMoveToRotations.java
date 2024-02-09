@@ -1,12 +1,12 @@
-package frc.robot.commands.trapAmpArm;
+package frc.robot.commands.extensionArm;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 
-public class TrapAmpArmMoveToRotationsCommand extends Command {
+public class ExtensionArmMoveToRotations extends Command {
   private double m_rotations;
 
-  public TrapAmpArmMoveToRotationsCommand(double rotations) {
+  public ExtensionArmMoveToRotations(double rotations) {
     m_rotations = rotations;
     addRequirements(Robot.trapAmpArm);
   }

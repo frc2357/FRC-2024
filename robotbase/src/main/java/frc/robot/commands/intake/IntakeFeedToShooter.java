@@ -4,22 +4,22 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
-public class IntakeNote extends Command {
+public class IntakeFeedToShooter extends Command {
 
-  public IntakeNote() {
+  public IntakeFeedToShooter() {
     addRequirements(Robot.intake);
   }
 
   @Override
   public void initialize() {
     Robot.intake.set(
-        Constants.INTAKE.TOP_MOTOR_PICKUP_SPEED_PERCENT_OUTPUT,
-        Constants.INTAKE.BOTTOM_MOTOR_PICKUP_SPEED_PERCENT_OUTPUT);
+        Constants.INTAKE.TOP_MOTOR_FEED_SPEED_PERCENT_OUTPUT,
+        Constants.INTAKE.BOTTOM_MOTOR_FEED_SPEED_PERCENT_OUTPUT);
   }
 
   @Override
   public boolean isFinished() {
-    return Robot.intake.isBeamBroken();
+    return false;
   }
 
   @Override

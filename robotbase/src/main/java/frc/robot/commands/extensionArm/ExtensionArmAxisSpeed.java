@@ -1,24 +1,21 @@
-package frc.robot.commands.intake;
+package frc.robot.commands.extensionArm;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.controls.util.AxisInterface;
 
-public class IntakeRollerAxis extends Command {
+public class ExtensionArmAxisSpeed extends Command {
   private AxisInterface m_axis;
 
-  public IntakeRollerAxis(AxisInterface axis) {
+  public ExtensionArmAxisSpeed(AxisInterface axis) {
     m_axis = axis;
-    addRequirements(Robot.intake);
+    addRequirements(Robot.trapAmpArm);
   }
-
-  @Override
-  public void initialize() {}
 
   @Override
   public void execute() {
     double axisValue = m_axis.getValue();
-    Robot.intake.setAxisSpeed(axisValue, axisValue);
+    Robot.trapAmpArm.setAxisSpeed(axisValue);
   }
 
   @Override
@@ -28,6 +25,6 @@ public class IntakeRollerAxis extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    Robot.intake.stop();
+    Robot.trapAmpArm.stop();
   }
 }

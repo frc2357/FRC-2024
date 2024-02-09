@@ -9,7 +9,7 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.util.Utility;
 
-public class DriveToApriltagCommand extends Command {
+public class DriveToApriltag extends Command {
   private double m_tyOffset;
   private double m_rotationGoal;
   private int m_pipelineIndex;
@@ -19,7 +19,7 @@ public class DriveToApriltagCommand extends Command {
   private PIDController m_yController;
   private PIDController m_rotationController;
 
-  public DriveToApriltagCommand(double tyOffset, double rotationGoal, int pipelineIndex) {
+  public DriveToApriltag(double tyOffset, double rotationGoal, int pipelineIndex) {
     m_tyOffset = tyOffset;
     m_rotationGoal = rotationGoal;
     m_pipelineIndex = pipelineIndex;

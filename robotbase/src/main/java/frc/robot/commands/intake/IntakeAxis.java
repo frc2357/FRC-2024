@@ -1,21 +1,24 @@
-package frc.robot.commands.endAffector;
+package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.controls.util.AxisInterface;
 
-public class EndAffectorAxisCommand extends Command {
+public class IntakeAxis extends Command {
   private AxisInterface m_axis;
 
-  public EndAffectorAxisCommand(AxisInterface axis) {
+  public IntakeAxis(AxisInterface axis) {
     m_axis = axis;
-    addRequirements(Robot.endAffector);
+    addRequirements(Robot.intake);
   }
 
   @Override
+  public void initialize() {}
+
+  @Override
   public void execute() {
-    double axisSpeed = m_axis.getValue();
-    Robot.endAffector.setAxisSpeed(axisSpeed);
+    double axisValue = m_axis.getValue();
+    Robot.intake.setAxisSpeed(axisValue, axisValue);
   }
 
   @Override
@@ -25,6 +28,6 @@ public class EndAffectorAxisCommand extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    Robot.endAffector.stop();
+    Robot.intake.stop();
   }
 }

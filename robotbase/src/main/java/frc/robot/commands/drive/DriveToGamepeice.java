@@ -9,11 +9,11 @@ import frc.robot.Constants.SWERVE;
 import frc.robot.Robot;
 import frc.robot.state.RobotState.DriveControlState;
 
-public class DriveToGamepeiceCommand extends Command {
+public class DriveToGamepeice extends Command {
   private Debouncer m_canSeePieceDebouncer;
   private Pose2d m_initialPose;
 
-  public DriveToGamepeiceCommand() {
+  public DriveToGamepeice() {
     addRequirements(Robot.swerve, Robot.shooterLimelight);
   }
 

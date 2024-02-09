@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.commands.drive.DriveToApriltagCommand;
-import frc.robot.commands.intake.IntakeNote;
+import frc.robot.commands.drive.DriveToApriltag;
+import frc.robot.commands.intake.IntakePickupNote;
 import frc.robot.controls.util.AxisThresholdTrigger;
 import frc.robot.controls.util.RumbleInterface;
 
@@ -43,12 +43,12 @@ public class DriverControls implements RumbleInterface {
     m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.setYaw(180)));
 
     m_rightTriggerPrime.whileTrue(
-        new DriveToApriltagCommand(
+        new DriveToApriltag(
             Constants.SWERVE.AMP_TY_SETPOINT,
             Constants.SWERVE.AMP_ROTATION_SETPOINT,
             Constants.SHOOTER_LIMELIGHT.AMP_PIPELINE_INDEX));
 
-    m_leftTrigger.whileTrue(new IntakeNote());
+    m_leftTrigger.whileTrue(new IntakePickupNote());
   }
 
   public double getX() {
