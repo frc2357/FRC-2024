@@ -4,26 +4,20 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.controls.util.AxisInterface;
 
-public class IntakeRollerStepAxisCommand extends Command {
+public class IntakeRollerAxis extends Command {
   private AxisInterface m_axis;
-  private double m_step;
 
-  /**
-   * Same as IntakeRollerAxisCommand but rounds to the nearest step
-   *
-   * @param axis Controller axis
-   * @param step value from 0 to 1
-   */
-  public IntakeRollerStepAxisCommand(AxisInterface axis, double step) {
+  public IntakeRollerAxis(AxisInterface axis) {
     m_axis = axis;
-    m_step = step;
     addRequirements(Robot.intake);
   }
 
   @Override
+  public void initialize() {}
+
+  @Override
   public void execute() {
     double axisValue = m_axis.getValue();
-    axisValue = Math.floor(axisValue / m_step) * m_step;
     Robot.intake.setAxisSpeed(axisValue, axisValue);
   }
 
