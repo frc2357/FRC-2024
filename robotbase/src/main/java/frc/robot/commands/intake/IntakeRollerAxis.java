@@ -4,10 +4,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.controls.util.AxisInterface;
 
-public class IntakeRollerAxis extends Command {
+public class IntakeAxis extends Command {
   private AxisInterface m_axis;
 
-  public IntakeRollerAxis(AxisInterface axis) {
+  public IntakeAxis(AxisInterface axis) {
     m_axis = axis;
     addRequirements(Robot.intake);
   }

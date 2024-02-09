@@ -4,9 +4,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
-public class IntakeNote extends Command {
+public class IntakePickupNote extends Command {
 
-  public IntakeNote() {
+  public IntakePickupNote() {
     addRequirements(Robot.intake);
   }
 
