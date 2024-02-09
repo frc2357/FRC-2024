@@ -153,7 +153,7 @@ public final class Constants {
     public static final int BOTTOM_MOTOR_STALL_LIMIT_AMPS = 40;
     public static final int BOTTOM_MOTOR_FREE_LIMIT_AMPS = 40;
 
-    public static final double TOP_MOTOR_P = 0.0;
+    public static final double TOP_MOTOR_P = 0.0; //TODO: tune shooter motor PIDs
     public static final double TOP_MOTOR_I = 0.0;
     public static final double TOP_MOTOR_D = 0.0;
     public static final double TOP_MOTOR_FF = 0.0;
@@ -181,7 +181,7 @@ public final class Constants {
     public static final boolean TOP_MOTOR_INVERTED = false;
     public static final boolean BOTTOM_MOTOR_INVERTED = false;
 
-    public static final int TOP_MOTOR_STALL_LIMIT_AMPS = 40;
+    public static final int TOP_MOTOR_STALL_LIMIT_AMPS = 40; //TODO: Tune intake motor amp limits
     public static final int TOP_MOTOR_FREE_LIMIT_AMPS = 40;
 
     public static final int BOTTOM_MOTOR_STALL_LIMIT_AMPS = 40;
@@ -209,7 +209,7 @@ public final class Constants {
 
     public static final boolean IS_PRIMARY_STREAM = false;
 
-    public static final double MOUNTING_ANGLE_DEGREES = 0.0;
+    public static final double MOUNTING_ANGLE_DEGREES = 0.0; //TODO: tune limelight constants
     public static final double MOUNTING_HEIGHT_INCHES = 0.0;
 
     public static final double DEFAULT_RETURN_VALUE = 0.0;
@@ -233,7 +233,7 @@ public final class Constants {
     public static final int MOTOR_STALL_LIMIT_AMPS = 40;
     public static final int MOTOR_FREE_LIMIT_AMPS = 40;
 
-    public static final double PIVOT_P = 0.02;
+    public static final double PIVOT_P = 0.02; //TODO: Tune pivot PID
     public static final double PIVOT_I = 0;
     public static final double PIVOT_D = 0;
     public static final double PIVOT_FF = 0.045;
@@ -251,7 +251,7 @@ public final class Constants {
     public static final boolean RIGHT_MOTOR_INVERTED = false;
     public static final boolean LEFT_MOTOR_INVERTED = false;
 
-    public static final int MOTOR_FREE_LIMIT_AMPS = 40;
+    public static final int MOTOR_FREE_LIMIT_AMPS = 40; //TODO: Tune climber amp limits
     public static final int MOTOR_STALL_LIMIT_AMPS = 40;
   }
 
@@ -265,7 +265,7 @@ public final class Constants {
     public static final double STOWED_NOTE_AMPERAGE_LIMIT = 0;
 
     public static final int MOTOR_FREE_LIMIT_AMPS = 20;
-    public static final int MOTOR_STALL_LIMIT_AMPS = 20;
+    public static final int MOTOR_STALL_LIMIT_AMPS = 20; // TODO: TUNE
 
     public static final double AXIS_MAX_SPEED = 0.25;
   }
@@ -274,8 +274,10 @@ public final class Constants {
     public static final boolean MOTOR_IS_INVERTED = false;
 
     public static final IdleMode MOTOR_IDLE_MODE = IdleMode.kBrake;
-
-    public static final int MOTOR_STALL_LIMIT_AMPS = 20;
+    
+    //TODO: Tune arm amp limits + PID + smart motion + Zeroing constants
+    
+    public static final int MOTOR_STALL_LIMIT_AMPS = 20; 
     public static final int MOTOR_FREE_LIMIT_AMPS = 20;
 
     public static final double MOTOR_PID_P = 0;
