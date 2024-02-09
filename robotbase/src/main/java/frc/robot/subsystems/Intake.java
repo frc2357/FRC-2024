@@ -35,12 +35,19 @@ public class Intake extends SubsystemBase {
         Constants.INTAKE.BOTTOM_MOTOR_FREE_LIMIT_AMPS);
   }
 
-  public void setAxisSpeed(double topPO, double bottomPO) {
+  public void set(double topPO, double bottomPO) {
     m_topIntakeMotor.set(topPO);
     m_bottomIntakeMotor.set(bottomPO);
   }
 
-  public boolean getBeamBreakSensor() {
+  public void setAxisSpeed(double topAxisSpeed, double bottomAxisSpeed) {
+    topAxisSpeed *= Constants.INTAKE.AXIS_MAX_SPEED;
+    bottomAxisSpeed *= Constants.INTAKE.AXIS_MAX_SPEED;
+    set(topAxisSpeed,bottomAxisSpeed);
+  }
+  
+
+  public boolean isBeamBroken() {
     return m_beamBreakSensor.get();
   }
 

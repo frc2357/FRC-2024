@@ -12,25 +12,21 @@ Command needs to:
 2. Complete and stop the intake rollers when
 beam-break sensor's beam is broken
 */
-public class IntakeNoteCommand extends Command {
+public class IntakeNote extends Command {
 
-  public IntakeNoteCommand() {
+  public IntakeNote() {
     addRequirements(Robot.intake);
   }
 
   @Override
-  public void initialize() {}
-
-  @Override
-  public void execute() {
-    Robot.intake.setAxisSpeed(
-        Constants.INTAKE.TOP_MOTOR_SPEED_PERCENT_OUTPUT,
-        Constants.INTAKE.BOTTOM_MOTOR_SPEED_PERCENT_OUTPUT);
-  }
+  public void initialize(){
+    Robot.intake.set(
+        Constants.INTAKE.TOP_MOTOR_INTAKE_SPEED_PERCENT_OUTPUT,
+        Constants.INTAKE.BOTTOM_MOTOR_INTAKE_SPEED_PERCENT_OUTPUT); }
 
   @Override
   public boolean isFinished() {
-    return Robot.intake.getBeamBreakSensor();
+    return Robot.intake.isBeamBroken();
   }
 
   @Override

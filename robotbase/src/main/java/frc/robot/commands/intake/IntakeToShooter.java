@@ -4,20 +4,17 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
-public class IntakeToShooterCommand extends Command {
+public class IntakeToShooter extends Command {
 
-  public IntakeToShooterCommand() {
+  public IntakeToShooter() {
     addRequirements(Robot.intake);
   }
 
   @Override
-  public void initialize() {}
-
-  @Override
-  public void execute() {
-    Robot.intake.setAxisSpeed(
-        Constants.INTAKE.TOP_MOTOR_SPEED_PERCENT_OUTPUT,
-        Constants.INTAKE.BOTTOM_MOTOR_SPEED_PERCENT_OUTPUT);
+  public void initialize(){
+    Robot.intake.set(
+        Constants.INTAKE.TOP_MOTOR_FEED_SPEED_PERCENT_OUTPUT,
+        Constants.INTAKE.BOTTOM_MOTOR_FEED_SPEED_PERCENT_OUTPUT);
   }
 
   @Override
