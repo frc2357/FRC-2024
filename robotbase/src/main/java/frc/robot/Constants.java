@@ -164,8 +164,8 @@ public final class Constants {
   public static final class INTAKE {
     public static final double AXIS_MAX_SPEED = 0;
 
-    public static final double TOP_MOTOR_SYMBOL_SPEED_PERCENT_OUTPUT = 0;
-    public static final double BOTTOM_MOTOR_SYMBOL_SPEED_PERCENT_OUTPUT = 0;
+    public static final double TOP_MOTOR_PICKUP_SPEED_PERCENT_OUTPUT = 0;
+    public static final double BOTTOM_MOTOR_PICKUP_SPEED_PERCENT_OUTPUT = 0;
 
     public static final double TOP_MOTOR_FEED_SPEED_PERCENT_OUTPUT = 0;
     public static final double BOTTOM_MOTOR_FEED_SPEED_PERCENT_OUTPUT = 0;
