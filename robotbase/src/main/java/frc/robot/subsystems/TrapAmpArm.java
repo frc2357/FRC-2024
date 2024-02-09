@@ -68,6 +68,11 @@ public class TrapAmpArm extends SubsystemBase {
     m_motor.stopMotor();
   }
 
+  public void zeroArm() {
+    m_absoluteEncoder.setZeroOffset(
+        m_absoluteEncoder.getPosition() - m_absoluteEncoder.getZeroOffset());
+  }
+
   public void setAxisSpeed(double axisSpeed) {
     m_isClosedLoopEnabled = false;
     double motorSpeed = (-axisSpeed) * TRAP_AMP_ARM.AXIS_MAX_SPEED;

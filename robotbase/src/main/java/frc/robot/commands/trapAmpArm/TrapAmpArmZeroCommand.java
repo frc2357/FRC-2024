@@ -19,4 +19,10 @@ public class TrapAmpArmZeroCommand extends Command {
   public boolean isFinished() {
     return Robot.trapAmpArm.getMotorVelocity() <= Constants.TRAP_AMP_ARM.ZERO_SPEED_STOP_TOLERANCE;
   }
+
+  @Override
+  public void end(boolean interrupted) {
+    Robot.trapAmpArm.stop();
+    Robot.trapAmpArm.zeroArm();
+  }
 }
