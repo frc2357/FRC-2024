@@ -273,5 +273,11 @@ public final class Constants {
     public static final boolean ABSOLUTE_ENCODER_IS_INVERTED = false;
     public static final double ABSOLUTE_ENCODER_POSITION_SCALE_FACTOR = 1;
     public static final double ABSOLUTE_ENCODER_VELOCITY_SCALE_FACTOR = 1;
+
+    public static final double HOME_ROTATIONS = 0;
+    public static final double NOTE_STOW_ROTATIONS = 0;
+    public static final double PRELOAD_ROTATIONS = 0;
+    public static final double AMP_SCORE_ROTATIONS = 0;
+    public static final double TRAP_SCORE_ROTATIONS = 0;
   }
 }
