@@ -11,7 +11,7 @@ public class IntakeToShooter extends Command {
   }
 
   @Override
-  public void initialize(){
+  public void initialize() {
     Robot.intake.set(
         Constants.INTAKE.TOP_MOTOR_FEED_SPEED_PERCENT_OUTPUT,
         Constants.INTAKE.BOTTOM_MOTOR_FEED_SPEED_PERCENT_OUTPUT);

@@ -4,14 +4,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
-/*
-Command needs to:
-
-1. Run intake at set speed (unknown constant)
-
-2. Complete and stop the intake rollers when
-beam-break sensor's beam is broken
-*/
 public class IntakeNote extends Command {
 
   public IntakeNote() {
@@ -19,10 +11,11 @@ public class IntakeNote extends Command {
   }
 
   @Override
-  public void initialize(){
+  public void initialize() {
     Robot.intake.set(
         Constants.INTAKE.TOP_MOTOR_INTAKE_SPEED_PERCENT_OUTPUT,
-        Constants.INTAKE.BOTTOM_MOTOR_INTAKE_SPEED_PERCENT_OUTPUT); }
+        Constants.INTAKE.BOTTOM_MOTOR_INTAKE_SPEED_PERCENT_OUTPUT);
+  }
 
   @Override
   public boolean isFinished() {

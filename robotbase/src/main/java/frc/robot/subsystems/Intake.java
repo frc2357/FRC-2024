@@ -43,9 +43,8 @@ public class Intake extends SubsystemBase {
   public void setAxisSpeed(double topAxisSpeed, double bottomAxisSpeed) {
     topAxisSpeed *= Constants.INTAKE.AXIS_MAX_SPEED;
     bottomAxisSpeed *= Constants.INTAKE.AXIS_MAX_SPEED;
-    set(topAxisSpeed,bottomAxisSpeed);
+    set(topAxisSpeed, bottomAxisSpeed);
   }
-  
 
   public boolean isBeamBroken() {
     return m_beamBreakSensor.get();
