@@ -13,8 +13,8 @@ public class IntakeNote extends Command {
   @Override
   public void initialize() {
     Robot.intake.set(
-        Constants.INTAKE.TOP_MOTOR_INTAKE_SPEED_PERCENT_OUTPUT,
-        Constants.INTAKE.BOTTOM_MOTOR_INTAKE_SPEED_PERCENT_OUTPUT);
+        Constants.INTAKE.TOP_MOTOR_SYMBOL_SPEED_PERCENT_OUTPUT,
+        Constants.INTAKE.BOTTOM_MOTOR_SYMBOL_SPEED_PERCENT_OUTPUT);
   }
 
   @Override
