@@ -46,7 +46,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   }
 
   public void applyRequest(Supplier<SwerveRequest> requestSupplier) {
-    this.setControl(requestSupplier.get());
+    setControl(requestSupplier.get());
   }
 
   public void setYaw(double yaw) {

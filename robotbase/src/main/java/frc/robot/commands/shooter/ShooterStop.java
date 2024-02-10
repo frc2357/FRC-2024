@@ -1,11 +1,11 @@
-package frc.robot.commands.climber;
+package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 
-public class ClimberStopCommand extends Command {
-  public ClimberStopCommand() {
-    addRequirements(Robot.climber);
+public class ShooterStop extends Command {
+  public ShooterStop() {
+    addRequirements(Robot.shooter);
   }
 
   @Override
@@ -15,6 +15,6 @@ public class ClimberStopCommand extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    Robot.climber.stop();
+    Robot.shooter.stop();
   }
 }

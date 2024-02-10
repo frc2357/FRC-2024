@@ -1,30 +1,30 @@
-package frc.robot.commands.shooter;
+package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.controls.util.AxisInterface;
 
-public class ShooterRollerStepAxisCommand extends Command {
+public class IntakeStepAxis extends Command {
   private AxisInterface m_axis;
   private double m_step;
 
   /**
-   * Same as ShooterRollerAxisCommand but rounds to the nearest step
+   * Same as IntakeRollerAxisCommand but rounds to the nearest step
    *
    * @param axis Controller axis
    * @param step value from 0 to 1
    */
-  public ShooterRollerStepAxisCommand(AxisInterface axis, double step) {
+  public IntakeStepAxis(AxisInterface axis, double step) {
     m_axis = axis;
     m_step = step;
-    addRequirements(Robot.shooter);
+    addRequirements(Robot.intake);
   }
 
   @Override
   public void execute() {
     double axisValue = m_axis.getValue();
     axisValue = Math.floor(axisValue / m_step) * m_step;
-    Robot.shooter.setAxisSpeed(axisValue, axisValue);
+    Robot.intake.setAxisSpeed(axisValue, axisValue);
   }
 
   @Override
@@ -34,6 +34,6 @@ public class ShooterRollerStepAxisCommand extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    Robot.shooter.stop();
+    Robot.intake.stop();
   }
 }

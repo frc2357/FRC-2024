@@ -1,11 +1,11 @@
-package frc.robot.commands.shooter;
+package frc.robot.commands.pivot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 
-public class ShooterRollerStopCommand extends Command {
-  public ShooterRollerStopCommand() {
-    addRequirements(Robot.shooter);
+public class ShooterPivotStop extends Command {
+  public ShooterPivotStop() {
+    addRequirements(Robot.pivot);
   }
 
   @Override
@@ -15,6 +15,6 @@ public class ShooterRollerStopCommand extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    Robot.shooter.stop();
+    Robot.pivot.stop();
   }
 }

@@ -11,9 +11,9 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.commands.climber.ClimberAxisCommand;
-import frc.robot.commands.pivot.ShooterPivotAxisCommand;
-import frc.robot.commands.shooter.ShooterRollerStepAxisCommand;
+import frc.robot.commands.climber.ClimberAxis;
+import frc.robot.commands.pivot.ShooterPivotAxis;
+import frc.robot.commands.shooter.ShooterStepAxis;
 import frc.robot.controls.util.AxisInterface;
 import frc.robot.controls.util.AxisThresholdTrigger;
 import frc.robot.controls.util.RumbleInterface;
@@ -172,15 +172,15 @@ public class CodriverControls implements RumbleInterface {
 
     // Shooter (Left DPad)
     leftDPadAndRightTrigger.whileTrue(
-        new ShooterRollerStepAxisCommand(
+        new ShooterStepAxis(
             shooterRollerForwardAxis, Constants.SHOOTER.SHOOTER_AXIS_STEP_INTERVAL));
     leftDPadAndLeftTrigger.whileTrue(
-        new ShooterRollerStepAxisCommand(
+        new ShooterStepAxis(
             shooterRollerReverseAxis, Constants.SHOOTER.SHOOTER_AXIS_STEP_INTERVAL));
-    leftDPadOnly.whileTrue(new ShooterPivotAxisCommand(axisRightStickY));
+    leftDPadOnly.whileTrue(new ShooterPivotAxis(axisRightStickY));
 
     // Climber (up DPad)
-    upDPadOnly.whileTrue(new ClimberAxisCommand(axisRightStickY));
+    upDPadOnly.whileTrue(new ClimberAxis(axisRightStickY));
   }
 
   @Override

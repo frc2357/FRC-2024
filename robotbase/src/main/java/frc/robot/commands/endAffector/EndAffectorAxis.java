@@ -1,21 +1,21 @@
-package frc.robot.commands.trapAmpArm;
+package frc.robot.commands.endAffector;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.controls.util.AxisInterface;
 
-public class TrapAmpArmAxisSpeedCommand extends Command {
+public class EndAffectorAxis extends Command {
   private AxisInterface m_axis;
 
-  public TrapAmpArmAxisSpeedCommand(AxisInterface axis) {
+  public EndAffectorAxis(AxisInterface axis) {
     m_axis = axis;
-    addRequirements(Robot.trapAmpArm);
+    addRequirements(Robot.endAffector);
   }
 
   @Override
   public void execute() {
-    double axisValue = m_axis.getValue();
-    Robot.trapAmpArm.setAxisSpeed(axisValue);
+    double axisSpeed = m_axis.getValue();
+    Robot.endAffector.setAxisSpeed(axisSpeed);
   }
 
   @Override
@@ -25,6 +25,6 @@ public class TrapAmpArmAxisSpeedCommand extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    Robot.trapAmpArm.stop();
+    Robot.endAffector.stop();
   }
 }

@@ -5,10 +5,10 @@ import frc.robot.Constants.SWERVE;
 import frc.robot.Robot;
 import frc.robot.state.RobotState.DriveControlState;
 
-public class TargetLockCommand extends Command {
+public class TargetLock extends Command {
   private int m_pipelineIndex;
 
-  public TargetLockCommand(int pipelineIndex) {
+  public TargetLock(int pipelineIndex) {
     m_pipelineIndex = pipelineIndex;
   }
 
