@@ -12,8 +12,8 @@ public class ShooterPickupFromSource extends Command {
   @Override
   public void initialize() {
     Robot.shooter.setRPMS(
-        -Constants.SHOOTER.TOP_MOTOR_PICKUP_SPEED_RPMS,
-        -Constants.SHOOTER.BOTTOM_MOTOR_PICKUP_SPEED_RPMS);
+        -Constants.SHOOTER.TOP_MOTOR_SOURCE_INTAKE_RPMSS,
+        -Constants.SHOOTER.BOTTOM_MOTOR_SOURCE_INTAKE_RPMS);
   }
 
   @Override

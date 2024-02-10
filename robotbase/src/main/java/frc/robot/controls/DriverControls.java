@@ -48,7 +48,7 @@ public class DriverControls implements RumbleInterface {
             Constants.SWERVE.AMP_ROTATION_SETPOINT,
             Constants.SHOOTER_LIMELIGHT.AMP_PIPELINE_INDEX));
 
-    m_leftTrigger.whileTrue(new IntakePickupNote());
+    m_leftTrigger.whileTrue(new IntakeNoteFromFloor());
   }
 
   public double getX() {

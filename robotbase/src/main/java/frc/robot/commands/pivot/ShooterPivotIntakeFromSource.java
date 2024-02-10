@@ -16,7 +16,7 @@ public class ShooterPivotIntakeFromSource extends Command {
 
   @Override
   public boolean isFinished() {
-    return false;
+    return Robot.pivot.isPivotAtRotations();
   }
 
   @Override
