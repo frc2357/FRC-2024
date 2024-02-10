@@ -4,15 +4,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
-<<<<<<<< HEAD:robotbase/src/main/java/frc/robot/commands/intake/IntakePickupNote.java
-public class IntakePickupNote extends Command {
-
-  public IntakePickupNote() {
-========
 public class IntakeNoteFromFloor extends Command {
 
   public IntakeNoteFromFloor() {
->>>>>>>> 68b8fdc (Added 3 new commands, along with a parallelRaceGroup to control them all):robotbase/src/main/java/frc/robot/commands/intake/IntakeNoteFromFloor.java
     addRequirements(Robot.intake);
   }
 

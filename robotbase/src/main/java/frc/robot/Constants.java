@@ -170,6 +170,9 @@ public final class Constants {
     public static final double TOP_MOTOR_PICKUP_SPEED_PERCENT_OUTPUT = 0;
     public static final double BOTTOM_MOTOR_PICKUP_SPEED_PERCENT_OUTPUT = 0;
 
+    public static final double TOP_MOTOR_EAT_SPEED_PERCENT_OUTPUT = 0;
+    public static final double BOTTOM_MOTOR_EAT_SPEED_PERCENT_OUTPUT = 0;
+
     public static final double TOP_MOTOR_FEED_SPEED_PERCENT_OUTPUT = 0;
     public static final double BOTTOM_MOTOR_FEED_SPEED_PERCENT_OUTPUT = 0;
 
