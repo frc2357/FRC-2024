@@ -15,13 +15,13 @@ public class AutoCommandChooser {
 
     m_autoCommands =
         new Command[] {
-          new DriveChoreoPath("ChClose3SpeakerPath"),
-          new DriveChoreoPath("ChRotationTest"),
-          new DriveChoreoPath("Ch3MeterXTest"),
-          new DriveChoreoPath("Ch1MeterYTest"),
-          new DriveChoreoPath("Ch3MeterYTest"),
-          new DriveChoreoPath("ChBoxTest"),
-          new SplicingSeperatePathsTest()
+          // new DriveChoreoPath("ChClose3SpeakerPath"),
+          // new DriveChoreoPath("ChRotationTest"),
+          // new DriveChoreoPath("Ch3MeterXTest"),
+          // new DriveChoreoPath("Ch1MeterYTest"),
+          // new DriveChoreoPath("Ch3MeterYTest"),
+          // new DriveChoreoPath("ChBoxTest"),
+          // new SplicingSeperatePathsTest()
         };
 
     m_chooser = new SendableChooser<>();

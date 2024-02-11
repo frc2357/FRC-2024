@@ -28,7 +28,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
       new SwerveRequest.ApplyChassisSpeeds();
 
   private final SwerveRequest.FieldCentric fieldRelative =
-      new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.Velocity);
+      new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
   private final SwerveRequest.RobotCentric robotRelative =
       new SwerveRequest.RobotCentric().withDriveRequestType(DriveRequestType.Velocity);
@@ -57,32 +57,41 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
       double velocityXMetersPerSecond,
       double velocityYMetersPerSecond,
       double rotationRateRadiansPerSecond) {
-    switch (Robot.state.getDriveControlState()) {
-      case ROBOT_RELATIVE:
-        applyRequest(
-            () ->
-                robotRelative
-                    .withVelocityX(velocityXMetersPerSecond)
-                    .withVelocityY(velocityYMetersPerSecond)
-                    .withRotationalRate(rotationRateRadiansPerSecond));
-        break;
-      case FIELD_RELATIVE:
-        applyRequest(
-            () ->
+
+
+          applyRequest( () ->
                 fieldRelative
-                    .withVelocityX(velocityXMetersPerSecond)
-                    .withVelocityY(velocityYMetersPerSecond)
-                    .withRotationalRate(rotationRateRadiansPerSecond));
-        break;
-      case TARGET_LOCK:
-        applyRequest(
-            () ->
-                fieldRelative
-                    .withVelocityX(velocityXMetersPerSecond)
-                    .withVelocityY(velocityYMetersPerSecond)
-                    .withRotationalRate(getTargetLockRotation()));
-        break;
-    }
+                    .withVelocityX(0)
+                    .withVelocityY(0)
+                    .withRotationalRate(0));
+        
+
+    // switch (Robot.state.getDriveControlState()) {
+    //   case ROBOT_RELATIVE:
+    //     applyRequest(
+    //         () ->
+    //             robotRelative
+    //                 .withVelocityX(velocityXMetersPerSecond)
+    //                 .withVelocityY(velocityYMetersPerSecond)
+    //                 .withRotationalRate(rotationRateRadiansPerSecond));
+    //     break;
+    //   case FIELD_RELATIVE:
+    //     applyRequest(
+    //         () ->
+    //             fieldRelative
+    //                 .withVelocityX(velocityXMetersPerSecond)
+    //                 .withVelocityY(velocityYMetersPerSecond)
+    //                 .withRotationalRate(rotationRateRadiansPerSecond));
+    //     break;
+    //   case TARGET_LOCK:
+    //     applyRequest(
+    //         () ->
+    //             fieldRelative
+    //                 .withVelocityX(velocityXMetersPerSecond)
+    //                 .withVelocityY(velocityYMetersPerSecond)
+    //                 .withRotationalRate(getTargetLockRotation()));
+    //     break;
+    // }
   }
 
   /**
