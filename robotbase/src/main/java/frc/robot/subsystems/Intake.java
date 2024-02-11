@@ -13,8 +13,7 @@ public class Intake extends SubsystemBase {
 
   public Intake() {
     m_topIntakeMotor = new CANSparkMax(CAN_ID.TOP_INTAKE_MOTOR_ID, MotorType.kBrushless);
-    m_bottomIntakeMotor =
-        new CANSparkMax(CAN_ID.BOTTOM_INTAKE_MOTOR_ID, MotorType.kBrushless);
+    m_bottomIntakeMotor = new CANSparkMax(CAN_ID.BOTTOM_INTAKE_MOTOR_ID, MotorType.kBrushless);
 
     m_beamBreakSensor = new DigitalInput(DIGITAL_INPUT.INTAKE_BEAM_BREAK_ID);
   }
@@ -31,8 +30,7 @@ public class Intake extends SubsystemBase {
     m_bottomIntakeMotor.enableVoltageCompensation(12);
     m_bottomIntakeMotor.setIdleMode(INTAKE.IDLE_MODE);
     m_bottomIntakeMotor.setSmartCurrentLimit(
-        INTAKE.BOTTOM_MOTOR_STALL_LIMIT_AMPS,
-        INTAKE.BOTTOM_MOTOR_FREE_LIMIT_AMPS);
+        INTAKE.BOTTOM_MOTOR_STALL_LIMIT_AMPS, INTAKE.BOTTOM_MOTOR_FREE_LIMIT_AMPS);
   }
 
   public void set(double topPO, double bottomPO) {

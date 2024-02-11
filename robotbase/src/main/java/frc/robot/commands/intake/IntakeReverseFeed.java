@@ -1,12 +1,13 @@
 package frc.robot.commands.intake;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.*;
 import frc.robot.Robot;
 
 public class IntakeReverseFeed extends Command {
-  
+
   public IntakeReverseFeed() {
-    
+
     addRequirements(Robot.intake);
   }
 
