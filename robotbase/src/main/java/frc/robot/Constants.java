@@ -137,7 +137,7 @@ public final class Constants {
   }
 
   public static final class SHOOTER {
-    public static final double TOP_MOTOR_SOURCE_INTAKE_RPMSS = 0;
+    public static final double TOP_MOTOR_SOURCE_INTAKE_RPMS = 0;
     public static final double BOTTOM_MOTOR_SOURCE_INTAKE_RPMS = 0;
 
     public static final double SHOOTER_AXIS_STEP_INTERVAL = 0.1;
