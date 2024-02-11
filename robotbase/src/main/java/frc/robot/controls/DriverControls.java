@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.commands.drive.DriveToApriltag;
-import frc.robot.commands.intake.IntakePickupNote;
+import frc.robot.commands.intake.IntakeNoteFromFloor;
 import frc.robot.controls.util.AxisThresholdTrigger;
 import frc.robot.controls.util.RumbleInterface;
 
@@ -48,7 +48,7 @@ public class DriverControls implements RumbleInterface {
             Constants.SWERVE.AMP_ROTATION_SETPOINT,
             Constants.SHOOTER_LIMELIGHT.AMP_PIPELINE_INDEX));
 
-    m_leftTrigger.whileTrue(new IntakePickupNote());
+    m_leftTrigger.whileTrue(new IntakeNoteFromFloor());
   }
 
   public double getX() {

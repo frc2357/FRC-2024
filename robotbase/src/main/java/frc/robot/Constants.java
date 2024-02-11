@@ -137,6 +137,9 @@ public final class Constants {
   }
 
   public static final class SHOOTER {
+    public static final double TOP_MOTOR_SOURCE_INTAKE_RPMS = 0;
+    public static final double BOTTOM_MOTOR_SOURCE_INTAKE_RPMS = 0;
+
     public static final double SHOOTER_AXIS_STEP_INTERVAL = 0.1;
 
     public static final IdleMode IDLE_MODE = IdleMode.kCoast;
@@ -166,6 +169,9 @@ public final class Constants {
 
     public static final double TOP_MOTOR_PICKUP_SPEED_PERCENT_OUTPUT = 0;
     public static final double BOTTOM_MOTOR_PICKUP_SPEED_PERCENT_OUTPUT = 0;
+
+    public static final double TOP_MOTOR_SOURCE_INTAKE_SPEED_PERCENT_OUTPUT = 0;
+    public static final double BOTTOM_MOTOR_SOURCE_INTAKE_SPEED_PERCENT_OUTPUT = 0;
 
     public static final double TOP_MOTOR_FEED_SPEED_PERCENT_OUTPUT = 0;
     public static final double BOTTOM_MOTOR_FEED_SPEED_PERCENT_OUTPUT = 0;
@@ -217,6 +223,8 @@ public final class Constants {
   }
 
   public static final class SHOOTER_PIVOT {
+    public static final double INTAKE_FROM_SOURCE_ROTATIONS = 0;
+
     public static final boolean MOTOR_INVERTED = false;
     public static final boolean ENCODER_INVERTED = false;
 
