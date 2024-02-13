@@ -42,13 +42,15 @@ public class ShooterPivot extends SubsystemBase {
     m_absoluteEncoder.setInverted(SHOOTER_PIVOT.ENCODER_INVERTED);
     m_absoluteEncoder.setPositionConversionFactor(SHOOTER_PIVOT.ENCODER_POSITION_CONVERSION_FACTOR);
     m_absoluteEncoder.setVelocityConversionFactor(SHOOTER_PIVOT.ENCODER_VELOCITY_CONVERSION_FACTOR);
+
+    m_pivotPIDController.setPositionPIDWrappingEnabled(SHOOTER_PIVOT.POSITION_PID_WRAPPING_ENABLED);
+    m_pivotPIDController.setFeedbackDevice(m_absoluteEncoder);
   }
 
   public void setPivotRotations(double rotations) {
     m_isClosedLoopEnabled = true;
     m_targetRotations = rotations;
     m_pivotPIDController.setReference(m_targetRotations, ControlType.kPosition);
-    m_pivotPIDController.setPositionPIDWrappingEnabled(SHOOTER_PIVOT.POSITION_PID_WRAPPING_ENABLED);
   }
 
   public void setPivotAxisSpeed(double axisSpeed) {

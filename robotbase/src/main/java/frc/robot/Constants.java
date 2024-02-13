@@ -223,7 +223,8 @@ public final class Constants {
   }
 
   public static final class SHOOTER_PIVOT {
-    public static final double INTAKE_FROM_SOURCE_ROTATIONS = 0;
+    public static final double INTAKE_FROM_SOURCE_SETPOINT = 0;
+    public static final double DEFAULT_SHOOTER_PIVOT_SETPOINT = 0;
 
     public static final boolean MOTOR_INVERTED = false;
     public static final boolean ENCODER_INVERTED = false;
