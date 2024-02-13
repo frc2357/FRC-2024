@@ -59,7 +59,7 @@ public class Shooter extends SubsystemBase {
     m_bottomPIDController.setOutputRange(-1, 1);
   }
 
-  public void setRPMS(double topRPMS, double bottomRPMS) {
+  public void setRPMs(double topRPMS, double bottomRPMS) {
     m_topPIDController.setReference(topRPMS, ControlType.kVelocity);
     m_bottomPIDController.setReference(bottomRPMS, ControlType.kVelocity);
   }
@@ -145,6 +145,6 @@ public class Shooter extends SubsystemBase {
       return;
     }
 
-    setRPMS(topRPMs, bottomRPMs);
+    setRPMs(topRPMs, bottomRPMs);
   }
 }
