@@ -11,9 +11,6 @@ import frc.robot.util.RobotMath;
 import frc.robot.util.Utility;
 
 public class Shooter extends SubsystemBase {
-  // {ty, pivotRotations, topRPMs, bottomRPMs}
-  private static final double[][] m_shooterCurve = {{0.0, 0.0, 0, 0}};
-
   private CANSparkMax m_topShooterMotor;
   private CANSparkMax m_bottomShooterMotor;
 
@@ -117,24 +114,23 @@ public class Shooter extends SubsystemBase {
     if (hasTarget()) {
       setVisionShotRPMs(Robot.shooterLimelight.getTY());
     } else {
-      System.err.println("----- No vision target -----");
+      System.err.println("----- No vision target (Shooter) -----");
     }
   }
 
   private void setVisionShotRPMs(double ty) {
-    int curveIndex = RobotMath.getCurveSegmentIndex(m_shooterCurve, ty);
+    int curveIndex = RobotMath.getCurveSegmentIndex(Robot.shooterCurve, ty);
     if (curveIndex == -1) {
-      System.err.println("----- Curve segment index out of bounds -----");
+      // System.err.println("----- Curve segment index out of bounds (Shooter)
+      // -----");
       return;
     }
 
-    double[] high = m_shooterCurve[curveIndex];
-    double[] low = m_shooterCurve[curveIndex + 1];
+    double[] high = Robot.shooterCurve[curveIndex];
+    double[] low = Robot.shooterCurve[curveIndex + 1];
 
     double highTY = high[0];
     double lowTY = low[0];
-    double highPivotAngle = high[1];
-    double lowPivotAngle = low[1];
     double highBottomRPMs = high[2];
     double lowBottomRPMs = low[2];
     double highTopRPMs = high[3];
@@ -143,10 +139,8 @@ public class Shooter extends SubsystemBase {
     double topRPMs = RobotMath.linearlyInterpolate(highTopRPMs, lowTopRPMs, highTY, lowTY, ty);
     double bottomRPMs =
         RobotMath.linearlyInterpolate(highBottomRPMs, lowBottomRPMs, highTY, lowTY, ty);
-    double pivotAngle =
-        RobotMath.linearlyInterpolate(highPivotAngle, lowPivotAngle, highTY, lowTY, ty);
 
-    if (Double.isNaN(pivotAngle) || Double.isNaN(topRPMs) || Double.isNaN(bottomRPMs)) {
+    if (Double.isNaN(topRPMs) || Double.isNaN(bottomRPMs)) {
       System.err.println("----- Invalid shooter values -----");
       return;
     }

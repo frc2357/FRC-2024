@@ -8,15 +8,18 @@ import com.revrobotics.SparkPIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.SHOOTER_PIVOT;
+import frc.robot.Robot;
+import frc.robot.util.RobotMath;
 import frc.robot.util.Utility;
 
 public class ShooterPivot extends SubsystemBase {
   private boolean m_isClosedLoopEnabled = false;
+  private boolean m_isVisionShooting = false;
 
   private CANSparkMax m_pivotMotor;
   private SparkPIDController m_pivotPIDController;
   private SparkAbsoluteEncoder m_absoluteEncoder;
-  private double m_targetRotations;
+  private double m_targetSetpoint;
 
   public ShooterPivot() {
     m_pivotMotor = new CANSparkMax(Constants.CAN_ID.SHOOTER_PIVOT_MOTOR_ID, MotorType.kBrushless);
@@ -47,10 +50,10 @@ public class ShooterPivot extends SubsystemBase {
     m_pivotPIDController.setFeedbackDevice(m_absoluteEncoder);
   }
 
-  public void setPivotRotations(double rotations) {
+  public void setPivotSetpoint(double setpoint) {
     m_isClosedLoopEnabled = true;
-    m_targetRotations = rotations;
-    m_pivotPIDController.setReference(m_targetRotations, ControlType.kPosition);
+    m_targetSetpoint = setpoint;
+    m_pivotPIDController.setReference(m_targetSetpoint, ControlType.kPosition);
   }
 
   public void setPivotAxisSpeed(double axisSpeed) {
@@ -66,26 +69,72 @@ public class ShooterPivot extends SubsystemBase {
 
   public void resetEncoder() {
     m_pivotMotor.getEncoder().setPosition(0);
-    m_targetRotations = 0;
+    m_targetSetpoint = 0;
   }
 
   public double getPivotRotations() {
     return m_pivotMotor.getEncoder().getPosition();
   }
 
-  public double getAngle() {
+  public double getPosition() {
     return m_absoluteEncoder.getPosition();
   }
 
-  public boolean isPivotAtRotations() {
+  public boolean isPivotAtSetpoint() {
     return Utility.isWithinTolerance(
-        getAngle(), m_targetRotations, SHOOTER_PIVOT.POSITION_ALLOWED_ERROR);
+        getPosition(), m_targetSetpoint, SHOOTER_PIVOT.POSITION_ALLOWED_ERROR);
+  }
+
+  public boolean hasTarget() {
+    return Robot.shooterLimelight.validTargetExists();
   }
 
   @Override
   public void periodic() {
-    if (m_isClosedLoopEnabled && isPivotAtRotations()) {
+    if (m_isClosedLoopEnabled && isPivotAtSetpoint()) {
       m_isClosedLoopEnabled = false;
+    } else if (m_isVisionShooting) {
+      visionShotPeriodic();
     }
+  }
+
+  public void setVisionShootingEnabled(boolean enabled) {
+    m_isVisionShooting = enabled;
+    if (!m_isVisionShooting) {
+      stop();
+    }
+  }
+
+  private void visionShotPeriodic() {
+    if (hasTarget()) {
+      setVisionShotPosition(Robot.shooterLimelight.getTY());
+    } else {
+      System.err.println("----- No vision target (Pivot) -----");
+    }
+  }
+
+  private void setVisionShotPosition(double ty) {
+    int curveIndex = RobotMath.getCurveSegmentIndex(Robot.shooterCurve, ty);
+    if (curveIndex == -1) {
+      // System.err.println("----- Curve segment index out of bounds (Pivot) -----");
+      return;
+    }
+
+    double[] high = Robot.shooterCurve[curveIndex];
+    double[] low = Robot.shooterCurve[curveIndex + 1];
+
+    double highTY = high[0];
+    double lowTY = low[0];
+    double highPivotSetpoint = high[1];
+    double lowPivotSetoint = low[1];
+
+    double pivotSetpoint = RobotMath.linearlyInterpolate(highPivotSetpoint, lowPivotSetoint, highTY, lowTY, ty);
+
+    if (Double.isNaN(pivotSetpoint)) {
+      // System.err.println("----- Invalid shooter pivot values -----");
+      return;
+    }
+
+    setPivotSetpoint(pivotSetpoint);
   }
 }

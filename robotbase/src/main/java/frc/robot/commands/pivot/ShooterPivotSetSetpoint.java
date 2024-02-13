@@ -13,7 +13,7 @@ public class ShooterPivotSetSetpoint extends Command {
 
   @Override
   public void initialize() {
-    Robot.pivot.setPivotRotations(m_setpoint);
+    Robot.pivot.setPivotSetpoint(m_setpoint);
   }
 
   @Override

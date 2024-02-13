@@ -49,6 +49,9 @@ public class Robot extends TimedRobot {
 
   public static TrapAmpArm trapAmpArm;
 
+  // {ty, pivotRotations, topRPMs, bottomRPMs}
+  public static final double[][] shooterCurve = {{0.0, 0.0, 0.0, 0.0}};
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
