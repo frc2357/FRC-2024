@@ -18,7 +18,7 @@ public class ShooterPivotSetSetpoint extends Command {
 
   @Override
   public boolean isFinished() {
-    return Robot.pivot.isPivotAtRotations();
+    return Robot.pivot.isPivotAtSetpoint();
   }
 
   @Override
