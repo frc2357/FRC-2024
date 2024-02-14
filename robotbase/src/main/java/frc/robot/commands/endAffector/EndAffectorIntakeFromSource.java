@@ -12,12 +12,12 @@ public class EndAffectorIntakeFromSource extends Command {
 
   @Override
   public void initialize() {
-    Robot.endAffector.setSpeed(END_AFFECTOR.PICKUP_SPEED);
+    Robot.endAffector.setSpeed(END_AFFECTOR.INTAKE_SPEED);
   }
 
   @Override
   public boolean isFinished() {
-    return Robot.endAffector.getMotorVoltage() >= END_AFFECTOR.STOWED_NOTE_VOLTAGE_LIMIT;
+    return Robot.endAffector.getMotorAmperage() >= END_AFFECTOR.STOWED_NOTE_AMPERAGE_LIMIT;
   }
 
   @Override
