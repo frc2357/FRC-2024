@@ -11,6 +11,8 @@ import frc.robot.util.RobotMath;
 import frc.robot.util.Utility;
 
 public class Shooter extends SubsystemBase {
+  private boolean m_isVisionShooting = false;
+
   private double m_targetSpeedTop;
   private double m_targetSpeedBottom;
 
@@ -118,6 +120,12 @@ public class Shooter extends SubsystemBase {
     m_isClosedLoopEnabled = false;
     Robot.shooterCam.setDriverModeActive();
   }
+
+  public void setVisionShootingEnabled(boolean enabled) {
+    m_isVisionShooting = enabled;
+    if (!m_isVisionShooting) {
+      stop();
+    }
 
   private void visionShotPeriodic() {
     if (hasTarget()) {
