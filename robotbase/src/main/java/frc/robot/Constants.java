@@ -260,6 +260,10 @@ public final class Constants {
 
     public static final IdleMode IDLE_MODE = IdleMode.kBrake;
 
+    public static final double INTAKE_SPEED = 0;
+
+    public static final double STOWED_NOTE_AMPERAGE_LIMIT = 0;
+
     public static final int MOTOR_FREE_LIMIT_AMPS = 20;
     public static final int MOTOR_STALL_LIMIT_AMPS = 20;
 
