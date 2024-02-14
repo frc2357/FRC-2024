@@ -22,6 +22,6 @@ public class EndAffectorIntakeFromSource extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    Robot.endAffector.setSpeed(0);
+    Robot.endAffector.stop();
   }
 }
