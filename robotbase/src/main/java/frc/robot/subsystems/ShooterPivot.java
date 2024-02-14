@@ -108,13 +108,13 @@ public class ShooterPivot extends SubsystemBase {
 
   private void visionShotPeriodic() {
     if (hasTarget()) {
-      setVisionShotPosition(Robot.shooterLimelight.getTY());
+      setVisionShotSetpoint(Robot.shooterLimelight.getTY());
     } else {
       System.err.println("----- No vision target (Pivot) -----");
     }
   }
 
-  private void setVisionShotPosition(double ty) {
+  private void setVisionShotSetpoint(double ty) {
     int curveIndex = RobotMath.getCurveSegmentIndex(Robot.shooterCurve, ty);
     if (curveIndex == -1) {
       // System.err.println("----- Curve segment index out of bounds (Pivot) -----");
