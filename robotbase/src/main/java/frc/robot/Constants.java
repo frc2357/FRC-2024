@@ -315,8 +315,11 @@ public final class Constants {
   }
 
   public static final class SHOOTER_PHOTON_CAMERA {
+    public static final String NAME = "ov9782-shooter";
+
     public static final int NEURAL_NETWORK_PIPELINE = 0;
     public static final int RETROREFLECTIVE_PIPELINE = 1;
+
     public static final Transform3d ROBOT_TO_CAMERA_TRANSFORM =
         new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
   }

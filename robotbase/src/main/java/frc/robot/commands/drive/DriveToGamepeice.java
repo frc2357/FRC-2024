@@ -14,12 +14,12 @@ public class DriveToGamepeice extends Command {
   private Pose2d m_initialPose;
 
   public DriveToGamepeice() {
-    addRequirements(Robot.swerve, Robot.shooterLimelight);
+    addRequirements(Robot.swerve, Robot.shooterPhotonCamera);
   }
 
   @Override
   public void initialize() {
-    Robot.shooterLimelight.setPipeline(SHOOTER_LIMELIGHT.GAMEPIECE_INDEX);
+    Robot.shooterPhotonCamera.setPipeline(SHOOTER_LIMELIGHT.GAMEPIECE_INDEX);
     Robot.state.setDriveControlState(DriveControlState.ROBOT_RELATIVE);
     SWERVE.ROTATION_PID_CONTROLLER.reset();
     SWERVE.ROTATION_PID_CONTROLLER.setTolerance(SWERVE.PIECE_TRACKING_ROTATION_TOLERANCE);
@@ -31,13 +31,13 @@ public class DriveToGamepeice extends Command {
 
   @Override
   public void execute() {
-    if (!m_canSeePieceDebouncer.calculate(Robot.shooterLimelight.validTargetExists())) {
+    if (!m_canSeePieceDebouncer.calculate(Robot.shooterPhotonCamera.validTargetExists())) {
       System.out.println("No Gamepiece Detected");
       Robot.swerve.drive(0, 0, 0);
       return;
     }
 
-    double rotationError = Robot.shooterLimelight.getTX();
+    double rotationError = Robot.shooterPhotonCamera.getTX();
     double rotationSpeed = SWERVE.ROTATION_PID_CONTROLLER.calculate(rotationError, 0);
     double translationSpeed =
         distanceTraveled() > SWERVE.PIECE_TRACKING_SLOW_DOWN_METERS
