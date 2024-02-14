@@ -46,4 +46,8 @@ public class EndAffector extends SubsystemBase {
   public void getMotorSpeed() {
     m_motor.get();
   }
+
+  public double getMotorVoltage() {
+    return m_motor.getBusVoltage();
+  }
 }
