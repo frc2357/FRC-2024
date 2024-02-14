@@ -11,6 +11,9 @@ import frc.robot.util.RobotMath;
 import frc.robot.util.Utility;
 
 public class Shooter extends SubsystemBase {
+  private double m_targetSpeedTop;
+  private double m_targetSpeedBottom;
+
   private CANSparkMax m_topShooterMotor;
   private CANSparkMax m_bottomShooterMotor;
 
@@ -60,8 +63,10 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setRPMs(double topRPMS, double bottomRPMS) {
-    m_topPIDController.setReference(topRPMS, ControlType.kVelocity);
-    m_bottomPIDController.setReference(bottomRPMS, ControlType.kVelocity);
+    m_targetSpeedTop = topRPMS;
+    m_targetSpeedBottom = bottomRPMS;
+    m_topPIDController.setReference(m_targetSpeedTop, ControlType.kVelocity);
+    m_bottomPIDController.setReference(m_targetSpeedBottom, ControlType.kVelocity);
   }
 
   public void setAxisSpeed(double top, double bottom) {
@@ -87,6 +92,10 @@ public class Shooter extends SubsystemBase {
   public boolean isAtRPMs(double topRPMs, double bottomRPMs) {
     return Utility.isWithinTolerance(getTopVelocity(), topRPMs, 100)
         && Utility.isWithinTolerance(getBottomVelocity(), bottomRPMs, 100);
+  }
+
+  public boolean isAtTargetSpeed() {
+    return isAtRPMs(m_targetSpeedTop, m_targetSpeedBottom);
   }
 
   public boolean hasTarget() {
