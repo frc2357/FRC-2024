@@ -266,7 +266,7 @@ public final class Constants {
 
     public static final int MOTOR_FREE_LIMIT_AMPS = 20;
     public static final int MOTOR_STALL_LIMIT_AMPS = 20;
-    
+
     public static final double AXIS_MAX_SPEED = 0.25;
   }
 
