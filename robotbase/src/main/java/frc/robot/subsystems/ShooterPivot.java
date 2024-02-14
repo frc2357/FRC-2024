@@ -91,10 +91,11 @@ public class ShooterPivot extends SubsystemBase {
 
   @Override
   public void periodic() {
+    if (m_isVisionShooting) {
+      visionShotPeriodic();
+    }
     if (m_isClosedLoopEnabled && isPivotAtSetpoint()) {
       m_isClosedLoopEnabled = false;
-    } else if (m_isVisionShooting) {
-      visionShotPeriodic();
     }
   }
 
@@ -128,8 +129,7 @@ public class ShooterPivot extends SubsystemBase {
     double highPivotSetpoint = high[1];
     double lowPivotSetoint = low[1];
 
-    double pivotSetpoint =
-        RobotMath.linearlyInterpolate(highPivotSetpoint, lowPivotSetoint, highTY, lowTY, ty);
+    double pivotSetpoint = RobotMath.linearlyInterpolate(highPivotSetpoint, lowPivotSetoint, highTY, lowTY, ty);
 
     if (Double.isNaN(pivotSetpoint)) {
       // System.err.println("----- Invalid shooter pivot values -----");
