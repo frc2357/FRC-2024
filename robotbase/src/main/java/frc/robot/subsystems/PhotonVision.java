@@ -7,28 +7,21 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.Constants.PHOTON_VISION;
 import java.util.List;
-
+import java.util.Optional;
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.targeting.PNPResult;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.networktables.DoubleArraySubscriber;
-import edu.wpi.first.networktables.DoubleArrayTopic;
-import edu.wpi.first.networktables.DoublePublisher;
-import edu.wpi.first.networktables.DoubleSubscriber;
-import edu.wpi.first.networktables.IntegerSubscriber;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.PubSubOption;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.PHOTON_VISION;
-import frc.robot.Constants;
+import org.photonvision.targeting.TargetCorner;
 
 /** Controls the limelight camera options. */
 public class PhotonVision extends SubsystemBase {
@@ -36,36 +29,45 @@ public class PhotonVision extends SubsystemBase {
   protected PhotonCamera m_camera;
   private PhotonPipelineResult m_result;
   private List<PhotonTrackedTarget> m_targets;
+  private PhotonTrackedTarget m_bestTarget;
   private PhotonPoseEstimator m_poseEstimator;
+  private Transform3d m_robotToCameraTransform;
+
   /**
    * Sets the camera stream.
    *
-   * @param cameraName Name of the cameras Photon Vision network table. MUST match the net tables name, or it wont work.
+   * @param cameraName Name of the cameras Photon Vision network table. MUST match the net tables
+   *     name, or it wont work.
    */
-  public PhotonVision(String cameraName) {
+  public PhotonVision(String cameraName, Transform3d robotToCameraTransform) {
     m_camera = new PhotonCamera(cameraName);
+    m_robotToCameraTransform = robotToCameraTransform;
   }
 
   public void configure() {
     setHumanPipelineActive();
-    m_poseEstimator = new PhotonPoseEstimator(PHOTON_VISION.APRIL_TAG_FIELD_LAYOUT, PHOTON_VISION.POSE_STRATEGY, m_camera, PHOTON_VISION.ROBOT_TO_CAMERA_TRANSFORM);
-    setStream(Constants.SHOOTER_LIMELIGHT.IS_PRIMARY_STREAM);
+    m_poseEstimator =
+        new PhotonPoseEstimator(
+            PHOTON_VISION.APRIL_TAG_FIELD_LAYOUT,
+            PHOTON_VISION.POSE_STRATEGY,
+            m_camera,
+            m_robotToCameraTransform);
   }
 
-  private void getResult(){
+  private void getResult() {
     m_result = m_camera.getLatestResult();
     m_targets = m_result.getTargets();
+    m_bestTarget = m_result.getBestTarget();
   }
 
   public boolean validTargetExists() {
     return getTV();
   }
 
-  
   /**
    * @return The current pipelines latency in milliseconds
    */
-  public double getLatencyMillis(){
+  public double getLatencyMillis() {
     return m_result.getLatencyMillis();
   }
 
@@ -74,8 +76,8 @@ public class PhotonVision extends SubsystemBase {
    * @return If the limelight sees the april tag
    */
   public boolean validAprilTagTargetExists(int id) {
-    for(PhotonTrackedTarget target : m_targets){
-      if(target.getFiducialId() != -1){
+    for (PhotonTrackedTarget target : m_targets) {
+      if (target.getFiducialId() == id) {
         return true;
       }
     }
@@ -99,47 +101,121 @@ public class PhotonVision extends SubsystemBase {
     return m_camera.getPipelineIndex();
   }
 
-  public void setStream(boolean isLimelightPrimary) {
-    //TODO: Figure out if this has an equal in photon vision
-    //m_streamPub.set(isLimelightPrimary ? 1 : 2);
-  }
-
-  /**
-   * Whether the camera has a valid target
-   */
+  /** Whether the camera has a valid target */
   public boolean getTV() {
-    
+
     return m_result.hasTargets();
   }
 
   /** Horizontal offset from crosshair to target (degrees) */
   public double getTX() {
-    return m_targets.get(0).getYaw();
+    return m_bestTarget.getYaw();
+  }
+
+  /**
+   * Gets the best targets detected bounding box horizontal distance, uses unknown units, assume
+   * pixels. TAKE NOTE!
+   *
+   * <pre>
+   * ⟶  +X  3 ----- 2
+   * |      |       |
+   * V      |       |
+   * +Y     0 ----- 1</pre>
+   *
+   * X and Y increase opposite usual ways. Use accordingly.
+   *
+   * @return The best targets detected bounding box horizontal side length in what are are assumed
+   *     to be pixels.
+   */
+  public double getHorizontalTargetLength() {
+    List<TargetCorner> corners = m_bestTarget.getDetectedCorners();
+    double lowestX = corners.get(0).x;
+    double lowestY = corners.get(0).y;
+    TargetCorner originCorner = corners.get(0); // basing off of known fiducial corner order
+    TargetCorner bottomRightCorner = corners.get(1);
+    for (TargetCorner corner : corners) {
+      if (corner.x < originCorner.x && corner.y > originCorner.y) {
+        originCorner = corner;
+      }
+      if (corner.x > bottomRightCorner.x && corner.y > bottomRightCorner.y) {
+        bottomRightCorner = corner;
+      }
+    }
+    return bottomRightCorner.x - originCorner.x;
+  }
+
+  /**
+   * Gets the best targets detected bounding box vertical distance, uses unknown units, assume
+   * pixels. TAKE NOTE!
+   *
+   * <pre>
+   * ⟶  +X  3 ----- 2
+   * |      |       |
+   * V      |       |
+   * +Y     0 ----- 1</pre>
+   *
+   * X and Y increase opposite usual ways. Use accordingly.
+   *
+   * @return The best targets detected bounding box vertical side length in what are are assumed to
+   *     be pixels.
+   */
+  public double getVerticalTargetLength() {
+    List<TargetCorner> corners = m_bestTarget.getDetectedCorners();
+    double lowestX = corners.get(0).x;
+    double lowestY = corners.get(0).y;
+    TargetCorner originCorner = corners.get(0); // basing off of known fiducial corner order
+    TargetCorner bottomRightCorner = corners.get(1);
+    for (TargetCorner corner : corners) {
+      if (corner.x < originCorner.x && corner.y > originCorner.y) {
+        originCorner = corner;
+      }
+      if (corner.x > bottomRightCorner.x && corner.y > bottomRightCorner.y) {
+        bottomRightCorner = corner;
+      }
+    }
+    return bottomRightCorner.y - originCorner.y;
+  }
+
+  /**
+   * Gets the best targets yaw from the crosshair to the target
+   *
+   * @return Best targets yaw from crosshair to target
+   */
+  public double getYaw() {
+    return m_bestTarget.getYaw();
   }
 
   /** Vertical offset from crosshair to target (degrees) */
   public double getTY() {
-    return m_targets.get(0).getPitch();
+    return m_bestTarget.getPitch();
+  }
+
+  /**
+   * Gets the best targets pitch from the crosshair to the target
+   *
+   * @return Best targets pitch from crosshair to target
+   */
+  public double getPitch() {
+    return m_bestTarget.getPitch();
   }
 
   /** Percent of image covered by target [0, 100] */
   public double getTA() {
-    return m_targets.get(0).getArea();
+    return m_bestTarget.getArea();
+  }
+
+  /**
+   * Percent of image covered by the best target [0, 100]
+   *
+   * @return percentage of the image that the best target covers
+   */
+  public double getArea() {
+    return m_bestTarget.getArea();
   }
 
   /** Skew or rotation (degrees, [-90, 0]) */
   public double getTS() {
-    return m_targets.get(0).getSkew();
-  }
-
-  /** Horizontal sidelength of rough bounding box (0 - 320 pixels) */
-  public double getTHOR() {
-    return m_ThorSub.get();
-  }
-
-  /** Vertical sidelength of rough bounding box (0 - 320 pixels) */
-  public double getTVERT() {
-    return m_TvertSub.get();
+    return m_bestTarget.getSkew();
   }
 
   /** Skew of target in degrees. Positive values are to the left, negative to the right */
@@ -201,7 +277,7 @@ public class PhotonVision extends SubsystemBase {
       return Double.NaN;
     }
 
-    double proportion = getTHOR() / getTVERT();
+    double proportion = getHorizontalTargetLength() / getVerticalTargetLength();
     double factor =
         proportion
             * Constants.SHOOTER_LIMELIGHT.TARGET_HEIGHT
@@ -224,46 +300,49 @@ public class PhotonVision extends SubsystemBase {
     return distance;
   }
 
-  public Pose2d getLimelightPose2d() {
-    return botposeToPose2d(m_limelightPoseInfoSub.get());
+  /**
+   * Gets an estimated pose from the subsystems pose estimator. Should only be used if the camera
+   * does not see more than 1 april tag, if it does, use getPNPResult instead, as it is more
+   * accurate.
+   *
+   * @return The robots estimated pose, if it has any april tag targets. Returns null if there are
+   *     no targets.
+   */
+  public EstimatedRobotPose getEstimatedPose() {
+    Optional<EstimatedRobotPose> estimatedPose = m_poseEstimator.update(m_result);
+    return estimatedPose.isPresent() ? estimatedPose.get() : null;
   }
 
-  public Long getLastTargetID() {
-    return m_Tid.get();
+  /**
+   * Gets the information of the multiple tag pose estimate if it exists. If the camera does not see
+   * more than 1 april tag, this will return null.
+   *
+   * @return The PNPResult for you to get information from.
+   */
+  public PNPResult getPNPResult() {
+    PNPResult PNPEstimate = m_result.getMultiTagResult().estimatedPose;
+    return PNPEstimate.isPresent ? PNPEstimate : null;
   }
 
-  public Pose2d getRedPose() {
-    return m_camera.get
+  /**
+   * @param result The PNPResult to take the pose from.
+   * @return The Pose3d constructed from the PNPResult.
+   */
+  public Pose3d pose3dFromPNPResult(PNPResult result) {
+    return new Pose3d(result.best.getTranslation(), result.best.getRotation());
   }
 
-  public Pose2d getBluePose() {
-    return botposeToPose2d(m_botposeWpiBlue.get());
+  /**
+   * @param result The PNPResult to take the pose from.
+   * @return The Pose2d constructed from the PNPResult.
+   */
+  public Pose2d pose2dFromPNPResult(PNPResult result) {
+    return new Pose2d(
+        result.best.getTranslation().toTranslation2d(), result.best.getRotation().toRotation2d());
   }
 
-  public double getBlueBotposeTimestamp() {
-    return calculateTimestamp(m_botposeWpiBlue.get());
-  }
-
-  public double getRedBotposeTimestamp() {
-    return calculateTimestamp(m_botposeWpiRed.get());
-  }
-
-  public double calculateTimestamp(double[] botpose) {
-    if (botpose == null) {
-      return 0;
-    }
-
-    return Timer.getFPGATimestamp() - (botpose[6] / 1000);
-  }
-
-  public static Pose2d botposeToPose2d(double[] botpose) {
-    if (botpose == null) {
-      return null;
-    }
-
-    Translation2d t2d = new Translation2d(botpose[0], botpose[1]);
-    Rotation2d r2d = Rotation2d.fromDegrees(botpose[5]);
-    return new Pose2d(t2d, r2d);
+  public int getLastTargetID() {
+    return m_bestTarget.getFiducialId();
   }
 
   @Override

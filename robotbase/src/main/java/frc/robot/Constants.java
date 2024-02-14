@@ -5,16 +5,13 @@
 package frc.robot;
 
 import com.revrobotics.CANSparkBase.IdleMode;
-
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
-
 import java.util.function.BooleanSupplier;
-
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 /**
@@ -311,12 +308,16 @@ public final class Constants {
     public static final double TRAP_SCORE_ROTATIONS = 0; // TODO: TUNE
   }
 
-  public static final class PHOTON_VISION{
+  public static final class PHOTON_VISION {
+    public static final AprilTagFieldLayout APRIL_TAG_FIELD_LAYOUT =
+        AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+    public static final PoseStrategy POSE_STRATEGY = PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
+  }
+
+  public static final class SHOOTER_PHOTON_CAMERA {
     public static final int NEURAL_NETWORK_PIPELINE = 0;
     public static final int RETROREFLECTIVE_PIPELINE = 1;
-
-    public static final AprilTagFieldLayout APRIL_TAG_FIELD_LAYOUT = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
-    public static final PoseStrategy POSE_STRATEGY = PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
-    public static final Transform3d ROBOT_TO_CAMERA_TRANSFORM = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+    public static final Transform3d ROBOT_TO_CAMERA_TRANSFORM =
+        new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
   }
 }
