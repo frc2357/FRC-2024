@@ -19,6 +19,7 @@ import frc.robot.subsystems.ExtensionArm;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterPhotonCamera;
 import frc.robot.subsystems.ShooterPivot;
 
 /**
@@ -60,9 +61,10 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
 
     shooterPhotonCamera =
-        new PhotonVision(
+        new ShooterPhotonCamera(
             Constants.SHOOTER_PHOTON_CAMERA.NAME,
-            Constants.SHOOTER_PHOTON_CAMERA.ROBOT_TO_CAMERA_TRANSFORM);
+            Constants.SHOOTER_PHOTON_CAMERA.ROBOT_TO_CAMERA_TRANSFORM,
+            Constants.SHOOTER_PHOTON_CAMERA.HEAD_ON_TOLERANCE);
 
     state = new RobotState();
 
@@ -95,6 +97,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    shooterPhotonCamera.fetchResult();
+
     // Runs the Scheduler. This is responsible for polling buttons, adding
     // newly-scheduled
     // commands, running already-scheduled commands, removing finished or

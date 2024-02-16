@@ -22,7 +22,7 @@ public class TargetLock extends Command {
   @Override
   public void end(boolean interrupted) {
     Robot.state.setDriveControlState(DriveControlState.FIELD_RELATIVE);
-    Robot.shooterPhotonCamera.setHumanPipelineActive();
+    Robot.shooterPhotonCamera.setDriverModeActive();
     SWERVE.ROTATION_PID_CONTROLLER.setP(SWERVE.ROTATION_KP);
   }
 }

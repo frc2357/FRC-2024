@@ -11,8 +11,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
-import frc.robot.Constants.PHOTON_VISION;
+import static frc.robot.Constants.PHOTON_VISION;
 import java.util.List;
 import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
@@ -26,12 +25,15 @@ import org.photonvision.targeting.TargetCorner;
 /** Controls the limelight camera options. */
 public class PhotonVision extends SubsystemBase {
 
+  //all of these are protected so we can use them in the extended classes
+  //which are only extended so we can control which pipelines we are using.
   protected PhotonCamera m_camera;
-  private PhotonPipelineResult m_result;
-  private List<PhotonTrackedTarget> m_targets;
-  private PhotonTrackedTarget m_bestTarget;
-  private PhotonPoseEstimator m_poseEstimator;
-  private Transform3d m_robotToCameraTransform;
+  protected PhotonPipelineResult m_result;
+  protected List<PhotonTrackedTarget> m_targets;
+  protected PhotonTrackedTarget m_bestTarget;
+  protected PhotonPoseEstimator m_poseEstimator;
+  protected final Transform3d m_ROBOT_TO_CAMERA_TRANSFORM; //if this changes, we have bigger issues.
+  protected final double m_HEAD_ON_TOLERANCE;
 
   /**
    * Sets the camera stream.
@@ -39,22 +41,27 @@ public class PhotonVision extends SubsystemBase {
    * @param cameraName Name of the cameras Photon Vision network table. MUST match the net tables
    *     name, or it wont work.
    */
-  public PhotonVision(String cameraName, Transform3d robotToCameraTransform) {
+  public PhotonVision(String cameraName, Transform3d robotToCameraTransform, double headOnTolerance) {
     m_camera = new PhotonCamera(cameraName);
-    m_robotToCameraTransform = robotToCameraTransform;
+    m_ROBOT_TO_CAMERA_TRANSFORM = robotToCameraTransform;
+    m_HEAD_ON_TOLERANCE = headOnTolerance;
   }
 
   public void configure() {
-    setHumanPipelineActive();
+    setDriverModeActive();
     m_poseEstimator =
         new PhotonPoseEstimator(
             PHOTON_VISION.APRIL_TAG_FIELD_LAYOUT,
             PHOTON_VISION.POSE_STRATEGY,
             m_camera,
-            m_robotToCameraTransform);
+            m_ROBOT_TO_CAMERA_TRANSFORM);
   }
 
-  private void getResult() {
+  /**
+   * Fetches the latest pipeline result.<p>
+   * YOU SHOULD NEVER CALL THIS! This is for the Robot periodic ONLY. NEVER call this method outside of it.s
+   */
+  public void fetchResult(){
     m_result = m_camera.getLatestResult();
     m_targets = m_result.getTargets();
     m_bestTarget = m_result.getBestTarget();
@@ -85,7 +92,19 @@ public class PhotonVision extends SubsystemBase {
   }
 
   public boolean isHumanPipelineActive() {
-    return getPipeline() == Constants.SHOOTER_LIMELIGHT.HUMAN_PIPELINE_INDEX;
+    return m_camera.getDriverMode();
+  }
+
+  public void setDriverModeActive() {
+    m_camera.setDriverMode(true);
+  }
+
+  public void toggleDriverMode(){
+    m_camera.setDriverMode(!m_camera.getDriverMode());
+  }
+
+  public void setDriverModeDisabled(){
+    m_camera.setDriverMode(false);
   }
 
   public void setPipeline(int index) {
@@ -93,9 +112,7 @@ public class PhotonVision extends SubsystemBase {
     m_camera.setPipelineIndex(index);
   }
 
-  public void setHumanPipelineActive() {
-    m_camera.setDriverMode(true);
-  }
+  
 
   public int getPipeline() {
     return m_camera.getPipelineIndex();
@@ -103,7 +120,6 @@ public class PhotonVision extends SubsystemBase {
 
   /** Whether the camera has a valid target */
   public boolean getTV() {
-
     return m_result.hasTargets();
   }
 
@@ -129,8 +145,6 @@ public class PhotonVision extends SubsystemBase {
    */
   public double getHorizontalTargetLength() {
     List<TargetCorner> corners = m_bestTarget.getDetectedCorners();
-    double lowestX = corners.get(0).x;
-    double lowestY = corners.get(0).y;
     TargetCorner originCorner = corners.get(0); // basing off of known fiducial corner order
     TargetCorner bottomRightCorner = corners.get(1);
     for (TargetCorner corner : corners) {
@@ -161,8 +175,6 @@ public class PhotonVision extends SubsystemBase {
    */
   public double getVerticalTargetLength() {
     List<TargetCorner> corners = m_bestTarget.getDetectedCorners();
-    double lowestX = corners.get(0).x;
-    double lowestY = corners.get(0).y;
     TargetCorner originCorner = corners.get(0); // basing off of known fiducial corner order
     TargetCorner bottomRightCorner = corners.get(1);
     for (TargetCorner corner : corners) {
@@ -218,17 +230,19 @@ public class PhotonVision extends SubsystemBase {
     return m_bestTarget.getSkew();
   }
 
-  /** Skew of target in degrees. Positive values are to the left, negative to the right */
-  public double getSkew() {
+  /** Yaw of target in degrees. Positive values are to the left, negative to the right.<p>
+   * The "getSkew()" equivalent in PhotonVision.
+   */
+  public double getFilteredYaw() {
     if (!validTargetExists()) {
       return Double.NaN;
     }
 
-    double ts = getTS();
-    if (ts < -45) {
-      return ts + 90;
+    double yaw = getYaw();
+    if (yaw < -45) {
+      return yaw + 90;
     } else {
-      return ts;
+      return yaw;
     }
   }
 
@@ -237,9 +251,9 @@ public class PhotonVision extends SubsystemBase {
       return false;
     }
 
-    double skew = getSkew();
-    return (Constants.SHOOTER_LIMELIGHT.HEAD_ON_TOLERANCE <= skew
-        && skew <= Constants.SHOOTER_LIMELIGHT.HEAD_ON_TOLERANCE);
+    double skew = getYaw();
+    return (m_HEAD_ON_TOLERANCE <= skew
+        && skew <= m_HEAD_ON_TOLERANCE);
   }
 
   public boolean isToLeft() {
@@ -247,7 +261,7 @@ public class PhotonVision extends SubsystemBase {
       return false;
     }
 
-    return getSkew() > Constants.SHOOTER_LIMELIGHT.HEAD_ON_TOLERANCE;
+    return getFilteredYaw() > m_HEAD_ON_TOLERANCE;
   }
 
   public boolean isToRight() {
@@ -255,7 +269,7 @@ public class PhotonVision extends SubsystemBase {
       return false;
     }
 
-    return getSkew() < Constants.SHOOTER_LIMELIGHT.HEAD_ON_TOLERANCE;
+    return getFilteredYaw() < m_HEAD_ON_TOLERANCE;
   }
 
   public double getTargetRotationDegrees() {
@@ -265,39 +279,8 @@ public class PhotonVision extends SubsystemBase {
 
     if (isHeadOn()) {
       return 0.0;
-    } else if (isToLeft()) {
-      return -getRotationAngle();
-    } else {
-      return getRotationAngle();
     }
-  }
-
-  private double getRotationAngle() {
-    if (!validTargetExists()) {
-      return Double.NaN;
-    }
-
-    double proportion = getHorizontalTargetLength() / getVerticalTargetLength();
-    double factor =
-        proportion
-            * Constants.SHOOTER_LIMELIGHT.TARGET_HEIGHT
-            / Constants.SHOOTER_LIMELIGHT.TARGET_WIDTH;
-    return 90.0 * (1 - factor);
-  }
-
-  public double getInchesFromTarget() {
-    if (!validTargetExists()) {
-      return Double.NaN;
-    }
-
-    double angleDegrees = Math.abs(getTY()) + Constants.SHOOTER_LIMELIGHT.MOUNTING_ANGLE_DEGREES;
-
-    double heightDifference =
-        Constants.SHOOTER_LIMELIGHT.MOUNTING_HEIGHT_INCHES
-            - Constants.SHOOTER_LIMELIGHT.TARGET_HEIGHT_FROM_FLOOR;
-    double distance = heightDifference / Math.tan(Math.toRadians(angleDegrees));
-
-    return distance;
+    return getFilteredYaw();
   }
 
   /**
@@ -345,8 +328,20 @@ public class PhotonVision extends SubsystemBase {
     return m_bestTarget.getFiducialId();
   }
 
-  @Override
-  public void periodic() {
-    getResult();
+  public List<PhotonTrackedTarget> filterAprilTags(int[] tagsToFilterFor) {
+    List<PhotonTrackedTarget> filteredTargets = m_targets;
+    for (int i = 0; i < m_targets.size(); i++) {
+      boolean removeTag = true;
+      for(int targetIDWanted : tagsToFilterFor){
+        if(filteredTargets.get(i).getFiducialId() == targetIDWanted){
+          removeTag = false;
+        }
+      }
+      if(removeTag){
+        filteredTargets.remove(i);
+      }
+    }
+    return filteredTargets;
   }
+
 }

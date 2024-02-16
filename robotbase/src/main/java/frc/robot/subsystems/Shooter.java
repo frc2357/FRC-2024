@@ -110,7 +110,7 @@ public class Shooter extends SubsystemBase {
 
   public void endVisionShooting() {
     m_isClosedLoopEnabled = false;
-    Robot.shooterPhotonCamera.setHumanPipelineActive();
+    Robot.shooterPhotonCamera.setDriverModeActive();
   }
 
   private void visionShotPeriodic() {
