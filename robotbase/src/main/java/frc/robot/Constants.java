@@ -280,29 +280,25 @@ public final class Constants {
     public static final int MOTOR_STALL_LIMIT_AMPS = 20;
     public static final int MOTOR_FREE_LIMIT_AMPS = 20;
 
-    public static final double MOTOR_PID_P = 0;
-    public static final double MOTOR_PID_I = 0;
-    public static final double MOTOR_PID_D = 0;
-    public static final double MOTOR_PID_FF = 0;
+    public static final double MOTOR_PID_P = 0; // TODO: TUNE
+    public static final double MOTOR_PID_I = 0; // TODO: TUNE
+    public static final double MOTOR_PID_D = 0; // TODO: TUNE
+    public static final double MOTOR_PID_FF = 0; // TODO: TUNE
 
-    public static final int SMART_MOTION_MAX_VEL_RPM = 0;
-    public static final int SMART_MOTION_MIN_VEL_RPM = 0;
-    public static final int SMART_MOTION_MAX_ACC_RPM = 0;
-    public static final int SMART_MOTION_ALLOWED_ERROR = 0;
+    public static final int SMART_MOTION_MAX_VEL_RPM = 0; // TODO: TUNE
+    public static final int SMART_MOTION_MIN_VEL_RPM = 0; // TODO: TUNE
+    public static final int SMART_MOTION_MAX_ACC_RPM = 0; // TODO: TUNE
+    public static final int SMART_MOTION_ALLOWED_ERROR = 0; // TODO: TUNE
 
     public static final double AXIS_MAX_SPEED = 0.25;
 
-    public static final boolean ABSOLUTE_ENCODER_IS_INVERTED = false;
-    public static final double ABSOLUTE_ENCODER_POSITION_SCALE_FACTOR = 1;
-    public static final double ABSOLUTE_ENCODER_VELOCITY_SCALE_FACTOR = 1;
+    public static final double ZERO_SPEED = 0; // TODO: TUNE
+    public static final double ZERO_SPEED_STOP_TOLERANCE = 0; // TODO: TUNE
 
-    public static final double ZERO_SPEED = 0;
-    public static final double ZERO_SPEED_STOP_TOLERANCE = 0;
-
-    public static final double HOME_ROTATIONS = 0;
-    public static final double NOTE_STOW_ROTATIONS = 0;
-    public static final double PRELOAD_ROTATIONS = 0;
-    public static final double AMP_SCORE_ROTATIONS = 0;
-    public static final double TRAP_SCORE_ROTATIONS = 0;
-    }
+    public static final double HOME_ROTATIONS = 0; // TODO: TUNE
+    public static final double NOTE_STOW_ROTATIONS = 0; // TODO: TUNE
+    public static final double PRELOAD_ROTATIONS = 0; // TODO: TUNE
+    public static final double AMP_SCORE_ROTATIONS = 0; // TODO: TUNE
+    public static final double TRAP_SCORE_ROTATIONS = 0; // TODO: TUNE
+  }
 }

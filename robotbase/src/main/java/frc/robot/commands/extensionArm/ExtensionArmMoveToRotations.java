@@ -8,21 +8,21 @@ public class ExtensionArmMoveToRotations extends Command {
 
   public ExtensionArmMoveToRotations(double rotations) {
     m_rotations = rotations;
-    addRequirements(Robot.trapAmpArm);
+    addRequirements(Robot.extensionArm);
   }
 
   @Override
   public void initialize() {
-    Robot.trapAmpArm.setTargetRotations(m_rotations);
+    Robot.extensionArm.setTargetRotations(m_rotations);
   }
 
   @Override
   public boolean isFinished() {
-    return Robot.trapAmpArm.isAtTargetRotations();
+    return Robot.extensionArm.isAtTargetRotations();
   }
 
   @Override
   public void end(boolean interupted) {
-    Robot.trapAmpArm.stop();
+    Robot.extensionArm.stop();
   }
 }
