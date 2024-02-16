@@ -17,8 +17,9 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.EndAffector;
 import frc.robot.subsystems.ExtensionArm;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterPhotonCamera;
 import frc.robot.subsystems.ShooterPivot;
 
 /**
@@ -43,7 +44,7 @@ public class Robot extends TimedRobot {
   public static DriverControls driverControls;
   public static CodriverControls codriverControls;
 
-  public static Limelight shooterLimelight;
+  public static PhotonVision shooterCam;
 
   public static EndAffector endAffector;
 
@@ -58,6 +59,13 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
     // autonomous chooser on the dashboard.
+
+    shooterCam =
+        new ShooterPhotonCamera(
+            Constants.SHOOTER_PHOTON_CAMERA.NAME,
+            Constants.SHOOTER_PHOTON_CAMERA.ROBOT_TO_CAMERA_TRANSFORM,
+            Constants.SHOOTER_PHOTON_CAMERA.HEAD_ON_TOLERANCE);
+
     state = new RobotState();
 
     swerve = TunerConstants.DriveTrain;
@@ -67,8 +75,6 @@ public class Robot extends TimedRobot {
     climber = new Climber();
     endAffector = new EndAffector();
     extensionArm = new ExtensionArm();
-
-    shooterLimelight = new Limelight(Constants.SHOOTER_LIMELIGHT.NAME);
 
     driverControls =
         new DriverControls(
@@ -91,6 +97,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    shooterCam.updateResult();
+
     // Runs the Scheduler. This is responsible for polling buttons, adding
     // newly-scheduled
     // commands, running already-scheduled commands, removing finished or

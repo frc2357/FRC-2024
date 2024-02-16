@@ -93,7 +93,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean hasTarget() {
-    return Robot.shooterLimelight.validTargetExists();
+    return Robot.shooterCam.validTargetExists();
   }
 
   @Override
@@ -105,17 +105,17 @@ public class Shooter extends SubsystemBase {
 
   public void startVisionShooting() {
     m_isClosedLoopEnabled = true;
-    Robot.shooterLimelight.setPipeline(Constants.SHOOTER_LIMELIGHT.SPEAKER_PIPELINE_INDEX);
+    Robot.shooterCam.setPipeline(Constants.SHOOTER_LIMELIGHT.SPEAKER_PIPELINE_INDEX);
   }
 
   public void endVisionShooting() {
     m_isClosedLoopEnabled = false;
-    Robot.shooterLimelight.setHumanPipelineActive();
+    Robot.shooterCam.setDriverModeActive();
   }
 
   private void visionShotPeriodic() {
     if (hasTarget()) {
-      setVisionShotRPMs(Robot.shooterLimelight.getTY());
+      setVisionShotRPMs(Robot.shooterCam.getTY());
     } else {
       System.err.println("----- No vision target -----");
     }
