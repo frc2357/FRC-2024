@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.CHOREO;
 import frc.robot.Robot;
 
-public class ChoreoTrajectoryCommand extends SequentialCommandGroup {
+public class DriveChoreoPath extends SequentialCommandGroup {
 
   private String m_pathName;
   private ChoreoTrajectory m_traj;
@@ -19,7 +19,7 @@ public class ChoreoTrajectoryCommand extends SequentialCommandGroup {
    *
    * @param trajectoryFileName The name of the path file with '.traj' excluded.
    */
-  public ChoreoTrajectoryCommand(String trajectoryFileName) {
+  public DriveChoreoPath(String trajectoryFileName) {
     this(trajectoryFileName, trajectoryFileName, true);
   }
 
@@ -27,7 +27,7 @@ public class ChoreoTrajectoryCommand extends SequentialCommandGroup {
    * @param trajectoryFileName The name of the path file with '.traj' excluded.
    * @param pathName The name of the path, is returned in the toString for the auto command chooser.
    */
-  public ChoreoTrajectoryCommand(String trajectoryFileName, String pathName) {
+  public DriveChoreoPath(String trajectoryFileName, String pathName) {
     this(trajectoryFileName, pathName, true);
   }
 
@@ -39,7 +39,7 @@ public class ChoreoTrajectoryCommand extends SequentialCommandGroup {
    * @param setPoseToStartTrajectory Whether or not to set the robot pose to the paths starting
    *     trajectory.
    */
-  public ChoreoTrajectoryCommand(
+  public DriveChoreoPath(
       String trajectoryFileName, String pathName, boolean setPoseToStartTrajectory) {
     m_traj = Choreo.getTrajectory(trajectoryFileName);
     m_finalTargetPose = m_traj.getFinalPose();
