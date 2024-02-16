@@ -7,11 +7,12 @@
 
 package frc.robot.subsystems;
 
+import static frc.robot.Constants.PHOTON_VISION;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import static frc.robot.Constants.PHOTON_VISION;
 import java.util.List;
 import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
@@ -25,14 +26,15 @@ import org.photonvision.targeting.TargetCorner;
 /** Controls the limelight camera options. */
 public class PhotonVision extends SubsystemBase {
 
-  //all of these are protected so we can use them in the extended classes
-  //which are only extended so we can control which pipelines we are using.
+  // all of these are protected so we can use them in the extended classes
+  // which are only extended so we can control which pipelines we are using.
   protected PhotonCamera m_camera;
   protected PhotonPipelineResult m_result;
   protected List<PhotonTrackedTarget> m_targets;
   protected PhotonTrackedTarget m_bestTarget;
   protected PhotonPoseEstimator m_poseEstimator;
-  protected final Transform3d m_ROBOT_TO_CAMERA_TRANSFORM; //if this changes, we have bigger issues.
+  protected final Transform3d
+      m_ROBOT_TO_CAMERA_TRANSFORM; // if this changes, we have bigger issues.
   protected final double m_HEAD_ON_TOLERANCE;
 
   /**
@@ -41,7 +43,8 @@ public class PhotonVision extends SubsystemBase {
    * @param cameraName Name of the cameras Photon Vision network table. MUST match the net tables
    *     name, or it wont work.
    */
-  public PhotonVision(String cameraName, Transform3d robotToCameraTransform, double headOnTolerance) {
+  public PhotonVision(
+      String cameraName, Transform3d robotToCameraTransform, double headOnTolerance) {
     m_camera = new PhotonCamera(cameraName);
     m_ROBOT_TO_CAMERA_TRANSFORM = robotToCameraTransform;
     m_HEAD_ON_TOLERANCE = headOnTolerance;
@@ -58,10 +61,12 @@ public class PhotonVision extends SubsystemBase {
   }
 
   /**
-   * Fetches the latest pipeline result.<p>
-   * YOU SHOULD NEVER CALL THIS! This is for the Robot periodic ONLY. NEVER call this method outside of it.s
+   * Fetches the latest pipeline result.
+   *
+   * <p>YOU SHOULD NEVER CALL THIS! This is for the Robot periodic ONLY. NEVER call this method
+   * outside of it.s
    */
-  public void fetchResult(){
+  public void updateResult() {
     m_result = m_camera.getLatestResult();
     m_targets = m_result.getTargets();
     m_bestTarget = m_result.getBestTarget();
@@ -99,11 +104,11 @@ public class PhotonVision extends SubsystemBase {
     m_camera.setDriverMode(true);
   }
 
-  public void toggleDriverMode(){
+  public void toggleDriverMode() {
     m_camera.setDriverMode(!m_camera.getDriverMode());
   }
 
-  public void setDriverModeDisabled(){
+  public void setDriverModeDisabled() {
     m_camera.setDriverMode(false);
   }
 
@@ -111,8 +116,6 @@ public class PhotonVision extends SubsystemBase {
     m_camera.setDriverMode(false);
     m_camera.setPipelineIndex(index);
   }
-
-  
 
   public int getPipeline() {
     return m_camera.getPipelineIndex();
@@ -230,8 +233,10 @@ public class PhotonVision extends SubsystemBase {
     return m_bestTarget.getSkew();
   }
 
-  /** Yaw of target in degrees. Positive values are to the left, negative to the right.<p>
-   * The "getSkew()" equivalent in PhotonVision.
+  /**
+   * Yaw of target in degrees. Positive values are to the left, negative to the right.
+   *
+   * <p>The "getSkew()" equivalent in PhotonVision.
    */
   public double getFilteredYaw() {
     if (!validTargetExists()) {
@@ -252,8 +257,7 @@ public class PhotonVision extends SubsystemBase {
     }
 
     double skew = getYaw();
-    return (m_HEAD_ON_TOLERANCE <= skew
-        && skew <= m_HEAD_ON_TOLERANCE);
+    return (m_HEAD_ON_TOLERANCE <= skew && skew <= m_HEAD_ON_TOLERANCE);
   }
 
   public boolean isToLeft() {
@@ -332,16 +336,15 @@ public class PhotonVision extends SubsystemBase {
     List<PhotonTrackedTarget> filteredTargets = m_targets;
     for (int i = 0; i < m_targets.size(); i++) {
       boolean removeTag = true;
-      for(int targetIDWanted : tagsToFilterFor){
-        if(filteredTargets.get(i).getFiducialId() == targetIDWanted){
+      for (int targetIDWanted : tagsToFilterFor) {
+        if (filteredTargets.get(i).getFiducialId() == targetIDWanted) {
           removeTag = false;
         }
       }
-      if(removeTag){
+      if (removeTag) {
         filteredTargets.remove(i);
       }
     }
     return filteredTargets;
   }
-
 }
