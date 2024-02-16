@@ -69,7 +69,7 @@ public class Robot extends TimedRobot {
     state = new RobotState();
 
     // CHANGE TO FALSE TO USE CUBE BOT. DO THIS
-    swerve = true ? TunerConstants.DriveTrain : CubeBotTunerConstants.DriveTrain;
+    swerve = true ? CompSwerveTunerConstants.DriveTrain : CubeBotTunerConstants.DriveTrain;
     shooter = new Shooter();
     pivot = new ShooterPivot();
     intake = new Intake();
