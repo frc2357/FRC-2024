@@ -163,8 +163,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   }
 
   public double getTargetLockRotation() {
-    double tx = Robot.shooterPhotonCamera.getTX();
-    if (!Robot.shooterPhotonCamera.validTargetExists()
+    double tx = Robot.shooterCam.getTX();
+    if (!Robot.shooterCam.validTargetExists()
         || Utility.isWithinTolerance(tx, 0, Constants.SWERVE.TARGET_LOCK_TOLERANCE)) {
       return 0;
     }

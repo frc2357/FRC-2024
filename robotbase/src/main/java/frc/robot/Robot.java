@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
   public static DriverControls driverControls;
   public static CodriverControls codriverControls;
 
-  public static PhotonVision shooterPhotonCamera;
+  public static PhotonVision shooterCam;
 
   public static EndAffector endAffector;
 
@@ -60,7 +60,7 @@ public class Robot extends TimedRobot {
     // and put our
     // autonomous chooser on the dashboard.
 
-    shooterPhotonCamera =
+    shooterCam =
         new ShooterPhotonCamera(
             Constants.SHOOTER_PHOTON_CAMERA.NAME,
             Constants.SHOOTER_PHOTON_CAMERA.ROBOT_TO_CAMERA_TRANSFORM,
@@ -97,7 +97,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    shooterPhotonCamera.updateResult();
+    shooterCam.updateResult();
 
     // Runs the Scheduler. This is responsible for polling buttons, adding
     // newly-scheduled

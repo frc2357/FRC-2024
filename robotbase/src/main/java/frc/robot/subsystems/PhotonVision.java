@@ -33,9 +33,8 @@ public class PhotonVision extends SubsystemBase {
   protected List<PhotonTrackedTarget> m_targets;
   protected PhotonTrackedTarget m_bestTarget;
   protected PhotonPoseEstimator m_poseEstimator;
-  protected final Transform3d
-      m_ROBOT_TO_CAMERA_TRANSFORM; // if this changes, we have bigger issues.
-  protected final double m_HEAD_ON_TOLERANCE;
+  protected final Transform3d ROBOT_TO_CAMERA_TRANSFORM; // if this changes, we have bigger issues.
+  protected final double HEAD_ON_TOLERANCE;
 
   /**
    * Sets the camera stream.
@@ -46,8 +45,8 @@ public class PhotonVision extends SubsystemBase {
   public PhotonVision(
       String cameraName, Transform3d robotToCameraTransform, double headOnTolerance) {
     m_camera = new PhotonCamera(cameraName);
-    m_ROBOT_TO_CAMERA_TRANSFORM = robotToCameraTransform;
-    m_HEAD_ON_TOLERANCE = headOnTolerance;
+    ROBOT_TO_CAMERA_TRANSFORM = robotToCameraTransform;
+    HEAD_ON_TOLERANCE = headOnTolerance;
   }
 
   public void configure() {
@@ -57,7 +56,7 @@ public class PhotonVision extends SubsystemBase {
             PHOTON_VISION.APRIL_TAG_FIELD_LAYOUT,
             PHOTON_VISION.POSE_STRATEGY,
             m_camera,
-            m_ROBOT_TO_CAMERA_TRANSFORM);
+            ROBOT_TO_CAMERA_TRANSFORM);
   }
 
   /**
@@ -257,7 +256,7 @@ public class PhotonVision extends SubsystemBase {
     }
 
     double skew = getYaw();
-    return (m_HEAD_ON_TOLERANCE <= skew && skew <= m_HEAD_ON_TOLERANCE);
+    return (HEAD_ON_TOLERANCE <= skew && skew <= HEAD_ON_TOLERANCE);
   }
 
   public boolean isToLeft() {
@@ -265,7 +264,7 @@ public class PhotonVision extends SubsystemBase {
       return false;
     }
 
-    return getFilteredYaw() > m_HEAD_ON_TOLERANCE;
+    return getFilteredYaw() > HEAD_ON_TOLERANCE;
   }
 
   public boolean isToRight() {
@@ -273,7 +272,7 @@ public class PhotonVision extends SubsystemBase {
       return false;
     }
 
-    return getFilteredYaw() < m_HEAD_ON_TOLERANCE;
+    return getFilteredYaw() < HEAD_ON_TOLERANCE;
   }
 
   public double getTargetRotationDegrees() {

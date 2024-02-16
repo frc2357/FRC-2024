@@ -33,7 +33,7 @@ public class DriveToApriltag extends Command {
 
   @Override
   public void initialize() {
-    Robot.shooterPhotonCamera.setPipeline(m_pipelineIndex);
+    Robot.shooterCam.setPipeline(m_pipelineIndex);
 
     // reset pids
     m_yController.setSetpoint(m_tyOffset + Constants.SWERVE.APRILTAG_TY_MAGIC_OFFSET);
@@ -52,14 +52,14 @@ public class DriveToApriltag extends Command {
 
   @Override
   public void execute() {
-    if (!m_canSeePieceDebouncer.calculate(Robot.shooterPhotonCamera.validTargetExists())) {
+    if (!m_canSeePieceDebouncer.calculate(Robot.shooterCam.validTargetExists())) {
       System.out.println("No Target Detected");
       Robot.swerve.drive(0, 0, 0);
       return;
     }
 
-    double tx = Robot.shooterPhotonCamera.getTX();
-    double ty = Robot.shooterPhotonCamera.getTY();
+    double tx = Robot.shooterCam.getTX();
+    double ty = Robot.shooterCam.getTY();
     double rotationError = Robot.swerve.getPose().getRotation().getRadians();
 
     // Increase tx tolerance when close to target since tx is more sensitive at

@@ -9,7 +9,7 @@ public class ShooterPhotonCamera extends PhotonVision {
   /**
    * An extension of the PhotonVision class that has the pipelines for the shooter photon camera
    * implimented. Uses the PhotonVision classes method to set the pipeline, so we set them
-   * consistantly.
+   * consistently.
    */
   public ShooterPhotonCamera(
       String cameraName, Transform3d robotToCameraTransform, double headOnTolerance) {
