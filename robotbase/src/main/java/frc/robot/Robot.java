@@ -15,11 +15,11 @@ import frc.robot.state.RobotState;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.EndAffector;
+import frc.robot.subsystems.ExtensionArm;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShooterPivot;
-import frc.robot.subsystems.TrapAmpArm;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -47,7 +47,7 @@ public class Robot extends TimedRobot {
 
   public static EndAffector endAffector;
 
-  public static TrapAmpArm trapAmpArm;
+  public static ExtensionArm extensionArm;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -66,7 +66,7 @@ public class Robot extends TimedRobot {
     intake = new Intake();
     climber = new Climber();
     endAffector = new EndAffector();
-    trapAmpArm = new TrapAmpArm();
+    extensionArm = new ExtensionArm();
 
     shooterLimelight = new Limelight(Constants.SHOOTER_LIMELIGHT.NAME);
 
