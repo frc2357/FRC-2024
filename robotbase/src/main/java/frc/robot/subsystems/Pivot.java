@@ -13,7 +13,7 @@ import frc.robot.util.Utility;
 
 public class Pivot extends SubsystemBase {
   private boolean m_isClosedLoopEnabled = false;
-  private boolean m_isVisionShooting = false;
+  private boolean m_isVisionTargeting = false;
 
   private CANSparkMax m_pivotMotor;
   private SparkPIDController m_pivotPIDController;
@@ -88,8 +88,8 @@ public class Pivot extends SubsystemBase {
   @Override
   public void periodic() {
     if (m_isClosedLoopEnabled) {
-      if (m_isVisionShooting) {
-        visionShootingPeriodic();
+      if (m_isVisionTargeting) {
+        visionTargetingPeriodic();
       }
 
       // Calculate feedforward and set pid reference
@@ -97,26 +97,26 @@ public class Pivot extends SubsystemBase {
     }
   }
 
-  public void startVisionShooting() {
-    m_isVisionShooting = true;
+  public void startVisionTargeting() {
+    m_isVisionTargeting = true;
     m_isClosedLoopEnabled = true;
   }
 
-  public void stopVisionShooting() {
-    m_isVisionShooting = false;
+  public void stopVisionTargeting() {
+    m_isVisionTargeting = false;
     m_isClosedLoopEnabled = false;
     stop();
   }
 
-  private void visionShootingPeriodic() {
+  private void visionTargetingPeriodic() {
     if (hasTarget()) {
-      setVisionShootingRotation(Robot.shooterCam.getTY());
+      setVisionTargetingRotation(Robot.shooterCam.getTY());
     } else {
       System.err.println("----- No vision target (Pivot) -----");
     }
   }
 
-  private void setVisionShootingRotation(double ty) {
+  private void setVisionTargetingRotation(double ty) {
     int curveIndex = RobotMath.getCurveSegmentIndex(Robot.shooterCurve, ty);
     if (curveIndex == -1) {
       // System.err.println("----- Curve segment index out of bounds (Pivot) -----");
