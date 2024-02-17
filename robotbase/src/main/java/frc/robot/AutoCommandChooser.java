@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.drive.ChoreoTrajectoryCommand;
 
 public class AutoCommandChooser {
   private Command[] m_autoCommands;
@@ -14,12 +13,13 @@ public class AutoCommandChooser {
 
     m_autoCommands =
         new Command[] {
-          new ChoreoTrajectoryCommand("ChClose3SpeakerPath"),
-          new ChoreoTrajectoryCommand("ChRotationTest"),
-          new ChoreoTrajectoryCommand("Ch3MeterXTest"),
-          new ChoreoTrajectoryCommand("Ch1MeterYTest"),
-          new ChoreoTrajectoryCommand("Ch3MeterYTest"),
-          new ChoreoTrajectoryCommand("ChBoxTest"),
+          // new DriveChoreoPath("ChClose3SpeakerPath"),
+          // new DriveChoreoPath("ChRotationTest"),
+          // new DriveChoreoPath("Ch3MeterXTest"),
+          // new DriveChoreoPath("Ch1MeterYTest"),
+          // new DriveChoreoPath("Ch3MeterYTest"),
+          // new DriveChoreoPath("ChBoxTest"),
+          // new SplicingSeperatePathsTest()
         };
 
     m_chooser = new SendableChooser<>();

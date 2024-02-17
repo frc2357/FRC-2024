@@ -15,11 +15,12 @@ import frc.robot.state.RobotState;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.EndAffector;
+import frc.robot.subsystems.ExtensionArm;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterPhotonCamera;
 import frc.robot.subsystems.ShooterPivot;
-import frc.robot.subsystems.TrapAmpArm;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -43,11 +44,11 @@ public class Robot extends TimedRobot {
   public static DriverControls driverControls;
   public static CodriverControls codriverControls;
 
-  public static Limelight shooterLimelight;
+  public static PhotonVision shooterCam;
 
   public static EndAffector endAffector;
 
-  public static TrapAmpArm trapAmpArm;
+  public static ExtensionArm extensionArm;
 
   // {ty, pivotRotations, topRPMs, bottomRPMs}
   public static final double[][] shooterCurve = {{0.0, 0.0, 0.0, 0.0}};
@@ -61,17 +62,23 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
     // autonomous chooser on the dashboard.
+
+    shooterCam =
+        new ShooterPhotonCamera(
+            Constants.SHOOTER_PHOTON_CAMERA.NAME,
+            Constants.SHOOTER_PHOTON_CAMERA.ROBOT_TO_CAMERA_TRANSFORM,
+            Constants.SHOOTER_PHOTON_CAMERA.HEAD_ON_TOLERANCE);
+
     state = new RobotState();
 
-    swerve = TunerConstants.DriveTrain;
+    // CHANGE TO FALSE TO USE CUBE BOT. DO THIS
+    swerve = true ? CompSwerveTunerConstants.DriveTrain : CubeBotTunerConstants.DriveTrain;
     shooter = new Shooter();
     pivot = new ShooterPivot();
     intake = new Intake();
     climber = new Climber();
     endAffector = new EndAffector();
-    trapAmpArm = new TrapAmpArm();
-
-    shooterLimelight = new Limelight(Constants.SHOOTER_LIMELIGHT.NAME);
+    extensionArm = new ExtensionArm();
 
     driverControls =
         new DriverControls(
@@ -94,6 +101,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    shooterCam.updateResult();
+
     // Runs the Scheduler. This is responsible for polling buttons, adding
     // newly-scheduled
     // commands, running already-scheduled commands, removing finished or

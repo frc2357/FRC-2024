@@ -5,7 +5,7 @@ import frc.robot.Robot;
 
 public class ExtensionArmStop extends Command {
   public ExtensionArmStop() {
-    addRequirements(Robot.trapAmpArm);
+    addRequirements(Robot.extensionArm);
   }
 
   @Override
@@ -15,6 +15,6 @@ public class ExtensionArmStop extends Command {
 
   @Override
   public void end(boolean interupted) {
-    Robot.trapAmpArm.stop();
+    Robot.extensionArm.stop();
   }
 }

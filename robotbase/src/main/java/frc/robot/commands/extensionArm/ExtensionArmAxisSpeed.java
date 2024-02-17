@@ -9,13 +9,13 @@ public class ExtensionArmAxisSpeed extends Command {
 
   public ExtensionArmAxisSpeed(AxisInterface axis) {
     m_axis = axis;
-    addRequirements(Robot.trapAmpArm);
+    addRequirements(Robot.extensionArm);
   }
 
   @Override
   public void execute() {
     double axisValue = m_axis.getValue();
-    Robot.trapAmpArm.setAxisSpeed(axisValue);
+    Robot.extensionArm.setAxisSpeed(axisValue);
   }
 
   @Override
@@ -25,6 +25,6 @@ public class ExtensionArmAxisSpeed extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    Robot.trapAmpArm.stop();
+    Robot.extensionArm.stop();
   }
 }

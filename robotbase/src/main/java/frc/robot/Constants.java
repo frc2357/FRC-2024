@@ -7,8 +7,14 @@ package frc.robot;
 import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import java.util.function.BooleanSupplier;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -154,7 +160,7 @@ public final class Constants {
     public static final int BOTTOM_MOTOR_STALL_LIMIT_AMPS = 40;
     public static final int BOTTOM_MOTOR_FREE_LIMIT_AMPS = 40;
 
-    public static final double TOP_MOTOR_P = 0.0;
+    public static final double TOP_MOTOR_P = 0.0; // TODO: tune shooter motor PIDs
     public static final double TOP_MOTOR_I = 0.0;
     public static final double TOP_MOTOR_D = 0.0;
     public static final double TOP_MOTOR_FF = 0.0;
@@ -168,8 +174,11 @@ public final class Constants {
   public static final class INTAKE {
     public static final double AXIS_MAX_SPEED = 0;
 
-    public static final double TOP_MOTOR_PICKUP_SPEED_PERCENT_OUTPUT = 0;
-    public static final double BOTTOM_MOTOR_PICKUP_SPEED_PERCENT_OUTPUT = 0;
+    public static final double TOP_MOTOR_PICKUP_SPEED_PERCENT_OUTPUT = .75;
+    public static final double BOTTOM_MOTOR_PICKUP_SPEED_PERCENT_OUTPUT = .75;
+
+    public static final double TOP_MOTOR_SLOW_PICKUP_SPEED_PERCENT_OUTPUT = .15;
+    public static final double BOTTOM_MOTOR_SLOW_PICKUP_SPEED_PERCENT_OUTPUT = .15;
 
     public static final double TOP_MOTOR_SOURCE_INTAKE_SPEED_PERCENT_OUTPUT = 0;
     public static final double BOTTOM_MOTOR_SOURCE_INTAKE_SPEED_PERCENT_OUTPUT = 0;
@@ -177,16 +186,16 @@ public final class Constants {
     public static final double TOP_MOTOR_FEED_SPEED_PERCENT_OUTPUT = 0;
     public static final double BOTTOM_MOTOR_FEED_SPEED_PERCENT_OUTPUT = 0;
 
-    public static final IdleMode IDLE_MODE = IdleMode.kCoast;
+    public static final IdleMode IDLE_MODE = IdleMode.kBrake;
 
     public static final boolean TOP_MOTOR_INVERTED = false;
     public static final boolean BOTTOM_MOTOR_INVERTED = false;
 
-    public static final int TOP_MOTOR_STALL_LIMIT_AMPS = 40;
-    public static final int TOP_MOTOR_FREE_LIMIT_AMPS = 40;
+    public static final int TOP_MOTOR_STALL_LIMIT_AMPS = 60;
+    public static final int TOP_MOTOR_FREE_LIMIT_AMPS = 60;
 
-    public static final int BOTTOM_MOTOR_STALL_LIMIT_AMPS = 40;
-    public static final int BOTTOM_MOTOR_FREE_LIMIT_AMPS = 40;
+    public static final int BOTTOM_MOTOR_STALL_LIMIT_AMPS = 60;
+    public static final int BOTTOM_MOTOR_FREE_LIMIT_AMPS = 60;
   }
 
   /*
@@ -210,7 +219,7 @@ public final class Constants {
 
     public static final boolean IS_PRIMARY_STREAM = false;
 
-    public static final double MOUNTING_ANGLE_DEGREES = 0.0;
+    public static final double MOUNTING_ANGLE_DEGREES = 0.0; // TODO: tune limelight constants
     public static final double MOUNTING_HEIGHT_INCHES = 0.0;
 
     public static final double DEFAULT_RETURN_VALUE = 0.0;
@@ -262,7 +271,7 @@ public final class Constants {
     public static final boolean RIGHT_MOTOR_INVERTED = false;
     public static final boolean LEFT_MOTOR_INVERTED = false;
 
-    public static final int MOTOR_FREE_LIMIT_AMPS = 40;
+    public static final int MOTOR_FREE_LIMIT_AMPS = 40; // TODO: Tune climber amp limits
     public static final int MOTOR_STALL_LIMIT_AMPS = 40;
   }
 
@@ -271,8 +280,12 @@ public final class Constants {
 
     public static final IdleMode IDLE_MODE = IdleMode.kBrake;
 
+    public static final double INTAKE_SPEED = 0;
+
+    public static final double STOWED_NOTE_AMPERAGE_LIMIT = 0;
+
     public static final int MOTOR_FREE_LIMIT_AMPS = 20;
-    public static final int MOTOR_STALL_LIMIT_AMPS = 20;
+    public static final int MOTOR_STALL_LIMIT_AMPS = 20; // TODO: TUNE
 
     public static final double AXIS_MAX_SPEED = 0.25;
   }
@@ -282,29 +295,51 @@ public final class Constants {
 
     public static final IdleMode MOTOR_IDLE_MODE = IdleMode.kBrake;
 
+    // TODO: Tune arm amp limits + PID + smart motion + Zeroing constants
+
     public static final int MOTOR_STALL_LIMIT_AMPS = 20;
     public static final int MOTOR_FREE_LIMIT_AMPS = 20;
 
-    public static final double MOTOR_PID_P = 0;
-    public static final double MOTOR_PID_I = 0;
-    public static final double MOTOR_PID_D = 0;
-    public static final double MOTOR_PID_FF = 0;
+    public static final double MOTOR_PID_P = 0; // TODO: TUNE
+    public static final double MOTOR_PID_I = 0; // TODO: TUNE
+    public static final double MOTOR_PID_D = 0; // TODO: TUNE
+    public static final double MOTOR_PID_FF = 0; // TODO: TUNE
 
-    public static final int SMART_MOTION_MAX_VEL_RPM = 0;
-    public static final int SMART_MOTION_MIN_VEL_RPM = 0;
-    public static final int SMART_MOTION_MAX_ACC_RPM = 0;
-    public static final int SMART_MOTION_ALLOWED_ERROR = 0;
+    public static final int SMART_MOTION_MAX_VEL_RPM = 0; // TODO: TUNE
+    public static final int SMART_MOTION_MIN_VEL_RPM = 0; // TODO: TUNE
+    public static final int SMART_MOTION_MAX_ACC_RPM = 0; // TODO: TUNE
+    public static final int SMART_MOTION_ALLOWED_ERROR = 0; // TODO: TUNE
 
     public static final double AXIS_MAX_SPEED = 0.25;
 
-    public static final boolean ABSOLUTE_ENCODER_IS_INVERTED = false;
-    public static final double ABSOLUTE_ENCODER_POSITION_SCALE_FACTOR = 1;
-    public static final double ABSOLUTE_ENCODER_VELOCITY_SCALE_FACTOR = 1;
+    public static final double ZERO_SPEED = 0; // TODO: TUNE
+    public static final double ZERO_SPEED_STOP_TOLERANCE = 0; // TODO: TUNE
 
-    public static final double HOME_ROTATIONS = 0;
-    public static final double NOTE_STOW_ROTATIONS = 0;
-    public static final double PRELOAD_ROTATIONS = 0;
-    public static final double AMP_SCORE_ROTATIONS = 0;
-    public static final double TRAP_SCORE_ROTATIONS = 0;
+    public static final double HOME_ROTATIONS = 0; // TODO: TUNE
+    public static final double NOTE_STOW_ROTATIONS = 0; // TODO: TUNE
+    public static final double PRELOAD_ROTATIONS = 0; // TODO: TUNE
+    public static final double AMP_SCORE_ROTATIONS = 0; // TODO: TUNE
+    public static final double TRAP_SCORE_ROTATIONS = 0; // TODO: TUNE
+  }
+
+  public static final class PHOTON_VISION {
+    public static final AprilTagFieldLayout APRIL_TAG_FIELD_LAYOUT =
+        AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+    public static final PoseStrategy POSE_STRATEGY = PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
+  }
+
+  public static final class SHOOTER_PHOTON_CAMERA {
+    public static final String NAME = "ov9782-shooter";
+
+    public static final int APRIL_TAG_PIPELINE = 0;
+    public static final int NEURAL_NETWORK_PIPELINE = 1;
+    public static final int RETROREFLECTIVE_PIPELINE = 2;
+
+    public static final int DEFAULT_PIPELINE = 0;
+
+    public static final double HEAD_ON_TOLERANCE = 0;
+
+    public static final Transform3d ROBOT_TO_CAMERA_TRANSFORM =
+        new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
   }
 }

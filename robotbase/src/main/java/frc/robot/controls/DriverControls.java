@@ -6,9 +6,7 @@ import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.commands.drive.DriveToApriltag;
 import frc.robot.commands.intake.IntakeNoteFromFloor;
 import frc.robot.controls.util.AxisThresholdTrigger;
 import frc.robot.controls.util.RumbleInterface;
@@ -42,11 +40,11 @@ public class DriverControls implements RumbleInterface {
     m_backButton.onTrue(new InstantCommand(() -> Robot.swerve.setYaw(0)));
     m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.setYaw(180)));
 
-    m_rightTriggerPrime.whileTrue(
-        new DriveToApriltag(
-            Constants.SWERVE.AMP_TY_SETPOINT,
-            Constants.SWERVE.AMP_ROTATION_SETPOINT,
-            Constants.SHOOTER_LIMELIGHT.AMP_PIPELINE_INDEX));
+    // m_rightTriggerPrime.whileTrue(
+    // new DriveToApriltag(
+    // Constants.SWERVE.AMP_TY_SETPOINT,
+    // Constants.SWERVE.AMP_ROTATION_SETPOINT,
+    // Constants.SHOOTER_LIMELIGHT.AMP_PIPELINE_INDEX));
 
     m_leftTrigger.whileTrue(new IntakeNoteFromFloor());
   }
