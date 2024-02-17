@@ -167,7 +167,7 @@ public class CodriverControls implements RumbleInterface {
     // Alliance selection
     m_rightBumper.onTrue(
         new InstantCommand(() -> Robot.state.onDriverAllianceSelect(Alliance.Red)));
-    m_leftBumper.onTrue(new InstantCommand(() -> Robot.state.onDriverAllianceSelect(Alliance.Red)));
+    m_leftBumper.onTrue(new InstantCommand(() -> Robot.state.onDriverAllianceSelect(Alliance.Blue)));
     bothBumpers.onTrue(new InstantCommand(() -> Robot.state.onDriverAllianceSelect(null)));
 
     // Shooter (Left DPad)
