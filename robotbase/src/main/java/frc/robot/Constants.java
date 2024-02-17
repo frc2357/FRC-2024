@@ -5,6 +5,8 @@
 package frc.robot;
 
 import com.revrobotics.CANSparkBase.IdleMode;
+
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import java.util.function.BooleanSupplier;
 
@@ -241,11 +243,18 @@ public final class Constants {
     public static final double ENCODER_POSITION_CONVERSION_FACTOR = 1;
     public static final double ENCODER_VELOCITY_CONVERSION_FACTOR = 1;
 
-    // Closed loop
-    public static final double PIVOT_P = 0.02;
+    // Closed loop - lines with comments were used for arm rotation 2023 and we will
+    // probably need for this
+    public static final double PIVOT_P = 0.0; //
     public static final double PIVOT_I = 0;
     public static final double PIVOT_D = 0;
-    public static final double PIVOT_FF = 0.045;
+    public static final double PIVOT_FF = 0.0; //
+
+    public static final double PIVOT_KS = 0.0;
+    public static final double PIVOT_KV = 0.0;
+    public static final double PIVOT_KA = 0.0;
+    public static final double PIVOT_KG = 0.0; //
+    public static final ArmFeedforward PIVOT_FEEDFORWARD = new ArmFeedforward(PIVOT_KS, PIVOT_KG, PIVOT_KV, PIVOT_KA);
 
   }
 

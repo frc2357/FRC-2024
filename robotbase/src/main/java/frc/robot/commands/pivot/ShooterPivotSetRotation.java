@@ -3,22 +3,22 @@ package frc.robot.commands.pivot;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 
-public class ShooterPivotSetSetpoint extends Command {
-  private double m_setpoint;
+public class ShooterPivotSetRotation extends Command {
+  private double m_rotation;
 
-  public ShooterPivotSetSetpoint(double setpoint) {
-    m_setpoint = setpoint;
+  public ShooterPivotSetRotation(double rotation) {
+    m_rotation = rotation;
     addRequirements(Robot.pivot);
   }
 
   @Override
   public void initialize() {
-    Robot.pivot.setPivotSetpoint(m_setpoint);
+    Robot.pivot.setPivotRotation(m_rotation);
   }
 
   @Override
   public boolean isFinished() {
-    return Robot.pivot.isPivotAtSetpoint();
+    return Robot.pivot.isPivotAtRotation();
   }
 
   @Override

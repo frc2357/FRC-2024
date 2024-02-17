@@ -19,7 +19,7 @@ public class ShooterPivot extends SubsystemBase {
   private CANSparkMax m_pivotMotor;
   private SparkPIDController m_pivotPIDController;
   private SparkAbsoluteEncoder m_absoluteEncoder;
-  private double m_targetSetpoint;
+  private double m_targetRotation;
 
   public ShooterPivot() {
     m_pivotMotor = new CANSparkMax(Constants.CAN_ID.SHOOTER_PIVOT_MOTOR_ID, MotorType.kBrushless);
@@ -50,10 +50,9 @@ public class ShooterPivot extends SubsystemBase {
     m_pivotPIDController.setFeedbackDevice(m_absoluteEncoder);
   }
 
-  public void setPivotSetpoint(double setpoint) {
+  public void setPivotRotation(double rotation) {
     m_isClosedLoopEnabled = true;
-    m_targetSetpoint = setpoint;
-    m_pivotPIDController.setReference(m_targetSetpoint, ControlType.kPosition);
+    m_targetRotation = rotation;
   }
 
   public void setPivotAxisSpeed(double axisSpeed) {
@@ -69,7 +68,7 @@ public class ShooterPivot extends SubsystemBase {
 
   public void resetEncoder() {
     m_pivotMotor.getEncoder().setPosition(0);
-    m_targetSetpoint = 0;
+    m_targetRotation = 0;
   }
 
   public double getPivotRotations() {
@@ -80,9 +79,9 @@ public class ShooterPivot extends SubsystemBase {
     return m_absoluteEncoder.getPosition();
   }
 
-  public boolean isPivotAtSetpoint() {
+  public boolean isPivotAtRotation() {
     return Utility.isWithinTolerance(
-        getPosition(), m_targetSetpoint, SHOOTER_PIVOT.POSITION_ALLOWED_ERROR);
+        getPosition(), m_targetRotation, SHOOTER_PIVOT.POSITION_ALLOWED_ERROR);
   }
 
   private boolean hasTarget() {
@@ -91,11 +90,12 @@ public class ShooterPivot extends SubsystemBase {
 
   @Override
   public void periodic() {
+    if (m_isClosedLoopEnabled) {
+      // Calculate feedforward and set pid reference
+      // Use 2023 ArmRotation as example
+    }
     if (m_isVisionShooting) {
       visionShotPeriodic();
-    }
-    if (m_isClosedLoopEnabled && isPivotAtSetpoint()) {
-      m_isClosedLoopEnabled = false;
     }
   }
 
@@ -108,13 +108,13 @@ public class ShooterPivot extends SubsystemBase {
 
   private void visionShotPeriodic() {
     if (hasTarget()) {
-      setVisionShotSetpoint(Robot.shooterLimelight.getTY());
+      setVisionShotRotation(Robot.shooterLimelight.getTY());
     } else {
       System.err.println("----- No vision target (Pivot) -----");
     }
   }
 
-  private void setVisionShotSetpoint(double ty) {
+  private void setVisionShotRotation(double ty) {
     int curveIndex = RobotMath.getCurveSegmentIndex(Robot.shooterCurve, ty);
     if (curveIndex == -1) {
       // System.err.println("----- Curve segment index out of bounds (Pivot) -----");
@@ -126,16 +126,16 @@ public class ShooterPivot extends SubsystemBase {
 
     double highTY = high[0];
     double lowTY = low[0];
-    double highPivotSetpoint = high[1];
-    double lowPivotSetoint = low[1];
+    double highPivotRotation = high[1];
+    double lowPivotRotation = low[1];
 
-    double pivotSetpoint = RobotMath.linearlyInterpolate(highPivotSetpoint, lowPivotSetoint, highTY, lowTY, ty);
+    double pivotRotation = RobotMath.linearlyInterpolate(highPivotRotation, lowPivotRotation, highTY, lowTY, ty);
 
-    if (Double.isNaN(pivotSetpoint)) {
+    if (Double.isNaN(pivotRotation)) {
       // System.err.println("----- Invalid shooter pivot values -----");
       return;
     }
 
-    setPivotSetpoint(pivotSetpoint);
+    setPivotRotation(pivotRotation);
   }
 }
