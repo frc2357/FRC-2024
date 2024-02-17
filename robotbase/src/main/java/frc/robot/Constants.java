@@ -233,8 +233,10 @@ public final class Constants {
   }
 
   public static final class PIVOT {
-    public static final double INTAKE_FROM_SOURCE_ROTATION = 0;
-    public static final double DEFAULT_PIVOT_ROTATION = 0;
+    public static final double INTAKE_FROM_SOURCE_ROTATION = 0.1;
+    public static final double DEFAULT_PIVOT_ROTATION = 0.1; // Eyballed, can use for tuning start point
+
+    public static final double PIVOT_MAX_ROTATION = 0.15;
 
     public static final boolean MOTOR_INVERTED = false;
     public static final boolean ENCODER_INVERTED = false;
@@ -251,6 +253,7 @@ public final class Constants {
 
     public static final double ENCODER_POSITION_CONVERSION_FACTOR = 1;
     public static final double ENCODER_VELOCITY_CONVERSION_FACTOR = 1;
+    public static final double ENCODER_ZERO_OFFSET = 0.5576527;
 
     // Closed loop - lines with comments were used for arm rotation 2023 and we will
     // probably need for this

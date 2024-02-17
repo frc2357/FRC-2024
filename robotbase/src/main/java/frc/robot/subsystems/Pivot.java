@@ -43,6 +43,7 @@ public class Pivot extends SubsystemBase {
     m_absoluteEncoder.setInverted(PIVOT.ENCODER_INVERTED);
     m_absoluteEncoder.setPositionConversionFactor(PIVOT.ENCODER_POSITION_CONVERSION_FACTOR);
     m_absoluteEncoder.setVelocityConversionFactor(PIVOT.ENCODER_VELOCITY_CONVERSION_FACTOR);
+    m_absoluteEncoder.setZeroOffset(PIVOT.ENCODER_ZERO_OFFSET);
 
     m_pivotPIDController.setPositionPIDWrappingEnabled(PIVOT.POSITION_PID_WRAPPING_ENABLED);
     m_pivotPIDController.setFeedbackDevice(m_absoluteEncoder);
