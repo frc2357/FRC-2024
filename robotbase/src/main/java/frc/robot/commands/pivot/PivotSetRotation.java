@@ -1,22 +1,24 @@
 package frc.robot.commands.pivot;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.*;
 import frc.robot.Robot;
 
-public class ShooterPivotIntakeFromSource extends Command {
-  public ShooterPivotIntakeFromSource() {
+public class PivotSetRotation extends Command {
+  private double m_rotation;
+
+  public PivotSetRotation(double rotation) {
+    m_rotation = rotation;
     addRequirements(Robot.pivot);
   }
 
   @Override
   public void initialize() {
-    Robot.pivot.setPivotRotations(SHOOTER_PIVOT.INTAKE_FROM_SOURCE_ROTATIONS);
+    Robot.pivot.setPivotRotation(m_rotation);
   }
 
   @Override
   public boolean isFinished() {
-    return Robot.pivot.isPivotAtRotations();
+    return Robot.pivot.isPivotAtRotation();
   }
 
   @Override

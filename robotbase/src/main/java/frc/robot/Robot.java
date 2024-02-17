@@ -18,9 +18,9 @@ import frc.robot.subsystems.EndAffector;
 import frc.robot.subsystems.ExtensionArm;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PhotonVision;
+import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShooterPhotonCamera;
-import frc.robot.subsystems.ShooterPivot;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -37,7 +37,7 @@ public class Robot extends TimedRobot {
 
   public static CommandSwerveDrivetrain swerve;
   public static Shooter shooter;
-  public static ShooterPivot pivot;
+  public static Pivot pivot;
   public static Intake intake;
   public static Climber climber;
 
@@ -49,6 +49,9 @@ public class Robot extends TimedRobot {
   public static EndAffector endAffector;
 
   public static ExtensionArm extensionArm;
+
+  // {ty, pivotRotations, topRPMs, bottomRPMs}
+  public static final double[][] shooterCurve = {{0.0, 0.0, 0.0, 0.0}};
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -71,7 +74,7 @@ public class Robot extends TimedRobot {
     // CHANGE TO FALSE TO USE CUBE BOT. DO THIS
     swerve = true ? CompSwerveTunerConstants.DriveTrain : CubeBotTunerConstants.DriveTrain;
     shooter = new Shooter();
-    pivot = new ShooterPivot();
+    pivot = new Pivot();
     intake = new Intake();
     climber = new Climber();
     endAffector = new EndAffector();

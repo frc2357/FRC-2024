@@ -13,6 +13,7 @@ public class RobotContainer {
   public RobotContainer() {
     m_autoCommandChooser = new AutoCommandChooser();
     Robot.swerve.setDefaultCommand(new DefaultDrive());
+    // Robot.pivot.setDefaultCommand(new DefaultPivot());
   }
 
   public Command getAutonomousCommand() {

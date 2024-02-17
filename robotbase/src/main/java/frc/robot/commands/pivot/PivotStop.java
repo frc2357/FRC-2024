@@ -3,8 +3,8 @@ package frc.robot.commands.pivot;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 
-public class ShooterPivotStop extends Command {
-  public ShooterPivotStop() {
+public class PivotStop extends Command {
+  public PivotStop() {
     addRequirements(Robot.pivot);
   }
 

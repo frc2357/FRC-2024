@@ -7,6 +7,7 @@ package frc.robot;
 import com.revrobotics.CANSparkBase.IdleMode;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -54,7 +55,7 @@ public final class Constants {
     public static final int RIGHT_CLIMBER_MOTOR_ID = 27;
     public static final int LEFT_CLIMBER_MOTOR_ID = 28;
 
-    public static final int SHOOTER_PIVOT_MOTOR_ID = 29;
+    public static final int PIVOT_MOTOR_ID = 29;
 
     public static final int END_AFFECTOR_MOTOR_ID = 30;
 
@@ -231,8 +232,9 @@ public final class Constants {
     public static final double TARGET_HEIGHT_FROM_FLOOR = 0.0;
   }
 
-  public static final class SHOOTER_PIVOT {
-    public static final double INTAKE_FROM_SOURCE_ROTATIONS = 0;
+  public static final class PIVOT {
+    public static final double INTAKE_FROM_SOURCE_ROTATION = 0;
+    public static final double DEFAULT_PIVOT_ROTATION = 0;
 
     public static final boolean MOTOR_INVERTED = false;
     public static final boolean ENCODER_INVERTED = false;
@@ -242,18 +244,27 @@ public final class Constants {
     public static final int MOTOR_STALL_LIMIT_AMPS = 40;
     public static final int MOTOR_FREE_LIMIT_AMPS = 40;
 
-    public static final double PIVOT_P = 0.02; // TODO: Tune pivot PID
-    public static final double PIVOT_I = 0;
-    public static final double PIVOT_D = 0;
-    public static final double PIVOT_FF = 0.045;
-
     public static final double POSITION_ALLOWED_ERROR = 0.1;
     public static final boolean POSITION_PID_WRAPPING_ENABLED = false;
 
-    public static final double AXIS_MAX_SPEED = 0.25;
+    public static final double AXIS_MAX_SPEED = 0.10;
 
     public static final double ENCODER_POSITION_CONVERSION_FACTOR = 1;
     public static final double ENCODER_VELOCITY_CONVERSION_FACTOR = 1;
+
+    // Closed loop - lines with comments were used for arm rotation 2023 and we will
+    // probably need for this
+    public static final double PIVOT_P = 0.0; //
+    public static final double PIVOT_I = 0;
+    public static final double PIVOT_D = 0;
+    public static final double PIVOT_FF = 0.0; //
+
+    public static final double PIVOT_KS = 0.0;
+    public static final double PIVOT_KV = 0.0;
+    public static final double PIVOT_KA = 0.0;
+    public static final double PIVOT_KG = 0.0; //
+    public static final ArmFeedforward PIVOT_FEEDFORWARD =
+        new ArmFeedforward(PIVOT_KS, PIVOT_KG, PIVOT_KV, PIVOT_KA);
   }
 
   public static final class CLIMBER {
