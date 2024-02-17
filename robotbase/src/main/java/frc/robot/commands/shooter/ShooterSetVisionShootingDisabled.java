@@ -4,7 +4,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 
 public class ShooterSetVisionShootingDisabled extends Command {
-  public ShooterSetVisionShootingDisabled() {}
+  public ShooterSetVisionShootingDisabled() {
+    addRequirements(Robot.shooter);
+  }
 
   @Override
   public boolean isFinished() {
