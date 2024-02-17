@@ -6,12 +6,12 @@ import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkPIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Constants.SHOOTER_PIVOT;
+import frc.robot.Constants.PIVOT;
 import frc.robot.Robot;
 import frc.robot.util.RobotMath;
 import frc.robot.util.Utility;
 
-public class ShooterPivot extends SubsystemBase {
+public class Pivot extends SubsystemBase {
   private boolean m_isClosedLoopEnabled = false;
   private boolean m_isVisionShooting = false;
 
@@ -20,32 +20,31 @@ public class ShooterPivot extends SubsystemBase {
   private SparkAbsoluteEncoder m_absoluteEncoder;
   private double m_targetRotation;
 
-  public ShooterPivot() {
-    m_pivotMotor = new CANSparkMax(Constants.CAN_ID.SHOOTER_PIVOT_MOTOR_ID, MotorType.kBrushless);
+  public Pivot() {
+    m_pivotMotor = new CANSparkMax(Constants.CAN_ID.PIVOT_MOTOR_ID, MotorType.kBrushless);
     configure();
   }
 
   private void configure() {
-    m_pivotMotor.setInverted(SHOOTER_PIVOT.MOTOR_INVERTED);
-    m_pivotMotor.setIdleMode(SHOOTER_PIVOT.IDLE_MODE);
-    m_pivotMotor.setSmartCurrentLimit(
-        SHOOTER_PIVOT.MOTOR_STALL_LIMIT_AMPS, SHOOTER_PIVOT.MOTOR_FREE_LIMIT_AMPS);
+    m_pivotMotor.setInverted(PIVOT.MOTOR_INVERTED);
+    m_pivotMotor.setIdleMode(PIVOT.IDLE_MODE);
+    m_pivotMotor.setSmartCurrentLimit(PIVOT.MOTOR_STALL_LIMIT_AMPS, PIVOT.MOTOR_FREE_LIMIT_AMPS);
     m_pivotMotor.enableVoltageCompensation(12);
 
     m_pivotPIDController = m_pivotMotor.getPIDController();
 
-    m_pivotPIDController.setP(SHOOTER_PIVOT.PIVOT_P);
-    m_pivotPIDController.setI(SHOOTER_PIVOT.PIVOT_I);
-    m_pivotPIDController.setD(SHOOTER_PIVOT.PIVOT_D);
-    m_pivotPIDController.setFF(SHOOTER_PIVOT.PIVOT_FF);
+    m_pivotPIDController.setP(PIVOT.PIVOT_P);
+    m_pivotPIDController.setI(PIVOT.PIVOT_I);
+    m_pivotPIDController.setD(PIVOT.PIVOT_D);
+    m_pivotPIDController.setFF(PIVOT.PIVOT_FF);
 
     m_pivotPIDController.setOutputRange(-1, 1);
     m_absoluteEncoder = m_pivotMotor.getAbsoluteEncoder(SparkAbsoluteEncoder.Type.kDutyCycle);
-    m_absoluteEncoder.setInverted(SHOOTER_PIVOT.ENCODER_INVERTED);
-    m_absoluteEncoder.setPositionConversionFactor(SHOOTER_PIVOT.ENCODER_POSITION_CONVERSION_FACTOR);
-    m_absoluteEncoder.setVelocityConversionFactor(SHOOTER_PIVOT.ENCODER_VELOCITY_CONVERSION_FACTOR);
+    m_absoluteEncoder.setInverted(PIVOT.ENCODER_INVERTED);
+    m_absoluteEncoder.setPositionConversionFactor(PIVOT.ENCODER_POSITION_CONVERSION_FACTOR);
+    m_absoluteEncoder.setVelocityConversionFactor(PIVOT.ENCODER_VELOCITY_CONVERSION_FACTOR);
 
-    m_pivotPIDController.setPositionPIDWrappingEnabled(SHOOTER_PIVOT.POSITION_PID_WRAPPING_ENABLED);
+    m_pivotPIDController.setPositionPIDWrappingEnabled(PIVOT.POSITION_PID_WRAPPING_ENABLED);
     m_pivotPIDController.setFeedbackDevice(m_absoluteEncoder);
   }
 
@@ -56,7 +55,7 @@ public class ShooterPivot extends SubsystemBase {
 
   public void setPivotAxisSpeed(double axisSpeed) {
     m_isClosedLoopEnabled = false;
-    double motorSpeed = (-axisSpeed) * SHOOTER_PIVOT.AXIS_MAX_SPEED;
+    double motorSpeed = (-axisSpeed) * PIVOT.AXIS_MAX_SPEED;
     m_pivotMotor.set(motorSpeed);
   }
 
@@ -79,8 +78,7 @@ public class ShooterPivot extends SubsystemBase {
   }
 
   public boolean isPivotAtRotation() {
-    return Utility.isWithinTolerance(
-        getPosition(), m_targetRotation, SHOOTER_PIVOT.POSITION_ALLOWED_ERROR);
+    return Utility.isWithinTolerance(getPosition(), m_targetRotation, PIVOT.POSITION_ALLOWED_ERROR);
   }
 
   private boolean hasTarget() {
@@ -90,22 +88,24 @@ public class ShooterPivot extends SubsystemBase {
   @Override
   public void periodic() {
     if (m_isClosedLoopEnabled) {
+      if (m_isVisionShooting) {
+        visionShootingPeriodic();
+      }
+
       // Calculate feedforward and set pid reference
       // Use 2023 ArmRotation as example
-    }
-    if (m_isVisionShooting) {
-      visionShotPeriodic();
     }
   }
 
   public void setVisionShootingEnabled(boolean enabled) {
     m_isVisionShooting = enabled;
+    m_isClosedLoopEnabled = true;
     if (!m_isVisionShooting) {
       stop();
     }
   }
 
-  private void visionShotPeriodic() {
+  private void visionShootingPeriodic() {
     if (hasTarget()) {
       setVisionShotRotation(Robot.shooterCam.getTY());
     } else {

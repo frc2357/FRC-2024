@@ -55,7 +55,7 @@ public final class Constants {
     public static final int RIGHT_CLIMBER_MOTOR_ID = 27;
     public static final int LEFT_CLIMBER_MOTOR_ID = 28;
 
-    public static final int SHOOTER_PIVOT_MOTOR_ID = 29;
+    public static final int PIVOT_MOTOR_ID = 29;
 
     public static final int END_AFFECTOR_MOTOR_ID = 30;
 
@@ -232,9 +232,9 @@ public final class Constants {
     public static final double TARGET_HEIGHT_FROM_FLOOR = 0.0;
   }
 
-  public static final class SHOOTER_PIVOT {
+  public static final class PIVOT {
     public static final double INTAKE_FROM_SOURCE_ROTATION = 0;
-    public static final double DEFAULT_SHOOTER_PIVOT_ROTATION = 0;
+    public static final double DEFAULT_PIVOT_ROTATION = 0;
 
     public static final boolean MOTOR_INVERTED = false;
     public static final boolean ENCODER_INVERTED = false;
