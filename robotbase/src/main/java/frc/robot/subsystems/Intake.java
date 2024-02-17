@@ -9,13 +9,18 @@ import frc.robot.Constants.*;
 public class Intake extends SubsystemBase {
   private CANSparkMax m_topIntakeMotor;
   private CANSparkMax m_bottomIntakeMotor;
+
   private DigitalInput m_beamBreakSensor;
+  private boolean m_hasBeamBeenBroken = false;
+  private boolean m_notePassedBeamBreak = false;
 
   public Intake() {
     m_topIntakeMotor = new CANSparkMax(CAN_ID.TOP_INTAKE_MOTOR_ID, MotorType.kBrushless);
     m_bottomIntakeMotor = new CANSparkMax(CAN_ID.BOTTOM_INTAKE_MOTOR_ID, MotorType.kBrushless);
 
     m_beamBreakSensor = new DigitalInput(DIGITAL_INPUT.INTAKE_BEAM_BREAK_ID);
+
+    configure();
   }
 
   public void configure() {
@@ -45,11 +50,32 @@ public class Intake extends SubsystemBase {
   }
 
   public boolean isBeamBroken() {
-    return m_beamBreakSensor.get();
+    return !m_beamBreakSensor.get();
+  }
+
+  public boolean hasNotePassedIntake() {
+    return m_notePassedBeamBreak;
   }
 
   public void stop() {
     m_topIntakeMotor.set(0);
     m_bottomIntakeMotor.set(0);
+  }
+
+  public void resetNotePassedBeamBreak() {
+    m_notePassedBeamBreak = false;
+    m_hasBeamBeenBroken = false;
+  }
+
+  @Override
+  public void periodic() {
+    // TODO: Make this better with RobotState
+    if (isBeamBroken() && !m_hasBeamBeenBroken) {
+      m_hasBeamBeenBroken = true;
+      System.out.println("Beam has been broken");
+    } else if (!isBeamBroken() && m_hasBeamBeenBroken) {
+      m_notePassedBeamBreak = true;
+      System.out.println("Note passed intake");
+    }
   }
 }

@@ -173,8 +173,11 @@ public final class Constants {
   public static final class INTAKE {
     public static final double AXIS_MAX_SPEED = 0;
 
-    public static final double TOP_MOTOR_PICKUP_SPEED_PERCENT_OUTPUT = 0;
-    public static final double BOTTOM_MOTOR_PICKUP_SPEED_PERCENT_OUTPUT = 0;
+    public static final double TOP_MOTOR_PICKUP_SPEED_PERCENT_OUTPUT = .75;
+    public static final double BOTTOM_MOTOR_PICKUP_SPEED_PERCENT_OUTPUT = .75;
+
+    public static final double TOP_MOTOR_SLOW_PICKUP_SPEED_PERCENT_OUTPUT = .15;
+    public static final double BOTTOM_MOTOR_SLOW_PICKUP_SPEED_PERCENT_OUTPUT = .15;
 
     public static final double TOP_MOTOR_SOURCE_INTAKE_SPEED_PERCENT_OUTPUT = 0;
     public static final double BOTTOM_MOTOR_SOURCE_INTAKE_SPEED_PERCENT_OUTPUT = 0;
@@ -182,16 +185,16 @@ public final class Constants {
     public static final double TOP_MOTOR_FEED_SPEED_PERCENT_OUTPUT = 0;
     public static final double BOTTOM_MOTOR_FEED_SPEED_PERCENT_OUTPUT = 0;
 
-    public static final IdleMode IDLE_MODE = IdleMode.kCoast;
+    public static final IdleMode IDLE_MODE = IdleMode.kBrake;
 
     public static final boolean TOP_MOTOR_INVERTED = false;
     public static final boolean BOTTOM_MOTOR_INVERTED = false;
 
-    public static final int TOP_MOTOR_STALL_LIMIT_AMPS = 40; // TODO: Tune intake motor amp limits
-    public static final int TOP_MOTOR_FREE_LIMIT_AMPS = 40;
+    public static final int TOP_MOTOR_STALL_LIMIT_AMPS = 60;
+    public static final int TOP_MOTOR_FREE_LIMIT_AMPS = 60;
 
-    public static final int BOTTOM_MOTOR_STALL_LIMIT_AMPS = 40;
-    public static final int BOTTOM_MOTOR_FREE_LIMIT_AMPS = 40;
+    public static final int BOTTOM_MOTOR_STALL_LIMIT_AMPS = 60;
+    public static final int BOTTOM_MOTOR_FREE_LIMIT_AMPS = 60;
   }
 
   /*
