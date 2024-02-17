@@ -27,11 +27,19 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   private final SwerveRequest.ApplyChassisSpeeds chassisSpeedRequest =
       new SwerveRequest.ApplyChassisSpeeds();
 
+  // Comment out below requests for CUBE_BOT
   private final SwerveRequest.FieldCentric fieldRelative =
       new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
   private final SwerveRequest.RobotCentric robotRelative =
-      new SwerveRequest.RobotCentric().withDriveRequestType(DriveRequestType.Velocity);
+      new SwerveRequest.RobotCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+
+  // Uncomment below for CUBE_BOT
+  // private final SwerveRequest.FieldCentric fieldRelative =
+  //     new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.Velocity);
+
+  // private final SwerveRequest.RobotCentric robotRelative =
+  //     new SwerveRequest.RobotCentric().withDriveRequestType(DriveRequestType.Velocity);
 
   public CommandSwerveDrivetrain(
       SwerveDrivetrainConstants driveTrainConstants,
