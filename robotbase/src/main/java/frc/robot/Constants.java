@@ -92,11 +92,11 @@ public final class Constants {
     public static final double PIECE_TRACKING_X_METERS_PER_SECOND = 2;
 
     // Target Lock
-    public static final double ROTATION_KP = 0.15;
-    public static final double ROTATION_KI = 0.0;
-    public static final double ROTATION_KD = 0.0;
-    public static final PIDController ROTATION_PID_CONTROLLER =
-        new PIDController(ROTATION_KP, ROTATION_KI, ROTATION_KD);
+    public static final double TARGET_LOCK_ROTATION_KP = 0.15;
+    public static final double TARGET_LOCK_ROTATION_KI = 0.0;
+    public static final double TARGET_LOCK_ROTATION_KD = 0.0;
+    public static final PIDController TARGET_LOCK_ROTATION_PID_CONTROLLER =
+        new PIDController(TARGET_LOCK_ROTATION_KP, TARGET_LOCK_ROTATION_KI, TARGET_LOCK_ROTATION_KD);
 
     public static final double TARGET_LOCK_FEED_FORWARD = 0.0;
     public static final double TARGET_LOCK_TOLERANCE = 0.25;

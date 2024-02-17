@@ -182,11 +182,11 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
     // Increase kP based on horizontal velocity to reduce lag
     double vy = getChassisSpeeds().vyMetersPerSecond; // Horizontal velocity
-    double kp = Constants.SWERVE.ROTATION_KP;
+    double kp = Constants.SWERVE.TARGET_LOCK_ROTATION_KP;
     kp *= Math.max(1, vy * 1);
-    Constants.SWERVE.ROTATION_PID_CONTROLLER.setP(kp);
+    Constants.SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.setP(kp);
 
-    double rotation = -Constants.SWERVE.ROTATION_PID_CONTROLLER.calculate(0, tx);
+    double rotation = -Constants.SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.calculate(0, tx);
     double output = rotation + Math.copySign(Constants.SWERVE.TARGET_LOCK_FEED_FORWARD, rotation);
     return output;
   }

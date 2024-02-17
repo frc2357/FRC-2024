@@ -17,7 +17,7 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.EndAffector;
 import frc.robot.subsystems.ExtensionArm;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.PhotonVision;
+import frc.robot.subsystems.PhotonVisionCamera;
 import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShooterPhotonCamera;
@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
   public static DriverControls driverControls;
   public static CodriverControls codriverControls;
 
-  public static PhotonVision shooterCam;
+  public static PhotonVisionCamera shooterCam;
 
   public static EndAffector endAffector;
 

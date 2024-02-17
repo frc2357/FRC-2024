@@ -21,8 +21,8 @@ public class DriveToGamepeice extends Command {
   public void initialize() {
     Robot.shooterCam.setPipeline(SHOOTER_LIMELIGHT.GAMEPIECE_INDEX);
     Robot.state.setDriveControlState(DriveControlState.ROBOT_RELATIVE);
-    SWERVE.ROTATION_PID_CONTROLLER.reset();
-    SWERVE.ROTATION_PID_CONTROLLER.setTolerance(SWERVE.PIECE_TRACKING_ROTATION_TOLERANCE);
+    SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.reset();
+    SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.setTolerance(SWERVE.PIECE_TRACKING_ROTATION_TOLERANCE);
 
     m_initialPose = Robot.swerve.getPose();
     m_canSeePieceDebouncer =
@@ -38,7 +38,7 @@ public class DriveToGamepeice extends Command {
     }
 
     double rotationError = Robot.shooterCam.getTX();
-    double rotationSpeed = SWERVE.ROTATION_PID_CONTROLLER.calculate(rotationError, 0);
+    double rotationSpeed = SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.calculate(rotationError, 0);
     double translationSpeed =
         distanceTraveled() > SWERVE.PIECE_TRACKING_SLOW_DOWN_METERS
             ? SWERVE.PIECE_TRACKING_X_METERS_PER_SECOND / 2.0
@@ -55,7 +55,7 @@ public class DriveToGamepeice extends Command {
   @Override
   public void end(boolean interrupted) {
     Robot.swerve.drive(0, 0, 0);
-    SWERVE.ROTATION_PID_CONTROLLER.setTolerance(0);
+    SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.setTolerance(0);
     Robot.state.setDriveControlState(DriveControlState.FIELD_RELATIVE);
     System.out.println(interrupted);
   }

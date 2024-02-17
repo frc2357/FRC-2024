@@ -4,7 +4,7 @@ import static frc.robot.Constants.SHOOTER_PHOTON_CAMERA;
 
 import edu.wpi.first.math.geometry.Transform3d;
 
-public class ShooterPhotonCamera extends PhotonVision {
+public class ShooterPhotonCamera extends PhotonVisionCamera {
 
   /**
    * An extension of the PhotonVision class that has the pipelines for the shooter photon camera

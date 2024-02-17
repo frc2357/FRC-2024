@@ -23,8 +23,8 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import org.photonvision.targeting.TargetCorner;
 
-/** Controls the limelight camera options. */
-public class PhotonVision extends SubsystemBase {
+/** Controls the photon vision camera options. */
+public class PhotonVisionCamera extends SubsystemBase {
 
   // all of these are protected so we can use them in the extended classes
   // which are only extended so we can control which pipelines we are using.
@@ -41,8 +41,11 @@ public class PhotonVision extends SubsystemBase {
    *
    * @param cameraName Name of the cameras Photon Vision network table. MUST match the net tables
    *     name, or it wont work.
+   * @param robotToCameraTransform The Transform3d of the robots coordinate center to the camera.
+   * 
+   * @param headOnTolerance The tolerance for declaring whether or not the camera is facing a target head on.
    */
-  public PhotonVision(
+  public PhotonVisionCamera(
       String cameraName, Transform3d robotToCameraTransform, double headOnTolerance) {
     m_camera = new PhotonCamera(cameraName);
     ROBOT_TO_CAMERA_TRANSFORM = robotToCameraTransform;
