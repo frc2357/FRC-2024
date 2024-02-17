@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkAbsoluteEncoder;
@@ -85,7 +84,7 @@ public class ShooterPivot extends SubsystemBase {
   }
 
   private boolean hasTarget() {
-    return Robot.shooterLimelight.validTargetExists();
+    return Robot.shooterCam.validTargetExists();
   }
 
   @Override
@@ -108,7 +107,7 @@ public class ShooterPivot extends SubsystemBase {
 
   private void visionShotPeriodic() {
     if (hasTarget()) {
-      setVisionShotRotation(Robot.shooterLimelight.getTY());
+      setVisionShotRotation(Robot.shooterCam.getTY());
     } else {
       System.err.println("----- No vision target (Pivot) -----");
     }
@@ -129,7 +128,8 @@ public class ShooterPivot extends SubsystemBase {
     double highPivotRotation = high[1];
     double lowPivotRotation = low[1];
 
-    double pivotRotation = RobotMath.linearlyInterpolate(highPivotRotation, lowPivotRotation, highTY, lowTY, ty);
+    double pivotRotation =
+        RobotMath.linearlyInterpolate(highPivotRotation, lowPivotRotation, highTY, lowTY, ty);
 
     if (Double.isNaN(pivotRotation)) {
       // System.err.println("----- Invalid shooter pivot values -----");
