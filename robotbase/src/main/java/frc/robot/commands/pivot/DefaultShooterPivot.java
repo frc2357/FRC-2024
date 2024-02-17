@@ -11,16 +11,11 @@ public class DefaultShooterPivot extends Command {
 
   @Override
   public void initialize() {
-    Robot.pivot.setPivotSetpoint(Constants.SHOOTER_PIVOT.DEFAULT_SHOOTER_PIVOT_SETPOINT);
+    Robot.pivot.setPivotSetpoint(Constants.SHOOTER_PIVOT.DEFAULT_SHOOTER_PIVOT_ROTATION);
   }
 
   @Override
   public boolean isFinished() {
     return false;
-  }
-
-  @Override
-  public void end(boolean interrupted) {
-    Robot.pivot.stop();
   }
 }

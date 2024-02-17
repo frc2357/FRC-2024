@@ -85,7 +85,7 @@ public class ShooterPivot extends SubsystemBase {
         getPosition(), m_targetSetpoint, SHOOTER_PIVOT.POSITION_ALLOWED_ERROR);
   }
 
-  public boolean hasTarget() {
+  private boolean hasTarget() {
     return Robot.shooterLimelight.validTargetExists();
   }
 
@@ -129,8 +129,7 @@ public class ShooterPivot extends SubsystemBase {
     double highPivotSetpoint = high[1];
     double lowPivotSetoint = low[1];
 
-    double pivotSetpoint =
-        RobotMath.linearlyInterpolate(highPivotSetpoint, lowPivotSetoint, highTY, lowTY, ty);
+    double pivotSetpoint = RobotMath.linearlyInterpolate(highPivotSetpoint, lowPivotSetoint, highTY, lowTY, ty);
 
     if (Double.isNaN(pivotSetpoint)) {
       // System.err.println("----- Invalid shooter pivot values -----");
