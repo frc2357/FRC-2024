@@ -4,30 +4,40 @@ import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkPIDController;
+import com.revrobotics.SparkPIDController.ArbFFUnits;
 
+import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ShooterPivotTuningSubsystem {
     private CANSparkMax m_motor;
 
     private SparkPIDController m_pid;
+    private ArmFeedforward m_feedforward;
+    private SparkAbsoluteEncoder m_absoluteEncoder;
 
-    private double kP = 0;
+    private double kP = 0.0075;
     private double kI = 0;
     private double kD = 0;
-    private double kFF = 0;
+    private double kFF = 0.00125;
+    private double kG = 0.2; // 1/2 inch - .35 (not tuned very well)
     private double maxRPM = 5700;
     private double maxVel = 5700;
     private double maxAcc = 5700;
     private double allErr = 0;
 
-    private double axisMaxSpeed = 0.25;
+    private double horizontalSetpoint = 0;
+
+    private double axisMaxSpeed = 0.15;
 
     public ShooterPivotTuningSubsystem() {
-        m_motor = new CANSparkMax(-1, MotorType.kBrushless);
+        m_motor = new CANSparkMax(29, MotorType.kBrushless);
 
         m_pid = m_motor.getPIDController();
+        m_feedforward = new ArmFeedforward(0, kG, 0);
 
         configure();
         display();
@@ -37,10 +47,15 @@ public class ShooterPivotTuningSubsystem {
         m_motor.setInverted(false);
 
         m_motor.enableVoltageCompensation(12);
-        m_motor.setIdleMode(IdleMode.kCoast);
+        m_motor.setIdleMode(IdleMode.kBrake);
         m_motor.setSmartCurrentLimit(40, 40);
 
         m_pid.setOutputRange(-1, 1);
+
+        m_absoluteEncoder = m_motor.getAbsoluteEncoder(SparkAbsoluteEncoder.Type.kDutyCycle);
+        m_absoluteEncoder.setPositionConversionFactor(360);
+
+        m_pid.setFeedbackDevice(m_absoluteEncoder);
 
         updatePIDs();
     }
@@ -79,13 +94,24 @@ public class ShooterPivotTuningSubsystem {
 
         double setpoint, position;
         setpoint = SmartDashboard.getNumber("Shooter Pivot Setpoint", 0);
-        m_pid.setReference(setpoint, ControlType.kVelocity);
-        position = m_motor.getEncoder().getPosition();
 
-        SmartDashboard.putNumber("Shooter Pivot RPMs", position);
+        double feedforwardVolts = m_feedforward.calculate(calculateFeedforwardInput(setpoint), 0);
+
+        System.out.print("Feedforward Volts: ");
+        System.out.println(feedforwardVolts);
+        System.out.print("Applied output: ");
+        System.out.println(m_motor.getAppliedOutput());
+        m_pid.setReference(setpoint, ControlType.kPosition, 0, feedforwardVolts, ArbFFUnits.kVoltage);
+
+        position = m_absoluteEncoder.getPosition();
+        SmartDashboard.putNumber("Shooter Pivot Position", position);
+    }
+
+    private double calculateFeedforwardInput(double setpoint) {
+        return Rotation2d.fromDegrees(setpoint - horizontalSetpoint).getRadians();
     }
 
     public void axisRun(double motorPO) {
-        m_motor.set(motorPO * axisMaxSpeed);
+        m_motor.set(-motorPO * axisMaxSpeed);
     }
 }

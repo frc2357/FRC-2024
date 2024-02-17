@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,8 +25,8 @@ public class ShooterTuningSubsystem {
     private double maxAcc = 5700;
 
     public ShooterTuningSubsystem() {
-        m_topMotor = new CANSparkMax(-1, MotorType.kBrushless);
-        m_bottomMotor = new CANSparkMax(-1, MotorType.kBrushless);
+        m_topMotor = new CANSparkMax(25, MotorType.kBrushless);
+        m_bottomMotor = new CANSparkMax(26, MotorType.kBrushless);
 
         m_topPID = m_topMotor.getPIDController();
         m_bottomPID = m_bottomMotor.getPIDController();
