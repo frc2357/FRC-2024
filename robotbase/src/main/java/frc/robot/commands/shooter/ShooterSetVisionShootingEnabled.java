@@ -1,10 +1,10 @@
-package frc.robot.commands.pivot;
+package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 
-public class SetPivotVisionTargeting extends Command {
-  public SetPivotVisionTargeting() {}
+public class ShooterSetVisionShootingEnabled extends Command {
+  public ShooterSetVisionShootingEnabled() {}
 
   @Override
   public boolean isFinished() {
@@ -13,6 +13,6 @@ public class SetPivotVisionTargeting extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    Robot.pivot.startVisionTargeting();
+    Robot.shooter.startVisionShooting();
   }
 }

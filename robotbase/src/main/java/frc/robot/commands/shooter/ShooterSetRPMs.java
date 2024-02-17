@@ -1,18 +1,21 @@
 package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.*;
 import frc.robot.Robot;
 
-public class ShooterPickupFromSource extends Command {
-  public ShooterPickupFromSource() {
+public class ShooterSetRPMs extends Command {
+  private double m_topRpms;
+  private double m_bottomRpms;
+
+  public ShooterSetRPMs(double top, double bottom) {
+    m_topRpms = top;
+    m_bottomRpms = bottom;
     addRequirements(Robot.shooter);
   }
 
   @Override
   public void initialize() {
-    Robot.shooter.setRPMS(
-        -SHOOTER.TOP_MOTOR_SOURCE_INTAKE_RPMS, -SHOOTER.BOTTOM_MOTOR_SOURCE_INTAKE_RPMS);
+    Robot.shooter.setRPMs(m_topRpms, m_bottomRpms);
   }
 
   @Override

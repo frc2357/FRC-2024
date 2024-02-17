@@ -11,6 +11,11 @@ import frc.robot.util.RobotMath;
 import frc.robot.util.Utility;
 
 public class Shooter extends SubsystemBase {
+  private boolean m_isVisionShooting = false;
+
+  private double m_targetSpeedTop;
+  private double m_targetSpeedBottom;
+
   private CANSparkMax m_topShooterMotor;
   private CANSparkMax m_bottomShooterMotor;
 
@@ -59,9 +64,11 @@ public class Shooter extends SubsystemBase {
     m_bottomPIDController.setOutputRange(-1, 1);
   }
 
-  public void setRPMS(double topRPMS, double bottomRPMS) {
-    m_topPIDController.setReference(topRPMS, ControlType.kVelocity);
-    m_bottomPIDController.setReference(bottomRPMS, ControlType.kVelocity);
+  public void setRPMs(double topRPMS, double bottomRPMS) {
+    m_targetSpeedTop = topRPMS;
+    m_targetSpeedBottom = bottomRPMS;
+    m_topPIDController.setReference(m_targetSpeedTop, ControlType.kVelocity);
+    m_bottomPIDController.setReference(m_targetSpeedBottom, ControlType.kVelocity);
   }
 
   public void setAxisSpeed(double top, double bottom) {
@@ -89,7 +96,11 @@ public class Shooter extends SubsystemBase {
         && Utility.isWithinTolerance(getBottomVelocity(), bottomRPMs, 100);
   }
 
-  public boolean hasTarget() {
+  public boolean isAtTargetSpeed() {
+    return isAtRPMs(m_targetSpeedTop, m_targetSpeedBottom);
+  }
+
+  private boolean hasTarget() {
     return Robot.shooterCam.validTargetExists();
   }
 
@@ -102,12 +113,13 @@ public class Shooter extends SubsystemBase {
 
   public void startVisionShooting() {
     m_isClosedLoopEnabled = true;
-    Robot.shooterCam.setPipeline(Constants.SHOOTER_LIMELIGHT.SPEAKER_PIPELINE_INDEX);
+    m_isVisionShooting = true;
   }
 
-  public void endVisionShooting() {
+  public void stopVisionShooting() {
     m_isClosedLoopEnabled = false;
-    Robot.shooterCam.setDriverModeActive();
+    m_isVisionShooting = false;
+    stop();
   }
 
   private void visionShotPeriodic() {
@@ -145,6 +157,6 @@ public class Shooter extends SubsystemBase {
       return;
     }
 
-    setRPMS(topRPMs, bottomRPMs);
+    setRPMs(topRPMs, bottomRPMs);
   }
 }
