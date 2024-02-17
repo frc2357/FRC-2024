@@ -17,6 +17,10 @@ public class SetPivotVisionTargeting extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    Robot.pivot.setVisionShootingEnabled(m_isVisionTargeting);
+    if (m_isVisionTargeting) {
+      Robot.pivot.startVisionShooting();
+    } else {
+      Robot.pivot.stopVisionShooting();
+    }
   }
 }

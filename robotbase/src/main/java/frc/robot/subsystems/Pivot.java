@@ -97,23 +97,26 @@ public class Pivot extends SubsystemBase {
     }
   }
 
-  public void setVisionShootingEnabled(boolean enabled) {
-    m_isVisionShooting = enabled;
+  public void startVisionShooting() {
+    m_isVisionShooting = true;
     m_isClosedLoopEnabled = true;
-    if (!m_isVisionShooting) {
-      stop();
-    }
+  }
+
+  public void stopVisionShooting() {
+    m_isVisionShooting = false;
+    m_isClosedLoopEnabled = false;
+    stop();
   }
 
   private void visionShootingPeriodic() {
     if (hasTarget()) {
-      setVisionShotRotation(Robot.shooterCam.getTY());
+      setVisionShootingRotation(Robot.shooterCam.getTY());
     } else {
       System.err.println("----- No vision target (Pivot) -----");
     }
   }
 
-  private void setVisionShotRotation(double ty) {
+  private void setVisionShootingRotation(double ty) {
     int curveIndex = RobotMath.getCurveSegmentIndex(Robot.shooterCurve, ty);
     if (curveIndex == -1) {
       // System.err.println("----- Curve segment index out of bounds (Pivot) -----");

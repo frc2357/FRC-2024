@@ -100,7 +100,7 @@ public class Shooter extends SubsystemBase {
     return isAtRPMs(m_targetSpeedTop, m_targetSpeedBottom);
   }
 
-  public boolean hasTarget() {
+  private boolean hasTarget() {
     return Robot.shooterCam.validTargetExists();
   }
 
@@ -113,19 +113,14 @@ public class Shooter extends SubsystemBase {
 
   public void startVisionShooting() {
     m_isClosedLoopEnabled = true;
-    Robot.shooterCam.setPipeline(Constants.SHOOTER_LIMELIGHT.SPEAKER_PIPELINE_INDEX);
+    m_isVisionShooting = true;
   }
 
-  public void endVisionShooting() {
+  public void stopVisionShooting() {
     m_isClosedLoopEnabled = false;
-    Robot.shooterCam.setDriverModeActive();
+    m_isVisionShooting = false;
+    stop();
   }
-
-  public void setVisionShootingEnabled(boolean enabled) {
-    m_isVisionShooting = enabled;
-    if (!m_isVisionShooting) {
-      stop();
-    }
 
   private void visionShotPeriodic() {
     if (hasTarget()) {
