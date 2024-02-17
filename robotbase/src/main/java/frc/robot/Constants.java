@@ -151,7 +151,7 @@ public final class Constants {
 
     public static final IdleMode IDLE_MODE = IdleMode.kCoast;
 
-    public static final boolean TOP_MOTOR_INVERTED = false;
+    public static final boolean TOP_MOTOR_INVERTED = true;
     public static final boolean BOTTOM_MOTOR_INVERTED = false;
 
     public static final int TOP_MOTOR_STALL_LIMIT_AMPS = 40;
