@@ -95,7 +95,7 @@ public class PhotonVision extends SubsystemBase {
     return false;
   }
 
-  public boolean isHumanPipelineActive() {
+  public boolean isDriverModeActive() {
     return m_camera.getDriverMode();
   }
 
@@ -112,7 +112,6 @@ public class PhotonVision extends SubsystemBase {
   }
 
   public void setPipeline(int index) {
-    m_camera.setDriverMode(false);
     m_camera.setPipelineIndex(index);
   }
 
