@@ -19,11 +19,10 @@ public class ShooterPivotTuningSubsystem {
     private ArmFeedforward m_feedforward;
     private SparkAbsoluteEncoder m_absoluteEncoder;
 
-    private double kP = 0.0075;
+    private double kP = 0.005;
     private double kI = 0;
     private double kD = 0;
-    private double kFF = 0.00125;
-    private double kG = 0.2; // 1/2 inch - .35 (not tuned very well)
+    private double kFF = 0.0005;
     private double maxRPM = 5700;
     private double maxVel = 5700;
     private double maxAcc = 5700;
@@ -37,7 +36,6 @@ public class ShooterPivotTuningSubsystem {
         m_motor = new CANSparkMax(29, MotorType.kBrushless);
 
         m_pid = m_motor.getPIDController();
-        m_feedforward = new ArmFeedforward(0, kG, 0);
 
         configure();
         display();
@@ -65,9 +63,6 @@ public class ShooterPivotTuningSubsystem {
         m_pid.setI(kI);
         m_pid.setD(kD);
         m_pid.setFF(kFF);
-        m_pid.setSmartMotionMaxVelocity(maxVel, 0);
-        m_pid.setSmartMotionMaxAccel(maxAcc, 0);
-        m_pid.setSmartMotionAllowedClosedLoopError(allErr, 0);
     }
 
     public void display() {
@@ -95,20 +90,10 @@ public class ShooterPivotTuningSubsystem {
         double setpoint, position;
         setpoint = SmartDashboard.getNumber("Shooter Pivot Setpoint", 0);
 
-        double feedforwardVolts = m_feedforward.calculate(calculateFeedforwardInput(setpoint), 0);
-
-        System.out.print("Feedforward Volts: ");
-        System.out.println(feedforwardVolts);
-        System.out.print("Applied output: ");
-        System.out.println(m_motor.getAppliedOutput());
-        m_pid.setReference(setpoint, ControlType.kPosition, 0, feedforwardVolts, ArbFFUnits.kVoltage);
+        m_pid.setReference(setpoint, ControlType.kPosition);
 
         position = m_absoluteEncoder.getPosition();
         SmartDashboard.putNumber("Shooter Pivot Position", position);
-    }
-
-    private double calculateFeedforwardInput(double setpoint) {
-        return Rotation2d.fromDegrees(setpoint - horizontalSetpoint).getRadians();
     }
 
     public void axisRun(double motorPO) {
