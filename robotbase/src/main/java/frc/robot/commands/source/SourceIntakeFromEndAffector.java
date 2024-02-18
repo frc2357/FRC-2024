@@ -9,7 +9,7 @@ public class SourceIntakeFromEndAffector extends SequentialCommandGroup {
 
   public SourceIntakeFromEndAffector() {
     addCommands(
-        new ExtensionArmMoveToRotations(TRAP_AMP_ARM.NOTE_STOW_ROTATIONS),
+        new ExtensionArmMoveToRotations(EXTENSION_ARM.NOTE_STOW_ROTATIONS),
         new EndAffectorIntakeFromSource());
   }
 }

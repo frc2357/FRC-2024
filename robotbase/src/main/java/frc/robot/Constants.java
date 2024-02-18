@@ -147,6 +147,9 @@ public final class Constants {
     public static final double TOP_MOTOR_SOURCE_INTAKE_RPMS = 0;
     public static final double BOTTOM_MOTOR_SOURCE_INTAKE_RPMS = 0;
 
+    public static final double TOP_MOTOR_FEED_END_AFFECTOR_RPMS = 0;
+    public static final double BOTTOM_MOTOR_FEED_END_AFFECTOR_RPMS = 0;
+
     public static final double SHOOTER_AXIS_STEP_INTERVAL = 0.1;
 
     public static final IdleMode IDLE_MODE = IdleMode.kCoast;
@@ -234,6 +237,7 @@ public final class Constants {
 
   public static final class PIVOT {
     public static final double INTAKE_FROM_SOURCE_ROTATION = 0;
+    public static final double FEED_TO_END_AFFECTOR_LOCATION = 0;
     public static final double DEFAULT_PIVOT_ROTATION = 0;
 
     public static final boolean MOTOR_INVERTED = false;
@@ -281,8 +285,11 @@ public final class Constants {
     public static final IdleMode IDLE_MODE = IdleMode.kBrake;
 
     public static final double INTAKE_SPEED = 0;
+    public static final double PRELOAD_SPEED = 0;
     public static final double SCORE_SPEED_AMP = 0;
     public static final double SCORE_SPEED_TRAP = 0;
+
+    public static final double SECONDS_TO_SCORE_TRAP = 0;
 
     public static final double STOWED_NOTE_AMPERAGE_LIMIT = 0;
 
@@ -292,7 +299,7 @@ public final class Constants {
     public static final double AXIS_MAX_SPEED = 0.25;
   }
 
-  public static final class TRAP_AMP_ARM {
+  public static final class EXTENSION_ARM {
     public static final boolean MOTOR_IS_INVERTED = false;
 
     public static final IdleMode MOTOR_IDLE_MODE = IdleMode.kBrake;
@@ -319,9 +326,14 @@ public final class Constants {
 
     public static final double HOME_ROTATIONS = 0; // TODO: TUNE
     public static final double NOTE_STOW_ROTATIONS = 0; // TODO: TUNE
-    public static final double PRELOAD_ROTATIONS = 0; // TODO: TUNE
     public static final double AMP_SCORE_ROTATIONS = 0; // TODO: TUNE
     public static final double TRAP_SCORE_ROTATIONS = 0; // TODO: TUNE
+  }
+
+  public static final class SCORING {
+    public static final double SECONDS_PRELOAD_NOTE = 0;
+
+    public static final double SECONDS_AMP_SCORE = 0;
   }
 
   public static final class PHOTON_VISION {

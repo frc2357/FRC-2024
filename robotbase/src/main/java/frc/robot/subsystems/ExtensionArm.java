@@ -8,7 +8,7 @@ import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.SparkPIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Constants.TRAP_AMP_ARM;
+import frc.robot.Constants.EXTENSION_ARM;
 import frc.robot.util.Utility;
 
 public class ExtensionArm extends SubsystemBase {
@@ -25,29 +25,29 @@ public class ExtensionArm extends SubsystemBase {
   }
 
   private void configure() {
-    m_motor.setInverted(TRAP_AMP_ARM.MOTOR_IS_INVERTED);
-    m_motor.setIdleMode(TRAP_AMP_ARM.MOTOR_IDLE_MODE);
+    m_motor.setInverted(EXTENSION_ARM.MOTOR_IS_INVERTED);
+    m_motor.setIdleMode(EXTENSION_ARM.MOTOR_IDLE_MODE);
     m_motor.setSmartCurrentLimit(
-        TRAP_AMP_ARM.MOTOR_STALL_LIMIT_AMPS, TRAP_AMP_ARM.MOTOR_FREE_LIMIT_AMPS);
+        EXTENSION_ARM.MOTOR_STALL_LIMIT_AMPS, EXTENSION_ARM.MOTOR_FREE_LIMIT_AMPS);
     m_motor.enableVoltageCompensation(12);
 
     m_encoder = m_motor.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, 8192);
 
     m_PIDController = m_motor.getPIDController();
 
-    m_PIDController.setP(TRAP_AMP_ARM.MOTOR_PID_P);
-    m_PIDController.setI(TRAP_AMP_ARM.MOTOR_PID_I);
-    m_PIDController.setD(TRAP_AMP_ARM.MOTOR_PID_D);
-    m_PIDController.setFF(TRAP_AMP_ARM.MOTOR_PID_FF);
+    m_PIDController.setP(EXTENSION_ARM.MOTOR_PID_P);
+    m_PIDController.setI(EXTENSION_ARM.MOTOR_PID_I);
+    m_PIDController.setD(EXTENSION_ARM.MOTOR_PID_D);
+    m_PIDController.setFF(EXTENSION_ARM.MOTOR_PID_FF);
 
     m_PIDController.setFeedbackDevice(m_encoder);
 
     m_PIDController.setOutputRange(-1, 1);
-    m_PIDController.setSmartMotionMaxVelocity(TRAP_AMP_ARM.SMART_MOTION_MAX_VEL_RPM, 0);
-    m_PIDController.setSmartMotionMinOutputVelocity(TRAP_AMP_ARM.SMART_MOTION_MIN_VEL_RPM, 0);
-    m_PIDController.setSmartMotionMaxAccel(TRAP_AMP_ARM.SMART_MOTION_MAX_ACC_RPM, 0);
+    m_PIDController.setSmartMotionMaxVelocity(EXTENSION_ARM.SMART_MOTION_MAX_VEL_RPM, 0);
+    m_PIDController.setSmartMotionMinOutputVelocity(EXTENSION_ARM.SMART_MOTION_MIN_VEL_RPM, 0);
+    m_PIDController.setSmartMotionMaxAccel(EXTENSION_ARM.SMART_MOTION_MAX_ACC_RPM, 0);
     m_PIDController.setSmartMotionAllowedClosedLoopError(
-        TRAP_AMP_ARM.SMART_MOTION_ALLOWED_ERROR, 0);
+        EXTENSION_ARM.SMART_MOTION_ALLOWED_ERROR, 0);
   }
 
   public void set(double speed) {
@@ -72,7 +72,7 @@ public class ExtensionArm extends SubsystemBase {
 
   public void setAxisSpeed(double axisSpeed) {
     m_isClosedLoopEnabled = false;
-    double motorSpeed = (-axisSpeed) * TRAP_AMP_ARM.AXIS_MAX_SPEED;
+    double motorSpeed = (-axisSpeed) * EXTENSION_ARM.AXIS_MAX_SPEED;
     m_motor.set(motorSpeed);
   }
 
@@ -86,7 +86,7 @@ public class ExtensionArm extends SubsystemBase {
 
   public boolean isAtTargetRotations() {
     return Utility.isWithinTolerance(
-        getRotations(), m_targetRotations, TRAP_AMP_ARM.SMART_MOTION_ALLOWED_ERROR);
+        getRotations(), m_targetRotations, EXTENSION_ARM.SMART_MOTION_ALLOWED_ERROR);
   }
 
   @Override
