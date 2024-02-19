@@ -5,6 +5,7 @@ import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.SHOOTER_LIMELIGHT;
+import frc.robot.Constants.SHOOTER_PHOTON_CAMERA;
 import frc.robot.Constants.SWERVE;
 import frc.robot.Robot;
 import frc.robot.state.RobotState.DriveControlState;
@@ -19,7 +20,7 @@ public class DriveToGamepeice extends Command {
 
   @Override
   public void initialize() {
-    Robot.shooterCam.setPipeline(SHOOTER_LIMELIGHT.GAMEPIECE_INDEX);
+    Robot.shooterCam.setPipeline(SHOOTER_PHOTON_CAMERA.NEURAL_NETWORK_PIPELINE);
     Robot.state.setDriveControlState(DriveControlState.ROBOT_RELATIVE);
     SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.reset();
     SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.setTolerance(SWERVE.PIECE_TRACKING_ROTATION_TOLERANCE);
@@ -44,7 +45,7 @@ public class DriveToGamepeice extends Command {
             ? SWERVE.PIECE_TRACKING_X_METERS_PER_SECOND / 2.0
             : SWERVE.PIECE_TRACKING_X_METERS_PER_SECOND;
 
-    Robot.swerve.drive(translationSpeed, 0, rotationSpeed);
+    Robot.swerve.drive(-translationSpeed, 0, rotationSpeed);
   }
 
   @Override

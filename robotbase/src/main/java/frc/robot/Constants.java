@@ -103,19 +103,19 @@ public final class Constants {
 
     // Translate to Apriltag
     public static final PIDController APRILTAG_ROTATION_PID_CONTROLLER =
-        new PIDController(3, 0, 0.01);
+        new PIDController(0.03, 0, 0.01);
     public static final PIDController APRILTAG_X_TRANSLATION_PID_CONTROLLER =
         new PIDController(0.05, 0, 0);
     public static final PIDController APRILTAG_Y_TRANSLATION_PID_CONTROLLER =
-        new PIDController(0.2, 0, 0);
+        new PIDController(0.08, 0, 0);
 
-    public static final double APRILTAG_X_TOLERANCE = 1.5;
+    public static final double APRILTAG_X_TOLERANCE = 0.5;
     public static final double APRILTAG_Y_TOLERANCE = 0.5;
     public static final double APRILTAG_ROTATION_TOLERANCE = .025; // Radians
     public static final double APRILTAG_TY_MAGIC_OFFSET = 12.5;
 
     public static final double AMP_TX_SETPOINT = 0;
-    public static final double AMP_TY_SETPOINT = -10;
+    public static final double AMP_TY_SETPOINT = 3;
     public static final double AMP_ROTATION_SETPOINT = Math.PI / 2;
   }
 

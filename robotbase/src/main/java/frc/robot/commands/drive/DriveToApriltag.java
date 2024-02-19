@@ -18,12 +18,11 @@ public class DriveToApriltag extends Command {
   private PIDController m_xController;
   private PIDController m_yController;
   private PIDController m_rotationController;
-
+  private int loopNum;
   public DriveToApriltag(double tyOffset, double rotationGoal, int pipelineIndex) {
     m_tyOffset = tyOffset;
     m_rotationGoal = rotationGoal;
     m_pipelineIndex = pipelineIndex;
-
     m_xController = Constants.SWERVE.APRILTAG_X_TRANSLATION_PID_CONTROLLER;
     m_yController = Constants.SWERVE.APRILTAG_Y_TRANSLATION_PID_CONTROLLER;
     m_rotationController = Constants.SWERVE.APRILTAG_ROTATION_PID_CONTROLLER;
@@ -34,12 +33,11 @@ public class DriveToApriltag extends Command {
   @Override
   public void initialize() {
     Robot.shooterCam.setPipeline(m_pipelineIndex);
-
+    loopNum = 0;
     // reset pids
-    m_yController.setSetpoint(m_tyOffset + Constants.SWERVE.APRILTAG_TY_MAGIC_OFFSET);
+    m_yController.setSetpoint(m_tyOffset);
     m_yController.reset();
-
-    m_xController.setSetpoint(Constants.SWERVE.AMP_TX_SETPOINT);
+    m_xController.setSetpoint(0);
     m_xController.reset();
 
     m_rotationController.enableContinuousInput(-Math.PI, Math.PI);
@@ -52,6 +50,7 @@ public class DriveToApriltag extends Command {
 
   @Override
   public void execute() {
+    loopNum+=1;
     if (!m_canSeePieceDebouncer.calculate(Robot.shooterCam.validTargetExists())) {
       System.out.println("No Target Detected");
       Robot.swerve.drive(0, 0, 0);
@@ -66,7 +65,7 @@ public class DriveToApriltag extends Command {
     // shorter distances
     double txTolerance = Constants.SWERVE.APRILTAG_X_TOLERANCE;
     if (Utility.isWithinTolerance(ty, m_tyOffset, 4)) {
-      txTolerance *= 2;
+      txTolerance = Math.copySign(txTolerance * 2, txTolerance);
     }
 
     if (Utility.isWithinTolerance(rotationError, 0, Constants.SWERVE.APRILTAG_ROTATION_TOLERANCE)) {
@@ -82,11 +81,13 @@ public class DriveToApriltag extends Command {
     if (Utility.isWithinTolerance(ty, m_tyOffset, Constants.SWERVE.APRILTAG_Y_TOLERANCE)) {
       ty = m_tyOffset;
     }
-
+    if(loopNum % 5 == 0){
+      System.out.println("TX: " + tx+"\nTY: " + ty +"\nRoto: " + rotationError);
+    }
     Robot.swerve.drive(
-        -m_yController.calculate(ty + Constants.SWERVE.APRILTAG_TY_MAGIC_OFFSET),
-        m_xController.calculate(tx),
-        m_rotationController.calculate(rotationError));
+        -m_yController.calculate(ty),
+        -m_xController.calculate(tx),
+        0);
   }
 
   @Override
