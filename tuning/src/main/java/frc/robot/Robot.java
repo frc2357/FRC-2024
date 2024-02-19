@@ -133,10 +133,18 @@ public class Robot extends TimedRobot {
     // !m_shooterInverted));
     // m_leftBumper.onTrue(new InstantCommand(() -> m_intakeInverted =
     // !m_intakeInverted));
+
+    // double rightJoystick = m_controller.getRightY();
+    // pivot.axisRun(rightJoystick);
+
+    // m_rightBumper.onTrue(new InstantCommand(() -> m_shooterInverted =
+    // !m_shooterInverted));
+    // m_leftBumper.onTrue(new InstantCommand(() -> m_intakeInverted =
+    // !m_intakeInverted));
     double rightJoystick = m_controller.getRightY();
     arm.axisRun(rightJoystick);
 
-    if (m_leftBumper.getAsBoolean()) {
+    if(m_leftBumper.getAsBoolean()) {
       arm.resetEncoders();
     }
   }
