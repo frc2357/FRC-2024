@@ -18,7 +18,7 @@ public class DriveToApriltag extends Command {
   private PIDController m_xController;
   private PIDController m_yController;
   private PIDController m_rotationController;
-
+  private int loopNum;
   public DriveToApriltag(double tyOffset, double rotationGoal, int pipelineIndex) {
     m_tyOffset = tyOffset;
     m_rotationGoal = rotationGoal;
@@ -33,8 +33,9 @@ public class DriveToApriltag extends Command {
   @Override
   public void initialize() {
     Robot.shooterCam.setPipeline(m_pipelineIndex);
+    loopNum = 0;
     // reset pids
-    m_yController.setSetpoint(m_tyOffset + Constants.SWERVE.APRILTAG_TY_MAGIC_OFFSET);
+    m_yController.setSetpoint(m_tyOffset);
     m_yController.reset();
     m_xController.setSetpoint(0);
     m_xController.reset();
@@ -49,6 +50,7 @@ public class DriveToApriltag extends Command {
 
   @Override
   public void execute() {
+    loopNum+=1;
     if (!m_canSeePieceDebouncer.calculate(Robot.shooterCam.validTargetExists())) {
       System.out.println("No Target Detected");
       Robot.swerve.drive(0, 0, 0);
@@ -79,7 +81,13 @@ public class DriveToApriltag extends Command {
     if (Utility.isWithinTolerance(ty, m_tyOffset, Constants.SWERVE.APRILTAG_Y_TOLERANCE)) {
       ty = m_tyOffset;
     }
-    Robot.swerve.drive(-m_yController.calculate(ty), -m_xController.calculate(tx), 0);
+    if(loopNum % 5 == 0){
+      System.out.println("TX: " + tx+"\nTY: " + ty +"\nRoto: " + rotationError);
+    }
+    Robot.swerve.drive(
+        -m_yController.calculate(ty),
+        -m_xController.calculate(tx),
+        0);
   }
 
   @Override
