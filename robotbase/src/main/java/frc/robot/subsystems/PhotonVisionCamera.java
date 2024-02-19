@@ -129,7 +129,7 @@ public class PhotonVisionCamera extends SubsystemBase {
 
   /** Horizontal offset from crosshair to target (degrees) */
   public double getTX() {
-      return getTV() ? m_bestTarget.getYaw() : Double.NaN;
+    return getTV() ? m_bestTarget.getYaw() : Double.NaN;
   }
 
   /**
@@ -148,7 +148,7 @@ public class PhotonVisionCamera extends SubsystemBase {
    *     to be pixels.
    */
   public double getHorizontalTargetLength() {
-    if(!getTV()){
+    if (!getTV()) {
       return Double.NaN;
     }
     List<TargetCorner> corners = m_bestTarget.getDetectedCorners();
@@ -181,7 +181,7 @@ public class PhotonVisionCamera extends SubsystemBase {
    *     be pixels.
    */
   public double getVerticalTargetLength() {
-    if(!getTV()){
+    if (!getTV()) {
       return Double.NaN;
     }
     List<TargetCorner> corners = m_bestTarget.getDetectedCorners();
@@ -336,7 +336,8 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * @return The best targets fiducial ID, returns -1 if it doesnt have one, and -2 if there are no targets
+   * @return The best targets fiducial ID, returns -1 if it doesnt have one, and -2 if there are no
+   *     targets
    */
   public int getLastTargetID() {
     return getTV() ? m_bestTarget.getFiducialId() : -2;

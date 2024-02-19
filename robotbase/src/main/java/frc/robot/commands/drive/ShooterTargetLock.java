@@ -8,7 +8,7 @@ import frc.robot.state.RobotState.DriveControlState;
 public class ShooterTargetLock extends Command {
   private int m_pipelineIndex;
 
-  public ShooterTargetLock(int pipelineIndex){
+  public ShooterTargetLock(int pipelineIndex) {
     m_pipelineIndex = pipelineIndex;
   }
 

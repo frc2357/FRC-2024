@@ -18,6 +18,7 @@ public class DriveToApriltag extends Command {
   private PIDController m_xController;
   private PIDController m_yController;
   private PIDController m_rotationController;
+
   public DriveToApriltag(double tyOffset, double rotationGoal, int pipelineIndex) {
     m_tyOffset = tyOffset;
     m_rotationGoal = rotationGoal;
@@ -78,10 +79,7 @@ public class DriveToApriltag extends Command {
     if (Utility.isWithinTolerance(ty, m_tyOffset, Constants.SWERVE.APRILTAG_Y_TOLERANCE)) {
       ty = m_tyOffset;
     }
-    Robot.swerve.drive(
-        -m_yController.calculate(ty),
-        -m_xController.calculate(tx),
-        0);
+    Robot.swerve.drive(-m_yController.calculate(ty), -m_xController.calculate(tx), 0);
   }
 
   @Override
