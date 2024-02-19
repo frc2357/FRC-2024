@@ -350,9 +350,9 @@ public final class Constants {
 
     public static final int APRIL_TAG_PIPELINE = 0;
     public static final int NEURAL_NETWORK_PIPELINE = 1;
-    public static final int RETROREFLECTIVE_PIPELINE = 2;
+    public static final int POSE_ESTIMATION_PIPELINE = 2;
 
-    public static final int DEFAULT_PIPELINE = 0;
+    public static final int DEFAULT_PIPELINE = 2;
 
     public static final double HEAD_ON_TOLERANCE = 0;
 

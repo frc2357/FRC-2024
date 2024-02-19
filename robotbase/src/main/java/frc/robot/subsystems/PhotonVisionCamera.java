@@ -66,7 +66,7 @@ public class PhotonVisionCamera extends SubsystemBase {
    * Fetches the latest pipeline result.
    *
    * <p>YOU SHOULD NEVER CALL THIS! This is for the Robot periodic ONLY. NEVER call this method
-   * outside of it.s
+   * outside of it.
    */
   public void updateResult() {
     m_result = m_camera.getLatestResult();
@@ -129,7 +129,7 @@ public class PhotonVisionCamera extends SubsystemBase {
 
   /** Horizontal offset from crosshair to target (degrees) */
   public double getTX() {
-    return m_bestTarget.getYaw();
+      return getTV() ? m_bestTarget.getYaw() : Double.NaN;
   }
 
   /**
@@ -148,6 +148,9 @@ public class PhotonVisionCamera extends SubsystemBase {
    *     to be pixels.
    */
   public double getHorizontalTargetLength() {
+    if(!getTV()){
+      return Double.NaN;
+    }
     List<TargetCorner> corners = m_bestTarget.getDetectedCorners();
     TargetCorner originCorner = corners.get(0); // basing off of known fiducial corner order
     TargetCorner bottomRightCorner = corners.get(1);
@@ -178,6 +181,9 @@ public class PhotonVisionCamera extends SubsystemBase {
    *     be pixels.
    */
   public double getVerticalTargetLength() {
+    if(!getTV()){
+      return Double.NaN;
+    }
     List<TargetCorner> corners = m_bestTarget.getDetectedCorners();
     TargetCorner originCorner = corners.get(0); // basing off of known fiducial corner order
     TargetCorner bottomRightCorner = corners.get(1);
@@ -198,12 +204,12 @@ public class PhotonVisionCamera extends SubsystemBase {
    * @return Best targets yaw from crosshair to target
    */
   public double getYaw() {
-    return m_bestTarget.getYaw();
+    return getTV() ? m_bestTarget.getYaw() : Double.NaN;
   }
 
   /** Vertical offset from crosshair to target (degrees) */
   public double getTY() {
-    return m_bestTarget.getPitch();
+    return getTV() ? m_bestTarget.getPitch() : Double.NaN;
   }
 
   /**
@@ -212,7 +218,7 @@ public class PhotonVisionCamera extends SubsystemBase {
    * @return Best targets pitch from crosshair to target
    */
   public double getPitch() {
-    return m_bestTarget.getPitch();
+    return getTV() ? m_bestTarget.getPitch() : Double.NaN;
   }
 
   /** Percent of image covered by target [0, 100] */
@@ -226,12 +232,12 @@ public class PhotonVisionCamera extends SubsystemBase {
    * @return percentage of the image that the best target covers
    */
   public double getArea() {
-    return m_bestTarget.getArea();
+    return getTV() ? m_bestTarget.getArea() : Double.NaN;
   }
 
   /** Skew or rotation (degrees, [-90, 0]) */
   public double getTS() {
-    return m_bestTarget.getSkew();
+    return getTV() ? m_bestTarget.getSkew() : Double.NaN;
   }
 
   /**
@@ -329,8 +335,11 @@ public class PhotonVisionCamera extends SubsystemBase {
         result.best.getTranslation().toTranslation2d(), result.best.getRotation().toRotation2d());
   }
 
+  /**
+   * @return The best targets fiducial ID, returns -1 if it doesnt have one, and -2 if there are no targets
+   */
   public int getLastTargetID() {
-    return m_bestTarget.getFiducialId();
+    return getTV() ? m_bestTarget.getFiducialId() : -2;
   }
 
   public List<PhotonTrackedTarget> filterAprilTags(int[] tagsToFilterFor) {
