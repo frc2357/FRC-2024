@@ -99,8 +99,8 @@ public class RobotState {
   }
 
   public boolean hasNote() {
-    return m_currentState == State.AMP_PRE_POSE ||
-        m_currentState == State.NOTE_STOWED ||
-        m_currentState == State.NOTE_PRELOAD;
+    return m_currentState == State.AMP_PRE_POSE
+        || m_currentState == State.NOTE_STOWED
+        || m_currentState == State.NOTE_PRELOAD;
   }
 }

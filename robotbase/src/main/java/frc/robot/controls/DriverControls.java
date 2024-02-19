@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Robot;
 import frc.robot.commands.intake.IntakeNoteFromFloor;
+import frc.robot.commands.scoring.DriverAmpScore;
 import frc.robot.controls.util.AxisThresholdTrigger;
 import frc.robot.controls.util.RumbleInterface;
 
@@ -17,6 +18,8 @@ public class DriverControls implements RumbleInterface {
 
   private JoystickButton m_backButton;
   private JoystickButton m_startButton;
+  public JoystickButton m_leftBumper;
+  public JoystickButton m_rightBumper;
 
   private AxisThresholdTrigger m_rightTriggerPrime;
   private AxisThresholdTrigger m_rightTriggerShoot;
@@ -28,6 +31,9 @@ public class DriverControls implements RumbleInterface {
 
     m_backButton = new JoystickButton(m_controller, Button.kBack.value);
     m_startButton = new JoystickButton(m_controller, Button.kStart.value);
+
+    m_leftBumper = new JoystickButton(controller, Button.kLeftBumper.value);
+    m_rightBumper = new JoystickButton(controller, Button.kRightBumper.value);
 
     m_rightTriggerPrime = new AxisThresholdTrigger(m_controller, Axis.kRightTrigger, .1);
     m_rightTriggerShoot = new AxisThresholdTrigger(m_controller, Axis.kRightTrigger, .6);
@@ -47,6 +53,8 @@ public class DriverControls implements RumbleInterface {
     // Constants.SHOOTER_LIMELIGHT.AMP_PIPELINE_INDEX));
 
     m_leftTrigger.whileTrue(new IntakeNoteFromFloor());
+
+    m_leftBumper.onTrue(new DriverAmpScore());
   }
 
   public double getX() {

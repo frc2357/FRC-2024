@@ -8,7 +8,8 @@ import frc.robot.state.RobotState;
 
 public class AmpPrepose extends SequentialCommandGroup {
   public AmpPrepose() {
-    super(new ExtensionArmMoveToRotations(EXTENSION_ARM.AMP_SCORE_ROTATIONS),
+    super(
+        new ExtensionArmMoveToRotations(EXTENSION_ARM.AMP_SCORE_ROTATIONS),
         new SetRobotStateCommand(RobotState.State.AMP_PRE_POSE));
   }
 }

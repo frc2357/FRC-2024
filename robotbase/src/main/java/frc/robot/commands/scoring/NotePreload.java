@@ -41,9 +41,7 @@ public class NotePreload extends SequentialCommandGroup {
 
         // Stop motors
         new ParallelCommandGroup(new IntakeStop(), new ShooterStop(), new EndAffectorStop()),
-        
-        new SetRobotStateCommand(RobotState.State.NOTE_PRELOAD)
-        );
+        new SetRobotStateCommand(RobotState.State.NOTE_PRELOAD));
 
     // TODO: logic to position note for amp or trap
   }
