@@ -34,7 +34,7 @@ public class DriveToApriltag extends Command {
   public void initialize() {
     Robot.shooterCam.setPipeline(m_pipelineIndex);
     // reset pids
-    m_yController.setSetpoint(m_tyOffset);
+    m_yController.setSetpoint(m_tyOffset + Constants.SWERVE.APRILTAG_TY_MAGIC_OFFSET);
     m_yController.reset();
     m_xController.setSetpoint(0);
     m_xController.reset();
