@@ -5,6 +5,9 @@ import frc.robot.commands.commandGroups.QueueCommandGroup;
 public class DriverAmpScore extends QueueCommandGroup {
 
   public DriverAmpScore() {
-    super(new NotePreload(), new AmpPrepose(), new AmpScore());
+    super(
+        new NotePreload(),
+        new AmpPrepose(),
+        new AmpScore());
   }
 }

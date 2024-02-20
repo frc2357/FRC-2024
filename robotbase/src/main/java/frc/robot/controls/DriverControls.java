@@ -54,7 +54,7 @@ public class DriverControls implements RumbleInterface {
 
     m_leftTrigger.whileTrue(new IntakeNoteFromFloor());
 
-    m_leftBumper.onTrue(new DriverAmpScore());
+    m_rightBumper.onTrue(new DriverAmpScore());
   }
 
   public double getX() {
