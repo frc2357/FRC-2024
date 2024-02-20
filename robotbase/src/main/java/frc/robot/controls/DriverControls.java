@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.commands.drive.ShooterTargetLock;
 import frc.robot.commands.intake.IntakeNoteFromFloor;
 import frc.robot.commands.pivot.DefaultPivot;
 import frc.robot.commands.pivot.PivotStop;
