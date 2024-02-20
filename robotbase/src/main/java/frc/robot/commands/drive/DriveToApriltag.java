@@ -79,7 +79,10 @@ public class DriveToApriltag extends Command {
     if (Utility.isWithinTolerance(ty, m_tyOffset, Constants.SWERVE.APRILTAG_Y_TOLERANCE)) {
       ty = m_tyOffset;
     }
-    Robot.swerve.drive(-m_yController.calculate(ty), -m_xController.calculate(tx), 0);
+    Robot.swerve.drive(
+        -m_yController.calculate(ty),
+        -m_xController.calculate(tx),
+        m_rotationController.calculate(rotationError));
   }
 
   @Override

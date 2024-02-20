@@ -22,7 +22,8 @@ public class DriveToGamepeice extends Command {
     Robot.shooterCam.setPipeline(SHOOTER_PHOTON_CAMERA.NEURAL_NETWORK_PIPELINE);
     Robot.state.setDriveControlState(DriveControlState.ROBOT_RELATIVE);
     SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.reset();
-    SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.setTolerance(SWERVE.PIECE_TRACKING_ROTATION_TOLERANCE);
+    SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.setTolerance(
+        SWERVE.PIECE_TRACKING_ROTATION_TOLERANCE);
 
     m_initialPose = Robot.swerve.getPose();
     m_canSeePieceDebouncer =

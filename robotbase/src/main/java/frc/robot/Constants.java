@@ -96,7 +96,8 @@ public final class Constants {
     public static final double TARGET_LOCK_ROTATION_KI = 0.0;
     public static final double TARGET_LOCK_ROTATION_KD = 0.0;
     public static final PIDController TARGET_LOCK_ROTATION_PID_CONTROLLER =
-        new PIDController(TARGET_LOCK_ROTATION_KP, TARGET_LOCK_ROTATION_KI, TARGET_LOCK_ROTATION_KD);
+        new PIDController(
+            TARGET_LOCK_ROTATION_KP, TARGET_LOCK_ROTATION_KI, TARGET_LOCK_ROTATION_KD);
 
     public static final double TARGET_LOCK_FEED_FORWARD = 0.0;
     public static final double TARGET_LOCK_TOLERANCE = 0.25;

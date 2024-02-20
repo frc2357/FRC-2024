@@ -42,8 +42,8 @@ public class PhotonVisionCamera extends SubsystemBase {
    * @param cameraName Name of the cameras Photon Vision network table. MUST match the net tables
    *     name, or it wont work.
    * @param robotToCameraTransform The Transform3d of the robots coordinate center to the camera.
-   * 
-   * @param headOnTolerance The tolerance for declaring whether or not the camera is facing a target head on.
+   * @param headOnTolerance The tolerance for declaring whether or not the camera is facing a target
+   *     head on.
    */
   public PhotonVisionCamera(
       String cameraName, Transform3d robotToCameraTransform, double headOnTolerance) {
