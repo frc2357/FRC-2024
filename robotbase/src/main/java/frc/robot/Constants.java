@@ -236,7 +236,7 @@ public final class Constants {
 
   public static final class PIVOT {
     public static final double INTAKE_FROM_SOURCE_ROTATION = 0;
-    public static final double FEED_TO_END_AFFECTOR_LOCATION = 0;
+    public static final double FEED_TO_END_AFFECTOR_LOCATION = 63.5;
     public static final double DEFAULT_PIVOT_ROTATION = 0;
 
     public static final boolean MOTOR_INVERTED = false;
@@ -322,9 +322,9 @@ public final class Constants {
     public static final double ZERO_SPEED = 0; // TODO: TUNE
     public static final double ZERO_SPEED_STOP_TOLERANCE = 0; // TODO: TUNE
 
-    public static final double HOME_ROTATIONS = 0; // TODO: TUNE
-    public static final double NOTE_STOW_ROTATIONS = 0; // TODO: TUNE
-    public static final double AMP_SCORE_ROTATIONS = 0; // TODO: TUNE
+    public static final double HOME_ROTATIONS = 0.1; // TODO: TUNE
+    public static final double NOTE_STOW_ROTATIONS = 1.4; // TODO: TUNE
+    public static final double AMP_SCORE_ROTATIONS = 6; // TODO: TUNE
     public static final double TRAP_SCORE_ROTATIONS = 0; // TODO: TUNE
   }
 
