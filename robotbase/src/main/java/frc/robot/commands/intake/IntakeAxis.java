@@ -28,6 +28,7 @@ public class IntakeAxis extends Command {
 
   @Override
   public void end(boolean interrupted) {
+    System.out.println("interrupted");
     Robot.intake.stop();
   }
 }

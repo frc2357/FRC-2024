@@ -96,8 +96,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     // intake.update();
-    // shooter.update();
-    pivot.update();
+    shooter.update();
+    // pivot.update();
   }
 
   @Override
@@ -110,14 +110,13 @@ public class Robot extends TimedRobot {
     // double leftTrigger = m_controller.getLeftTriggerAxis();
     // intake.axisRun(leftTrigger, leftTrigger, m_intakeInverted);
 
-    // double rightTrigger = m_controller.getRightTriggerAxis();
-    // shooter.axisRun(rightTrigger, rightTrigger, m_shooterInverted);
+    double rightTrigger = m_controller.getRightTriggerAxis();
+    shooter.axisRun(rightTrigger, rightTrigger, m_shooterInverted);
 
-    double rightJoystick = m_controller.getRightY();
-    pivot.axisRun(rightJoystick);
+    // double rightJoystick = m_controller.getRightY();
+    // pivot.axisRun(rightJoystick);
 
-    // m_rightBumper.onTrue(new InstantCommand(() -> m_shooterInverted =
-    // !m_shooterInverted));
+    m_rightBumper.onTrue(new InstantCommand(() -> m_shooterInverted = !m_shooterInverted));
     // m_leftBumper.onTrue(new InstantCommand(() -> m_intakeInverted =
     // !m_intakeInverted));
   }

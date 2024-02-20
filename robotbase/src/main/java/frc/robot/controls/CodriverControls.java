@@ -12,6 +12,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.commands.climber.ClimberAxis;
+import frc.robot.commands.endAffector.EndAffectorAxis;
+import frc.robot.commands.extensionArm.ExtensionArmAxis;
+import frc.robot.commands.intake.IntakeAxis;
 import frc.robot.commands.pivot.PivotAxis;
 import frc.robot.commands.shooter.ShooterStepAxis;
 import frc.robot.controls.util.AxisInterface;
@@ -104,12 +107,12 @@ public class CodriverControls implements RumbleInterface {
           return getRightYAxis();
         };
 
-    AxisInterface shooterRollerForwardAxis =
+    AxisInterface subsystemRollerForwardAxis =
         () -> {
           return getRightTriggerAxis();
         };
 
-    AxisInterface shooterRollerReverseAxis =
+    AxisInterface subsystemRollerReverseAxis =
         () -> {
           return -getLeftTriggerAxis();
         };
@@ -144,6 +147,8 @@ public class CodriverControls implements RumbleInterface {
     Trigger downDPadAndX = m_downDPad.and(m_xButton);
     Trigger downDPadAndY = m_downDPad.and(m_yButton);
     Trigger downDPadAndB = m_downDPad.and(m_bButton);
+    Trigger downDPadAndRightTrigger = m_downDPad.and(m_rightTrigger);
+    Trigger downDPadAndLeftTrigger = m_downDPad.and(m_leftTrigger);
 
     Trigger leftDPadAndA = m_leftDPad.and(m_aButton);
     Trigger leftDPadAndX = m_leftDPad.and(m_xButton);
@@ -156,6 +161,8 @@ public class CodriverControls implements RumbleInterface {
     Trigger rightDPadAndX = m_rightDPad.and(m_xButton);
     Trigger rightDPadAndY = m_rightDPad.and(m_yButton);
     Trigger rightDPadAndB = m_rightDPad.and(m_bButton);
+    Trigger rightDPadAndRightTrigger = m_rightDPad.and(m_rightTrigger);
+    Trigger rightDPadAndLeftTrigger = m_rightDPad.and(m_leftTrigger);
 
     Trigger aButton = m_aButton.and(noDPad);
     Trigger bButton = m_bButton.and(noDPad);
@@ -171,17 +178,33 @@ public class CodriverControls implements RumbleInterface {
         new InstantCommand(() -> Robot.state.onDriverAllianceSelect(Alliance.Blue)));
     bothBumpers.onTrue(new InstantCommand(() -> Robot.state.onDriverAllianceSelect(null)));
 
-    // Shooter (Left DPad)
-    leftDPadAndRightTrigger.whileTrue(
+    // Shooter - Right DPad
+    rightDPadAndRightTrigger.whileTrue(
         new ShooterStepAxis(
-            shooterRollerForwardAxis, Constants.SHOOTER.SHOOTER_AXIS_STEP_INTERVAL));
-    leftDPadAndLeftTrigger.whileTrue(
+            subsystemRollerForwardAxis, Constants.SHOOTER.SHOOTER_AXIS_STEP_INTERVAL));
+    rightDPadAndLeftTrigger.whileTrue(
         new ShooterStepAxis(
-            shooterRollerReverseAxis, Constants.SHOOTER.SHOOTER_AXIS_STEP_INTERVAL));
-    leftDPadOnly.whileTrue(new PivotAxis(axisRightStickY));
+            subsystemRollerReverseAxis, Constants.SHOOTER.SHOOTER_AXIS_STEP_INTERVAL));
 
-    // Climber (up DPad)
+    rightDPadOnly.whileTrue(new PivotAxis(axisRightStickY));
+
+    // Intake - Left DPad
+    leftDPadAndRightTrigger.whileTrue(new IntakeAxis(subsystemRollerForwardAxis));
+    leftDPadAndLeftTrigger.whileTrue(new IntakeAxis(subsystemRollerReverseAxis));
+
+    // Climber - Up DPad
     upDPadOnly.whileTrue(new ClimberAxis(axisRightStickY));
+
+    // Extension/EndAffector - Down DPad
+    downDPadOnly.whileTrue(new ExtensionArmAxis(axisRightStickY));
+
+    downDPadAndRightTrigger.whileTrue(new EndAffectorAxis(subsystemRollerForwardAxis));
+    downDPadAndLeftTrigger.whileTrue(new EndAffectorAxis(subsystemRollerReverseAxis));
+
+    // Climber - up
+    // Intake - left
+    // Shooter - right
+    // end affector - down
   }
 
   @Override

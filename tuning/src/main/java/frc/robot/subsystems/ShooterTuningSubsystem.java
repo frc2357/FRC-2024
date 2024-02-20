@@ -37,7 +37,7 @@ public class ShooterTuningSubsystem {
 
     public void configure() {
         m_topMotor.setInverted(false);
-        m_bottomMotor.setInverted(false);
+        m_bottomMotor.setInverted(true);
 
         m_topMotor.enableVoltageCompensation(12);
         m_topMotor.setIdleMode(IdleMode.kCoast);
@@ -64,7 +64,7 @@ public class ShooterTuningSubsystem {
         m_bottomPID.setP(kP);
         m_bottomPID.setI(kI);
         m_bottomPID.setD(kD);
-        m_bottomPID.setFF(kFF);
+        m_bottomPID.setFF(0.00021);
         m_bottomPID.setSmartMotionMaxVelocity(maxVel, 0);
         m_bottomPID.setSmartMotionMaxAccel(maxAcc, 0);
     }
@@ -90,8 +90,8 @@ public class ShooterTuningSubsystem {
         updatePIDs();
 
         double topSetPoint, bottomSetPoint, topSpeed, bottomSpeed;
-        topSetPoint = SmartDashboard.getNumber("Top Shooter Setpoint", 0);
-        bottomSetPoint = SmartDashboard.getNumber("Bottom Shooter Setpoint", 0);
+        topSetPoint = SmartDashboard.getNumber("Shooter Setpoint", 0);
+        bottomSetPoint = SmartDashboard.getNumber("Shooter Setpoint", 0);
         m_topPID.setReference(topSetPoint, ControlType.kVelocity);
         m_bottomPID.setReference(bottomSetPoint, ControlType.kVelocity);
         topSpeed = m_topMotor.getEncoder().getVelocity();
@@ -99,6 +99,7 @@ public class ShooterTuningSubsystem {
 
         SmartDashboard.putNumber("Top Shooter RPMs", topSpeed);
         SmartDashboard.putNumber("Bottom Shooter RPMs", bottomSpeed);
+        System.out.println("Bottom shooter RPMs: " + bottomSpeed);
     }
 
     public void axisRun(double topPO, double bottomPO, boolean reverse) {

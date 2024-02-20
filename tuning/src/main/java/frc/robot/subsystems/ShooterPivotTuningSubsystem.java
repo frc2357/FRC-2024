@@ -19,7 +19,7 @@ public class ShooterPivotTuningSubsystem {
     private ArmFeedforward m_feedforward;
     private SparkAbsoluteEncoder m_absoluteEncoder;
 
-    private double kP = 0.005;
+    private double kP = 0.015;
     private double kI = 0;
     private double kD = 0;
     private double kFF = 0.0005;
@@ -94,6 +94,8 @@ public class ShooterPivotTuningSubsystem {
 
         position = m_absoluteEncoder.getPosition();
         SmartDashboard.putNumber("Shooter Pivot Position", position);
+        // System.out.println("Shooter Pivot Position: " + position);
+        System.out.println(m_absoluteEncoder.getVelocity());
     }
 
     public void axisRun(double motorPO) {

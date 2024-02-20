@@ -7,7 +7,6 @@ package frc.robot;
 import com.revrobotics.CANSparkBase.IdleMode;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -136,7 +135,7 @@ public final class Constants {
 
   public static final class CONTROLLER {
     public static final int DRIVE_CONTROLLER_PORT = 0;
-    public static final double DRIVE_CONTROLLER_DEADBAND = 0.025;
+    public static final double DRIVE_CONTROLLER_DEADBAND = 0.01;
     public static final int CODRIVER_CONTROLLER_PORT = 1;
     public static final double CODRIVE_CONTROLLER_DEADBAND = 0.025;
     public static final double SWERVE_TRANSLATIONAL_DEADBAND = 0.0;
@@ -149,10 +148,12 @@ public final class Constants {
 
     public static final double SHOOTER_AXIS_STEP_INTERVAL = 0.1;
 
+    public static final double SHOOTER_AXIS_MAX_SPEED = 0.8;
+
     public static final IdleMode IDLE_MODE = IdleMode.kCoast;
 
-    public static final boolean TOP_MOTOR_INVERTED = true;
-    public static final boolean BOTTOM_MOTOR_INVERTED = false;
+    public static final boolean TOP_MOTOR_INVERTED = false;
+    public static final boolean BOTTOM_MOTOR_INVERTED = true;
 
     public static final int TOP_MOTOR_STALL_LIMIT_AMPS = 40;
     public static final int TOP_MOTOR_FREE_LIMIT_AMPS = 40;
@@ -160,19 +161,21 @@ public final class Constants {
     public static final int BOTTOM_MOTOR_STALL_LIMIT_AMPS = 40;
     public static final int BOTTOM_MOTOR_FREE_LIMIT_AMPS = 40;
 
+    public static final double RAMP_RATE = 5;
+
     public static final double TOP_MOTOR_P = 0.0; // TODO: tune shooter motor PIDs
     public static final double TOP_MOTOR_I = 0.0;
     public static final double TOP_MOTOR_D = 0.0;
-    public static final double TOP_MOTOR_FF = 0.0;
+    public static final double TOP_MOTOR_FF = 0.000195;
 
     public static final double BOTTOM_MOTOR_P = 0.0;
     public static final double BOTTOM_MOTOR_I = 0.0;
     public static final double BOTTOM_MOTOR_D = 0.0;
-    public static final double BOTTOM_MOTOR_FF = 0.0;
+    public static final double BOTTOM_MOTOR_FF = 0.00021;
   }
 
   public static final class INTAKE {
-    public static final double AXIS_MAX_SPEED = 0;
+    public static final double AXIS_MAX_SPEED = 0.8;
 
     public static final double TOP_MOTOR_PICKUP_SPEED_PERCENT_OUTPUT = .75;
     public static final double BOTTOM_MOTOR_PICKUP_SPEED_PERCENT_OUTPUT = .75;
@@ -180,11 +183,11 @@ public final class Constants {
     public static final double TOP_MOTOR_SLOW_PICKUP_SPEED_PERCENT_OUTPUT = .15;
     public static final double BOTTOM_MOTOR_SLOW_PICKUP_SPEED_PERCENT_OUTPUT = .15;
 
-    public static final double TOP_MOTOR_SOURCE_INTAKE_SPEED_PERCENT_OUTPUT = 0;
-    public static final double BOTTOM_MOTOR_SOURCE_INTAKE_SPEED_PERCENT_OUTPUT = 0;
+    public static final double TOP_MOTOR_SOURCE_INTAKE_SPEED_PERCENT_OUTPUT = 0.25;
+    public static final double BOTTOM_MOTOR_SOURCE_INTAKE_SPEED_PERCENT_OUTPUT = 0.25;
 
-    public static final double TOP_MOTOR_FEED_SPEED_PERCENT_OUTPUT = 0;
-    public static final double BOTTOM_MOTOR_FEED_SPEED_PERCENT_OUTPUT = 0;
+    public static final double TOP_MOTOR_FEED_SPEED_PERCENT_OUTPUT = 0.75;
+    public static final double BOTTOM_MOTOR_FEED_SPEED_PERCENT_OUTPUT = 0.75;
 
     public static final IdleMode IDLE_MODE = IdleMode.kBrake;
 
@@ -233,10 +236,12 @@ public final class Constants {
   }
 
   public static final class PIVOT {
-    public static final double INTAKE_FROM_SOURCE_ROTATION = 0.1;
-    public static final double DEFAULT_PIVOT_ROTATION = 0.1; // Eyballed, can use for tuning start point
+    public static final double MAX_PIVOT_ROTATION = 67.5;
+    public static final double MIN_PIVOT_ROTATION = 10;
 
-    public static final double PIVOT_MAX_ROTATION = 0.15;
+    public static final double SUBWOOFER_SHOT_ROTATION = 60;
+    public static final double INTAKE_FROM_SOURCE_ROTATION = 45;
+    public static final double DEFAULT_PIVOT_ROTATION = 45; // angle of intake
 
     public static final boolean MOTOR_INVERTED = false;
     public static final boolean ENCODER_INVERTED = false;
@@ -249,25 +254,18 @@ public final class Constants {
     public static final double POSITION_ALLOWED_ERROR = 0.1;
     public static final boolean POSITION_PID_WRAPPING_ENABLED = false;
 
-    public static final double AXIS_MAX_SPEED = 0.10;
+    public static final double AXIS_MAX_SPEED = 0.25;
 
-    public static final double ENCODER_POSITION_CONVERSION_FACTOR = 1;
+    public static final double ENCODER_POSITION_CONVERSION_FACTOR = 360;
     public static final double ENCODER_VELOCITY_CONVERSION_FACTOR = 1;
-    public static final double ENCODER_ZERO_OFFSET = 0.5576527;
+    public static final double ENCODER_ZERO_OFFSET = 201.0478306 - 10;
 
     // Closed loop - lines with comments were used for arm rotation 2023 and we will
     // probably need for this
-    public static final double PIVOT_P = 0.0; //
+    public static final double PIVOT_P = 0.015;
     public static final double PIVOT_I = 0;
     public static final double PIVOT_D = 0;
-    public static final double PIVOT_FF = 0.0; //
-
-    public static final double PIVOT_KS = 0.0;
-    public static final double PIVOT_KV = 0.0;
-    public static final double PIVOT_KA = 0.0;
-    public static final double PIVOT_KG = 0.0; //
-    public static final ArmFeedforward PIVOT_FEEDFORWARD =
-        new ArmFeedforward(PIVOT_KS, PIVOT_KG, PIVOT_KV, PIVOT_KA);
+    public static final double PIVOT_FF = 0.0005; // Barely moving: .000465
   }
 
   public static final class CLIMBER {
@@ -290,7 +288,7 @@ public final class Constants {
     public static final int MOTOR_FREE_LIMIT_AMPS = 20;
     public static final int MOTOR_STALL_LIMIT_AMPS = 20; // TODO: TUNE
 
-    public static final double AXIS_MAX_SPEED = 0.25;
+    public static final double AXIS_MAX_SPEED = 1;
   }
 
   public static final class TRAP_AMP_ARM {
@@ -313,7 +311,7 @@ public final class Constants {
     public static final int SMART_MOTION_MAX_ACC_RPM = 0; // TODO: TUNE
     public static final int SMART_MOTION_ALLOWED_ERROR = 0; // TODO: TUNE
 
-    public static final double AXIS_MAX_SPEED = 0.25;
+    public static final double AXIS_MAX_SPEED = 0.5;
 
     public static final double ZERO_SPEED = 0; // TODO: TUNE
     public static final double ZERO_SPEED_STOP_TOLERANCE = 0; // TODO: TUNE

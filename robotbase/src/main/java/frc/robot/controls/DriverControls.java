@@ -5,9 +5,16 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
+import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.commands.intake.IntakeFeedToShooter;
 import frc.robot.commands.intake.IntakeNoteFromFloor;
+import frc.robot.commands.pivot.PivotSetRotation;
+import frc.robot.commands.shooter.ShooterSetRPMs;
+import frc.robot.controls.util.AxisInterface;
 import frc.robot.controls.util.AxisThresholdTrigger;
 import frc.robot.controls.util.RumbleInterface;
 
@@ -22,6 +29,8 @@ public class DriverControls implements RumbleInterface {
   private AxisThresholdTrigger m_rightTriggerShoot;
   private AxisThresholdTrigger m_leftTrigger;
 
+  private POVButton m_rightDPad;
+
   public DriverControls(XboxController controller, double deadband) {
     m_controller = controller;
     m_deadband = deadband;
@@ -33,20 +42,31 @@ public class DriverControls implements RumbleInterface {
     m_rightTriggerShoot = new AxisThresholdTrigger(m_controller, Axis.kRightTrigger, .6);
     m_leftTrigger = new AxisThresholdTrigger(m_controller, Axis.kLeftTrigger, 0);
 
+    m_rightDPad = new POVButton(m_controller, 90);
+
     mapControls();
   }
 
+  public double getRightStickYAxis() {
+    return m_controller.getRightY();
+  }
+
   public void mapControls() {
+    AxisInterface righStickYAxis =
+        () -> {
+          return getRightStickYAxis();
+        };
+
     m_backButton.onTrue(new InstantCommand(() -> Robot.swerve.setYaw(0)));
     m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.setYaw(180)));
 
-    // m_rightTriggerPrime.whileTrue(
-    // new DriveToApriltag(
-    // Constants.SWERVE.AMP_TY_SETPOINT,
-    // Constants.SWERVE.AMP_ROTATION_SETPOINT,
-    // Constants.SHOOTER_LIMELIGHT.AMP_PIPELINE_INDEX));
-
     m_leftTrigger.whileTrue(new IntakeNoteFromFloor());
+
+    m_rightTriggerPrime.whileTrue(
+        new ParallelCommandGroup(
+            new ShooterSetRPMs(2000, 2000),
+            new PivotSetRotation(Constants.PIVOT.SUBWOOFER_SHOT_ROTATION)));
+    m_rightTriggerShoot.whileTrue(new IntakeFeedToShooter().withTimeout(0.5));
   }
 
   public double getX() {
