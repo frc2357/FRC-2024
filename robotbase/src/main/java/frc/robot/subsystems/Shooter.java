@@ -36,11 +36,13 @@ public class Shooter extends SubsystemBase {
     m_topShooterMotor.setInverted(Constants.SHOOTER.TOP_MOTOR_INVERTED);
     m_bottomShooterMotor.setInverted(Constants.SHOOTER.BOTTOM_MOTOR_INVERTED);
 
+    m_topShooterMotor.setOpenLoopRampRate(Constants.SHOOTER.RAMP_RATE);
     m_topShooterMotor.enableVoltageCompensation(12);
     m_topShooterMotor.setIdleMode(Constants.SHOOTER.IDLE_MODE);
     m_topShooterMotor.setSmartCurrentLimit(
         Constants.SHOOTER.TOP_MOTOR_STALL_LIMIT_AMPS, Constants.SHOOTER.TOP_MOTOR_FREE_LIMIT_AMPS);
 
+    m_bottomShooterMotor.setOpenLoopRampRate(Constants.SHOOTER.RAMP_RATE);
     m_bottomShooterMotor.enableVoltageCompensation(12);
     m_bottomShooterMotor.setIdleMode(Constants.SHOOTER.IDLE_MODE);
     m_bottomShooterMotor.setSmartCurrentLimit(
@@ -73,6 +75,8 @@ public class Shooter extends SubsystemBase {
 
   public void setAxisSpeed(double top, double bottom) {
     m_isClosedLoopEnabled = false;
+    top *= Constants.SHOOTER.SHOOTER_AXIS_MAX_SPEED;
+    bottom *= Constants.SHOOTER.SHOOTER_AXIS_MAX_SPEED;
     m_topShooterMotor.set(top);
     m_bottomShooterMotor.set(bottom);
   }

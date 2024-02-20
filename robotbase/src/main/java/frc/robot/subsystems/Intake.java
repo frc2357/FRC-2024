@@ -72,10 +72,8 @@ public class Intake extends SubsystemBase {
     // TODO: Make this better with RobotState
     if (isBeamBroken() && !m_hasBeamBeenBroken) {
       m_hasBeamBeenBroken = true;
-      System.out.println("Beam has been broken");
     } else if (!isBeamBroken() && m_hasBeamBeenBroken) {
       m_notePassedBeamBreak = true;
-      System.out.println("Note passed intake");
     }
   }
 }

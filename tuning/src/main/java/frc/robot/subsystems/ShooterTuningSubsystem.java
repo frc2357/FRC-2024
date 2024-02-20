@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,8 +25,8 @@ public class ShooterTuningSubsystem {
     private double maxAcc = 5700;
 
     public ShooterTuningSubsystem() {
-        m_topMotor = new CANSparkMax(-1, MotorType.kBrushless);
-        m_bottomMotor = new CANSparkMax(-1, MotorType.kBrushless);
+        m_topMotor = new CANSparkMax(25, MotorType.kBrushless);
+        m_bottomMotor = new CANSparkMax(26, MotorType.kBrushless);
 
         m_topPID = m_topMotor.getPIDController();
         m_bottomPID = m_bottomMotor.getPIDController();
@@ -36,7 +37,7 @@ public class ShooterTuningSubsystem {
 
     public void configure() {
         m_topMotor.setInverted(false);
-        m_bottomMotor.setInverted(false);
+        m_bottomMotor.setInverted(true);
 
         m_topMotor.enableVoltageCompensation(12);
         m_topMotor.setIdleMode(IdleMode.kCoast);
@@ -63,7 +64,7 @@ public class ShooterTuningSubsystem {
         m_bottomPID.setP(kP);
         m_bottomPID.setI(kI);
         m_bottomPID.setD(kD);
-        m_bottomPID.setFF(kFF);
+        m_bottomPID.setFF(0.00021);
         m_bottomPID.setSmartMotionMaxVelocity(maxVel, 0);
         m_bottomPID.setSmartMotionMaxAccel(maxAcc, 0);
     }
@@ -89,8 +90,8 @@ public class ShooterTuningSubsystem {
         updatePIDs();
 
         double topSetPoint, bottomSetPoint, topSpeed, bottomSpeed;
-        topSetPoint = SmartDashboard.getNumber("Top Shooter Setpoint", 0);
-        bottomSetPoint = SmartDashboard.getNumber("Bottom Shooter Setpoint", 0);
+        topSetPoint = SmartDashboard.getNumber("Shooter Setpoint", 0);
+        bottomSetPoint = SmartDashboard.getNumber("Shooter Setpoint", 0);
         m_topPID.setReference(topSetPoint, ControlType.kVelocity);
         m_bottomPID.setReference(bottomSetPoint, ControlType.kVelocity);
         topSpeed = m_topMotor.getEncoder().getVelocity();
@@ -98,6 +99,7 @@ public class ShooterTuningSubsystem {
 
         SmartDashboard.putNumber("Top Shooter RPMs", topSpeed);
         SmartDashboard.putNumber("Bottom Shooter RPMs", bottomSpeed);
+        System.out.println("Bottom shooter RPMs: " + bottomSpeed);
     }
 
     public void axisRun(double topPO, double bottomPO, boolean reverse) {

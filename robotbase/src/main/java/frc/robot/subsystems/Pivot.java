@@ -1,9 +1,11 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkPIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.PIVOT;
@@ -39,18 +41,22 @@ public class Pivot extends SubsystemBase {
     m_pivotPIDController.setFF(PIVOT.PIVOT_FF);
 
     m_pivotPIDController.setOutputRange(-1, 1);
+
     m_absoluteEncoder = m_pivotMotor.getAbsoluteEncoder(SparkAbsoluteEncoder.Type.kDutyCycle);
     m_absoluteEncoder.setInverted(PIVOT.ENCODER_INVERTED);
     m_absoluteEncoder.setPositionConversionFactor(PIVOT.ENCODER_POSITION_CONVERSION_FACTOR);
     m_absoluteEncoder.setVelocityConversionFactor(PIVOT.ENCODER_VELOCITY_CONVERSION_FACTOR);
+    // m_absoluteEncoder.setZeroOffset(PIVOT.ENCODER_ZERO_OFFSET);
 
-    m_pivotPIDController.setPositionPIDWrappingEnabled(PIVOT.POSITION_PID_WRAPPING_ENABLED);
+    // m_pivotPIDController.setPositionPIDWrappingEnabled(PIVOT.POSITION_PID_WRAPPING_ENABLED);
     m_pivotPIDController.setFeedbackDevice(m_absoluteEncoder);
   }
 
   public void setPivotRotation(double rotation) {
     m_isClosedLoopEnabled = true;
     m_targetRotation = rotation;
+    System.out.println(rotation);
+    m_pivotPIDController.setReference(m_targetRotation, ControlType.kPosition);
   }
 
   public void setPivotAxisSpeed(double axisSpeed) {
@@ -88,13 +94,18 @@ public class Pivot extends SubsystemBase {
   @Override
   public void periodic() {
     if (m_isClosedLoopEnabled) {
+      if (isPivotAtRotation()) {
+        stop();
+      } else {
+        m_pivotPIDController.setReference(m_targetRotation, ControlType.kPosition);
+      }
+
       if (m_isVisionTargeting) {
         visionTargetingPeriodic();
       }
-
-      // Calculate feedforward and set pid reference
-      // Use 2023 ArmRotation as example
     }
+
+    SmartDashboard.putNumber("Pivot Rotation", getPosition());
   }
 
   public void startVisionTargeting() {

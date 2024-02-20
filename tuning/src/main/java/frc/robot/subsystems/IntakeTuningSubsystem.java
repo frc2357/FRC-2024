@@ -24,8 +24,8 @@ public class IntakeTuningSubsystem {
     private double maxAcc = 5700;
 
     public IntakeTuningSubsystem() {
-        m_topMotor = new CANSparkMax(-1, MotorType.kBrushless);
-        m_bottomMotor = new CANSparkMax(-1, MotorType.kBrushless);
+        m_topMotor = new CANSparkMax(23, MotorType.kBrushless);
+        m_bottomMotor = new CANSparkMax(24, MotorType.kBrushless);
 
         m_topPID = m_topMotor.getPIDController();
         m_bottomPID = m_bottomMotor.getPIDController();
