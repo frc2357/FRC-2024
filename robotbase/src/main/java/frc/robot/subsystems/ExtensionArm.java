@@ -33,7 +33,7 @@ public class ExtensionArm extends SubsystemBase {
     m_motor.enableVoltageCompensation(12);
 
     m_encoder = m_motor.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, 8192);
-    m_encoder.setInverted(true);
+    m_encoder.setInverted(Constants.EXTENSION_ARM.ENCODER_INVERTED);
 
     m_PIDController = m_motor.getPIDController();
 
