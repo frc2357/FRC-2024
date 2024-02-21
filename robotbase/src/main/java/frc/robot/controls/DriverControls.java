@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
@@ -15,6 +16,7 @@ import frc.robot.commands.scoring.NotePreload;
 import frc.robot.controls.util.AxisInterface;
 import frc.robot.controls.util.AxisThresholdTrigger;
 import frc.robot.controls.util.RumbleInterface;
+import frc.robot.state.RobotState.State;
 
 public class DriverControls implements RumbleInterface {
   private XboxController m_controller;
@@ -63,10 +65,9 @@ public class DriverControls implements RumbleInterface {
   }
 
   public void mapControls() {
-    AxisInterface righStickYAxis =
-        () -> {
-          return getRightStickYAxis();
-        };
+    AxisInterface righStickYAxis = () -> {
+      return getRightStickYAxis();
+    };
 
     m_backButton.onTrue(new InstantCommand(() -> Robot.swerve.setYaw(0)));
     m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.setYaw(180)));
@@ -74,9 +75,11 @@ public class DriverControls implements RumbleInterface {
     m_leftTrigger.whileTrue(new IntakeNoteFromFloor());
 
     // m_rightBumper.onTrue(new DriverAmpScore());
-    m_aButton.onTrue(new NotePreload());
-    m_xButton.onTrue(new AmpPrepose());
-    m_yButton.onTrue(new AmpScore());
+    m_aButton.onTrue(
+        new ConditionalCommand(
+            new AmpPrepose(),
+            new AmpScore(),
+            () -> Robot.state.isInState(State.AMP_PRE_POSE)));
 
     // m_rightTriggerPrime.whileTrue(
     // new ParallelCommandGroup(

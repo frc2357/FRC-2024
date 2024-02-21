@@ -14,6 +14,7 @@ import frc.robot.state.RobotState;
 public class AmpScore extends SequentialCommandGroup {
   public AmpScore() {
     super(
+        new ExtensionArmMoveToRotations(EXTENSION_ARM.AMP_SCORE_ROTATIONS),
         new EndAffectorSetSpeed(END_AFFECTOR.SCORE_SPEED_AMP),
         new WaitCommand(SCORING.SECONDS_AMP_SCORE),
         new EndAffectorStop(),
