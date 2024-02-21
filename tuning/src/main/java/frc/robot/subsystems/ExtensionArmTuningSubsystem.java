@@ -21,7 +21,7 @@ public class ExtensionArmTuningSubsystem {
   private double maxVel = 2000;// 5700; // These are the new rpms, not rev throughbore encoder rpms
   private double maxAcc = 1000; // 5700;
 
-  private double axisMaxSpeed = 0.25;
+  private double axisMaxSpeed = 0.5;
 
   public ExtensionArmTuningSubsystem() {
     m_motor = new CANSparkMax(31, MotorType.kBrushless);
@@ -37,7 +37,7 @@ public class ExtensionArmTuningSubsystem {
     m_motor.setInverted(false);
 
     m_motor.enableVoltageCompensation(12);
-    m_motor.setIdleMode(IdleMode.kCoast);
+    m_motor.setIdleMode(IdleMode.kBrake);
     m_motor.setSmartCurrentLimit(40, 40);
 
     m_encoder.setPositionConversionFactor(1);
@@ -89,15 +89,14 @@ public class ExtensionArmTuningSubsystem {
     double motorRPMs, encoderRPMs;
     motorRPMs = m_motor.getEncoder().getVelocity();
     encoderRPMs = m_encoder.getVelocity();
-    
+
     SmartDashboard.putNumber("Arm RPMs", motorRPMs);
     SmartDashboard.putNumber("Encoder RPMs", encoderRPMs);
 
-    
     double motorPos, encoderPos;
     motorPos = m_motor.getEncoder().getPosition();
     encoderPos = m_encoder.getPosition();
-    
+
     SmartDashboard.putNumber("Arm Pos", motorPos);
     SmartDashboard.putNumber("Encoder Pos", encoderPos);
   }
