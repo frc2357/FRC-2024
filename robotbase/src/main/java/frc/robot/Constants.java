@@ -163,7 +163,6 @@ public final class Constants {
     public static final double TOP_MOTOR_SPEAKER_SCORE_FROM_BASE_RPMS = 0;
     public static final double BOTTOM_MOTOR_SPEAKER_SCORE_FROM_BASE_RPMS = 0;
 
-
     public static final int TOP_MOTOR_STALL_LIMIT_AMPS = 40;
     public static final int TOP_MOTOR_FREE_LIMIT_AMPS = 40;
 
