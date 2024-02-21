@@ -20,11 +20,6 @@ public class ShooterSetRPMs extends Command {
 
   @Override
   public boolean isFinished() {
-    return false;
-  }
-
-  @Override
-  public void end(boolean interrupted) {
-    Robot.shooter.stop();
+    return true;
   }
 }
