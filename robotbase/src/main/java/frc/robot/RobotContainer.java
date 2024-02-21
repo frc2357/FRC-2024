@@ -6,7 +6,6 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.drive.DefaultDrive;
-import frc.robot.commands.pivot.DefaultPivot;
 
 public class RobotContainer {
   private AutoCommandChooser m_autoCommandChooser;

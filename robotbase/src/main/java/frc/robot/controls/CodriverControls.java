@@ -102,24 +102,29 @@ public class CodriverControls implements RumbleInterface {
 
   private void mapControls() {
 
-    AxisInterface axisRightStickY = () -> {
-      return getRightYAxis();
-    };
+    AxisInterface axisRightStickY =
+        () -> {
+          return getRightYAxis();
+        };
 
-    AxisInterface subsystemRollerForwardAxis = () -> {
-      return getRightTriggerAxis();
-    };
+    AxisInterface subsystemRollerForwardAxis =
+        () -> {
+          return getRightTriggerAxis();
+        };
 
-    AxisInterface subsystemRollerReverseAxis = () -> {
-      return -getLeftTriggerAxis();
-    };
+    AxisInterface subsystemRollerReverseAxis =
+        () -> {
+          return -getLeftTriggerAxis();
+        };
 
-    Trigger noDPad = new Trigger(
-        () -> m_upDPad.getAsBoolean()
-            || m_rightDPad.getAsBoolean()
-            || m_downDPad.getAsBoolean()
-            || m_leftDPad.getAsBoolean())
-        .negate();
+    Trigger noDPad =
+        new Trigger(
+                () ->
+                    m_upDPad.getAsBoolean()
+                        || m_rightDPad.getAsBoolean()
+                        || m_downDPad.getAsBoolean()
+                        || m_leftDPad.getAsBoolean())
+            .negate();
 
     Trigger rightTriggerPreNoDPad = noDPad.and(m_rightTriggerPre);
     Trigger rightTriggerFullNoDPad = noDPad.and(m_rightTriggerFull);
@@ -192,9 +197,11 @@ public class CodriverControls implements RumbleInterface {
 
     // Extension/EndAffector - Down DPad
     downDPadOnly.whileTrue(new ExtensionArmAxis(axisRightStickY));
-    downDPadAndY.onTrue(new InstantCommand(() -> {
-      Robot.extensionArm.zeroArm();
-    }));
+    downDPadAndY.onTrue(
+        new InstantCommand(
+            () -> {
+              Robot.extensionArm.zeroArm();
+            }));
 
     downDPadAndRightTrigger.whileTrue(new EndAffectorAxis(subsystemRollerForwardAxis));
     downDPadAndLeftTrigger.whileTrue(new EndAffectorAxis(subsystemRollerReverseAxis));

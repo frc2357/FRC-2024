@@ -142,7 +142,8 @@ public class Pivot extends SubsystemBase {
     double highPivotRotation = high[1];
     double lowPivotRotation = low[1];
 
-    double pivotRotation = RobotMath.linearlyInterpolate(highPivotRotation, lowPivotRotation, highTY, lowTY, ty);
+    double pivotRotation =
+        RobotMath.linearlyInterpolate(highPivotRotation, lowPivotRotation, highTY, lowTY, ty);
 
     if (Double.isNaN(pivotRotation)) {
       // System.err.println("----- Invalid shooter pivot values -----");
