@@ -312,14 +312,14 @@ public final class Constants {
     public static final int MOTOR_STALL_LIMIT_AMPS = 40;
     public static final int MOTOR_FREE_LIMIT_AMPS = 40;
 
-    public static final double MOTOR_PID_P = 0.004; // TODO: TUNE
+    public static final double MOTOR_PID_P = 0.002; // TODO: TUNE
     public static final double MOTOR_PID_I = 0; // TODO: TUNE
     public static final double MOTOR_PID_D = 0; // TODO: TUNE
     public static final double MOTOR_PID_FF = 0.00005; // TODO: TUNE
 
-    public static final int SMART_MOTION_MAX_VEL_RPM = 3000; // TODO: TUNE
+    public static final int SMART_MOTION_MAX_VEL_RPM = 6000; // TODO: TUNE
     public static final int SMART_MOTION_MIN_VEL_RPM = 0; // TODO: TUNE
-    public static final int SMART_MOTION_MAX_ACC_RPM = 1500; // TODO: TUNE
+    public static final int SMART_MOTION_MAX_ACC_RPM = 12000; // TODO: TUNE
     public static final double SMART_MOTION_ALLOWED_ERROR = 0.1; // TODO: TUNE
 
     public static final double AXIS_MAX_SPEED = 0.5;
