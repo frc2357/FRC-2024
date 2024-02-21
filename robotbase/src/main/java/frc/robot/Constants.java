@@ -148,8 +148,8 @@ public final class Constants {
     public static final double TOP_MOTOR_SOURCE_INTAKE_RPMS = 0;
     public static final double BOTTOM_MOTOR_SOURCE_INTAKE_RPMS = 0;
 
-    public static final double TOP_MOTOR_FEED_END_AFFECTOR_RPMS = 0;
-    public static final double BOTTOM_MOTOR_FEED_END_AFFECTOR_RPMS = 0;
+    public static final double TOP_MOTOR_FEED_END_AFFECTOR_RPMS = 500;
+    public static final double BOTTOM_MOTOR_FEED_END_AFFECTOR_RPMS = 500;
 
     public static final double SHOOTER_AXIS_STEP_INTERVAL = 0.1;
 
@@ -257,7 +257,7 @@ public final class Constants {
     public static final int MOTOR_STALL_LIMIT_AMPS = 40;
     public static final int MOTOR_FREE_LIMIT_AMPS = 40;
 
-    public static final double POSITION_ALLOWED_ERROR = 0.1;
+    public static final double POSITION_ALLOWED_ERROR = 1;
     public static final boolean POSITION_PID_WRAPPING_ENABLED = false;
 
     public static final double AXIS_MAX_SPEED = 0.25;
@@ -287,10 +287,10 @@ public final class Constants {
 
     public static final IdleMode IDLE_MODE = IdleMode.kBrake;
 
-    public static final double INTAKE_SPEED = 0;
-    public static final double PRELOAD_SPEED = 0;
-    public static final double SCORE_SPEED_AMP = 0;
-    public static final double SCORE_SPEED_TRAP = 0;
+    public static final double INTAKE_SPEED = -1;
+    public static final double PRELOAD_SPEED = -1;
+    public static final double SCORE_SPEED_AMP = 1;
+    public static final double SCORE_SPEED_TRAP = 1;
 
     public static final double SECONDS_TO_SCORE_TRAP = 0;
 
@@ -309,8 +309,8 @@ public final class Constants {
 
     // TODO: Tune arm amp limits + PID + smart motion + Zeroing constants
 
-    public static final int MOTOR_STALL_LIMIT_AMPS = 20;
-    public static final int MOTOR_FREE_LIMIT_AMPS = 20;
+    public static final int MOTOR_STALL_LIMIT_AMPS = 40;
+    public static final int MOTOR_FREE_LIMIT_AMPS = 40;
 
     public static final double MOTOR_PID_P = 0.004; // TODO: TUNE
     public static final double MOTOR_PID_I = 0; // TODO: TUNE
@@ -334,9 +334,9 @@ public final class Constants {
   }
 
   public static final class SCORING {
-    public static final double SECONDS_PRELOAD_NOTE = 0;
+    public static final double SECONDS_PRELOAD_NOTE = 1.75;
 
-    public static final double SECONDS_AMP_SCORE = 0;
+    public static final double SECONDS_AMP_SCORE = 1;
   }
 
   public static final class PHOTON_VISION {

@@ -9,7 +9,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Robot;
 import frc.robot.commands.intake.IntakeNoteFromFloor;
-import frc.robot.commands.scoring.DriverAmpScore;
+import frc.robot.commands.scoring.AmpPrepose;
+import frc.robot.commands.scoring.AmpScore;
+import frc.robot.commands.scoring.NotePreload;
 import frc.robot.controls.util.AxisInterface;
 import frc.robot.controls.util.AxisThresholdTrigger;
 import frc.robot.controls.util.RumbleInterface;
@@ -17,6 +19,10 @@ import frc.robot.controls.util.RumbleInterface;
 public class DriverControls implements RumbleInterface {
   private XboxController m_controller;
   private double m_deadband;
+
+  private JoystickButton m_aButton;
+  private JoystickButton m_xButton;
+  private JoystickButton m_yButton;
 
   private JoystickButton m_backButton;
   private JoystickButton m_startButton;
@@ -32,6 +38,10 @@ public class DriverControls implements RumbleInterface {
   public DriverControls(XboxController controller, double deadband) {
     m_controller = controller;
     m_deadband = deadband;
+
+    m_aButton = new JoystickButton(m_controller, Button.kA.value);
+    m_xButton = new JoystickButton(m_controller, Button.kX.value);
+    m_yButton = new JoystickButton(m_controller, Button.kY.value);
 
     m_backButton = new JoystickButton(m_controller, Button.kBack.value);
     m_startButton = new JoystickButton(m_controller, Button.kStart.value);
@@ -62,7 +72,11 @@ public class DriverControls implements RumbleInterface {
 
     m_leftTrigger.whileTrue(new IntakeNoteFromFloor());
 
-    m_rightBumper.onTrue(new DriverAmpScore());
+    // m_rightBumper.onTrue(new DriverAmpScore());
+    m_aButton.onTrue(new NotePreload());
+    m_xButton.onTrue(new AmpPrepose());
+    m_yButton.onTrue(new AmpScore());
+
     // m_rightTriggerPrime.whileTrue(
     // new ParallelCommandGroup(
     // new ShooterSetRPMs(2000, 2000),

@@ -1,5 +1,6 @@
 package frc.robot.commands.scoring;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -24,16 +25,18 @@ public class NotePreload extends SequentialCommandGroup {
 
   public NotePreload() {
     super(
-        // Extend arm to position to receive from shooter
-        new ExtensionArmMoveToRotations(EXTENSION_ARM.NOTE_STOW_ROTATIONS),
-
-        // Rotate pivot to feed into end affector
-        new PivotSetRotation(PIVOT.FEED_TO_END_AFFECTOR_LOCATION),
+        new ParallelCommandGroup(
+            // Extend arm to position to receive from shooter
+            new ExtensionArmMoveToRotations(EXTENSION_ARM.NOTE_STOW_ROTATIONS),
+            // Rotate pivot to feed into end affector
+            new PivotSetRotation(PIVOT.FEED_TO_END_AFFECTOR_LOCATION)),
 
         // Run end affector, shooter, and intake to load note
         new ParallelDeadlineGroup(
             new WaitCommand(SCORING.SECONDS_PRELOAD_NOTE),
-            new IntakeFeedToShooter(),
+            new SequentialCommandGroup(
+                new WaitCommand(0.5),
+                new IntakeFeedToShooter()),
             new ShooterSetRPMs(
                 SHOOTER.TOP_MOTOR_FEED_END_AFFECTOR_RPMS,
                 SHOOTER.BOTTOM_MOTOR_FEED_END_AFFECTOR_RPMS),

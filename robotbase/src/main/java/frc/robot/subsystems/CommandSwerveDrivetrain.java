@@ -68,32 +68,29 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
       double velocityYMetersPerSecond,
       double rotationRateRadiansPerSecond) {
 
-    // switch (Robot.state.getDriveControlState()) {
-    // case ROBOT_RELATIVE:
-    // applyRequest(
-    // () ->
-    // robotRelative
-    // .withVelocityX(velocityXMetersPerSecond)
-    // .withVelocityY(velocityYMetersPerSecond)
-    // .withRotationalRate(rotationRateRadiansPerSecond));
-    // break;
-    // case FIELD_RELATIVE:
-    // applyRequest(
-    // () ->
-    // fieldRelative
-    // .withVelocityX(velocityXMetersPerSecond)
-    // .withVelocityY(velocityYMetersPerSecond)
-    // .withRotationalRate(rotationRateRadiansPerSecond));
-    // break;
-    // case TARGET_LOCK:
-    // applyRequest(
-    // () ->
-    // fieldRelative
-    // .withVelocityX(velocityXMetersPerSecond)
-    // .withVelocityY(velocityYMetersPerSecond)
-    // .withRotationalRate(getTargetLockRotation()));
-    // break;
-    // }
+    switch (Robot.state.getDriveControlState()) {
+      case ROBOT_RELATIVE:
+        applyRequest(
+            () -> robotRelative
+                .withVelocityX(velocityXMetersPerSecond)
+                .withVelocityY(velocityYMetersPerSecond)
+                .withRotationalRate(rotationRateRadiansPerSecond));
+        break;
+      case FIELD_RELATIVE:
+        applyRequest(
+            () -> fieldRelative
+                .withVelocityX(velocityXMetersPerSecond)
+                .withVelocityY(velocityYMetersPerSecond)
+                .withRotationalRate(rotationRateRadiansPerSecond));
+        break;
+      case TARGET_LOCK:
+        applyRequest(
+            () -> fieldRelative
+                .withVelocityX(velocityXMetersPerSecond)
+                .withVelocityY(velocityYMetersPerSecond)
+                .withRotationalRate(getTargetLockRotation()));
+        break;
+    }
   }
 
   /**
