@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Robot;
 import frc.robot.commands.intake.IntakeNoteFromFloor;
+import frc.robot.commands.pivot.DefaultPivot;
+import frc.robot.commands.pivot.PivotStop;
 import frc.robot.commands.scoring.AmpPrepose;
 import frc.robot.commands.scoring.AmpScore;
 import frc.robot.controls.util.AxisInterface;
@@ -64,10 +66,9 @@ public class DriverControls implements RumbleInterface {
   }
 
   public void mapControls() {
-    AxisInterface righStickYAxis =
-        () -> {
-          return getRightStickYAxis();
-        };
+    AxisInterface righStickYAxis = () -> {
+      return getRightStickYAxis();
+    };
 
     m_backButton.onTrue(new InstantCommand(() -> Robot.swerve.setYaw(0)));
     m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.setYaw(180)));
@@ -79,6 +80,7 @@ public class DriverControls implements RumbleInterface {
         new ConditionalCommand(
             new AmpScore(), new AmpPrepose(), () -> Robot.state.isInState(State.AMP_PRE_POSE)));
 
+    m_rightTriggerShoot.whileTrue(new DefaultPivot().andThen(new PivotStop()));
     // m_rightTriggerPrime.whileTrue(
     // new ParallelCommandGroup(
     // new ShooterSetRPMs(2000, 2000),
