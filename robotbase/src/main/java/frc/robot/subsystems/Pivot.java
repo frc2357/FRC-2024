@@ -1,9 +1,12 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkPIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.PIVOT;
@@ -30,6 +33,7 @@ public class Pivot extends SubsystemBase {
     m_pivotMotor.setIdleMode(PIVOT.IDLE_MODE);
     m_pivotMotor.setSmartCurrentLimit(PIVOT.MOTOR_STALL_LIMIT_AMPS, PIVOT.MOTOR_FREE_LIMIT_AMPS);
     m_pivotMotor.enableVoltageCompensation(12);
+    m_pivotMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus5, 20);
 
     m_pivotPIDController = m_pivotMotor.getPIDController();
 
@@ -39,18 +43,21 @@ public class Pivot extends SubsystemBase {
     m_pivotPIDController.setFF(PIVOT.PIVOT_FF);
 
     m_pivotPIDController.setOutputRange(-1, 1);
+
     m_absoluteEncoder = m_pivotMotor.getAbsoluteEncoder(SparkAbsoluteEncoder.Type.kDutyCycle);
     m_absoluteEncoder.setInverted(PIVOT.ENCODER_INVERTED);
     m_absoluteEncoder.setPositionConversionFactor(PIVOT.ENCODER_POSITION_CONVERSION_FACTOR);
     m_absoluteEncoder.setVelocityConversionFactor(PIVOT.ENCODER_VELOCITY_CONVERSION_FACTOR);
+    m_pivotMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus5, 20);
+    m_pivotMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus6, 20);
 
-    m_pivotPIDController.setPositionPIDWrappingEnabled(PIVOT.POSITION_PID_WRAPPING_ENABLED);
     m_pivotPIDController.setFeedbackDevice(m_absoluteEncoder);
   }
 
   public void setPivotRotation(double rotation) {
     m_isClosedLoopEnabled = true;
     m_targetRotation = rotation;
+    m_pivotPIDController.setReference(m_targetRotation, ControlType.kPosition);
   }
 
   public void setPivotAxisSpeed(double axisSpeed) {
@@ -85,16 +92,29 @@ public class Pivot extends SubsystemBase {
     return Robot.shooterCam.validTargetExists();
   }
 
+  public void zero() {
+    double position = getPosition();
+    double currentOffset = m_absoluteEncoder.getZeroOffset();
+    double newOffset = position + currentOffset - Constants.PIVOT.MIN_PIVOT_ROTATION;
+    newOffset %= 360;
+    m_absoluteEncoder.setZeroOffset(newOffset);
+  }
+
   @Override
   public void periodic() {
     if (m_isClosedLoopEnabled) {
+      if (isPivotAtRotation()) {
+        stop();
+      } else {
+        m_pivotPIDController.setReference(m_targetRotation, ControlType.kPosition);
+      }
+
       if (m_isVisionTargeting) {
         visionTargetingPeriodic();
       }
-
-      // Calculate feedforward and set pid reference
-      // Use 2023 ArmRotation as example
     }
+
+    SmartDashboard.putNumber("Pivot Rotation", getPosition());
   }
 
   public void startVisionTargeting() {
@@ -131,8 +151,7 @@ public class Pivot extends SubsystemBase {
     double highPivotRotation = high[1];
     double lowPivotRotation = low[1];
 
-    double pivotRotation =
-        RobotMath.linearlyInterpolate(highPivotRotation, lowPivotRotation, highTY, lowTY, ty);
+    double pivotRotation = RobotMath.linearlyInterpolate(highPivotRotation, lowPivotRotation, highTY, lowTY, ty);
 
     if (Double.isNaN(pivotRotation)) {
       // System.err.println("----- Invalid shooter pivot values -----");

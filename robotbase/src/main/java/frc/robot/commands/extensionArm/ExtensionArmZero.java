@@ -13,12 +13,12 @@ public class ExtensionArmZero extends Command {
 
   @Override
   public void initialize() {
-    Robot.extensionArm.set(Constants.TRAP_AMP_ARM.ZERO_SPEED);
+    Robot.extensionArm.set(Constants.EXTENSION_ARM.ZERO_SPEED);
   }
 
   @Override
   public boolean isFinished() {
-    return Robot.extensionArm.getVelocity() <= Constants.TRAP_AMP_ARM.ZERO_SPEED_STOP_TOLERANCE;
+    return Robot.extensionArm.getVelocity() <= Constants.EXTENSION_ARM.ZERO_SPEED_STOP_TOLERANCE;
   }
 
   @Override

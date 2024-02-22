@@ -3,6 +3,7 @@ package frc.robot.commands.intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.*;
 import frc.robot.Robot;
+import frc.robot.state.RobotState;
 
 public class IntakeNoteFromFloor extends Command {
   public IntakeNoteFromFloor() {
@@ -29,5 +30,9 @@ public class IntakeNoteFromFloor extends Command {
   public void end(boolean interrupted) {
     Robot.intake.stop();
     Robot.intake.resetNotePassedBeamBreak();
+
+    if (!interrupted) {
+      Robot.state.setState(RobotState.State.NOTE_STOWED);
+    }
   }
 }
