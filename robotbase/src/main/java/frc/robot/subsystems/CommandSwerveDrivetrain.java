@@ -14,6 +14,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.util.PoseHelpers;
 import frc.robot.util.Utility;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -140,7 +141,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   }
 
   public void resetPose() {
-    setPose(new Pose2d(0, 0, new Rotation2d()));
+    setPose(new Pose2d(0, 0, super.getPigeon2().getRotation2d()));
   }
 
   public void stopMotorsIntoX() {
@@ -152,7 +153,22 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   }
 
   public void setPose(Pose2d poseToSet) {
-    super.seedFieldRelative(poseToSet);
+    super.seedFieldRelative(new Pose2d(poseToSet.getTranslation(), getRotation2d()));
+  }
+
+  public void seedVisionPose(Pose2d visionPose) {
+    if (PoseHelpers.isPoseValid(visionPose, super.getState().Pose, getRotationDegrees())) {
+      setPose(visionPose);
+    }
+    ;
+  }
+
+  public double getRotationDegrees() {
+    return super.getPigeon2().getAngle();
+  }
+
+  public Rotation2d getRotation2d() {
+    return super.getPigeon2().getRotation2d();
   }
 
   public Consumer<ChassisSpeeds> getChassisSpeedsConsumer() {

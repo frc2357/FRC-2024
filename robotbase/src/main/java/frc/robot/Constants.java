@@ -351,6 +351,11 @@ public final class Constants {
     public static final double SECONDS_AMP_SCORE = 1;
   }
 
+  public static final class POSE_FILTER {
+    public static final double VISION_TOLERANCE_METERS = 0.1524;
+    public static final double VISION_TOLERANCE_DEGREES = 15;
+  }
+
   public static final class PHOTON_VISION {
     public static final AprilTagFieldLayout APRIL_TAG_FIELD_LAYOUT =
         AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
@@ -364,12 +369,6 @@ public final class Constants {
 
   public static final class SHOOTER_PHOTON_CAMERA {
     public static final String NAME = "shooter camera";
-
-    public static final int APRIL_TAG_PIPELINE = 0;
-    public static final int NEURAL_NETWORK_PIPELINE = 1;
-    public static final int POSE_ESTIMATION_PIPELINE = 2;
-
-    public static final int DEFAULT_PIPELINE = 2;
 
     public static final double HEAD_ON_TOLERANCE = 0;
 
@@ -389,11 +388,30 @@ public final class Constants {
   public static final class INTAKE_PHOTON_CAMERA {
     public static final String NAME = "intake camera";
 
+    public static final double HEAD_ON_TOLERANCE = 0;
+
+    public static final double LENS_BEHIND_OF_ROBOT_ORIGIN_INCHES = 8.172;
+    public static final double LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES = 8.45;
+    public static final double LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES = 13.388;
+    public static final double LENS_ANGLE_TILTED_UP_DEGREES = 30;
+    public static final Transform3d ROBOT_TO_CAMERA_TRANSFORM =
+        new Transform3d(
+            new Translation3d(
+                -Units.inchesToMeters(LENS_BEHIND_OF_ROBOT_ORIGIN_INCHES),
+                -Units.inchesToMeters(LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES),
+                Units.inchesToMeters(LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES)),
+            new Rotation3d(0, LENS_ANGLE_TILTED_UP_DEGREES, 0));
+  }
+
+  public static final class VISION_PIPELINES {
     public static final int APRIL_TAG_PIPELINE = 0;
     public static final int NEURAL_NETWORK_PIPELINE = 1;
     public static final int POSE_ESTIMATION_PIPELINE = 2;
-
     public static final int DEFAULT_PIPELINE = 2;
+  }
+
+  public static final class SHOOTER_CAMERA {
+    public static final String NAME = "ov9782-shooter";
 
     public static final double HEAD_ON_TOLERANCE = 0;
 
@@ -408,5 +426,24 @@ public final class Constants {
                 -Units.inchesToMeters(LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES),
                 Units.inchesToMeters(LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES)),
             new Rotation3d(0, -LENS_ANGLE_TILTED_DOWN_DEGREES, 0));
+  }
+
+  public static final class INTAKE_CAMERA {
+    public static final String NAME = "ov9782-shooter";
+
+    public static final double HEAD_ON_TOLERANCE = 0;
+
+    // TODO: TUNE THESE
+    public static final double LENS_BEHIND_OF_ROBOT_ORIGIN_INCHES = 0;
+    public static final double LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES = 0;
+    public static final double LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES = 0;
+    public static final double LENS_ANGLE_TILTED_UP_DEGREES = 0;
+    public static final Transform3d ROBOT_TO_CAMERA_TRANSFORM =
+        new Transform3d(
+            new Translation3d(
+                -Units.inchesToMeters(LENS_BEHIND_OF_ROBOT_ORIGIN_INCHES),
+                -Units.inchesToMeters(LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES),
+                Units.inchesToMeters(LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES)),
+            new Rotation3d(0, LENS_ANGLE_TILTED_UP_DEGREES, 0));
   }
 }

@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.drive.SeedVisionPose;
 import frc.robot.commands.drive.SetCoastOnDisabled;
 import frc.robot.controls.CodriverControls;
 import frc.robot.controls.DriverControls;
@@ -19,10 +20,9 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.EndAffector;
 import frc.robot.subsystems.ExtensionArm;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.IntakePhotonCamera;
+import frc.robot.subsystems.PhotonVisionCamera;
 import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.ShooterPhotonCamera;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -33,6 +33,8 @@ import frc.robot.subsystems.ShooterPhotonCamera;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private Command m_setCoastOnDisabled;
+  private SeedVisionPose m_SeedVisionPose;
+
   private RobotContainer m_robotContainer;
 
   public static RobotState state;
@@ -46,8 +48,8 @@ public class Robot extends TimedRobot {
   public static DriverControls driverControls;
   public static CodriverControls codriverControls;
 
-  public static ShooterPhotonCamera shooterCam;
-  public static IntakePhotonCamera intakeCam;
+  public static PhotonVisionCamera intakeCam;
+  public static PhotonVisionCamera shooterCam;
 
   public static EndAffector endAffector;
 
@@ -67,12 +69,12 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
 
     shooterCam =
-        new ShooterPhotonCamera(
+        new PhotonVisionCamera(
             Constants.SHOOTER_PHOTON_CAMERA.NAME,
             Constants.SHOOTER_PHOTON_CAMERA.ROBOT_TO_CAMERA_TRANSFORM,
             Constants.SHOOTER_PHOTON_CAMERA.HEAD_ON_TOLERANCE);
     intakeCam =
-        new IntakePhotonCamera(
+        new PhotonVisionCamera(
             Constants.INTAKE_PHOTON_CAMERA.NAME,
             Constants.INTAKE_PHOTON_CAMERA.ROBOT_TO_CAMERA_TRANSFORM,
             Constants.INTAKE_PHOTON_CAMERA.HEAD_ON_TOLERANCE);
@@ -100,6 +102,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
 
     m_setCoastOnDisabled = new SetCoastOnDisabled();
+    m_SeedVisionPose.schedule();
   }
 
   /**
@@ -130,6 +133,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     m_setCoastOnDisabled.schedule();
+    m_SeedVisionPose.schedule();
   }
 
   @Override
@@ -139,6 +143,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     Robot.swerve.configNeutralMode(NeutralModeValue.Brake);
+    m_SeedVisionPose.cancel();
+
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -153,6 +159,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    m_SeedVisionPose.cancel();
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove

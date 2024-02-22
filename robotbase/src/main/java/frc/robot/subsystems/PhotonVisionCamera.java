@@ -2,16 +2,17 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.PHOTON_VISION;
+import frc.robot.util.VisionMeasurement;
 import java.util.List;
 import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
-import org.photonvision.targeting.PNPResult;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import org.photonvision.targeting.TargetCorner;
@@ -171,7 +172,8 @@ public class PhotonVisionCamera extends SubsystemBase {
    * ⟶  +X  3 ----- 2
    * |      |       |
    * V      |       |
-   * +Y     0 ----- 1</pre>
+   * +Y     0 ----- 1
+   * </pre>
    *
    * X and Y increase opposite usual ways. Use accordingly.
    *
@@ -204,7 +206,8 @@ public class PhotonVisionCamera extends SubsystemBase {
    * ⟶  +X  3 ----- 2
    * |      |       |
    * V      |       |
-   * +Y     0 ----- 1</pre>
+   * +Y     0 ----- 1
+   * </pre>
    *
    * X and Y increase opposite usual ways. Use accordingly.
    *
@@ -326,44 +329,22 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * Gets an estimated pose from the subsystems pose estimator. Should only be used if the camera
-   * does not see more than 1 april tag, if it does, use getPNPResult instead, as it is more
-   * accurate.
-   *
    * @return The robots estimated pose, if it has any april tag targets. Returns null if there are
    *     no targets.
    */
-  public EstimatedRobotPose getEstimatedPose() {
-    Optional<EstimatedRobotPose> estimatedPose = m_poseEstimator.update(m_result);
-    return estimatedPose.isPresent() ? estimatedPose.get() : null;
-  }
+  public VisionMeasurement getEstimatedPose() {
+    Optional<EstimatedRobotPose> optionalPose = m_poseEstimator.update();
 
-  /**
-   * Gets the information of the multiple tag pose estimate if it exists. If the camera does not see
-   * more than 1 april tag, this will return null.
-   *
-   * @return The PNPResult for you to get information from.
-   */
-  public PNPResult getPNPResult() {
-    PNPResult PNPEstimate = m_result.getMultiTagResult().estimatedPose;
-    return PNPEstimate.isPresent ? PNPEstimate : null;
-  }
+    if (!optionalPose.isPresent()) {
+      return null;
+    }
 
-  /**
-   * @param result The PNPResult to take the pose from.
-   * @return The Pose3d constructed from the PNPResult.
-   */
-  public Pose3d pose3dFromPNPResult(PNPResult result) {
-    return new Pose3d(result.best.getTranslation(), result.best.getRotation());
-  }
+    Pose3d pose3d = optionalPose.get().estimatedPose;
 
-  /**
-   * @param result The PNPResult to take the pose from.
-   * @return The Pose2d constructed from the PNPResult.
-   */
-  public Pose2d pose2dFromPNPResult(PNPResult result) {
-    return new Pose2d(
-        result.best.getTranslation().toTranslation2d(), result.best.getRotation().toRotation2d());
+    Pose2d pose =
+        new Pose2d(pose3d.getX(), pose3d.getY(), new Rotation2d(pose3d.getRotation().getZ()));
+
+    return new VisionMeasurement(pose, optionalPose.get().timestampSeconds);
   }
 
   /**
