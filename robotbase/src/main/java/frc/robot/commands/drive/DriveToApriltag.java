@@ -36,7 +36,7 @@ public class DriveToApriltag extends Command {
     // reset pids
     m_yController.setSetpoint(m_tyOffset + Constants.SWERVE.APRILTAG_TY_MAGIC_OFFSET);
     m_yController.reset();
-    m_xController.setSetpoint(0);
+    m_xController.setSetpoint(Constants.SWERVE.AMP_TX_SETPOINT);
     m_xController.reset();
 
     m_rotationController.enableContinuousInput(-Math.PI, Math.PI);
@@ -80,7 +80,7 @@ public class DriveToApriltag extends Command {
       ty = m_tyOffset;
     }
     Robot.swerve.drive(
-        -m_yController.calculate(ty),
+        -m_yController.calculate(ty + Constants.SWERVE.APRILTAG_TY_MAGIC_OFFSET),
         -m_xController.calculate(tx),
         m_rotationController.calculate(rotationError));
   }
