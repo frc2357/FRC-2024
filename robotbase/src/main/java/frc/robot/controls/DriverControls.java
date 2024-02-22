@@ -12,7 +12,6 @@ import frc.robot.Robot;
 import frc.robot.commands.intake.IntakeNoteFromFloor;
 import frc.robot.commands.scoring.AmpPrepose;
 import frc.robot.commands.scoring.AmpScore;
-import frc.robot.commands.scoring.NotePreload;
 import frc.robot.controls.util.AxisInterface;
 import frc.robot.controls.util.AxisThresholdTrigger;
 import frc.robot.controls.util.RumbleInterface;
@@ -65,9 +64,10 @@ public class DriverControls implements RumbleInterface {
   }
 
   public void mapControls() {
-    AxisInterface righStickYAxis = () -> {
-      return getRightStickYAxis();
-    };
+    AxisInterface righStickYAxis =
+        () -> {
+          return getRightStickYAxis();
+        };
 
     m_backButton.onTrue(new InstantCommand(() -> Robot.swerve.setYaw(0)));
     m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.setYaw(180)));
@@ -77,9 +77,7 @@ public class DriverControls implements RumbleInterface {
     // m_rightBumper.onTrue(new DriverAmpScore());
     m_aButton.onTrue(
         new ConditionalCommand(
-            new AmpPrepose(),
-            new AmpScore(),
-            () -> Robot.state.isInState(State.AMP_PRE_POSE)));
+            new AmpScore(), new AmpPrepose(), () -> Robot.state.isInState(State.AMP_PRE_POSE)));
 
     // m_rightTriggerPrime.whileTrue(
     // new ParallelCommandGroup(

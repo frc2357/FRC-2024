@@ -91,6 +91,14 @@ public class Pivot extends SubsystemBase {
     return Robot.shooterCam.validTargetExists();
   }
 
+  public void zero() {
+    double position = getPosition();
+    double currentOffset = m_absoluteEncoder.getZeroOffset();
+    double newOffset = position + currentOffset - Constants.PIVOT.MIN_PIVOT_ROTATION;
+    newOffset %= 360;
+    m_absoluteEncoder.setZeroOffset(newOffset);
+  }
+
   @Override
   public void periodic() {
     if (m_isClosedLoopEnabled) {

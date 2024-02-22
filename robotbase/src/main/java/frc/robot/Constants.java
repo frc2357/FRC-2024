@@ -15,15 +15,11 @@ import java.util.function.BooleanSupplier;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide
- * numerical or boolean
- * constants. This class should not be used for any other purpose. All constants
- * should be declared
+ * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
+ * constants. This class should not be used for any other purpose. All constants should be declared
  * globally (i.e. public static). Do not put anything functional in this class.
  *
- * <p>
- * It is advised to statically import this class (or one of its inner classes)
- * wherever the
+ * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
@@ -91,23 +87,27 @@ public final class Constants {
     public static final double PIECE_TRACKING_ROTATION_TOLERANCE = 0.1;
 
     public static final double PIECE_TRACKING_MAX_DISTANCE_METERS = 3.0; // In Meters
-    public static final double PIECE_TRACKING_SLOW_DOWN_METERS = 1.0; // Robot goes half speed once passed
+    public static final double PIECE_TRACKING_SLOW_DOWN_METERS =
+        1.0; // Robot goes half speed once passed
     public static final double PIECE_TRACKING_X_METERS_PER_SECOND = 2;
 
     // Target Lock
     public static final double ROTATION_KP = 0.15;
     public static final double ROTATION_KI = 0.0;
     public static final double ROTATION_KD = 0.0;
-    public static final PIDController ROTATION_PID_CONTROLLER = new PIDController(ROTATION_KP, ROTATION_KI,
-        ROTATION_KD);
+    public static final PIDController ROTATION_PID_CONTROLLER =
+        new PIDController(ROTATION_KP, ROTATION_KI, ROTATION_KD);
 
     public static final double TARGET_LOCK_FEED_FORWARD = 0.0;
     public static final double TARGET_LOCK_TOLERANCE = 0.25;
 
     // Translate to Apriltag
-    public static final PIDController APRILTAG_ROTATION_PID_CONTROLLER = new PIDController(3, 0, 0.01);
-    public static final PIDController APRILTAG_X_TRANSLATION_PID_CONTROLLER = new PIDController(0.05, 0, 0);
-    public static final PIDController APRILTAG_Y_TRANSLATION_PID_CONTROLLER = new PIDController(0.2, 0, 0);
+    public static final PIDController APRILTAG_ROTATION_PID_CONTROLLER =
+        new PIDController(3, 0, 0.01);
+    public static final PIDController APRILTAG_X_TRANSLATION_PID_CONTROLLER =
+        new PIDController(0.05, 0, 0);
+    public static final PIDController APRILTAG_Y_TRANSLATION_PID_CONTROLLER =
+        new PIDController(0.2, 0, 0);
 
     public static final double APRILTAG_X_TOLERANCE = 1.5;
     public static final double APRILTAG_Y_TOLERANCE = 0.5;
@@ -124,12 +124,13 @@ public final class Constants {
     public static final PIDController Y_CONTROLLER = new PIDController(0.15, 0, 0);
     public static final PIDController ROTATION_CONTROLLER = new PIDController(0.6, 0, 0);
 
-    public static final BooleanSupplier CHOREO_AUTO_MIRROR_PATHS = new BooleanSupplier() {
-      @Override
-      public boolean getAsBoolean() {
-        return false;
-      }
-    };
+    public static final BooleanSupplier CHOREO_AUTO_MIRROR_PATHS =
+        new BooleanSupplier() {
+          @Override
+          public boolean getAsBoolean() {
+            return false;
+          }
+        };
   }
 
   public static final class CONTROLLER {
@@ -182,8 +183,8 @@ public final class Constants {
     public static final double TOP_MOTOR_PICKUP_SPEED_PERCENT_OUTPUT = .75;
     public static final double BOTTOM_MOTOR_PICKUP_SPEED_PERCENT_OUTPUT = .75;
 
-    public static final double TOP_MOTOR_SLOW_PICKUP_SPEED_PERCENT_OUTPUT = .15;
-    public static final double BOTTOM_MOTOR_SLOW_PICKUP_SPEED_PERCENT_OUTPUT = .15;
+    public static final double TOP_MOTOR_SLOW_PICKUP_SPEED_PERCENT_OUTPUT = .1;
+    public static final double BOTTOM_MOTOR_SLOW_PICKUP_SPEED_PERCENT_OUTPUT = .1;
 
     public static final double TOP_MOTOR_SOURCE_INTAKE_SPEED_PERCENT_OUTPUT = 0.25;
     public static final double BOTTOM_MOTOR_SOURCE_INTAKE_SPEED_PERCENT_OUTPUT = 0.25;
@@ -273,7 +274,7 @@ public final class Constants {
 
   public static final class CLIMBER {
     public static final boolean RIGHT_MOTOR_INVERTED = false;
-    public static final boolean LEFT_MOTOR_INVERTED = false;
+    public static final boolean LEFT_MOTOR_INVERTED = true;
 
     public static final int MOTOR_FREE_LIMIT_AMPS = 40; // TODO: Tune climber amp limits
     public static final int MOTOR_STALL_LIMIT_AMPS = 40;
@@ -310,14 +311,14 @@ public final class Constants {
     public static final int MOTOR_STALL_LIMIT_AMPS = 40;
     public static final int MOTOR_FREE_LIMIT_AMPS = 40;
 
-    public static final double MOTOR_PID_P = 0.002;
+    public static final double MOTOR_PID_P = 0.01;
     public static final double MOTOR_PID_I = 0;
     public static final double MOTOR_PID_D = 0;
-    public static final double MOTOR_PID_FF = 0.00005;
+    public static final double MOTOR_PID_FF = 0.0001;
 
     public static final int SMART_MOTION_MAX_VEL_RPM = 6000;
     public static final int SMART_MOTION_MIN_VEL_RPM = 0;
-    public static final int SMART_MOTION_MAX_ACC_RPM = 12000;
+    public static final int SMART_MOTION_MAX_ACC_RPM = 30000;
     public static final double SMART_MOTION_ALLOWED_ERROR = 0.1;
 
     public static final double AXIS_MAX_SPEED = 0.5;
@@ -333,14 +334,14 @@ public final class Constants {
   }
 
   public static final class SCORING {
-    public static final double SECONDS_PRELOAD_NOTE = 1.75;
+    public static final double SECONDS_PRELOAD_NOTE = 0.25;
 
     public static final double SECONDS_AMP_SCORE = 1;
   }
 
   public static final class PHOTON_VISION {
-    public static final AprilTagFieldLayout APRIL_TAG_FIELD_LAYOUT = AprilTagFields.k2024Crescendo
-        .loadAprilTagLayoutField();
+    public static final AprilTagFieldLayout APRIL_TAG_FIELD_LAYOUT =
+        AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
     public static final PoseStrategy POSE_STRATEGY = PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
   }
 
@@ -355,7 +356,7 @@ public final class Constants {
 
     public static final double HEAD_ON_TOLERANCE = 0;
 
-    public static final Transform3d ROBOT_TO_CAMERA_TRANSFORM = new Transform3d(new Translation3d(0, 0, 0),
-        new Rotation3d(0, 0, 0));
+    public static final Transform3d ROBOT_TO_CAMERA_TRANSFORM =
+        new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
   }
 }
