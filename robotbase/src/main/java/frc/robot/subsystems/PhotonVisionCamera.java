@@ -23,8 +23,8 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import org.photonvision.targeting.TargetCorner;
 
-/** Controls the limelight camera options. */
-public class PhotonVision extends SubsystemBase {
+/** Controls the photon vision camera options. */
+public class PhotonVisionCamera extends SubsystemBase {
 
   // all of these are protected so we can use them in the extended classes
   // which are only extended so we can control which pipelines we are using.
@@ -41,8 +41,11 @@ public class PhotonVision extends SubsystemBase {
    *
    * @param cameraName Name of the cameras Photon Vision network table. MUST match the net tables
    *     name, or it wont work.
+   * @param robotToCameraTransform The Transform3d of the robots coordinate center to the camera.
+   * @param headOnTolerance The tolerance for declaring whether or not the camera is facing a target
+   *     head on.
    */
-  public PhotonVision(
+  public PhotonVisionCamera(
       String cameraName, Transform3d robotToCameraTransform, double headOnTolerance) {
     m_camera = new PhotonCamera(cameraName);
     ROBOT_TO_CAMERA_TRANSFORM = robotToCameraTransform;
@@ -63,7 +66,7 @@ public class PhotonVision extends SubsystemBase {
    * Fetches the latest pipeline result.
    *
    * <p>YOU SHOULD NEVER CALL THIS! This is for the Robot periodic ONLY. NEVER call this method
-   * outside of it.s
+   * outside of it.
    */
   public void updateResult() {
     m_result = m_camera.getLatestResult();
@@ -126,7 +129,7 @@ public class PhotonVision extends SubsystemBase {
 
   /** Horizontal offset from crosshair to target (degrees) */
   public double getTX() {
-    return m_bestTarget.getYaw();
+    return getTV() ? m_bestTarget.getYaw() : Double.NaN;
   }
 
   /**
@@ -145,6 +148,9 @@ public class PhotonVision extends SubsystemBase {
    *     to be pixels.
    */
   public double getHorizontalTargetLength() {
+    if (!getTV()) {
+      return Double.NaN;
+    }
     List<TargetCorner> corners = m_bestTarget.getDetectedCorners();
     TargetCorner originCorner = corners.get(0); // basing off of known fiducial corner order
     TargetCorner bottomRightCorner = corners.get(1);
@@ -175,6 +181,9 @@ public class PhotonVision extends SubsystemBase {
    *     be pixels.
    */
   public double getVerticalTargetLength() {
+    if (!getTV()) {
+      return Double.NaN;
+    }
     List<TargetCorner> corners = m_bestTarget.getDetectedCorners();
     TargetCorner originCorner = corners.get(0); // basing off of known fiducial corner order
     TargetCorner bottomRightCorner = corners.get(1);
@@ -195,12 +204,12 @@ public class PhotonVision extends SubsystemBase {
    * @return Best targets yaw from crosshair to target
    */
   public double getYaw() {
-    return m_bestTarget.getYaw();
+    return getTV() ? m_bestTarget.getYaw() : Double.NaN;
   }
 
   /** Vertical offset from crosshair to target (degrees) */
   public double getTY() {
-    return m_bestTarget.getPitch();
+    return getTV() ? m_bestTarget.getPitch() : Double.NaN;
   }
 
   /**
@@ -209,7 +218,7 @@ public class PhotonVision extends SubsystemBase {
    * @return Best targets pitch from crosshair to target
    */
   public double getPitch() {
-    return m_bestTarget.getPitch();
+    return getTV() ? m_bestTarget.getPitch() : Double.NaN;
   }
 
   /** Percent of image covered by target [0, 100] */
@@ -223,12 +232,12 @@ public class PhotonVision extends SubsystemBase {
    * @return percentage of the image that the best target covers
    */
   public double getArea() {
-    return m_bestTarget.getArea();
+    return getTV() ? m_bestTarget.getArea() : Double.NaN;
   }
 
   /** Skew or rotation (degrees, [-90, 0]) */
   public double getTS() {
-    return m_bestTarget.getSkew();
+    return getTV() ? m_bestTarget.getSkew() : Double.NaN;
   }
 
   /**
@@ -326,8 +335,12 @@ public class PhotonVision extends SubsystemBase {
         result.best.getTranslation().toTranslation2d(), result.best.getRotation().toRotation2d());
   }
 
+  /**
+   * @return The best targets fiducial ID, returns -1 if it doesnt have one, and -2 if there are no
+   *     targets
+   */
   public int getLastTargetID() {
-    return m_bestTarget.getFiducialId();
+    return getTV() ? m_bestTarget.getFiducialId() : -2;
   }
 
   public List<PhotonTrackedTarget> filterAprilTags(int[] tagsToFilterFor) {
