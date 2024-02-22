@@ -1,3 +1,4 @@
+// THIS COMMAND DOES NOT WORK. DO NOT USE THIS COMMAND YET. NO. BAD.
 package frc.robot.commands.commandGroups;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
