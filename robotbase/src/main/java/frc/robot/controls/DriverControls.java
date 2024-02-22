@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -12,18 +13,27 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.commands.intake.IntakeFeedToShooter;
 import frc.robot.commands.intake.IntakeNoteFromFloor;
-import frc.robot.commands.pivot.PivotSetRotation;
-import frc.robot.commands.shooter.ShooterSetRPMs;
+import frc.robot.commands.pivot.DefaultPivot;
+import frc.robot.commands.pivot.PivotStop;
+import frc.robot.commands.scoring.AmpPrepose;
+import frc.robot.commands.scoring.AmpScore;
 import frc.robot.controls.util.AxisInterface;
 import frc.robot.controls.util.AxisThresholdTrigger;
 import frc.robot.controls.util.RumbleInterface;
+import frc.robot.state.RobotState.State;
 
 public class DriverControls implements RumbleInterface {
   private XboxController m_controller;
   private double m_deadband;
 
+  private JoystickButton m_aButton;
+  private JoystickButton m_xButton;
+  private JoystickButton m_yButton;
+
   private JoystickButton m_backButton;
   private JoystickButton m_startButton;
+  public JoystickButton m_leftBumper;
+  public JoystickButton m_rightBumper;
 
   private AxisThresholdTrigger m_rightTriggerPrime;
   private AxisThresholdTrigger m_rightTriggerShoot;
@@ -35,8 +45,15 @@ public class DriverControls implements RumbleInterface {
     m_controller = controller;
     m_deadband = deadband;
 
+    m_aButton = new JoystickButton(m_controller, Button.kA.value);
+    m_xButton = new JoystickButton(m_controller, Button.kX.value);
+    m_yButton = new JoystickButton(m_controller, Button.kY.value);
+
     m_backButton = new JoystickButton(m_controller, Button.kBack.value);
     m_startButton = new JoystickButton(m_controller, Button.kStart.value);
+
+    m_leftBumper = new JoystickButton(controller, Button.kLeftBumper.value);
+    m_rightBumper = new JoystickButton(controller, Button.kRightBumper.value);
 
     m_rightTriggerPrime = new AxisThresholdTrigger(m_controller, Axis.kRightTrigger, .1);
     m_rightTriggerShoot = new AxisThresholdTrigger(m_controller, Axis.kRightTrigger, .6);
@@ -62,11 +79,17 @@ public class DriverControls implements RumbleInterface {
 
     m_leftTrigger.whileTrue(new IntakeNoteFromFloor());
 
-    m_rightTriggerPrime.whileTrue(
-        new ParallelCommandGroup(
-            new ShooterSetRPMs(2000, 2000),
-            new PivotSetRotation(Constants.PIVOT.SUBWOOFER_SHOT_ROTATION)));
-    m_rightTriggerShoot.whileTrue(new IntakeFeedToShooter().withTimeout(0.5));
+    // m_rightBumper.onTrue(new DriverAmpScore());
+    m_aButton.onTrue(
+        new ConditionalCommand(
+            new AmpScore(), new AmpPrepose(), () -> Robot.state.isInState(State.AMP_PRE_POSE)));
+
+    m_rightTriggerShoot.whileTrue(new DefaultPivot().andThen(new PivotStop()));
+    // m_rightTriggerPrime.whileTrue(
+    // new ParallelCommandGroup(
+    // new ShooterSetRPMs(2000, 2000),
+    // new PivotSetRotation(Constants.PIVOT.SUBWOOFER_SHOT_ROTATION)));
+    // m_rightTriggerShoot.whileTrue(new IntakeFeedToShooter().withTimeout(0.5));
   }
 
   public double getX() {

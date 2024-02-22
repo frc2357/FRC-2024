@@ -28,8 +28,8 @@ public class EndAffector extends SubsystemBase {
     m_motor.set(motorSpeed);
   }
 
-  public void setSpeed(double speedPercentage) {
-    m_motor.set(speedPercentage);
+  public void setSpeed(double speedPercentOut) {
+    m_motor.set(speedPercentOut);
   }
 
   public void setVoltage(double outputVoltage) {

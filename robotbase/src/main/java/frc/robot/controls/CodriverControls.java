@@ -197,6 +197,11 @@ public class CodriverControls implements RumbleInterface {
 
     // Extension/EndAffector - Down DPad
     downDPadOnly.whileTrue(new ExtensionArmAxis(axisRightStickY));
+    downDPadAndY.onTrue(
+        new InstantCommand(
+            () -> {
+              Robot.extensionArm.zeroArm();
+            }));
 
     downDPadAndRightTrigger.whileTrue(new EndAffectorAxis(subsystemRollerForwardAxis));
     downDPadAndLeftTrigger.whileTrue(new EndAffectorAxis(subsystemRollerReverseAxis));

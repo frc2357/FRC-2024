@@ -1,4 +1,4 @@
-package frc.robot.commands.pickup;
+package frc.robot.commands.source;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.*;
@@ -9,7 +9,7 @@ public class SourceIntakeFromEndAffector extends SequentialCommandGroup {
 
   public SourceIntakeFromEndAffector() {
     addCommands(
-        new ExtensionArmMoveToRotations(TRAP_AMP_ARM.NOTE_STOW_ROTATIONS),
+        new ExtensionArmMoveToRotations(EXTENSION_ARM.NOTE_STOW_ROTATIONS),
         new EndAffectorIntakeFromSource());
   }
 }
