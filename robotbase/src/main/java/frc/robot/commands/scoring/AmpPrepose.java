@@ -21,26 +21,26 @@ import frc.robot.commands.state.SetRobotStateCommand;
 import frc.robot.state.RobotState;
 
 public class AmpPrepose extends SequentialCommandGroup {
-    public AmpPrepose() {
-        super(
-                // Note Preload
-                new ParallelCommandGroup(
-                        new ExtensionArmMoveToRotations(EXTENSION_ARM.NOTE_STOW_ROTATIONS),
-                        new PivotSetRotation(PIVOT.FEED_TO_END_AFFECTOR_LOCATION)),
+  public AmpPrepose() {
+    super(
+        // Note Preload
+        new ParallelCommandGroup(
+            new ExtensionArmMoveToRotations(EXTENSION_ARM.NOTE_STOW_ROTATIONS),
+            new PivotSetRotation(PIVOT.FEED_TO_END_AFFECTOR_LOCATION)),
 
-                // Run end affector, shooter, and intake to load note
-                new ParallelDeadlineGroup(
-                        new WaitCommand(SCORING.SECONDS_PRELOAD_NOTE),
-                        new SequentialCommandGroup(new WaitCommand(0.25), new IntakeFeedToShooter()),
-                        new EndAffectorSetSpeed(END_AFFECTOR.PRELOAD_SPEED),
-                        new ShooterSetRPMs(
-                                SHOOTER.TOP_MOTOR_FEED_END_AFFECTOR_RPMS,
-                                SHOOTER.BOTTOM_MOTOR_FEED_END_AFFECTOR_RPMS)),
-                // Stop motors
-                new ParallelCommandGroup(new IntakeStop(), new ShooterStop(), new EndAffectorStop()),
+        // Run end affector, shooter, and intake to load note
+        new ParallelDeadlineGroup(
+            new WaitCommand(SCORING.SECONDS_PRELOAD_NOTE),
+            new SequentialCommandGroup(new WaitCommand(0.25), new IntakeFeedToShooter()),
+            new EndAffectorSetSpeed(END_AFFECTOR.PRELOAD_SPEED),
+            new ShooterSetRPMs(
+                SHOOTER.TOP_MOTOR_FEED_END_AFFECTOR_RPMS,
+                SHOOTER.BOTTOM_MOTOR_FEED_END_AFFECTOR_RPMS)),
+        // Stop motors
+        new ParallelCommandGroup(new IntakeStop(), new ShooterStop(), new EndAffectorStop()),
 
-                // Arm Prepose
-                new ExtensionArmMoveToRotations(EXTENSION_ARM.AMP_PREPOSE_ROTATIONS),
-                new SetRobotStateCommand(RobotState.State.AMP_PRE_POSE));
-    }
+        // Arm Prepose
+        new ExtensionArmMoveToRotations(EXTENSION_ARM.AMP_PREPOSE_ROTATIONS),
+        new SetRobotStateCommand(RobotState.State.AMP_PRE_POSE));
+  }
 }
