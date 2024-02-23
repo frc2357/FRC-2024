@@ -26,10 +26,12 @@ public class CompSwerveTunerConstants {
 
   // The closed-loop output type to use for the steer motors;
   // This affects the PID/FF gains for the steer motors
-  private static final ClosedLoopOutputType steerClosedLoopOutput = ClosedLoopOutputType.TorqueCurrentFOC;
+  private static final ClosedLoopOutputType steerClosedLoopOutput =
+      ClosedLoopOutputType.TorqueCurrentFOC;
   // The closed-loop output type to use for the drive motors;
   // This affects the PID/FF gains for the drive motors
-  private static final ClosedLoopOutputType driveClosedLoopOutput = ClosedLoopOutputType.TorqueCurrentFOC;
+  private static final ClosedLoopOutputType driveClosedLoopOutput =
+      ClosedLoopOutputType.TorqueCurrentFOC;
 
   // The stator current at which the wheels start to slip;
   // This needs to be tuned to your individual robot
