@@ -356,11 +356,12 @@ public final class Constants {
         AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
     public static final PoseStrategy POSE_STRATEGY = PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
 
-    public static final String LOST_CONNECTION_ERROR_MESSAGE = 
-    "----------\nPHOTON VISION HAS LOST CONNECTION!\nVISION RESULTS WILL NOT BE UPDATED!\n----------";
-    public static final String CONNECTION_REGAINED_NOFICATION_MESSAGE = 
-    "\u001B[32m**********\nPhoton Vision has regained connection!\nVision results will not be updated.\n**********\0033[0m";
-    //The above message contains the ANSI color codes, to make it clear to the drivers that connection has been reestablished.
+    public static final String LOST_CONNECTION_ERROR_MESSAGE =
+        "----------\nPHOTON VISION HAS LOST CONNECTION!\nVISION RESULTS WILL NOT BE UPDATED!\n----------";
+    public static final String CONNECTION_REGAINED_NOFICATION_MESSAGE =
+        "\u001B[32m**********\nPhoton Vision has regained connection!\nVision results will not be updated.\n**********\0033[0m";
+    // The above message contains the ANSI color codes, to make it clear to the drivers that
+    // connection has been reestablished.
 
   }
 

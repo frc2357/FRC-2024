@@ -63,17 +63,16 @@ public class PhotonVisionCamera extends SubsystemBase {
    * outside of it.
    */
   public void updateResult() {
-    if(m_camera.isConnected()){
+    if (m_camera.isConnected()) {
       m_result = m_camera.getLatestResult();
       m_targets = m_result.getTargets();
       m_bestTarget = m_result.getBestTarget();
       s_connectionLost = false;
-      if(s_connectionLost){
+      if (s_connectionLost) {
         s_connectionLost = false;
         System.out.println(PHOTON_VISION.CONNECTION_REGAINED_NOFICATION_MESSAGE);
       }
-    }
-    else if(!s_connectionLost){
+    } else if (!s_connectionLost) {
       s_connectionLost = true;
       System.err.println(PHOTON_VISION.LOST_CONNECTION_ERROR_MESSAGE);
     }
@@ -82,19 +81,20 @@ public class PhotonVisionCamera extends SubsystemBase {
   /**
    * @return Whether or not the camera is connected.
    */
-  public boolean isConnected(){
+  public boolean isConnected() {
     return m_camera.isConnected();
   }
 
-  /** 
-   * @return Whether the camera has a valid target and is connected 
+  /**
+   * @return Whether the camera has a valid target and is connected
    */
   public boolean validTargetExists() {
     return getTV();
   }
 
   /**
-   * @return The current pipelines latency in milliseconds. Returns NaN if the camera is not connected.
+   * @return The current pipelines latency in milliseconds. Returns NaN if the camera is not
+   *     connected.
    */
   public double getLatencyMillis() {
     return isConnected() ? m_result.getLatencyMillis() : Double.NaN;
@@ -114,7 +114,8 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * @return Whether or not the driver mode on the camera is active. Returns null if the camera is not connected.
+   * @return Whether or not the driver mode on the camera is active. Returns null if the camera is
+   *     not connected.
    */
   public boolean isDriverModeActive() {
     return isConnected() ? m_camera.getDriverMode() : null;
@@ -140,14 +141,16 @@ public class PhotonVisionCamera extends SubsystemBase {
     return m_camera.getPipelineIndex();
   }
 
-  /** 
-   * @return Whether the camera has a valid target and is connected 
+  /**
+   * @return Whether the camera has a valid target and is connected
    */
   public boolean getTV() {
     return isConnected() && m_result.hasTargets();
   }
 
-  /** @return Horizontal offset from crosshair to target (degrees) */
+  /**
+   * @return Horizontal offset from crosshair to target (degrees)
+   */
   public double getTX() {
     return getTV() ? m_bestTarget.getYaw() : Double.NaN;
   }
