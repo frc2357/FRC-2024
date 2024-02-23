@@ -26,9 +26,5 @@ public class IntakeReverseFeed extends Command {
   @Override
   public void end(boolean interrupted) {
     Robot.intake.stop();
-    /*
-    if (!interrupted) {
-      Robot.state.setState(RobotState.State.NOTE_STOWED);
-     */
   }
 }
