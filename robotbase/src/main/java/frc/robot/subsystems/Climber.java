@@ -57,4 +57,21 @@ public class Climber extends SubsystemBase {
   public boolean isLeftAtCurrent(double amps) {
     return getLeftAmps() >= amps;
   }
+
+  private double getRotations(CANSparkMax motor) {
+    return motor.getEncoder().getPosition();
+  }
+
+  public boolean isPastRotations(double rotations, int direction) {
+    switch (direction) {
+      case 1:
+        return getRotations(m_rightClimberMotor) >= rotations
+            && getRotations(m_leftClimberMotor) >= rotations;
+      case -1:
+        return getRotations(m_rightClimberMotor) <= rotations
+            && getRotations(m_leftClimberMotor) <= rotations;
+      default:
+        return true;
+    }
+  }
 }

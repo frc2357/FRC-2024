@@ -280,6 +280,14 @@ public final class Constants {
 
     public static final int MOTOR_FREE_LIMIT_AMPS = 40; // TODO: Tune climber amp limits
     public static final int MOTOR_STALL_LIMIT_AMPS = 40;
+
+    public static final double END_AFFECTOR_DROP_DELTA_PITCH = 0;
+    public static final PIDController LEVEL_CLIMB_PID_CONTROLLER = new PIDController(0, 0, 0);
+    public static final double LEVEL_CLIMB_FEEDFORWARD = 0.8;
+    public static final double LEVEL_CLIMB_TOLERANCE = 0.8;
+
+    public static final double ROTATE_PAST_EXTENSION_SPEED = 0.2;
+    public static final double NOTE_HANDOFF_MAX_ROTATIONS = 100;
   }
 
   public static final class END_AFFECTOR {

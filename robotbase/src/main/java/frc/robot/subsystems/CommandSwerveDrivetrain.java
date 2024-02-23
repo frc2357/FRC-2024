@@ -63,6 +63,18 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     getPigeon2().setYaw(yaw);
   }
 
+  public double getYaw() {
+    return getPigeon2().getYaw().getValueAsDouble();
+  }
+
+  public double getPitch() {
+    return getPigeon2().getPitch().getValueAsDouble();
+  }
+
+  public double getRoll() {
+    return getPigeon2().getRoll().getValueAsDouble();
+  }
+
   public void drive(
       double velocityXMetersPerSecond,
       double velocityYMetersPerSecond,
