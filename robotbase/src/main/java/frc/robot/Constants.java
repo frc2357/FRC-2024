@@ -275,6 +275,7 @@ public final class Constants {
   }
 
   public static final class CLIMBER {
+    public static final double AXIS_MAX_SPEED = 0.8;
     public static final boolean RIGHT_MOTOR_INVERTED = false;
     public static final boolean LEFT_MOTOR_INVERTED = true;
 

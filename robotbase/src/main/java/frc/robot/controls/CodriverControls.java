@@ -101,6 +101,21 @@ public class CodriverControls implements RumbleInterface {
   }
 
   private void mapControls() {
+    AxisInterface rightClimberAxis =
+        () -> {
+          // Don't run if left bumper is pressed
+          boolean leftBumper = m_controller.getLeftBumperPressed();
+          int val = leftBumper ? 0 : 1;
+          return getRightYAxis() * val;
+        };
+
+    AxisInterface leftClimberAxis =
+        () -> {
+          // Don't run if left bumper is pressed
+          boolean rightBumper = m_controller.getRightBumperPressed();
+          int val = rightBumper ? 0 : 1;
+          return getRightYAxis() * val;
+        };
 
     AxisInterface axisRightStickY =
         () -> {
@@ -193,7 +208,9 @@ public class CodriverControls implements RumbleInterface {
     leftDPadAndLeftTrigger.whileTrue(new IntakeAxis(subsystemRollerReverseAxis));
 
     // Climber - Up DPad
-    upDPadOnly.whileTrue(new ClimberAxis(axisRightStickY));
+    upDPadOnly.whileTrue(new ClimberAxis(axisRightStickY, axisRightStickY));
+    upDPadOnly.and(m_rightBumper).whileTrue(new ClimberAxis(axisRightStickY, () -> 0));
+    upDPadOnly.and(m_leftBumper).whileTrue(new ClimberAxis(() -> 0, axisRightStickY));
 
     // Extension/EndAffector - Down DPad
     downDPadOnly.whileTrue(new ExtensionArmAxis(axisRightStickY));

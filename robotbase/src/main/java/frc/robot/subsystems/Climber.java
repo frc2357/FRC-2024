@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.CLIMBER;
 
 public class Climber extends SubsystemBase {
   private CANSparkMax m_rightClimberMotor;
@@ -36,6 +37,12 @@ public class Climber extends SubsystemBase {
   public void set(double right, double left) {
     m_rightClimberMotor.set(right);
     m_leftClimberMotor.set(left);
+  }
+
+  public void setAxis(double rightAxisSpeed, double leftAxisSpeed) {
+    double right = rightAxisSpeed * CLIMBER.AXIS_MAX_SPEED;
+    double left = leftAxisSpeed * CLIMBER.AXIS_MAX_SPEED;
+    set(right, left);
   }
 
   public void stop() {
