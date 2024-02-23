@@ -1,7 +1,6 @@
 package frc.robot.commands.source;
 
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.Constants.PIVOT;
 import frc.robot.Robot;
@@ -9,9 +8,8 @@ import frc.robot.commands.intake.IntakeReverseFeed;
 import frc.robot.commands.pivot.PivotSetRotation;
 import frc.robot.commands.shooter.ShooterSetRPMs;
 import frc.robot.state.RobotState;
-import frc.robot.commands.shooter.ShooterStop;
 
-public class SourceIntakeFromShooter extends SequentialCommandGroup {
+public class SourceIntakeFromShooter extends ParallelDeadlineGroup {
   public SourceIntakeFromShooter() {
     super(
         new IntakeReverseFeed()
