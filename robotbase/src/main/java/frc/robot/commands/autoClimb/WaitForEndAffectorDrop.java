@@ -1,8 +1,6 @@
 package frc.robot.commands.autoClimb;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
-import frc.robot.Robot;
 
 public class WaitForEndAffectorDrop extends Command {
   private double m_prevPitch;
