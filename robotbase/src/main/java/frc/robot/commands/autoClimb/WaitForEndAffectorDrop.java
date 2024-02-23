@@ -10,10 +10,11 @@ public class WaitForEndAffectorDrop extends Command {
 
   @Override
   public boolean isFinished() {
-    m_currentPitch = Robot.swerve.getPitch();
-    double difference = m_currentPitch - m_prevPitch;
-    m_prevPitch = m_currentPitch;
+    return true;
+    // m_currentPitch = Robot.swerve.getPitch();
+    // double difference = m_currentPitch - m_prevPitch;
+    // m_prevPitch = m_currentPitch;
 
-    return difference >= Constants.CLIMBER.END_AFFECTOR_DROP_DELTA_PITCH;
+    // return difference >= Constants.CLIMBER.END_AFFECTOR_DROP_DELTA_PITCH;
   }
 }
