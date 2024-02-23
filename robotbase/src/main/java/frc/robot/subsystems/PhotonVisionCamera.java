@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot.subsystems;
 
 import static frc.robot.Constants.PHOTON_VISION;
@@ -35,6 +28,7 @@ public class PhotonVisionCamera extends SubsystemBase {
   protected PhotonPoseEstimator m_poseEstimator;
   protected final Transform3d ROBOT_TO_CAMERA_TRANSFORM; // if this changes, we have bigger issues.
   protected final double HEAD_ON_TOLERANCE;
+  protected static boolean s_connectionLost;
 
   /**
    * Sets the camera stream.
@@ -69,20 +63,41 @@ public class PhotonVisionCamera extends SubsystemBase {
    * outside of it.
    */
   public void updateResult() {
-    m_result = m_camera.getLatestResult();
-    m_targets = m_result.getTargets();
-    m_bestTarget = m_result.getBestTarget();
+    if(m_camera.isConnected()){
+      m_result = m_camera.getLatestResult();
+      m_targets = m_result.getTargets();
+      m_bestTarget = m_result.getBestTarget();
+      s_connectionLost = false;
+      if(s_connectionLost){
+        s_connectionLost = false;
+        System.out.println(PHOTON_VISION.CONNECTION_REGAINED_NOFICATION_MESSAGE);
+      }
+    }
+    else if(!s_connectionLost){
+      s_connectionLost = true;
+      System.err.println(PHOTON_VISION.LOST_CONNECTION_ERROR_MESSAGE);
+    }
   }
 
+  /**
+   * @return Whether or not the camera is connected.
+   */
+  public boolean isConnected(){
+    return m_camera.isConnected();
+  }
+
+  /** 
+   * @return Whether the camera has a valid target and is connected 
+   */
   public boolean validTargetExists() {
     return getTV();
   }
 
   /**
-   * @return The current pipelines latency in milliseconds
+   * @return The current pipelines latency in milliseconds. Returns NaN if the camera is not connected.
    */
   public double getLatencyMillis() {
-    return m_result.getLatencyMillis();
+    return isConnected() ? m_result.getLatencyMillis() : Double.NaN;
   }
 
   /**
@@ -98,8 +113,11 @@ public class PhotonVisionCamera extends SubsystemBase {
     return false;
   }
 
+  /**
+   * @return Whether or not the driver mode on the camera is active. Returns null if the camera is not connected.
+   */
   public boolean isDriverModeActive() {
-    return m_camera.getDriverMode();
+    return isConnected() ? m_camera.getDriverMode() : null;
   }
 
   public void setDriverModeActive() {
@@ -122,12 +140,14 @@ public class PhotonVisionCamera extends SubsystemBase {
     return m_camera.getPipelineIndex();
   }
 
-  /** Whether the camera has a valid target */
+  /** 
+   * @return Whether the camera has a valid target and is connected 
+   */
   public boolean getTV() {
-    return m_result.hasTargets();
+    return isConnected() && m_result.hasTargets();
   }
 
-  /** Horizontal offset from crosshair to target (degrees) */
+  /** @return Horizontal offset from crosshair to target (degrees) */
   public double getTX() {
     return getTV() ? m_bestTarget.getYaw() : Double.NaN;
   }
@@ -145,7 +165,7 @@ public class PhotonVisionCamera extends SubsystemBase {
    * X and Y increase opposite usual ways. Use accordingly.
    *
    * @return The best targets detected bounding box horizontal side length in what are are assumed
-   *     to be pixels.
+   *     to be pixels. Returns NaN if the camera has no targets or is disconnected.
    */
   public double getHorizontalTargetLength() {
     if (!getTV()) {
@@ -178,7 +198,7 @@ public class PhotonVisionCamera extends SubsystemBase {
    * X and Y increase opposite usual ways. Use accordingly.
    *
    * @return The best targets detected bounding box vertical side length in what are are assumed to
-   *     be pixels.
+   *     be pixels. Returns NaN if the camera has no targets or is disconnected.
    */
   public double getVerticalTargetLength() {
     if (!getTV()) {
