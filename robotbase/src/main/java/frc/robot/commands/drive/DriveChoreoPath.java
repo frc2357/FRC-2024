@@ -48,14 +48,18 @@ public class DriveChoreoPath extends SequentialCommandGroup {
     m_startingState = m_traj.getInitialState();
     new Choreo();
     addCommands(
-        new InstantCommand(() -> Robot.swerve.drive(m_startingState.velocityX, m_startingState.velocityY, m_startingState.angularVelocity)),
+        new InstantCommand(
+            () ->
+                Robot.swerve.drive(
+                    m_startingState.velocityX,
+                    m_startingState.velocityY,
+                    m_startingState.angularVelocity)),
         new ConditionalCommand(
             new SequentialCommandGroup(
                 new InstantCommand(() -> Robot.swerve.zeroAll()),
                 new InstantCommand(() -> Robot.swerve.setPose(m_traj.getInitialPose()))),
             new InstantCommand(),
-            () -> setPoseToStartTrajectory
-        ),
+            () -> setPoseToStartTrajectory),
         Choreo.choreoSwerveCommand(
             Choreo.getTrajectory(trajectoryFileName),
             Robot.swerve.getPoseSupplier(),
