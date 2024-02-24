@@ -4,6 +4,7 @@ import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.INTAKE_PHOTON_CAMERA;
 import frc.robot.Constants.SHOOTER_PHOTON_CAMERA;
 import frc.robot.Constants.SWERVE;
 import frc.robot.Robot;
@@ -14,12 +15,14 @@ public class DriveToGamepeice extends Command {
   private Pose2d m_initialPose;
 
   public DriveToGamepeice() {
-    addRequirements(Robot.swerve);
+    addRequirements(Robot.swerve, Robot.intakeCam);
   }
 
   @Override
   public void initialize() {
-    Robot.intakeCam.setPipeline(SHOOTER_PHOTON_CAMERA.NEURAL_NETWORK_PIPELINE);
+    if(Robot.intakeCam.getPipeline() != INTAKE_PHOTON_CAMERA.NEURAL_NETWORK_PIPELINE){
+      Robot.intakeCam.setPipeline(INTAKE_PHOTON_CAMERA.NEURAL_NETWORK_PIPELINE);
+    }
     Robot.state.setDriveControlState(DriveControlState.ROBOT_RELATIVE);
     SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.reset();
     SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.setTolerance(
