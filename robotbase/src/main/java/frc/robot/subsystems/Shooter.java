@@ -24,7 +24,6 @@ public class Shooter extends SubsystemBase {
 
   private boolean m_isClosedLoopEnabled = false;
 
-
   public Shooter() {
     m_topShooterMotor =
         new CANSparkMax(Constants.CAN_ID.TOP_SHOOTER_MOTOR_ID, MotorType.kBrushless);
@@ -114,7 +113,6 @@ public class Shooter extends SubsystemBase {
     if (m_isClosedLoopEnabled) {
       visionShotPeriodic();
     }
-
   }
 
   public void startVisionShooting() {

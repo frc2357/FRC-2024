@@ -9,7 +9,7 @@ import frc.robot.subsystems.PhotonVisionCamera;
 public class TargetLock extends Command {
   private int m_pipelineIndex;
   private PhotonVisionCamera m_camera;
-  private int m_deafaultPipeline;
+  private int m_defaultPipeline;
 
   public TargetLock(int pipelineIndex, PhotonVisionCamera camera) {
     m_pipelineIndex = pipelineIndex;
@@ -18,7 +18,9 @@ public class TargetLock extends Command {
 
   @Override
   public void initialize() {
+    m_defaultPipeline = m_camera.getPipeline();
     Robot.state.setDriveControlState(DriveControlState.TARGET_LOCK);
+    Robot.state.setTargetLockCamera(m_camera);
     m_camera.setPipeline(m_pipelineIndex);
     SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.reset();
   }
@@ -26,7 +28,7 @@ public class TargetLock extends Command {
   @Override
   public void end(boolean interrupted) {
     Robot.state.setDriveControlState(DriveControlState.FIELD_RELATIVE);
-    m_camera.setPipeline(m_deafaultPipeline);
+    m_camera.setPipeline(m_defaultPipeline);
     SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.setP(SWERVE.TARGET_LOCK_ROTATION_KP);
   }
 }

@@ -14,7 +14,7 @@ public class DriveToGamepeice extends Command {
   private Pose2d m_initialPose;
 
   public DriveToGamepeice() {
-    addRequirements(Robot.swerve, Robot.intakeCam);
+    addRequirements(Robot.swerve);
   }
 
   @Override
@@ -44,7 +44,6 @@ public class DriveToGamepeice extends Command {
         distanceTraveled() > SWERVE.PIECE_TRACKING_SLOW_DOWN_METERS
             ? SWERVE.PIECE_TRACKING_X_METERS_PER_SECOND / 2.0
             : SWERVE.PIECE_TRACKING_X_METERS_PER_SECOND;
-
     Robot.swerve.drive(-translationSpeed, 0, rotationSpeed);
   }
 
