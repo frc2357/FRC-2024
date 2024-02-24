@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Robot;
 import frc.robot.commands.climber.ClimberLevelClimb;
+import frc.robot.commands.drive.DriveAtSpeed;
+import frc.robot.commands.drive.DriveDistance;
 import frc.robot.commands.intake.IntakeFeedToShooter;
 import frc.robot.commands.intake.IntakeNoteFromFloor;
 import frc.robot.commands.pivot.DefaultPivot;
@@ -82,13 +84,8 @@ public class DriverControls implements RumbleInterface {
         new ConditionalCommand(
             new AmpScore(), new AmpPrepose(), () -> Robot.state.isInState(State.AMP_PRE_POSE)));
 
-    m_rightTriggerShoot.whileTrue(new DefaultPivot().andThen(new PivotStop()));
-    // m_rightTriggerShoot.whileTrue(new ClimberLevelClimb());
-    // m_rightTriggerPrime.whileTrue(
-    // new ParallelCommandGroup(
-    // new ShooterSetRPMs(2000, 2000),
-    // new PivotSetRotation(Constants.PIVOT.SUBWOOFER_SHOT_ROTATION)));
-    // m_rightTriggerShoot.whileTrue(new IntakeFeedToShooter().withTimeout(0.5));
+    m_rightTriggerShoot.whileTrue(new DriveDistance(0, 1, 1));
+    m_leftTrigger.whileTrue(new DriveAtSpeed(0, 1, 3));
   }
 
   public double getX() {

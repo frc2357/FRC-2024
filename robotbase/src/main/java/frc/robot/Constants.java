@@ -115,9 +115,18 @@ public final class Constants {
     public static final double APRILTAG_ROTATION_TOLERANCE = .025; // Radians
     public static final double APRILTAG_TY_MAGIC_OFFSET = 12.5;
 
-    public static final double AMP_TX_SETPOINT = 0;
+    // Amp
+    public static final double AMP_TX_SETPOINT = 0; // idk what this is. Why did I do it
     public static final double AMP_TY_SETPOINT = 3;
     public static final double AMP_ROTATION_SETPOINT = Math.PI / 2;
+
+    // Climb
+    public static final double CLIMB_TY_SETPOINT = 0; // TODO: Tune this
+    public static final double CLIMB_TX_SETPOINT = 0; // TODO: Tune this
+    public static final double DRIVE_TOWARDS_STAGE_APRILTAG_Y_DISTANCE = 0; // TODO: Tune this
+    public static final double DRIVE_TOWARDS_STAGE_APRILTAG_SECONDS = 0; // TODO: Tune this
+    public static final double DRIVE_TOWARDS_CHAIN_Y_SPEED = 0; // TODO: Tune this
+    public static final double CATCH_HOOKS_ON_CHAIN_Y_SPEED = 0; // TODO: Tune this
   }
 
   public static final class CHOREO {

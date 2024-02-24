@@ -17,32 +17,25 @@ import frc.robot.commands.intake.IntakeStop;
 import frc.robot.commands.pivot.PivotSetRotation;
 import frc.robot.commands.shooter.ShooterSetRPMs;
 import frc.robot.commands.shooter.ShooterStop;
-import frc.robot.commands.state.SetRobotStateCommand;
-import frc.robot.state.RobotState;
 
 public class NotePreload extends SequentialCommandGroup {
 
   public NotePreload() {
     super(
+        // Note Preload
         new ParallelCommandGroup(
-            // Extend arm to position to receive from shooter
             new ExtensionArmMoveToRotations(EXTENSION_ARM.NOTE_STOW_ROTATIONS),
-            // Rotate pivot to feed into end affector
             new PivotSetRotation(PIVOT.FEED_TO_END_AFFECTOR_LOCATION)),
 
         // Run end affector, shooter, and intake to load note
         new ParallelDeadlineGroup(
             new WaitCommand(SCORING.SECONDS_PRELOAD_NOTE),
-            new SequentialCommandGroup(new WaitCommand(0.5), new IntakeFeedToShooter()),
+            new SequentialCommandGroup(new WaitCommand(0.25), new IntakeFeedToShooter()),
+            new EndAffectorSetSpeed(END_AFFECTOR.PRELOAD_SPEED),
             new ShooterSetRPMs(
                 SHOOTER.TOP_MOTOR_FEED_END_AFFECTOR_RPMS,
-                SHOOTER.BOTTOM_MOTOR_FEED_END_AFFECTOR_RPMS),
-            new EndAffectorSetSpeed(END_AFFECTOR.PRELOAD_SPEED)),
-
+                SHOOTER.BOTTOM_MOTOR_FEED_END_AFFECTOR_RPMS)),
         // Stop motors
-        new ParallelCommandGroup(new IntakeStop(), new ShooterStop(), new EndAffectorStop()),
-        new SetRobotStateCommand(RobotState.State.NOTE_PRELOAD));
-
-    // TODO: logic to position note for amp or trap
+        new ParallelCommandGroup(new IntakeStop(), new ShooterStop(), new EndAffectorStop()));
   }
 }

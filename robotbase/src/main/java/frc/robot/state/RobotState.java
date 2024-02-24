@@ -10,6 +10,7 @@ public class RobotState {
     NOTE_STOWED, // Robot has a note in the intake
     NOTE_PRELOAD, // Robot has a note preloaded into the end affector
     AMP_PRE_POSE, // Robot is in position to score in the amp
+    TRAP_PRE_POSE, // Robot is in position to score in the trap
   };
 
   public static enum DriveControlState {
