@@ -53,6 +53,7 @@ public class Robot extends TimedRobot {
 
   // {ty, pivotRotations, topRPMs, bottomRPMs}
   public static final double[][] shooterCurve = {{0.0, 0.0, 0.0, 0.0}};
+  public ShooterCurveTuner m_shooterCurveTuner;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -93,6 +94,8 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
 
     m_setCoastOnDisabled = new SetCoastOnDisabled();
+
+    m_shooterCurveTuner = new ShooterCurveTuner();
   }
 
   /**
@@ -105,6 +108,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     shooterCam.updateResult();
+
+    m_shooterCurveTuner.periodic();
 
     // Runs the Scheduler. This is responsible for polling buttons, adding
     // newly-scheduled
