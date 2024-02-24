@@ -117,7 +117,6 @@ public class Shooter extends SubsystemBase {
     }
 
     m_curveTuner.updateCurveValues();
-    System.out.println(Robot.shooterCurve[0][1]);
   }
 
   public void startVisionShooting() {
