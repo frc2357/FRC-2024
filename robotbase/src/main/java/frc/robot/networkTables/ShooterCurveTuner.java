@@ -1,7 +1,8 @@
-package frc.robot;
+package frc.robot.networkTables;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 
 public class ShooterCurveTuner {
   private SendableChooser<Integer> m_rowChooser;
@@ -13,19 +14,21 @@ public class ShooterCurveTuner {
       m_rowChooser.addOption("TY Setpoint: " + Robot.shooterCurve[i][0], i);
     }
 
-    m_rowChooser.onChange((val) -> update(val));
+    m_rowChooser.setDefaultOption("TY Setpoint: " + Robot.shooterCurve[0][0], 0);
+
+    m_rowChooser.onChange((val) -> updateSelectedCurveIndex(val));
 
     SmartDashboard.putData("Shooter Curve Tuner", m_rowChooser);
   }
 
-  public void update(int index) {
+  public void updateSelectedCurveIndex(int index) {
     double[] newRow = Robot.shooterCurve[index];
     SmartDashboard.putNumber("Pivot Angle Setpoint", newRow[1]);
     SmartDashboard.putNumber("Top Roller Setpoint", newRow[2]);
     SmartDashboard.putNumber("Bottom Roller Setpoint", newRow[3]);
   }
 
-  public void periodic() {
+  public void updateCurveValues() {
     int index = m_rowChooser.getSelected();
     double[] row = Robot.shooterCurve[index];
 
