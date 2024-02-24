@@ -13,10 +13,8 @@ public class Climber extends SubsystemBase {
   private CANSparkMax m_leftClimberMotor;
 
   public Climber() {
-    m_rightClimberMotor =
-        new CANSparkMax(Constants.CAN_ID.RIGHT_CLIMBER_MOTOR_ID, MotorType.kBrushless);
-    m_leftClimberMotor =
-        new CANSparkMax(Constants.CAN_ID.LEFT_CLIMBER_MOTOR_ID, MotorType.kBrushless);
+    m_rightClimberMotor = new CANSparkMax(Constants.CAN_ID.RIGHT_CLIMBER_MOTOR_ID, MotorType.kBrushless);
+    m_leftClimberMotor = new CANSparkMax(Constants.CAN_ID.LEFT_CLIMBER_MOTOR_ID, MotorType.kBrushless);
 
     configure();
   }
@@ -64,6 +62,16 @@ public class Climber extends SubsystemBase {
 
   public boolean isLeftAtCurrent(double amps) {
     return getLeftAmps() >= amps;
+  }
+
+  public void zero() {
+    m_rightClimberMotor.getEncoder().setPosition(0);
+    m_leftClimberMotor.getEncoder().setPosition(0);
+  }
+
+  public void printEncoderValues() {
+    System.out.println("Right climber encoder values: " + m_rightClimberMotor.getEncoder().getPosition());
+    System.out.println("Left climber encoder values: " + m_leftClimberMotor.getEncoder().getPosition());
   }
 
   private double getRotations(CANSparkMax motor) {

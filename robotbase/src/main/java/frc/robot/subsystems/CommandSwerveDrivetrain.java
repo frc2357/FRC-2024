@@ -20,20 +20,20 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- * Class that extends the Phoenix SwerveDrivetrain class and implements subsystem so it can be used
+ * Class that extends the Phoenix SwerveDrivetrain class and implements
+ * subsystem so it can be used
  * in command-based projects easily.
  */
 public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsystem {
 
-  private final SwerveRequest.ApplyChassisSpeeds chassisSpeedRequest =
-      new SwerveRequest.ApplyChassisSpeeds();
+  private final SwerveRequest.ApplyChassisSpeeds chassisSpeedRequest = new SwerveRequest.ApplyChassisSpeeds();
 
   // Comment out below requests for CUBE_BOT
-  private final SwerveRequest.FieldCentric fieldRelative =
-      new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+  private final SwerveRequest.FieldCentric fieldRelative = new SwerveRequest.FieldCentric()
+      .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
-  private final SwerveRequest.RobotCentric robotRelative =
-      new SwerveRequest.RobotCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+  private final SwerveRequest.RobotCentric robotRelative = new SwerveRequest.RobotCentric()
+      .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
   // Uncomment below for CUBE_BOT
   // private final SwerveRequest.FieldCentric fieldRelative =
@@ -68,12 +68,14 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     return getPigeon2().getYaw().getValueAsDouble();
   }
 
+  // Pigeon rotated 90 degrees so robot pitch and roll is different from pigeon
+  // pitch and roll
   public double getPitch() {
-    return getPigeon2().getPitch().getValueAsDouble();
+    return getPigeon2().getRoll().getValueAsDouble();
   }
 
   public double getRoll() {
-    return getPigeon2().getRoll().getValueAsDouble();
+    return getPigeon2().getPitch().getValueAsDouble();
   }
 
   public void drive(
@@ -84,34 +86,32 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     switch (Robot.state.getDriveControlState()) {
       case ROBOT_RELATIVE:
         applyRequest(
-            () ->
-                robotRelative
-                    .withVelocityX(velocityXMetersPerSecond)
-                    .withVelocityY(velocityYMetersPerSecond)
-                    .withRotationalRate(rotationRateRadiansPerSecond));
+            () -> robotRelative
+                .withVelocityX(velocityXMetersPerSecond)
+                .withVelocityY(velocityYMetersPerSecond)
+                .withRotationalRate(rotationRateRadiansPerSecond));
         break;
       case FIELD_RELATIVE:
         applyRequest(
-            () ->
-                fieldRelative
-                    .withVelocityX(velocityXMetersPerSecond)
-                    .withVelocityY(velocityYMetersPerSecond)
-                    .withRotationalRate(rotationRateRadiansPerSecond));
+            () -> fieldRelative
+                .withVelocityX(velocityXMetersPerSecond)
+                .withVelocityY(velocityYMetersPerSecond)
+                .withRotationalRate(rotationRateRadiansPerSecond));
         break;
       case TARGET_LOCK:
         applyRequest(
-            () ->
-                fieldRelative
-                    .withVelocityX(velocityXMetersPerSecond)
-                    .withVelocityY(velocityYMetersPerSecond)
-                    .withRotationalRate(getTargetLockRotation()));
+            () -> fieldRelative
+                .withVelocityX(velocityXMetersPerSecond)
+                .withVelocityY(velocityYMetersPerSecond)
+                .withRotationalRate(getTargetLockRotation()));
         break;
     }
   }
 
   /**
-   * @return A list of the module positions in the order Front Left, Front Right, Back Left, Back
-   *     Right
+   * @return A list of the module positions in the order Front Left, Front Right,
+   *         Back Left, Back
+   *         Right
    */
   public SwerveModulePosition[] getModulePositions() {
     return super.m_modulePositions;
