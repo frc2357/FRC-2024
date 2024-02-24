@@ -18,8 +18,8 @@ public class ExtensionArmTuningSubsystem {
   private double kI = 0;
   private double kD = 0;
   private double kFF = 0;
-  private double maxVel = 2000;// 5700; // These are the new rpms, not rev throughbore encoder rpms
-  private double maxAcc = 1000; // 5700;
+  private double maxVel = 6000;// 5700; // These are the new rpms, not rev throughbore encoder rpms
+  private double maxAcc = 24000; // 5700;
 
   private double axisMaxSpeed = 0.5;
 
@@ -99,6 +99,7 @@ public class ExtensionArmTuningSubsystem {
 
     SmartDashboard.putNumber("Arm Pos", motorPos);
     SmartDashboard.putNumber("Encoder Pos", encoderPos);
+
   }
 
   public void teleopPeriodic() {
