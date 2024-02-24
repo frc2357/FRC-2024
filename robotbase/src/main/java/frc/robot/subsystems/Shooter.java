@@ -7,6 +7,7 @@ import com.revrobotics.SparkPIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.networkTables.ShooterCurveTuner;
 import frc.robot.util.RobotMath;
 import frc.robot.util.Utility;
 
@@ -24,11 +25,12 @@ public class Shooter extends SubsystemBase {
 
   private boolean m_isClosedLoopEnabled = false;
 
+  private ShooterCurveTuner m_curveTuner;
+
   public Shooter() {
-    m_topShooterMotor =
-        new CANSparkMax(Constants.CAN_ID.TOP_SHOOTER_MOTOR_ID, MotorType.kBrushless);
-    m_bottomShooterMotor =
-        new CANSparkMax(Constants.CAN_ID.BOTTOM_SHOOTER_MOTOR_ID, MotorType.kBrushless);
+    m_topShooterMotor = new CANSparkMax(Constants.CAN_ID.TOP_SHOOTER_MOTOR_ID, MotorType.kBrushless);
+    m_bottomShooterMotor = new CANSparkMax(Constants.CAN_ID.BOTTOM_SHOOTER_MOTOR_ID, MotorType.kBrushless);
+    m_curveTuner = new ShooterCurveTuner();
     configure();
   }
 
@@ -113,6 +115,9 @@ public class Shooter extends SubsystemBase {
     if (m_isClosedLoopEnabled) {
       visionShotPeriodic();
     }
+
+    m_curveTuner.updateCurveValues();
+    System.out.println(Robot.shooterCurve[0][1]);
   }
 
   public void startVisionShooting() {
@@ -153,8 +158,7 @@ public class Shooter extends SubsystemBase {
     double lowTopRPMs = low[3];
 
     double topRPMs = RobotMath.linearlyInterpolate(highTopRPMs, lowTopRPMs, highTY, lowTY, ty);
-    double bottomRPMs =
-        RobotMath.linearlyInterpolate(highBottomRPMs, lowBottomRPMs, highTY, lowTY, ty);
+    double bottomRPMs = RobotMath.linearlyInterpolate(highBottomRPMs, lowBottomRPMs, highTY, lowTY, ty);
 
     if (Double.isNaN(topRPMs) || Double.isNaN(bottomRPMs)) {
       System.err.println("----- Invalid shooter values -----");
