@@ -28,8 +28,10 @@ public class Shooter extends SubsystemBase {
   private ShooterCurveTuner m_curveTuner;
 
   public Shooter() {
-    m_topShooterMotor = new CANSparkMax(Constants.CAN_ID.TOP_SHOOTER_MOTOR_ID, MotorType.kBrushless);
-    m_bottomShooterMotor = new CANSparkMax(Constants.CAN_ID.BOTTOM_SHOOTER_MOTOR_ID, MotorType.kBrushless);
+    m_topShooterMotor =
+        new CANSparkMax(Constants.CAN_ID.TOP_SHOOTER_MOTOR_ID, MotorType.kBrushless);
+    m_bottomShooterMotor =
+        new CANSparkMax(Constants.CAN_ID.BOTTOM_SHOOTER_MOTOR_ID, MotorType.kBrushless);
     m_curveTuner = new ShooterCurveTuner();
     configure();
   }
@@ -157,7 +159,8 @@ public class Shooter extends SubsystemBase {
     double lowTopRPMs = low[3];
 
     double topRPMs = RobotMath.linearlyInterpolate(highTopRPMs, lowTopRPMs, highTY, lowTY, ty);
-    double bottomRPMs = RobotMath.linearlyInterpolate(highBottomRPMs, lowBottomRPMs, highTY, lowTY, ty);
+    double bottomRPMs =
+        RobotMath.linearlyInterpolate(highBottomRPMs, lowBottomRPMs, highTY, lowTY, ty);
 
     if (Double.isNaN(topRPMs) || Double.isNaN(bottomRPMs)) {
       System.err.println("----- Invalid shooter values -----");
