@@ -20,6 +20,7 @@ public class AutoCommandChooser {
           new DriveChoreoPath("1MeterYTest"),
           new DriveChoreoPath("3MeterYTest"),
           new DriveChoreoPath("BoxTest"),
+          new DriveChoreoPath("TriangleTest"),
         };
 
     m_chooser = new SendableChooser<>();

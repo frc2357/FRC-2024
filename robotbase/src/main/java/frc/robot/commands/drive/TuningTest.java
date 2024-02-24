@@ -15,13 +15,13 @@ public class TuningTest extends Command {
 
   @Override
   public void execute() {
-    if (m_loopNum++ % 5 == 0) {
+    if (m_loopNum++ % 10 == 0) {
       Robot.swerve.drive(m_setpoint, 0, 0);
       System.out.println(
           "SETPOINT: "
-              + 0
-              + "\nSTEER ANGLE: "
-              + Robot.swerve.getModuleStates()[0].angle.getDegrees());
+              + m_setpoint
+              + "\nROBOT SPEED: "
+              + Robot.swerve.getModuleStates()[0].speedMetersPerSecond);
     }
   }
 

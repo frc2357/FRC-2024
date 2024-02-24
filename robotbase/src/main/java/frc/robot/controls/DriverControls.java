@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Robot;
 import frc.robot.commands.drive.TuningTest;
-import frc.robot.commands.drive.TuningTest1;
 import frc.robot.commands.pivot.DefaultPivot;
 import frc.robot.commands.pivot.PivotStop;
 import frc.robot.commands.scoring.AmpPrepose;
@@ -77,8 +76,8 @@ public class DriverControls implements RumbleInterface {
 
     // m_leftTrigger.whileTrue(new IntakeNoteFromFloor());
 
-    m_leftTrigger.whileTrue(new TuningTest(0.01));
-    m_leftBumper.whileTrue(new TuningTest1(0.01));
+    m_leftTrigger.whileTrue(new TuningTest(1));
+
     // m_rightBumper.onTrue(new DriverAmpScore());
     m_aButton.onTrue(
         new ConditionalCommand(
