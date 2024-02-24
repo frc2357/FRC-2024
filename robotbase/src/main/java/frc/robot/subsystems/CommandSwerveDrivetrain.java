@@ -30,10 +30,10 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
   // Comment out below requests for CUBE_BOT
   private final SwerveRequest.FieldCentric fieldRelative = new SwerveRequest.FieldCentric()
-      .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+      .withDriveRequestType(DriveRequestType.Velocity);
 
   private final SwerveRequest.RobotCentric robotRelative = new SwerveRequest.RobotCentric()
-      .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+      .withDriveRequestType(DriveRequestType.Velocity);
 
   // Uncomment below for CUBE_BOT
   // private final SwerveRequest.FieldCentric fieldRelative =

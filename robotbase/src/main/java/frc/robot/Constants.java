@@ -130,8 +130,8 @@ public final class Constants {
   }
 
   public static final class CHOREO {
-    public static final PIDController X_CONTROLLER = new PIDController(0.15, 0, 0);
-    public static final PIDController Y_CONTROLLER = new PIDController(0.15, 0, 0);
+    public static final PIDController X_CONTROLLER = new PIDController(2, 0, 0);
+    public static final PIDController Y_CONTROLLER = new PIDController(2, 0, 0);
     public static final PIDController ROTATION_CONTROLLER = new PIDController(0.6, 0, 0);
 
     public static final BooleanSupplier CHOREO_AUTO_MIRROR_PATHS = new BooleanSupplier() {
@@ -167,6 +167,9 @@ public final class Constants {
     public static final boolean TOP_MOTOR_INVERTED = false;
     public static final boolean BOTTOM_MOTOR_INVERTED = true;
 
+    public static final double TOP_MOTOR_SUBWOOFER_SHOT_RPMS = 0;
+    public static final double BOTTOM_MOTOR_SUBWOOFER_SHOT_RPMS = 0;
+
     public static final int TOP_MOTOR_STALL_LIMIT_AMPS = 40;
     public static final int TOP_MOTOR_FREE_LIMIT_AMPS = 40;
 
@@ -188,6 +191,8 @@ public final class Constants {
 
   public static final class INTAKE {
     public static final double AXIS_MAX_SPEED = 0.8;
+
+    public static final double FEED_TO_SHOOTER_TIMEOUT = 0;
 
     public static final double TOP_MOTOR_PICKUP_SPEED_PERCENT_OUTPUT = .75;
     public static final double BOTTOM_MOTOR_PICKUP_SPEED_PERCENT_OUTPUT = .75;
@@ -253,6 +258,7 @@ public final class Constants {
     public static final double MIN_PIVOT_ROTATION = 10;
 
     public static final double SUBWOOFER_SHOT_ROTATION = 60;
+    public static final double SPEAKER_SCORE_FROM_BASE_ROTATION = 0;
     public static final double INTAKE_FROM_SOURCE_ROTATION = 45;
     public static final double DEFAULT_PIVOT_ROTATION = 45; // angle of intake
 

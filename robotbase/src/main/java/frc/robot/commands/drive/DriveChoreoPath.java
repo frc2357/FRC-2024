@@ -13,6 +13,7 @@ public class DriveChoreoPath extends SequentialCommandGroup {
   private String m_pathName;
   private ChoreoTrajectory m_traj;
   private Pose2d m_finalTargetPose;
+  private ChoreoTrajectoryState m_startingState;
 
   /**
    * A utility command to run a Choreo path correctly.
@@ -44,8 +45,15 @@ public class DriveChoreoPath extends SequentialCommandGroup {
     m_traj = Choreo.getTrajectory(trajectoryFileName);
     m_finalTargetPose = m_traj.getFinalPose();
     m_pathName = pathName;
+    m_startingState = m_traj.getInitialState();
     new Choreo();
     addCommands(
+        new InstantCommand(
+            () ->
+                Robot.swerve.drive(
+                    m_startingState.velocityX,
+                    m_startingState.velocityY,
+                    m_startingState.angularVelocity)),
         new ConditionalCommand(
             new SequentialCommandGroup(
                 new InstantCommand(() -> Robot.swerve.zeroAll()),
@@ -63,7 +71,7 @@ public class DriveChoreoPath extends SequentialCommandGroup {
         new InstantCommand(
             () -> {
               var pose = Robot.swerve.getPose();
-              var poseError = m_finalTargetPose.minus(pose);
+              var poseError = pose.minus(m_finalTargetPose);
               System.out.println("Pose & Error | PathName: " + trajectoryFileName);
               System.out.println("|X: " + pose.getX() + " | Err: " + poseError.getX());
               System.out.println("|Y: " + pose.getY() + " | Err: " + poseError.getY());

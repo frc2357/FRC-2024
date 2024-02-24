@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
@@ -227,6 +228,13 @@ public class CodriverControls implements RumbleInterface {
     // Intake - left
     // Shooter - right
     // end affector - down
+
+    // Cancel all commands - back (the left one)
+    m_backButton.onTrue(
+        new InstantCommand(
+            () -> {
+              CommandScheduler.getInstance().cancelAll();
+            }));
   }
 
   @Override
