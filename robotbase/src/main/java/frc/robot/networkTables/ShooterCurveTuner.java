@@ -14,6 +14,8 @@ public class ShooterCurveTuner {
          m_rowChooser.addOption("TY Setpoint: " + Robot.shooterCurve[i][0], i);
       }
 
+      m_rowChooser.setDefaultOption("TY Setpoint: " + Robot.shooterCurve[0][0], 0);
+
       m_rowChooser.onChange((val) -> updateSelectedCurveIndex(val));
 
       SmartDashboard.putData("Shooter Curve Tuner", m_rowChooser);
