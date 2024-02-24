@@ -16,11 +16,12 @@ public class AutoCommandChooser {
         new Command[] {
           new DriveChoreoPath("Close3Speaker"),
           new DriveChoreoPath("RotationTest"),
-          new DriveChoreoPath("3MeterXTest"),
-          new DriveChoreoPath("1MeterYTest"),
-          new DriveChoreoPath("3MeterYTest"),
           new DriveChoreoPath("BoxTest"),
           new DriveChoreoPath("TriangleTest"),
+          new DriveChoreoPath("RightClose1Speaker"),
+          new DriveChoreoPath("LoadAmp"),
+          new DriveChoreoPath("RefSideFar1"),
+          new DriveChoreoPath("RefSideFar3"),
         };
 
     m_chooser = new SendableChooser<>();
