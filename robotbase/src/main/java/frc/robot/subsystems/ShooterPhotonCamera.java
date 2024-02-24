@@ -20,12 +20,8 @@ public class ShooterPhotonCamera extends PhotonVisionCamera {
     super.setPipeline(SHOOTER_PHOTON_CAMERA.NEURAL_NETWORK_PIPELINE);
   }
 
-  public void setRetroReflectivePipelineActive() {
-    super.setPipeline(SHOOTER_PHOTON_CAMERA.NEURAL_NETWORK_PIPELINE);
-  }
-
   public void setAprilTagPipelineActive() {
-    super.setPipeline(SHOOTER_PHOTON_CAMERA.NEURAL_NETWORK_PIPELINE);
+    super.setPipeline(SHOOTER_PHOTON_CAMERA.APRIL_TAG_PIPELINE);
   }
 
   public void setDefaultPipelineActive() {

@@ -14,12 +14,12 @@ public class DriveToGamepeice extends Command {
   private Pose2d m_initialPose;
 
   public DriveToGamepeice() {
-    addRequirements(Robot.swerve, Robot.shooterCam);
+    addRequirements(Robot.swerve, Robot.intakeCam);
   }
 
   @Override
   public void initialize() {
-    Robot.shooterCam.setPipeline(SHOOTER_PHOTON_CAMERA.NEURAL_NETWORK_PIPELINE);
+    Robot.intakeCam.setPipeline(SHOOTER_PHOTON_CAMERA.NEURAL_NETWORK_PIPELINE);
     Robot.state.setDriveControlState(DriveControlState.ROBOT_RELATIVE);
     SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.reset();
     SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.setTolerance(
@@ -32,13 +32,13 @@ public class DriveToGamepeice extends Command {
 
   @Override
   public void execute() {
-    if (!m_canSeePieceDebouncer.calculate(Robot.shooterCam.validTargetExists())) {
+    if (!m_canSeePieceDebouncer.calculate(Robot.intakeCam.validTargetExists())) {
       System.out.println("No Gamepiece Detected");
       Robot.swerve.drive(0, 0, 0);
       return;
     }
 
-    double rotationError = Robot.shooterCam.getTX();
+    double rotationError = Robot.intakeCam.getTX();
     double rotationSpeed = SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.calculate(rotationError, 0);
     double translationSpeed =
         distanceTraveled() > SWERVE.PIECE_TRACKING_SLOW_DOWN_METERS
