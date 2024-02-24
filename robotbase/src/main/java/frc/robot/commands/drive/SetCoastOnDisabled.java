@@ -8,10 +8,10 @@ import frc.robot.Robot;
 
 public class SetCoastOnDisabled extends SequentialCommandGroup {
   public SetCoastOnDisabled() {
-    new WaitCommand(5);
+    super(new WaitCommand(5),
     new InstantCommand(
         () -> {
           Robot.swerve.configNeutralMode(NeutralModeValue.Coast);
-        });
+        }));
   }
 }
