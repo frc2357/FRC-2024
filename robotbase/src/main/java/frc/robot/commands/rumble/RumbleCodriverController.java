@@ -3,16 +3,17 @@ package frc.robot.commands.rumble;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants.CONTROLLER;
 import frc.robot.Robot;
 
 public class RumbleCodriverController extends SequentialCommandGroup {
-  public RumbleCodriverController(double intensity, double seconds) {
+  public RumbleCodriverController() {
     super(
         new InstantCommand(
             () -> {
-              Robot.codriverControls.setRumble(intensity);
+              Robot.codriverControls.setRumble(CONTROLLER.DRIVE_RUMBLE_INTENSITY);
             }),
-        new WaitCommand(seconds),
+        new WaitCommand(CONTROLLER.DRIVE_RUMBLE_SECONDS),
         new InstantCommand(
             () -> {
               Robot.codriverControls.setRumble(0);

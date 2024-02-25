@@ -13,8 +13,7 @@ public class IntakeNoteFromFloor extends Command {
   public IntakeNoteFromFloor() {
     addRequirements(Robot.intake);
     m_rumbleDriverController =
-        new RumbleDriverController(
-            CONTROLLER.DRIVE_RUMBLE_INTENSITY, CONTROLLER.DRIVE_RUMBLE_SECONDS);
+        new RumbleDriverController();
   }
 
   @Override
