@@ -142,6 +142,10 @@ public final class Constants {
     public static final double CODRIVE_CONTROLLER_DEADBAND = 0.025;
     public static final double SWERVE_TRANSLATIONAL_DEADBAND = 0.0;
     public static final double SWERVE_ROTATIONAL_DEADBAND = 0.0;
+    public static final double DRIVE_RUMBLE_INTENSITY = .5;
+    public static final double CODRIVE_RUMBLE_INTENSITY = .5;
+    public static final double DRIVE_RUMBLE_SECONDS = 2;
+    public static final double CODRIVE_RUMBLE_SECONDS = 2;
   }
 
   public static final class SHOOTER {
