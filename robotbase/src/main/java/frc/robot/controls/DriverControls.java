@@ -121,8 +121,7 @@ public class DriverControls implements RumbleInterface {
   }
 
   @Override
-  public void setRumble(RumbleType type, double intensity) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'setRumble'");
+  public void setRumble(double intensity) {
+    m_controller.setRumble(RumbleType.kBothRumble, intensity);
   }
 }
