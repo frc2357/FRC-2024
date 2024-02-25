@@ -72,19 +72,19 @@ public class PhotonVisionCamera extends SubsystemBase {
       if (m_connectionLost) {
         m_connectionLost = false;
         DriverStation.reportError(PHOTON_VISION.CONNECTION_REGAINED_NOFICATION_MESSAGE, false);
-        //^reporting as an error to get drivers attention
+        // ^reporting as an error to get drivers attention
       }
     } else if (!m_connectionLost) {
       m_connectionLost = true;
       DriverStation.reportError(PHOTON_VISION.LOST_CONNECTION_ERROR_MESSAGE, false);
-    }//^reporting as an error to get the drivers attention
+    } // ^reporting as an error to get the drivers attention
   }
 
   /**
    * @return Whether or not the camera is connected.
    */
   public boolean isConnected() {
-    return m_connectionLost;//uses this because it will be checked every loop
+    return m_connectionLost; // uses this because it will be checked every loop
   }
 
   /**
@@ -103,9 +103,10 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * @return The timestamp of the latest pipeline result in seconds. Returns Double.NaN if the camera is not connected.
+   * @return The timestamp of the latest pipeline result in seconds. Returns Double.NaN if the
+   *     camera is not connected.
    */
-  public double getTimestampSeconds(){
+  public double getTimestampSeconds() {
     return isConnected() ? m_result.getTimestampSeconds() : Double.NaN;
   }
 
