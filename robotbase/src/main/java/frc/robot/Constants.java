@@ -359,10 +359,7 @@ public final class Constants {
     public static final String LOST_CONNECTION_ERROR_MESSAGE =
         "----------\nPHOTON VISION HAS LOST CONNECTION!\nVISION RESULTS WILL NOT BE UPDATED!\n----------";
     public static final String CONNECTION_REGAINED_NOFICATION_MESSAGE =
-        "\u001B[32m**********\nPhoton Vision has regained connection!\nVision results will not be updated.\n**********\0033[0m";
-    // The above message contains the ANSI color codes, to make it clear to the drivers that
-    // connection has been reestablished.
-
+        "**********\nPhoton Vision has regained connection!\nVision results will now be updated.\n**********";
   }
 
   public static final class SHOOTER_PHOTON_CAMERA {

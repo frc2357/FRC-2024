@@ -5,6 +5,7 @@ import static frc.robot.Constants.PHOTON_VISION;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +29,7 @@ public class PhotonVisionCamera extends SubsystemBase {
   protected PhotonPoseEstimator m_poseEstimator;
   protected final Transform3d ROBOT_TO_CAMERA_TRANSFORM; // if this changes, we have bigger issues.
   protected final double HEAD_ON_TOLERANCE;
-  protected static boolean s_connectionLost;
+  protected static boolean m_connectionLost;
 
   /**
    * Sets the camera stream.
@@ -67,22 +68,23 @@ public class PhotonVisionCamera extends SubsystemBase {
       m_result = m_camera.getLatestResult();
       m_targets = m_result.getTargets();
       m_bestTarget = m_result.getBestTarget();
-      s_connectionLost = false;
-      if (s_connectionLost) {
-        s_connectionLost = false;
-        System.out.println(PHOTON_VISION.CONNECTION_REGAINED_NOFICATION_MESSAGE);
+
+      if (m_connectionLost) {
+        m_connectionLost = false;
+        DriverStation.reportError(PHOTON_VISION.CONNECTION_REGAINED_NOFICATION_MESSAGE, false);
+        //^reporting as an error to get drivers attention
       }
-    } else if (!s_connectionLost) {
-      s_connectionLost = true;
-      System.err.println(PHOTON_VISION.LOST_CONNECTION_ERROR_MESSAGE);
-    }
+    } else if (!m_connectionLost) {
+      m_connectionLost = true;
+      DriverStation.reportError(PHOTON_VISION.LOST_CONNECTION_ERROR_MESSAGE, false);
+    }//^reporting as an error to get the drivers attention
   }
 
   /**
    * @return Whether or not the camera is connected.
    */
   public boolean isConnected() {
-    return m_camera.isConnected();
+    return m_connectionLost;//uses this because it will be checked every loop
   }
 
   /**
@@ -98,6 +100,13 @@ public class PhotonVisionCamera extends SubsystemBase {
    */
   public double getLatencyMillis() {
     return isConnected() ? m_result.getLatencyMillis() : Double.NaN;
+  }
+
+  /**
+   * @return The timestamp of the latest pipeline result in seconds. Returns Double.NaN if the camera is not connected.
+   */
+  public double getTimestampSeconds(){
+    return isConnected() ? m_result.getTimestampSeconds() : Double.NaN;
   }
 
   /**
