@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Robot;
 
 public class RumbleCodriverController extends SequentialCommandGroup {
-  public RumbleDriverCodontroller(double intensity, double seconds) {
+  public RumbleCodriverController(double intensity, double seconds) {
     super(
         new InstantCommand(
             () -> {
