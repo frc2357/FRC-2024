@@ -11,9 +11,9 @@ public class RumbleCodriverController extends SequentialCommandGroup {
     super(
         new InstantCommand(
             () -> {
-              Robot.codriverControls.setRumble(CONTROLLER.DRIVE_RUMBLE_INTENSITY);
+              Robot.codriverControls.setRumble(CONTROLLER.CODRIVE_RUMBLE_INTENSITY);
             }),
-        new WaitCommand(CONTROLLER.DRIVE_RUMBLE_SECONDS),
+        new WaitCommand(CONTROLLER.CODRIVE_RUMBLE_SECONDS),
         new InstantCommand(
             () -> {
               Robot.codriverControls.setRumble(0);
