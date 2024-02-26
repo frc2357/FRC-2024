@@ -43,8 +43,8 @@ public class DriveToApriltag extends Command {
 
   @Override
   public void initialize() {
-    //trys to save camera time if the camera alrady has the desired pipeline selected.
-    if(m_camera.getPipeline() != m_pipelineIndex){
+    // trys to save camera time if the camera alrady has the desired pipeline selected.
+    if (m_camera.getPipeline() != m_pipelineIndex) {
       m_camera.setPipeline(m_pipelineIndex);
     }
     // reset pids
@@ -93,7 +93,9 @@ public class DriveToApriltag extends Command {
     if (Utility.isWithinTolerance(ty, m_tyOffset, Constants.SWERVE.APRILTAG_Y_TOLERANCE)) {
       ty = m_tyOffset;
     }
-    double xMetersPerSecond = m_yController.calculate(ty + Constants.SWERVE.APRILTAG_TY_MAGIC_OFFSET) * (m_invertSpeeds ? -1 : 1);
+    double xMetersPerSecond =
+        m_yController.calculate(ty + Constants.SWERVE.APRILTAG_TY_MAGIC_OFFSET)
+            * (m_invertSpeeds ? -1 : 1);
     double yMetersPerSecond = m_xController.calculate(tx) * (m_invertSpeeds ? -1 : 1);
     double rotationRadiansPerSecond = m_rotationController.calculate(rotationError);
     Robot.swerve.drive(xMetersPerSecond, yMetersPerSecond, rotationRadiansPerSecond);

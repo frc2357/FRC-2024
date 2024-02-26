@@ -5,7 +5,6 @@ import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.INTAKE_PHOTON_CAMERA;
-import frc.robot.Constants.SHOOTER_PHOTON_CAMERA;
 import frc.robot.Constants.SWERVE;
 import frc.robot.Robot;
 import frc.robot.state.RobotState.DriveControlState;
@@ -20,7 +19,7 @@ public class DriveToGamepeice extends Command {
 
   @Override
   public void initialize() {
-    if(Robot.intakeCam.getPipeline() != INTAKE_PHOTON_CAMERA.NEURAL_NETWORK_PIPELINE){
+    if (Robot.intakeCam.getPipeline() != INTAKE_PHOTON_CAMERA.NEURAL_NETWORK_PIPELINE) {
       Robot.intakeCam.setPipeline(INTAKE_PHOTON_CAMERA.NEURAL_NETWORK_PIPELINE);
     }
     Robot.state.setDriveControlState(DriveControlState.ROBOT_RELATIVE);
