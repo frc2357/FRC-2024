@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.subsystems.PhotonVisionCamera;
 import frc.robot.util.Utility;
 
 public class DriveToApriltag extends Command {
@@ -19,20 +20,33 @@ public class DriveToApriltag extends Command {
   private PIDController m_yController;
   private PIDController m_rotationController;
 
-  public DriveToApriltag(double tyOffset, double rotationGoal, int pipelineIndex) {
+  private PhotonVisionCamera m_camera;
+
+  private boolean m_invertSpeeds;
+
+  public DriveToApriltag(
+      double tyOffset,
+      double rotationGoal,
+      int pipelineIndex,
+      PhotonVisionCamera camera,
+      boolean invertSpeeds) {
     m_tyOffset = tyOffset;
     m_rotationGoal = rotationGoal;
     m_pipelineIndex = pipelineIndex;
     m_xController = Constants.SWERVE.APRILTAG_X_TRANSLATION_PID_CONTROLLER;
     m_yController = Constants.SWERVE.APRILTAG_Y_TRANSLATION_PID_CONTROLLER;
     m_rotationController = Constants.SWERVE.APRILTAG_ROTATION_PID_CONTROLLER;
-
+    m_camera = camera;
+    m_invertSpeeds = invertSpeeds;
     addRequirements(Robot.swerve);
   }
 
   @Override
   public void initialize() {
-    Robot.shooterCam.setPipeline(m_pipelineIndex);
+    // trys to save camera time if the camera alrady has the desired pipeline selected.
+    if (m_camera.getPipeline() != m_pipelineIndex) {
+      m_camera.setPipeline(m_pipelineIndex);
+    }
     // reset pids
     m_yController.setSetpoint(m_tyOffset + Constants.SWERVE.APRILTAG_TY_MAGIC_OFFSET);
     m_yController.reset();
@@ -49,14 +63,14 @@ public class DriveToApriltag extends Command {
 
   @Override
   public void execute() {
-    if (!m_canSeePieceDebouncer.calculate(Robot.shooterCam.validTargetExists())) {
+    if (!m_canSeePieceDebouncer.calculate(m_camera.validTargetExists())) {
       System.out.println("No Target Detected");
       Robot.swerve.drive(0, 0, 0);
       return;
     }
 
-    double tx = Robot.shooterCam.getTX();
-    double ty = Robot.shooterCam.getTY();
+    double tx = m_camera.getTX();
+    double ty = m_camera.getTY();
     double rotationError = Robot.swerve.getPose().getRotation().getRadians();
 
     // Increase tx tolerance when close to target since tx is more sensitive at
@@ -79,10 +93,12 @@ public class DriveToApriltag extends Command {
     if (Utility.isWithinTolerance(ty, m_tyOffset, Constants.SWERVE.APRILTAG_Y_TOLERANCE)) {
       ty = m_tyOffset;
     }
-    Robot.swerve.drive(
-        -m_yController.calculate(ty + Constants.SWERVE.APRILTAG_TY_MAGIC_OFFSET),
-        -m_xController.calculate(tx),
-        m_rotationController.calculate(rotationError));
+    double xMetersPerSecond =
+        m_yController.calculate(ty + Constants.SWERVE.APRILTAG_TY_MAGIC_OFFSET)
+            * (m_invertSpeeds ? -1 : 1);
+    double yMetersPerSecond = m_xController.calculate(tx) * (m_invertSpeeds ? -1 : 1);
+    double rotationRadiansPerSecond = m_rotationController.calculate(rotationError);
+    Robot.swerve.drive(xMetersPerSecond, yMetersPerSecond, rotationRadiansPerSecond);
   }
 
   @Override

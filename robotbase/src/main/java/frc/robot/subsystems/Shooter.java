@@ -115,7 +115,9 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     if (m_isClosedLoopEnabled) {
-      visionShotPeriodic();
+      if (m_isVisionShooting) {
+        visionShotPeriodic();
+      }
     }
 
     m_curveTuner.updateCurveValues();
