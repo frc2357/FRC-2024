@@ -1,12 +1,11 @@
 package frc.robot.subsystems;
 
-import static frc.robot.Constants.PHOTON_VISION;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.PHOTON_VISION;
 import java.util.List;
 import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
@@ -71,13 +70,12 @@ public class PhotonVisionCamera extends SubsystemBase {
 
       if (m_connectionLost) {
         m_connectionLost = false;
-        DriverStation.reportError(PHOTON_VISION.CONNECTION_REGAINED_NOFICATION_MESSAGE, false);
-        // ^reporting as an error to get drivers attention
+        DriverStation.reportWarning(PHOTON_VISION.CONNECTION_REGAINED_NOFICATION_MESSAGE, false);
       }
     } else if (!m_connectionLost) {
       m_connectionLost = true;
       DriverStation.reportError(PHOTON_VISION.LOST_CONNECTION_ERROR_MESSAGE, false);
-    } // ^reporting as an error to get the drivers attention
+    }
   }
 
   /**
