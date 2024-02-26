@@ -91,7 +91,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
                 fieldRelative
                     .withVelocityX(velocityXMetersPerSecond)
                     .withVelocityY(velocityYMetersPerSecond)
-                    .withRotationalRate(getTargetLockRotation(Robot.state.getTargetLockCamera())));
+                    .withRotationalRate(getTargetLockRotation()));
         break;
     }
   }
@@ -173,7 +173,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     return chassisSpeeds;
   }
 
-  public double getTargetLockRotation(PhotonVisionCamera camera) {
+  public double getTargetLockRotation() {
+    PhotonVisionCamera camera = Robot.state.getTargetLockCamera();
     double tx = camera.getTX();
     if (!camera.validTargetExists()
         || Utility.isWithinTolerance(tx, 0, Constants.SWERVE.TARGET_LOCK_TOLERANCE)) {

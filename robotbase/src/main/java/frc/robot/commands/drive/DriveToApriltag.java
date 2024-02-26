@@ -24,10 +24,6 @@ public class DriveToApriltag extends Command {
 
   private boolean m_invertSpeeds;
 
-  private double m_xOutput;
-  private double m_yOutput;
-  private double m_rotationOutput;
-
   public DriveToApriltag(
       double tyOffset,
       double rotationGoal,
@@ -97,10 +93,10 @@ public class DriveToApriltag extends Command {
     if (Utility.isWithinTolerance(ty, m_tyOffset, Constants.SWERVE.APRILTAG_Y_TOLERANCE)) {
       ty = m_tyOffset;
     }
-    m_xOutput = m_yController.calculate(ty + Constants.SWERVE.APRILTAG_TY_MAGIC_OFFSET) * (m_invertSpeeds ? -1 : 1);
-    m_yOutput = m_xController.calculate(tx) * (m_invertSpeeds ? -1 : 1);
-    m_rotationOutput = m_rotationController.calculate(rotationError);
-    Robot.swerve.drive(m_xOutput, m_yOutput, m_rotationOutput);
+    double xMetersPerSecond = m_yController.calculate(ty + Constants.SWERVE.APRILTAG_TY_MAGIC_OFFSET) * (m_invertSpeeds ? -1 : 1);
+    double yMetersPerSecond = m_xController.calculate(tx) * (m_invertSpeeds ? -1 : 1);
+    double rotationRadiansPerSecond = m_rotationController.calculate(rotationError);
+    Robot.swerve.drive(xMetersPerSecond, yMetersPerSecond, rotationRadiansPerSecond);
   }
 
   @Override
