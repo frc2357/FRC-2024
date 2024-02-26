@@ -355,6 +355,11 @@ public final class Constants {
     public static final AprilTagFieldLayout APRIL_TAG_FIELD_LAYOUT =
         AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
     public static final PoseStrategy POSE_STRATEGY = PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
+
+    public static final String LOST_CONNECTION_ERROR_MESSAGE =
+        "----------\nPHOTON VISION HAS LOST CONNECTION!\nVISION RESULTS WILL NOT BE UPDATED!\n----------";
+    public static final String CONNECTION_REGAINED_NOFICATION_MESSAGE =
+        "**********\nPhoton Vision has regained connection!\nVision results will now be updated.\n**********";
   }
 
   public static final class SHOOTER_PHOTON_CAMERA {
