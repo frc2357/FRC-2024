@@ -7,7 +7,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.ExtensionArmTuningSubsystem;
 import frc.robot.subsystems.IntakeTuningSubsystem;
@@ -46,13 +45,14 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_controller = new XboxController(0);
 
-    // intake = new IntakeTuningSubsystem();
-    // shooter = new ShooterTuningSubsystem();
-    // pivot = new ShooterPivotTuningSubsystem();
-    arm = new ExtensionArmTuningSubsystem();
+    intake = new IntakeTuningSubsystem();
+    shooter = new ShooterTuningSubsystem();
+    pivot = new ShooterPivotTuningSubsystem();
+    // arm = new ExtensionArmTuningSubsystem();
 
     m_rightBumper = new JoystickButton(m_controller, Button.kRightBumper.value);
     m_leftBumper = new JoystickButton(m_controller, Button.kLeftBumper.value);
+
   }
 
   /**
@@ -67,7 +67,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    arm.update();
+    // arm.update();
+    shooter.displayValues();
+    pivot.displayValues();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -100,9 +102,15 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     // intake.update();
-    // shooter.update();
+    shooter.update();
+    boolean rightBumperPressed = m_controller.getRightBumper();
+    if (rightBumperPressed) {
+      intake.axisRun(0.75, 0.75, false);
+    } else {
+      intake.axisRun(0, 0, false);
+    }
     // pivot.update();
-    arm.teleopPeriodic();
+    // arm.teleopPeriodic();
   }
 
   @Override
@@ -134,10 +142,10 @@ public class Robot extends TimedRobot {
     // m_leftBumper.onTrue(new InstantCommand(() -> m_intakeInverted =
     // !m_intakeInverted));
     double rightJoystick = m_controller.getRightY();
-    arm.axisRun(rightJoystick);
+    pivot.axisRun(rightJoystick);
 
     if (m_leftBumper.getAsBoolean()) {
-      arm.resetEncoders();
+      pivot.zero();
     }
   }
 
