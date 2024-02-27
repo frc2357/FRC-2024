@@ -8,14 +8,13 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.commands.climber.ClimberLevelClimb;
+import frc.robot.commands.climber.ClimberRotatePastRotations;
 import frc.robot.commands.drive.DriveAtSpeed;
 import frc.robot.commands.drive.DriveDistance;
-import frc.robot.commands.intake.IntakeFeedToShooter;
+import frc.robot.commands.drive.DriveToApriltag;
 import frc.robot.commands.intake.IntakeNoteFromFloor;
-import frc.robot.commands.pivot.DefaultPivot;
-import frc.robot.commands.pivot.PivotStop;
 import frc.robot.commands.scoring.AmpPrepose;
 import frc.robot.commands.scoring.AmpScore;
 import frc.robot.controls.util.AxisInterface;
@@ -70,9 +69,10 @@ public class DriverControls implements RumbleInterface {
   }
 
   public void mapControls() {
-    AxisInterface righStickYAxis = () -> {
-      return getRightStickYAxis();
-    };
+    AxisInterface righStickYAxis =
+        () -> {
+          return getRightStickYAxis();
+        };
 
     m_backButton.onTrue(new InstantCommand(() -> Robot.swerve.setYaw(0)));
     m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.setYaw(180)));
@@ -86,6 +86,14 @@ public class DriverControls implements RumbleInterface {
 
     m_rightTriggerShoot.whileTrue(new DriveDistance(0, 1, 1));
     m_leftTrigger.whileTrue(new DriveAtSpeed(0, 1, 3));
+    m_rightBumper.whileTrue(
+        new DriveToApriltag(
+            Constants.SWERVE.CLIMB_TY_SETPOINT,
+            Robot.climber::getLineupOnStageRotationSetpoint,
+            Constants.SHOOTER_PHOTON_CAMERA.APRIL_TAG_PIPELINE,
+            Robot.shooterCam,
+            false));
+    m_leftBumper.whileTrue(new ClimberRotatePastRotations(0.2, 100));
   }
 
   public double getX() {

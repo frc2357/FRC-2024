@@ -9,10 +9,11 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.subsystems.PhotonVisionCamera;
 import frc.robot.util.Utility;
+import java.util.function.Supplier;
 
 public class DriveToApriltag extends Command {
   private double m_tyOffset;
-  private double m_rotationGoal;
+  private Supplier<Double> m_rotationGoal;
   private int m_pipelineIndex;
   private Debouncer m_canSeePieceDebouncer;
 
@@ -26,7 +27,7 @@ public class DriveToApriltag extends Command {
 
   public DriveToApriltag(
       double tyOffset,
-      double rotationGoal,
+      Supplier<Double> rotationGoal,
       int pipelineIndex,
       PhotonVisionCamera camera,
       boolean invertSpeeds) {
@@ -43,7 +44,8 @@ public class DriveToApriltag extends Command {
 
   @Override
   public void initialize() {
-    // trys to save camera time if the camera alrady has the desired pipeline selected.
+    // trys to save camera time if the camera alrady has the desired pipeline
+    // selected.
     if (m_camera.getPipeline() != m_pipelineIndex) {
       m_camera.setPipeline(m_pipelineIndex);
     }
@@ -54,7 +56,7 @@ public class DriveToApriltag extends Command {
     m_xController.reset();
 
     m_rotationController.enableContinuousInput(-Math.PI, Math.PI);
-    m_rotationController.setSetpoint(m_rotationGoal);
+    m_rotationController.setSetpoint(m_rotationGoal.get());
     m_rotationController.reset();
 
     m_canSeePieceDebouncer =
@@ -67,6 +69,10 @@ public class DriveToApriltag extends Command {
       System.out.println("No Target Detected");
       Robot.swerve.drive(0, 0, 0);
       return;
+    }
+    if (Double.isNaN(m_rotationController.getSetpoint())) {
+      System.out.println("Could not calculate Rotation Septoint");
+      m_rotationController.setSetpoint(m_rotationGoal.get());
     }
 
     double tx = m_camera.getTX();

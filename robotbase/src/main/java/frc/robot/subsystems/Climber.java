@@ -7,14 +7,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.CLIMBER;
+import frc.robot.Robot;
 
 public class Climber extends SubsystemBase {
   private CANSparkMax m_rightClimberMotor;
   private CANSparkMax m_leftClimberMotor;
 
   public Climber() {
-    m_rightClimberMotor = new CANSparkMax(Constants.CAN_ID.RIGHT_CLIMBER_MOTOR_ID, MotorType.kBrushless);
-    m_leftClimberMotor = new CANSparkMax(Constants.CAN_ID.LEFT_CLIMBER_MOTOR_ID, MotorType.kBrushless);
+    m_rightClimberMotor =
+        new CANSparkMax(Constants.CAN_ID.RIGHT_CLIMBER_MOTOR_ID, MotorType.kBrushless);
+    m_leftClimberMotor =
+        new CANSparkMax(Constants.CAN_ID.LEFT_CLIMBER_MOTOR_ID, MotorType.kBrushless);
 
     configure();
   }
@@ -70,8 +73,10 @@ public class Climber extends SubsystemBase {
   }
 
   public void printEncoderValues() {
-    System.out.println("Right climber encoder values: " + m_rightClimberMotor.getEncoder().getPosition());
-    System.out.println("Left climber encoder values: " + m_leftClimberMotor.getEncoder().getPosition());
+    System.out.println(
+        "Right climber encoder values: " + m_rightClimberMotor.getEncoder().getPosition());
+    System.out.println(
+        "Left climber encoder values: " + m_leftClimberMotor.getEncoder().getPosition());
   }
 
   private double getRotations(CANSparkMax motor) {
@@ -95,5 +100,15 @@ public class Climber extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("Right Rotations", getRotations(m_rightClimberMotor));
     SmartDashboard.putNumber("Left Rotations", getRotations(m_leftClimberMotor));
+  }
+
+  public double getLineupOnStageRotationSetpoint() {
+    if (Robot.shooterCam.getPipeline() != Constants.SHOOTER_PHOTON_CAMERA.STAGE_APRILTAG_PIPELINE) {
+      return Double.NaN;
+    }
+
+    int stageTagId = Robot.shooterCam.getLastTargetID();
+    return Constants.SHOOTER_PHOTON_CAMERA.STAGE_APRILTAG_ROTATION_SETPOINTS.getOrDefault(
+        stageTagId, Double.NaN);
   }
 }

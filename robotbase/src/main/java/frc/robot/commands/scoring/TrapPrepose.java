@@ -7,12 +7,12 @@ import frc.robot.commands.state.SetRobotStateCommand;
 import frc.robot.state.RobotState;
 
 public class TrapPrepose extends SequentialCommandGroup {
-   public TrapPrepose() {
-      super(
-            new NotePreload(),
+  public TrapPrepose() {
+    super(
+        new NotePreload(),
 
-            // Arm Prepose
-            new ExtensionArmMoveToRotations(EXTENSION_ARM.TRAP_SCORE_ROTATIONS),
-            new SetRobotStateCommand(RobotState.State.TRAP_PRE_POSE));
-   }
+        // Arm Prepose
+        new ExtensionArmMoveToRotations(EXTENSION_ARM.TRAP_SCORE_ROTATIONS),
+        new SetRobotStateCommand(RobotState.State.TRAP_PRE_POSE));
+  }
 }

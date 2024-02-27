@@ -12,19 +12,16 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import java.util.Map;
 import java.util.function.BooleanSupplier;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide
- * numerical or boolean
- * constants. This class should not be used for any other purpose. All constants
- * should be declared
+ * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
+ * constants. This class should not be used for any other purpose. All constants should be declared
  * globally (i.e. public static). Do not put anything functional in this class.
  *
- * <p>
- * It is advised to statically import this class (or one of its inner classes)
- * wherever the
+ * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
@@ -92,23 +89,28 @@ public final class Constants {
     public static final double PIECE_TRACKING_ROTATION_TOLERANCE = 0.1;
 
     public static final double PIECE_TRACKING_MAX_DISTANCE_METERS = 3.0; // In Meters
-    public static final double PIECE_TRACKING_SLOW_DOWN_METERS = 1.0; // Robot goes half speed once passed
+    public static final double PIECE_TRACKING_SLOW_DOWN_METERS =
+        1.0; // Robot goes half speed once passed
     public static final double PIECE_TRACKING_X_METERS_PER_SECOND = 2;
 
     // Target Lock
     public static final double TARGET_LOCK_ROTATION_KP = 0.15;
     public static final double TARGET_LOCK_ROTATION_KI = 0.0;
     public static final double TARGET_LOCK_ROTATION_KD = 0.0;
-    public static final PIDController TARGET_LOCK_ROTATION_PID_CONTROLLER = new PIDController(
-        TARGET_LOCK_ROTATION_KP, TARGET_LOCK_ROTATION_KI, TARGET_LOCK_ROTATION_KD);
+    public static final PIDController TARGET_LOCK_ROTATION_PID_CONTROLLER =
+        new PIDController(
+            TARGET_LOCK_ROTATION_KP, TARGET_LOCK_ROTATION_KI, TARGET_LOCK_ROTATION_KD);
 
     public static final double TARGET_LOCK_FEED_FORWARD = 0.0;
     public static final double TARGET_LOCK_TOLERANCE = 0.25;
 
     // Translate to Apriltag
-    public static final PIDController APRILTAG_ROTATION_PID_CONTROLLER = new PIDController(0.03, 0, 0.01);
-    public static final PIDController APRILTAG_X_TRANSLATION_PID_CONTROLLER = new PIDController(0.05, 0, 0);
-    public static final PIDController APRILTAG_Y_TRANSLATION_PID_CONTROLLER = new PIDController(0.08, 0, 0);
+    public static final PIDController APRILTAG_ROTATION_PID_CONTROLLER =
+        new PIDController(0.03, 0, 0.01);
+    public static final PIDController APRILTAG_X_TRANSLATION_PID_CONTROLLER =
+        new PIDController(0.05, 0, 0);
+    public static final PIDController APRILTAG_Y_TRANSLATION_PID_CONTROLLER =
+        new PIDController(0.08, 0, 0);
 
     public static final double APRILTAG_X_TOLERANCE = 0.5;
     public static final double APRILTAG_Y_TOLERANCE = 0.5;
@@ -121,8 +123,7 @@ public final class Constants {
     public static final double AMP_ROTATION_SETPOINT = Math.PI / 2;
 
     // Climb
-    public static final double CLIMB_TY_SETPOINT = 0; // TODO: Tune this
-    public static final double CLIMB_TX_SETPOINT = 0; // TODO: Tune this
+    public static final double CLIMB_TY_SETPOINT = 20; // TODO: Tune this
     public static final double DRIVE_TOWARDS_STAGE_APRILTAG_Y_DISTANCE = 0; // TODO: Tune this
     public static final double DRIVE_TOWARDS_STAGE_APRILTAG_SECONDS = 0; // TODO: Tune this
     public static final double DRIVE_TOWARDS_CHAIN_Y_SPEED = 0; // TODO: Tune this
@@ -134,12 +135,13 @@ public final class Constants {
     public static final PIDController Y_CONTROLLER = new PIDController(2, 0, 0);
     public static final PIDController ROTATION_CONTROLLER = new PIDController(0.6, 0, 0);
 
-    public static final BooleanSupplier CHOREO_AUTO_MIRROR_PATHS = new BooleanSupplier() {
-      @Override
-      public boolean getAsBoolean() {
-        return false;
-      }
-    };
+    public static final BooleanSupplier CHOREO_AUTO_MIRROR_PATHS =
+        new BooleanSupplier() {
+          @Override
+          public boolean getAsBoolean() {
+            return false;
+          }
+        };
   }
 
   public static final class CONTROLLER {
@@ -301,19 +303,22 @@ public final class Constants {
 
     public static final double LEVEL_CLIMB_PITCH_SETPOINT = 0; // TODO: Tune this
 
-    public static final PIDController LEVEL_CLIMB_PID_CONTROLLER = new PIDController(0.05, 0, 0); // TODO: Tune this
+    public static final PIDController LEVEL_CLIMB_PID_CONTROLLER =
+        new PIDController(0.05, 0, 0); // TODO: Tune this
     public static final double LEVEL_CLIMB_FEEDFORWARD = 0.65;
     public static final double LEVEL_CLIMB_ROLL_SETPOINT = 0; // +/- 0.25 degrees // TODO: Tune this
     public static final double LEVEL_CLIMB_TOLERANCE = 3; // +/- 0.25 degrees // TODO: Tune this
 
     public static final double ROTATE_PAST_EXTENSION_SPEED = -0.2; // TODO: Tune this
-    public static final double NOTE_HANDOFF_MAX_ROTATIONS = -105; // Be generous on this // TODO: Tune this
+    public static final double NOTE_HANDOFF_MAX_ROTATIONS =
+        -105; // Be generous on this // TODO: Tune this
 
     public static final double ROTATE_PAST_PREPOSE_SPEED = 0.2; // TODO: Tune this
     public static final double PREPOSE_ROTATIONS = -75; // Be generous on this // TODO: Tune this
 
     public static final double ROTATE_PAST_TEN_DEGREES_SPEED = 0.2; // TODO: Tune this
-    public static final double TEN_DEGREES_ROTATIONS = -150; // Be generous on this // TODO: Tune this
+    public static final double TEN_DEGREES_ROTATIONS =
+        -150; // Be generous on this // TODO: Tune this
   }
 
   public static final class END_AFFECTOR {
@@ -377,8 +382,8 @@ public final class Constants {
   }
 
   public static final class PHOTON_VISION {
-    public static final AprilTagFieldLayout APRIL_TAG_FIELD_LAYOUT = AprilTagFields.k2024Crescendo
-        .loadAprilTagLayoutField();
+    public static final AprilTagFieldLayout APRIL_TAG_FIELD_LAYOUT =
+        AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
     public static final PoseStrategy POSE_STRATEGY = PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
 
     public static final String LOST_CONNECTION_ERROR_MESSAGE =
@@ -389,6 +394,43 @@ public final class Constants {
 
   public static final class SHOOTER_PHOTON_CAMERA {
     public static final String NAME = "shooter camera";
+
+    public static final int APRIL_TAG_PIPELINE = 0;
+    public static final int NEURAL_NETWORK_PIPELINE = 1;
+    public static final int POSE_ESTIMATION_PIPELINE = 2;
+    public static final int STAGE_APRILTAG_PIPELINE = 3;
+
+    public static final int DEFAULT_PIPELINE = 2;
+
+    public static final double HEAD_ON_TOLERANCE = 0;
+
+    public static final double LENS_BEHIND_OF_ROBOT_ORIGIN_INCHES = 8.172;
+    public static final double LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES = 8.45;
+    public static final double LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES = 13.388;
+    public static final double LENS_ANGLE_TILTED_UP_DEGREES = 30;
+    public static final Transform3d ROBOT_TO_CAMERA_TRANSFORM =
+        new Transform3d(
+            new Translation3d(
+                -Units.inchesToMeters(LENS_BEHIND_OF_ROBOT_ORIGIN_INCHES),
+                -Units.inchesToMeters(LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES),
+                Units.inchesToMeters(LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES)),
+            new Rotation3d(0, LENS_ANGLE_TILTED_UP_DEGREES, 0));
+
+    // Map of rotation setpoints for the stage tag we are targeting (Relative to
+    // alliance wall)
+    public static final Map<Integer, Double> STAGE_APRILTAG_ROTATION_SETPOINTS =
+        Map.of(
+            11, +30.0, // Red Stage Left
+            12, -30.0, // Red Stage Right
+            13, +180.0, // Red Stage Center
+            14, +180.0, // Blue Stage Center
+            15, +30.0, // Blue Stage Left
+            16, -30.0 // Blue Stage Right
+            );
+  }
+
+  public static final class INTAKE_PHOTON_CAMERA {
+    public static final String NAME = "intake camera";
 
     public static final int APRIL_TAG_PIPELINE = 0;
     public static final int NEURAL_NETWORK_PIPELINE = 1;
@@ -409,28 +451,5 @@ public final class Constants {
                 -Units.inchesToMeters(LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES),
                 Units.inchesToMeters(LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES)),
             new Rotation3d(0, LENS_ANGLE_TILTED_UP_DEGREES, 0));
-  }
-
-  public static final class INTAKE_PHOTON_CAMERA {
-    public static final String NAME = "intake camera";
-
-    public static final int APRIL_TAG_PIPELINE = 0;
-    public static final int NEURAL_NETWORK_PIPELINE = 1;
-    public static final int POSE_ESTIMATION_PIPELINE = 2;
-
-    public static final int DEFAULT_PIPELINE = 2;
-
-    public static final double HEAD_ON_TOLERANCE = 0;
-
-    public static final double LENS_BEHIND_OF_ROBOT_ORIGIN_INCHES = 8.172;
-    public static final double LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES = 8.45;
-    public static final double LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES = 13.388;
-    public static final double LENS_ANGLE_TILTED_UP_DEGREES = 30;
-    public static final Transform3d ROBOT_TO_CAMERA_TRANSFORM = new Transform3d(
-        new Translation3d(
-            -Units.inchesToMeters(LENS_BEHIND_OF_ROBOT_ORIGIN_INCHES),
-            -Units.inchesToMeters(LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES),
-            Units.inchesToMeters(LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES)),
-        new Rotation3d(0, LENS_ANGLE_TILTED_UP_DEGREES, 0));
   }
 }

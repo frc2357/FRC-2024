@@ -102,38 +102,45 @@ public class CodriverControls implements RumbleInterface {
   }
 
   private void mapControls() {
-    AxisInterface rightClimberAxis = () -> {
-      // Don't run if left bumper is pressed
-      boolean leftBumper = m_controller.getLeftBumperPressed();
-      int val = leftBumper ? 0 : 1;
-      return getRightYAxis() * val;
-    };
+    AxisInterface rightClimberAxis =
+        () -> {
+          // Don't run if left bumper is pressed
+          boolean leftBumper = m_controller.getLeftBumperPressed();
+          int val = leftBumper ? 0 : 1;
+          return getRightYAxis() * val;
+        };
 
-    AxisInterface leftClimberAxis = () -> {
-      // Don't run if left bumper is pressed
-      boolean rightBumper = m_controller.getRightBumperPressed();
-      int val = rightBumper ? 0 : 1;
-      return getRightYAxis() * val;
-    };
+    AxisInterface leftClimberAxis =
+        () -> {
+          // Don't run if left bumper is pressed
+          boolean rightBumper = m_controller.getRightBumperPressed();
+          int val = rightBumper ? 0 : 1;
+          return getRightYAxis() * val;
+        };
 
-    AxisInterface axisRightStickY = () -> {
-      return getRightYAxis();
-    };
+    AxisInterface axisRightStickY =
+        () -> {
+          return getRightYAxis();
+        };
 
-    AxisInterface subsystemRollerForwardAxis = () -> {
-      return getRightTriggerAxis();
-    };
+    AxisInterface subsystemRollerForwardAxis =
+        () -> {
+          return getRightTriggerAxis();
+        };
 
-    AxisInterface subsystemRollerReverseAxis = () -> {
-      return -getLeftTriggerAxis();
-    };
+    AxisInterface subsystemRollerReverseAxis =
+        () -> {
+          return -getLeftTriggerAxis();
+        };
 
-    Trigger noDPad = new Trigger(
-        () -> m_upDPad.getAsBoolean()
-            || m_rightDPad.getAsBoolean()
-            || m_downDPad.getAsBoolean()
-            || m_leftDPad.getAsBoolean())
-        .negate();
+    Trigger noDPad =
+        new Trigger(
+                () ->
+                    m_upDPad.getAsBoolean()
+                        || m_rightDPad.getAsBoolean()
+                        || m_downDPad.getAsBoolean()
+                        || m_leftDPad.getAsBoolean())
+            .negate();
 
     Trigger rightTriggerPreNoDPad = noDPad.and(m_rightTriggerPre);
     Trigger rightTriggerFullNoDPad = noDPad.and(m_rightTriggerFull);
@@ -206,12 +213,16 @@ public class CodriverControls implements RumbleInterface {
     upDPadOnly.and(m_rightBumper).whileTrue(new ClimberAxis(axisRightStickY, () -> 0));
     upDPadOnly.and(m_leftBumper).whileTrue(new ClimberAxis(() -> 0, axisRightStickY));
 
-    upDPadAndY.onTrue(new InstantCommand(() -> {
-      Robot.climber.zero();
-    }));
-    upDPadAndA.onTrue(new InstantCommand(() -> {
-      Robot.climber.printEncoderValues();
-    }));
+    upDPadAndY.onTrue(
+        new InstantCommand(
+            () -> {
+              Robot.climber.zero();
+            }));
+    upDPadAndA.onTrue(
+        new InstantCommand(
+            () -> {
+              Robot.climber.printEncoderValues();
+            }));
 
     // Extension/EndAffector - Down DPad
     downDPadOnly.whileTrue(new ExtensionArmAxis(axisRightStickY));
