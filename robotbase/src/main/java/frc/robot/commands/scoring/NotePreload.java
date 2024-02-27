@@ -18,7 +18,7 @@ import frc.robot.commands.pivot.PivotSetRotation;
 import frc.robot.commands.shooter.ShooterSetRPMs;
 import frc.robot.commands.shooter.ShooterStop;
 import frc.robot.commands.state.SetAmpState;
-import frc.robot.state.RobotState.AmpScoreState;
+import frc.robot.state.RobotState.AmpState;
 
 public class NotePreload extends SequentialCommandGroup {
 
@@ -41,7 +41,7 @@ public class NotePreload extends SequentialCommandGroup {
 
         // Stop motors
         new ParallelCommandGroup(new IntakeStop(), new ShooterStop(), new EndAffectorStop()),
-        new SetAmpState(AmpScoreState.AMP_PRELOAD));
+        new SetAmpState(AmpState.AMP_PRELOAD));
 
     // TODO: logic to position note for amp or trap
   }

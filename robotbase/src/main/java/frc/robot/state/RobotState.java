@@ -25,9 +25,13 @@ public class RobotState {
 
   public static enum AutoClimbState {}
 
-  public static enum ShootingState {}
+  public static enum ShootingState {
+    VISION_TARGETING,
+    MANUAL_SETPOINT,
+    MANUAL_SPEED
+  }
 
-  public static enum AmpScoreState {
+  public static enum AmpState {
     EMPTY,
     AMP_PRELOAD,
     AMP_PREPOSE
@@ -36,7 +40,7 @@ public class RobotState {
   private Alliance m_alliance;
   private State m_currentState;
   private IntakeState m_currentIntakeState;
-  private AmpScoreState m_currentAmpScoreState;
+  private AmpState m_currentAmpState;
   private DriveControlState m_currentDriveControlState;
   private PhotonVisionCamera m_targetLockCamera;
 
@@ -44,7 +48,7 @@ public class RobotState {
     m_alliance = null;
     m_currentState = State.INIT;
     m_currentIntakeState = IntakeState.EMPTY;
-    m_currentAmpScoreState = AmpScoreState.EMPTY;
+    m_currentAmpState = AmpState.EMPTY;
     m_currentDriveControlState = DriveControlState.FIELD_RELATIVE;
     m_targetLockCamera = Robot.shooterCam;
   }
@@ -57,12 +61,20 @@ public class RobotState {
     return m_currentIntakeState == state;
   }
 
-  public void setAmpScoreState(AmpScoreState state) {
-    m_currentAmpScoreState = state;
+  public void setShooterState(IntakeState state) {
+    m_currentIntakeState = state;
   }
 
-  public boolean isAmpScore(AmpScoreState state) {
-    return m_currentAmpScoreState == state;
+  public boolean isShooter(IntakeState state) {
+    return m_currentIntakeState == state;
+  }
+
+  public void setAmpState(AmpState state) {
+    m_currentAmpState = state;
+  }
+
+  public boolean isAmp(AmpState state) {
+    return m_currentAmpState == state;
   }
 
   public Alliance getAlliance() {
