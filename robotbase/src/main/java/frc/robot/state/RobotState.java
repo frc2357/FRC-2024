@@ -1,6 +1,8 @@
 package frc.robot.state;
 
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.Robot;
+import frc.robot.subsystems.PhotonVisionCamera;
 
 public class RobotState {
   public static enum State {
@@ -23,12 +25,14 @@ public class RobotState {
   private State m_currentState;
   private DriveControlState m_currentDriveControlState;
   private boolean m_zeroed;
+  private PhotonVisionCamera m_targetLockCamera;
 
   public RobotState() {
     m_alliance = null;
     m_currentState = State.INIT;
     m_currentDriveControlState = DriveControlState.FIELD_RELATIVE;
     m_zeroed = false;
+    m_targetLockCamera = Robot.shooterCam;
   }
 
   public Alliance getAlliance() {
@@ -103,5 +107,13 @@ public class RobotState {
     return m_currentState == State.AMP_PRE_POSE
         || m_currentState == State.NOTE_STOWED
         || m_currentState == State.NOTE_PRELOAD;
+  }
+
+  public void setTargetLockCamera(PhotonVisionCamera targetLockCamera) {
+    m_targetLockCamera = targetLockCamera;
+  }
+
+  public PhotonVisionCamera getTargetLockCamera() {
+    return m_targetLockCamera;
   }
 }

@@ -149,6 +149,10 @@ public final class Constants {
     public static final double CODRIVE_CONTROLLER_DEADBAND = 0.025;
     public static final double SWERVE_TRANSLATIONAL_DEADBAND = 0.0;
     public static final double SWERVE_ROTATIONAL_DEADBAND = 0.0;
+    public static final double DRIVE_RUMBLE_INTENSITY = .5;
+    public static final double CODRIVE_RUMBLE_INTENSITY = .5;
+    public static final double DRIVE_RUMBLE_SECONDS = 2;
+    public static final double CODRIVE_RUMBLE_SECONDS = 2;
   }
 
   public static final class SHOOTER {
@@ -343,14 +347,14 @@ public final class Constants {
     public static final int MOTOR_STALL_LIMIT_AMPS = 40;
     public static final int MOTOR_FREE_LIMIT_AMPS = 40;
 
-    public static final double MOTOR_PID_P = 0.01;
+    public static final double MOTOR_PID_P = 0.003;
     public static final double MOTOR_PID_I = 0;
     public static final double MOTOR_PID_D = 0;
-    public static final double MOTOR_PID_FF = 0.0001;
+    public static final double MOTOR_PID_FF = 0.000005;
 
     public static final int SMART_MOTION_MAX_VEL_RPM = 6000;
     public static final int SMART_MOTION_MIN_VEL_RPM = 0;
-    public static final int SMART_MOTION_MAX_ACC_RPM = 30000;
+    public static final int SMART_MOTION_MAX_ACC_RPM = 48000;
     public static final double SMART_MOTION_ALLOWED_ERROR = 0.1;
 
     public static final double AXIS_MAX_SPEED = 0.5;
@@ -376,10 +380,39 @@ public final class Constants {
     public static final AprilTagFieldLayout APRIL_TAG_FIELD_LAYOUT = AprilTagFields.k2024Crescendo
         .loadAprilTagLayoutField();
     public static final PoseStrategy POSE_STRATEGY = PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
+
+    public static final String LOST_CONNECTION_ERROR_MESSAGE =
+        "----------\nPHOTON VISION HAS LOST CONNECTION!\nVISION RESULTS WILL NOT BE UPDATED!\n----------";
+    public static final String CONNECTION_REGAINED_NOFICATION_MESSAGE =
+        "**********\nPhoton Vision has regained connection!\nVision results will now be updated.\n**********";
   }
 
   public static final class SHOOTER_PHOTON_CAMERA {
-    public static final String NAME = "ov9782-shooter";
+    public static final String NAME = "shooter camera";
+
+    public static final int APRIL_TAG_PIPELINE = 0;
+    public static final int NEURAL_NETWORK_PIPELINE = 1;
+    public static final int POSE_ESTIMATION_PIPELINE = 2;
+
+    public static final int DEFAULT_PIPELINE = 2;
+
+    public static final double HEAD_ON_TOLERANCE = 0;
+
+    public static final double LENS_BEHIND_OF_ROBOT_ORIGIN_INCHES = 8.172;
+    public static final double LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES = 8.45;
+    public static final double LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES = 13.388;
+    public static final double LENS_ANGLE_TILTED_UP_DEGREES = 30;
+    public static final Transform3d ROBOT_TO_CAMERA_TRANSFORM =
+        new Transform3d(
+            new Translation3d(
+                -Units.inchesToMeters(LENS_BEHIND_OF_ROBOT_ORIGIN_INCHES),
+                -Units.inchesToMeters(LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES),
+                Units.inchesToMeters(LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES)),
+            new Rotation3d(0, LENS_ANGLE_TILTED_UP_DEGREES, 0));
+  }
+
+  public static final class INTAKE_PHOTON_CAMERA {
+    public static final String NAME = "intake camera";
 
     public static final int APRIL_TAG_PIPELINE = 0;
     public static final int NEURAL_NETWORK_PIPELINE = 1;

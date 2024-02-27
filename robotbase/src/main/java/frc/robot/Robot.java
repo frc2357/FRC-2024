@@ -19,6 +19,7 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.EndAffector;
 import frc.robot.subsystems.ExtensionArm;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakePhotonCamera;
 import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShooterPhotonCamera;
@@ -46,6 +47,7 @@ public class Robot extends TimedRobot {
   public static CodriverControls codriverControls;
 
   public static ShooterPhotonCamera shooterCam;
+  public static IntakePhotonCamera intakeCam;
 
   public static EndAffector endAffector;
 
@@ -69,6 +71,11 @@ public class Robot extends TimedRobot {
             Constants.SHOOTER_PHOTON_CAMERA.NAME,
             Constants.SHOOTER_PHOTON_CAMERA.ROBOT_TO_CAMERA_TRANSFORM,
             Constants.SHOOTER_PHOTON_CAMERA.HEAD_ON_TOLERANCE);
+    intakeCam =
+        new IntakePhotonCamera(
+            Constants.INTAKE_PHOTON_CAMERA.NAME,
+            Constants.INTAKE_PHOTON_CAMERA.ROBOT_TO_CAMERA_TRANSFORM,
+            Constants.INTAKE_PHOTON_CAMERA.HEAD_ON_TOLERANCE);
 
     state = new RobotState();
 
