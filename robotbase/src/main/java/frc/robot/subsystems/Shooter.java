@@ -8,12 +8,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.networkTables.ShooterCurveTuner;
+import frc.robot.state.RobotState.ShootingState;
 import frc.robot.util.RobotMath;
 import frc.robot.util.Utility;
 
 public class Shooter extends SubsystemBase {
-  private boolean m_isVisionShooting = false;
-
   private double m_targetSpeedTop;
   private double m_targetSpeedBottom;
 
@@ -22,8 +21,6 @@ public class Shooter extends SubsystemBase {
 
   private SparkPIDController m_topPIDController;
   private SparkPIDController m_bottomPIDController;
-
-  private boolean m_isClosedLoopEnabled = false;
 
   private ShooterCurveTuner m_curveTuner;
 
@@ -70,6 +67,11 @@ public class Shooter extends SubsystemBase {
     m_bottomPIDController.setOutputRange(-1, 1);
   }
 
+  public void setManualRPMs(double topRPMs, double bottomRPMs) {
+    Robot.state.setShootingState(ShootingState.MANUAL);
+    setRPMs(topRPMs, bottomRPMs);
+  }
+
   public void setRPMs(double topRPMS, double bottomRPMS) {
     m_targetSpeedTop = topRPMS;
     m_targetSpeedBottom = bottomRPMS;
@@ -78,7 +80,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setAxisSpeed(double top, double bottom) {
-    m_isClosedLoopEnabled = false;
+    Robot.state.setShootingState(ShootingState.MANUAL);
     top *= Constants.SHOOTER.SHOOTER_AXIS_MAX_SPEED;
     bottom *= Constants.SHOOTER.SHOOTER_AXIS_MAX_SPEED;
     m_topShooterMotor.set(top);
@@ -86,7 +88,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void stop() {
-    m_isClosedLoopEnabled = false;
+    Robot.state.setShootingState(ShootingState.MANUAL);
     m_topShooterMotor.set(0.0);
     m_bottomShooterMotor.set(0.0);
   }
@@ -114,23 +116,19 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (m_isClosedLoopEnabled) {
-      if (m_isVisionShooting) {
-        visionShotPeriodic();
-      }
+    if (Robot.state.isShooting(ShootingState.VISION_TARGETING)) {
+      visionShotPeriodic();
     }
 
     m_curveTuner.updateCurveValues();
   }
 
   public void startVisionShooting() {
-    m_isClosedLoopEnabled = true;
-    m_isVisionShooting = true;
+    Robot.state.setShootingState(ShootingState.VISION_TARGETING);
   }
 
   public void stopVisionShooting() {
-    m_isClosedLoopEnabled = false;
-    m_isVisionShooting = false;
+    Robot.state.setShootingState(ShootingState.MANUAL);
     stop();
   }
 

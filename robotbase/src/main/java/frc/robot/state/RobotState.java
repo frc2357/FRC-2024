@@ -27,8 +27,7 @@ public class RobotState {
 
   public static enum ShootingState {
     VISION_TARGETING,
-    MANUAL_SETPOINT,
-    MANUAL_SPEED
+    MANUAL
   }
 
   public static enum AmpState {
@@ -40,6 +39,7 @@ public class RobotState {
   private Alliance m_alliance;
   private State m_currentState;
   private IntakeState m_currentIntakeState;
+  private ShootingState m_currentShootingState;
   private AmpState m_currentAmpState;
   private DriveControlState m_currentDriveControlState;
   private PhotonVisionCamera m_targetLockCamera;
@@ -61,12 +61,12 @@ public class RobotState {
     return m_currentIntakeState == state;
   }
 
-  public void setShooterState(IntakeState state) {
-    m_currentIntakeState = state;
+  public void setShootingState(ShootingState state) {
+    m_currentShootingState = state;
   }
 
-  public boolean isShooter(IntakeState state) {
-    return m_currentIntakeState == state;
+  public boolean isShooting(ShootingState state) {
+    return m_currentShootingState == state;
   }
 
   public void setAmpState(AmpState state) {
