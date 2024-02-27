@@ -173,7 +173,7 @@ public final class Constants {
     public static final int BOTTOM_MOTOR_STALL_LIMIT_AMPS = 40;
     public static final int BOTTOM_MOTOR_FREE_LIMIT_AMPS = 40;
 
-    public static final double RAMP_RATE = 5;
+    public static final double RAMP_RATE = .25;
 
     public static final double TOP_MOTOR_P = 0.0; // TODO: tune shooter motor PIDs
     public static final double TOP_MOTOR_I = 0.0;

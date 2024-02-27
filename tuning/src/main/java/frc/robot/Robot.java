@@ -47,9 +47,9 @@ public class Robot extends TimedRobot {
     m_controller = new XboxController(0);
 
     // intake = new IntakeTuningSubsystem();
-    // shooter = new ShooterTuningSubsystem();
+    shooter = new ShooterTuningSubsystem();
     // pivot = new ShooterPivotTuningSubsystem();
-    arm = new ExtensionArmTuningSubsystem();
+    // arm = new ExtensionArmTuningSubsystem();
 
     m_rightBumper = new JoystickButton(m_controller, Button.kRightBumper.value);
     m_leftBumper = new JoystickButton(m_controller, Button.kLeftBumper.value);
@@ -67,7 +67,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    arm.update();
+    // arm.update();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -100,9 +100,9 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     // intake.update();
-    // shooter.update();
+    shooter.update();
     // pivot.update();
-    arm.teleopPeriodic();
+    // arm.teleopPeriodic();
   }
 
   @Override
@@ -134,10 +134,10 @@ public class Robot extends TimedRobot {
     // m_leftBumper.onTrue(new InstantCommand(() -> m_intakeInverted =
     // !m_intakeInverted));
     double rightJoystick = m_controller.getRightY();
-    arm.axisRun(rightJoystick);
+    // arm.axisRun(rightJoystick);
 
     if (m_leftBumper.getAsBoolean()) {
-      arm.resetEncoders();
+      // arm.resetEncoders();
     }
   }
 
