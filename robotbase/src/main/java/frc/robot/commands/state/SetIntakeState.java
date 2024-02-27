@@ -5,19 +5,19 @@ import frc.robot.Robot;
 import frc.robot.state.RobotState.IntakeState;
 
 public class SetIntakeState extends Command {
-   private IntakeState m_state;
+  private IntakeState m_state;
 
-   public SetIntakeState(IntakeState state) {
-      m_state = state;
-   }
+  public SetIntakeState(IntakeState state) {
+    m_state = state;
+  }
 
-   @Override
-   public void initialize() {
-      Robot.state.setIntakeState(m_state);
-   }
+  @Override
+  public void initialize() {
+    Robot.state.setIntakeState(m_state);
+  }
 
-   @Override
-   public boolean isFinished() {
-      return true;
-   }
+  @Override
+  public boolean isFinished() {
+    return true;
+  }
 }

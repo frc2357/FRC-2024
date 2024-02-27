@@ -5,19 +5,19 @@ import frc.robot.Robot;
 import frc.robot.state.RobotState.AmpScoreState;
 
 public class SetAmpState extends Command {
-   private AmpScoreState m_state;
+  private AmpScoreState m_state;
 
-   public SetAmpState(AmpScoreState state) {
-      m_state = state;
-   }
+  public SetAmpState(AmpScoreState state) {
+    m_state = state;
+  }
 
-   @Override
-   public void initialize() {
-      Robot.state.setAmpScoreState(m_state);
-   }
+  @Override
+  public void initialize() {
+    Robot.state.setAmpScoreState(m_state);
+  }
 
-   @Override
-   public boolean isFinished() {
-      return true;
-   }
+  @Override
+  public boolean isFinished() {
+    return true;
+  }
 }

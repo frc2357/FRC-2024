@@ -7,7 +7,7 @@ import frc.robot.Robot;
 import frc.robot.commands.intake.IntakeReverseFeed;
 import frc.robot.commands.pivot.PivotSetRotation;
 import frc.robot.commands.shooter.ShooterSetRPMs;
-import frc.robot.state.RobotState;
+import frc.robot.state.RobotState.IntakeState;
 
 public class SourceIntakeFromShooter extends ParallelDeadlineGroup {
   public SourceIntakeFromShooter() {
@@ -15,7 +15,7 @@ public class SourceIntakeFromShooter extends ParallelDeadlineGroup {
         new IntakeReverseFeed()
             .finallyDo(
                 (boolean interrupted) -> {
-                  if (!interrupted) Robot.state.setState(RobotState.State.NOTE_STOWED);
+                  if (!interrupted) Robot.state.setIntakeState(IntakeState.NOTE_STOWED);
                 }));
     addCommands(
         new ShooterSetRPMs(

@@ -23,13 +23,9 @@ public class RobotState {
     TARGET_LOCK
   }
 
-  public static enum AutoClimbState {
+  public static enum AutoClimbState {}
 
-  }
-
-  public static enum ShootingState {
-
-  }
+  public static enum ShootingState {}
 
   public static enum AmpScoreState {
     EMPTY,

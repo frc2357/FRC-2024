@@ -2,14 +2,13 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
-
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CAN_ID;
 import frc.robot.Constants.DIGITAL_INPUT;
 import frc.robot.Constants.INTAKE;
-import frc.robot.state.RobotState.IntakeState;
 import frc.robot.Robot;
+import frc.robot.state.RobotState.IntakeState;
 
 public class Intake extends SubsystemBase {
   private CANSparkMax m_topIntakeMotor;

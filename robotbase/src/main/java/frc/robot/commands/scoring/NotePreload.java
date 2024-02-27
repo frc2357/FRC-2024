@@ -18,7 +18,6 @@ import frc.robot.commands.pivot.PivotSetRotation;
 import frc.robot.commands.shooter.ShooterSetRPMs;
 import frc.robot.commands.shooter.ShooterStop;
 import frc.robot.commands.state.SetAmpState;
-import frc.robot.commands.state.SetRobotState;
 import frc.robot.state.RobotState.AmpScoreState;
 
 public class NotePreload extends SequentialCommandGroup {
