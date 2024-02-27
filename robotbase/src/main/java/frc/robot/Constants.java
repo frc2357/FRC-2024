@@ -4,7 +4,12 @@
 
 package frc.robot;
 
+import java.util.function.BooleanSupplier;
+
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+
 import com.revrobotics.CANSparkBase.IdleMode;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
@@ -12,15 +17,17 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
-import java.util.function.BooleanSupplier;
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants. This class should not be used for any other purpose. All constants should be declared
+ * The Constants class provides a convenient place for teams to hold robot-wide
+ * numerical or boolean
+ * constants. This class should not be used for any other purpose. All constants
+ * should be declared
  * globally (i.e. public static). Do not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
+ * <p>
+ * It is advised to statically import this class (or one of its inner classes)
+ * wherever the
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
@@ -88,28 +95,23 @@ public final class Constants {
     public static final double PIECE_TRACKING_ROTATION_TOLERANCE = 0.1;
 
     public static final double PIECE_TRACKING_MAX_DISTANCE_METERS = 3.0; // In Meters
-    public static final double PIECE_TRACKING_SLOW_DOWN_METERS =
-        1.0; // Robot goes half speed once passed
+    public static final double PIECE_TRACKING_SLOW_DOWN_METERS = 1.0; // Robot goes half speed once passed
     public static final double PIECE_TRACKING_X_METERS_PER_SECOND = 2;
 
     // Target Lock
     public static final double TARGET_LOCK_ROTATION_KP = 0.15;
     public static final double TARGET_LOCK_ROTATION_KI = 0.0;
     public static final double TARGET_LOCK_ROTATION_KD = 0.0;
-    public static final PIDController TARGET_LOCK_ROTATION_PID_CONTROLLER =
-        new PIDController(
-            TARGET_LOCK_ROTATION_KP, TARGET_LOCK_ROTATION_KI, TARGET_LOCK_ROTATION_KD);
+    public static final PIDController TARGET_LOCK_ROTATION_PID_CONTROLLER = new PIDController(
+        TARGET_LOCK_ROTATION_KP, TARGET_LOCK_ROTATION_KI, TARGET_LOCK_ROTATION_KD);
 
     public static final double TARGET_LOCK_FEED_FORWARD = 0.0;
     public static final double TARGET_LOCK_TOLERANCE = 0.25;
 
     // Translate to Apriltag
-    public static final PIDController APRILTAG_ROTATION_PID_CONTROLLER =
-        new PIDController(0.03, 0, 0.01);
-    public static final PIDController APRILTAG_X_TRANSLATION_PID_CONTROLLER =
-        new PIDController(0.05, 0, 0);
-    public static final PIDController APRILTAG_Y_TRANSLATION_PID_CONTROLLER =
-        new PIDController(0.08, 0, 0);
+    public static final PIDController APRILTAG_ROTATION_PID_CONTROLLER = new PIDController(0.03, 0, 0.01);
+    public static final PIDController APRILTAG_X_TRANSLATION_PID_CONTROLLER = new PIDController(0.05, 0, 0);
+    public static final PIDController APRILTAG_Y_TRANSLATION_PID_CONTROLLER = new PIDController(0.08, 0, 0);
 
     public static final double APRILTAG_X_TOLERANCE = 0.5;
     public static final double APRILTAG_Y_TOLERANCE = 0.5;
@@ -126,13 +128,12 @@ public final class Constants {
     public static final PIDController Y_CONTROLLER = new PIDController(2, 0, 0);
     public static final PIDController ROTATION_CONTROLLER = new PIDController(0.6, 0, 0);
 
-    public static final BooleanSupplier CHOREO_AUTO_MIRROR_PATHS =
-        new BooleanSupplier() {
-          @Override
-          public boolean getAsBoolean() {
-            return false;
-          }
-        };
+    public static final BooleanSupplier CHOREO_AUTO_MIRROR_PATHS = new BooleanSupplier() {
+      @Override
+      public boolean getAsBoolean() {
+        return false;
+      }
+    };
   }
 
   public static final class CONTROLLER {
@@ -190,18 +191,12 @@ public final class Constants {
     public static final double AXIS_MAX_SPEED = 0.8;
 
     public static final double FEED_TO_SHOOTER_TIMEOUT = 0;
+    public static final double FLOOR_INTAKE_REVERSE_TIMEOUT = 0.25;
 
-    public static final double TOP_MOTOR_PICKUP_SPEED_PERCENT_OUTPUT = .75;
-    public static final double BOTTOM_MOTOR_PICKUP_SPEED_PERCENT_OUTPUT = .75;
-
-    public static final double TOP_MOTOR_SLOW_PICKUP_SPEED_PERCENT_OUTPUT = .1;
-    public static final double BOTTOM_MOTOR_SLOW_PICKUP_SPEED_PERCENT_OUTPUT = .1;
-
-    public static final double TOP_MOTOR_SOURCE_INTAKE_SPEED_PERCENT_OUTPUT = 0.25;
-    public static final double BOTTOM_MOTOR_SOURCE_INTAKE_SPEED_PERCENT_OUTPUT = 0.25;
-
-    public static final double TOP_MOTOR_FEED_SPEED_PERCENT_OUTPUT = 0.75;
-    public static final double BOTTOM_MOTOR_FEED_SPEED_PERCENT_OUTPUT = 0.75;
+    public static final double PICKUP_SPEED_PERCENT_OUTPUT = .75;
+    public static final double SLOW_PICKUP_SPEED_PERCENT_OUTPUT = .1;
+    public static final double REVERSE_FEED_SPEED_PERCENT_OUTPUT = 0.25;
+    public static final double FEED_SPEED_PERCENT_OUTPUT = 0.75;
 
     public static final IdleMode IDLE_MODE = IdleMode.kBrake;
 
@@ -352,14 +347,12 @@ public final class Constants {
   }
 
   public static final class PHOTON_VISION {
-    public static final AprilTagFieldLayout APRIL_TAG_FIELD_LAYOUT =
-        AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+    public static final AprilTagFieldLayout APRIL_TAG_FIELD_LAYOUT = AprilTagFields.k2024Crescendo
+        .loadAprilTagLayoutField();
     public static final PoseStrategy POSE_STRATEGY = PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
 
-    public static final String LOST_CONNECTION_ERROR_MESSAGE =
-        "----------\nPHOTON VISION HAS LOST CONNECTION!\nVISION RESULTS WILL NOT BE UPDATED!\n----------";
-    public static final String CONNECTION_REGAINED_NOFICATION_MESSAGE =
-        "**********\nPhoton Vision has regained connection!\nVision results will now be updated.\n**********";
+    public static final String LOST_CONNECTION_ERROR_MESSAGE = "----------\nPHOTON VISION HAS LOST CONNECTION!\nVISION RESULTS WILL NOT BE UPDATED!\n----------";
+    public static final String CONNECTION_REGAINED_NOFICATION_MESSAGE = "**********\nPhoton Vision has regained connection!\nVision results will now be updated.\n**********";
   }
 
   public static final class SHOOTER_PHOTON_CAMERA {
@@ -377,13 +370,12 @@ public final class Constants {
     public static final double LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES = 8.45;
     public static final double LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES = 13.388;
     public static final double LENS_ANGLE_TILTED_UP_DEGREES = 30;
-    public static final Transform3d ROBOT_TO_CAMERA_TRANSFORM =
-        new Transform3d(
-            new Translation3d(
-                -Units.inchesToMeters(LENS_BEHIND_OF_ROBOT_ORIGIN_INCHES),
-                -Units.inchesToMeters(LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES),
-                Units.inchesToMeters(LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES)),
-            new Rotation3d(0, LENS_ANGLE_TILTED_UP_DEGREES, 0));
+    public static final Transform3d ROBOT_TO_CAMERA_TRANSFORM = new Transform3d(
+        new Translation3d(
+            -Units.inchesToMeters(LENS_BEHIND_OF_ROBOT_ORIGIN_INCHES),
+            -Units.inchesToMeters(LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES),
+            Units.inchesToMeters(LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES)),
+        new Rotation3d(0, LENS_ANGLE_TILTED_UP_DEGREES, 0));
   }
 
   public static final class INTAKE_PHOTON_CAMERA {
@@ -401,12 +393,11 @@ public final class Constants {
     public static final double LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES = 8.45;
     public static final double LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES = 13.388;
     public static final double LENS_ANGLE_TILTED_UP_DEGREES = 30;
-    public static final Transform3d ROBOT_TO_CAMERA_TRANSFORM =
-        new Transform3d(
-            new Translation3d(
-                -Units.inchesToMeters(LENS_BEHIND_OF_ROBOT_ORIGIN_INCHES),
-                -Units.inchesToMeters(LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES),
-                Units.inchesToMeters(LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES)),
-            new Rotation3d(0, LENS_ANGLE_TILTED_UP_DEGREES, 0));
+    public static final Transform3d ROBOT_TO_CAMERA_TRANSFORM = new Transform3d(
+        new Translation3d(
+            -Units.inchesToMeters(LENS_BEHIND_OF_ROBOT_ORIGIN_INCHES),
+            -Units.inchesToMeters(LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES),
+            Units.inchesToMeters(LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES)),
+        new Rotation3d(0, LENS_ANGLE_TILTED_UP_DEGREES, 0));
   }
 }

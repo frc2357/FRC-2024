@@ -2,13 +2,14 @@ package frc.robot.commands.scoring;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Constants.*;
+import frc.robot.Constants.PIVOT;
+import frc.robot.Constants.SHOOTER;
 import frc.robot.commands.intake.IntakeFeedToShooter;
 import frc.robot.commands.pivot.PivotSetRotation;
 import frc.robot.commands.shooter.ShooterSetRPMs;
 import frc.robot.commands.shooter.ShooterWaitForRPMs;
-import frc.robot.commands.state.SetRobotStateCommand;
-import frc.robot.state.RobotState;
+import frc.robot.commands.state.SetAmpState;
+import frc.robot.state.RobotState.AmpScoreState;
 
 public class SpeakerScoreFromBase extends ParallelCommandGroup {
   public SpeakerScoreFromBase() {
@@ -18,7 +19,7 @@ public class SpeakerScoreFromBase extends ParallelCommandGroup {
         new SequentialCommandGroup(
             new PivotSetRotation(PIVOT.SUBWOOFER_SHOT_ROTATION),
             new ShooterWaitForRPMs(),
-            new SetRobotStateCommand(RobotState.State.EMPTY),
+            new SetAmpState(AmpScoreState.EMPTY),
             new IntakeFeedToShooter()));
   }
 }

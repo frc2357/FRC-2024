@@ -13,12 +13,13 @@ public class IntakeAxis extends Command {
   }
 
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   @Override
   public void execute() {
     double axisValue = m_axis.getValue();
-    Robot.intake.setAxisSpeed(axisValue, axisValue);
+    Robot.intake.setAxisSpeed(axisValue);
   }
 
   @Override
