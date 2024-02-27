@@ -373,14 +373,14 @@ public final class Constants {
 
     public static final double HEAD_ON_TOLERANCE = 0;
 
-    public static final double LENS_BEHIND_OF_ROBOT_ORIGIN_INCHES = 8.172;
-    public static final double LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES = 8.45;
-    public static final double LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES = 13.388;
-    public static final double LENS_ANGLE_TILTED_UP_DEGREES = 30;
+    public static final double LENS_BEHIND_ROBOT_ORIGIN_INCHES = 6.01824;
+    public static final double LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES = 0;
+    public static final double LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES = 5.38192;
+    public static final double LENS_ANGLE_TILTED_UP_DEGREES = 50;
     public static final Transform3d ROBOT_TO_CAMERA_TRANSFORM =
         new Transform3d(
             new Translation3d(
-                -Units.inchesToMeters(LENS_BEHIND_OF_ROBOT_ORIGIN_INCHES),
+                -Units.inchesToMeters(LENS_BEHIND_ROBOT_ORIGIN_INCHES),
                 -Units.inchesToMeters(LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES),
                 Units.inchesToMeters(LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES)),
             new Rotation3d(0, LENS_ANGLE_TILTED_UP_DEGREES, 0));
@@ -397,16 +397,16 @@ public final class Constants {
 
     public static final double HEAD_ON_TOLERANCE = 0;
 
-    public static final double LENS_BEHIND_OF_ROBOT_ORIGIN_INCHES = 8.172;
-    public static final double LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES = 8.45;
-    public static final double LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES = 13.388;
-    public static final double LENS_ANGLE_TILTED_UP_DEGREES = 30;
+    public static final double LENS_IN_FRONT_OF_ROBOT_ORIGIN_INCHES = 5.15138;
+    public static final double LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES = 0;
+    public static final double LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES = 23.10292;
+    public static final double LENS_ANGLE_TILTED_DOWN_DEGREES = 20;
     public static final Transform3d ROBOT_TO_CAMERA_TRANSFORM =
         new Transform3d(
             new Translation3d(
-                -Units.inchesToMeters(LENS_BEHIND_OF_ROBOT_ORIGIN_INCHES),
+                Units.inchesToMeters(LENS_IN_FRONT_OF_ROBOT_ORIGIN_INCHES),
                 -Units.inchesToMeters(LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES),
                 Units.inchesToMeters(LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES)),
-            new Rotation3d(0, LENS_ANGLE_TILTED_UP_DEGREES, 0));
+            new Rotation3d(0, -LENS_ANGLE_TILTED_DOWN_DEGREES, 0));
   }
 }
