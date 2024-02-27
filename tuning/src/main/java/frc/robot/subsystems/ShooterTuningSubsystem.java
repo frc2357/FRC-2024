@@ -102,9 +102,12 @@ public class ShooterTuningSubsystem {
         topSpeed = m_topMotor.getEncoder().getVelocity();
         bottomSpeed = m_bottomMotor.getEncoder().getVelocity();
 
-        SmartDashboard.putNumber("Top Shooter RPMs", topSpeed);
-        SmartDashboard.putNumber("Bottom Shooter RPMs", bottomSpeed);
-        System.out.println("Bottom shooter RPMs: " + bottomSpeed);
+        displayValues();
+    }
+
+    public void displayValues() {
+        SmartDashboard.putNumber("Top Shooter RPMs", m_topMotor.getEncoder().getVelocity());
+        SmartDashboard.putNumber("Bottom Shooter RPMs", m_bottomMotor.getEncoder().getVelocity());
     }
 
     public void axisRun(double topPO, double bottomPO, boolean reverse) {

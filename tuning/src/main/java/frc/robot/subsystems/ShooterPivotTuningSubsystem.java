@@ -30,7 +30,7 @@ public class ShooterPivotTuningSubsystem {
 
     private double horizontalSetpoint = 0;
 
-    private double axisMaxSpeed = 0.15;
+    private double axisMaxSpeed = 0.25;
 
     public ShooterPivotTuningSubsystem() {
         m_motor = new CANSparkMax(29, MotorType.kBrushless);
@@ -65,6 +65,11 @@ public class ShooterPivotTuningSubsystem {
         m_pid.setFF(kFF);
     }
 
+    public void displayValues() {
+        double position = m_absoluteEncoder.getPosition();
+        SmartDashboard.putNumber("Shooter Pivot Position", position);
+    }
+
     public void display() {
         SmartDashboard.putNumber("Shooter Pivot P", kP);
         SmartDashboard.putNumber("Shooter Pivot I", kI);
@@ -87,15 +92,21 @@ public class ShooterPivotTuningSubsystem {
 
         updatePIDs();
 
-        double setpoint, position;
+        double setpoint;
         setpoint = SmartDashboard.getNumber("Shooter Pivot Setpoint", 0);
 
         m_pid.setReference(setpoint, ControlType.kPosition);
 
-        position = m_absoluteEncoder.getPosition();
-        SmartDashboard.putNumber("Shooter Pivot Position", position);
         // System.out.println("Shooter Pivot Position: " + position);
         System.out.println(m_absoluteEncoder.getVelocity());
+    }
+
+    public void zero() {
+        double position = m_absoluteEncoder.getPosition();
+        double currenOffset = m_absoluteEncoder.getZeroOffset();
+        double newOffset = position + currenOffset - 10;
+        newOffset %= 360;
+        m_absoluteEncoder.setZeroOffset(newOffset);
     }
 
     public void axisRun(double motorPO) {
