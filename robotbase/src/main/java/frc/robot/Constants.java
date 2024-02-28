@@ -4,7 +4,12 @@
 
 package frc.robot;
 
+import java.util.function.BooleanSupplier;
+
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+
 import com.revrobotics.CANSparkBase.IdleMode;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
@@ -12,8 +17,6 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
-import java.util.function.BooleanSupplier;
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -184,6 +187,9 @@ public final class Constants {
     public static final double BOTTOM_MOTOR_I = 0.0;
     public static final double BOTTOM_MOTOR_D = 0.0;
     public static final double BOTTOM_MOTOR_FF = 0.0001825;
+
+    public static final double ZERO_SPEED = 0.05; // TODO: TUNE
+    public static final double ZERO_SPEED_STOP_TOLERANCE = 0.01; // TODO: TUNE
   }
 
   public static final class INTAKE {
@@ -284,6 +290,9 @@ public final class Constants {
 
     public static final int MOTOR_FREE_LIMIT_AMPS = 40; // TODO: Tune climber amp limits
     public static final int MOTOR_STALL_LIMIT_AMPS = 40;
+
+    public static final double ZERO_SPEED = 0.05; // TODO: TUNE
+    public static final double ZERO_SPEED_STOP_TOLERANCE = 0.01; // TODO: TUNE
   }
 
   public static final class END_AFFECTOR {
@@ -329,8 +338,8 @@ public final class Constants {
 
     public static final double AXIS_MAX_SPEED = 0.5;
 
-    public static final double ZERO_SPEED = 0; // TODO: TUNE
-    public static final double ZERO_SPEED_STOP_TOLERANCE = 0; // TODO: TUNE
+    public static final double ZERO_SPEED = 0.05; // TODO: TUNE
+    public static final double ZERO_SPEED_STOP_TOLERANCE = 0.01; // TODO: TUNE
 
     public static final double HOME_ROTATIONS = 0.1;
     public static final double NOTE_STOW_ROTATIONS = 1.4;

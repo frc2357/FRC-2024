@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -42,19 +43,16 @@ public class Climber extends SubsystemBase {
     set(0, 0);
   }
 
-  public double getRightAmps() {
-    return m_rightClimberMotor.getOutputCurrent();
+  public double getRightVelocity() {
+    return m_rightClimberMotor.getEncoder().getVelocity();
   }
 
-  public double getLeftAmps() {
-    return m_leftClimberMotor.getOutputCurrent();
+  public double getLeftVelocity() {
+    return m_leftClimberMotor.getEncoder().getVelocity();
   }
 
-  public boolean isRightAtCurrent(double amps) {
-    return getRightAmps() >= amps;
-  }
-
-  public boolean isLeftAtCurrent(double amps) {
-    return getLeftAmps() >= amps;
+  public void zero() {
+    m_leftClimberMotor.getEncoder().setPosition(0.0);
+    m_rightClimberMotor.getEncoder().setPosition(0.0);
   }
 }
