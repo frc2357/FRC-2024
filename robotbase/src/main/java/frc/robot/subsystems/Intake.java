@@ -4,7 +4,11 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.*;
+import frc.robot.Constants.CAN_ID;
+import frc.robot.Constants.DIGITAL_INPUT;
+import frc.robot.Constants.INTAKE;
+import frc.robot.Robot;
+import frc.robot.state.RobotState.NoteState;
 
 public class Intake extends SubsystemBase {
   private CANSparkMax m_topIntakeMotor;
@@ -38,15 +42,14 @@ public class Intake extends SubsystemBase {
         INTAKE.BOTTOM_MOTOR_STALL_LIMIT_AMPS, INTAKE.BOTTOM_MOTOR_FREE_LIMIT_AMPS);
   }
 
-  public void set(double topPO, double bottomPO) {
-    m_topIntakeMotor.set(topPO);
-    m_bottomIntakeMotor.set(bottomPO);
+  public void set(double percentOutput) {
+    m_topIntakeMotor.set(percentOutput);
+    m_bottomIntakeMotor.set(percentOutput);
   }
 
-  public void setAxisSpeed(double topAxisSpeed, double bottomAxisSpeed) {
-    topAxisSpeed *= INTAKE.AXIS_MAX_SPEED;
-    bottomAxisSpeed *= INTAKE.AXIS_MAX_SPEED;
-    set(topAxisSpeed, bottomAxisSpeed);
+  public void setAxisSpeed(double axisSpeed) {
+    axisSpeed *= INTAKE.AXIS_MAX_SPEED;
+    set(axisSpeed);
   }
 
   public boolean isBeamBroken() {
@@ -69,11 +72,8 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // TODO: Make this better with RobotState
-    if (isBeamBroken() && !m_hasBeamBeenBroken) {
-      m_hasBeamBeenBroken = true;
-    } else if (!isBeamBroken() && m_hasBeamBeenBroken) {
-      m_notePassedBeamBreak = true;
+    if (Robot.state.isNote(NoteState.NOTE_STOWED) && !isBeamBroken()) {
+      Robot.state.setNoteState(NoteState.EMPTY);
     }
   }
 }

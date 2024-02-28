@@ -13,9 +13,7 @@ public class IntakeReverseFeed extends Command {
 
   @Override
   public void initialize() {
-    Robot.intake.set(
-        -INTAKE.TOP_MOTOR_SOURCE_INTAKE_SPEED_PERCENT_OUTPUT,
-        -INTAKE.BOTTOM_MOTOR_SOURCE_INTAKE_SPEED_PERCENT_OUTPUT);
+    Robot.intake.set(INTAKE.REVERSE_FEED_SPEED_PERCENT_OUTPUT);
   }
 
   @Override
