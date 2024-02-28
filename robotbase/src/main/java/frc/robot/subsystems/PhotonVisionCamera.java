@@ -13,6 +13,7 @@ import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import org.photonvision.targeting.TargetCorner;
@@ -30,6 +31,7 @@ public class PhotonVisionCamera extends SubsystemBase {
   protected final Transform3d ROBOT_TO_CAMERA_TRANSFORM; // if this changes, we have bigger issues.
   protected final double HEAD_ON_TOLERANCE;
   protected static boolean m_connectionLost;
+  protected Optional<EstimatedRobotPose> m_lastPoseEstimate;
 
   /**
    * Sets the camera stream.
@@ -68,6 +70,7 @@ public class PhotonVisionCamera extends SubsystemBase {
       m_result = m_camera.getLatestResult();
       m_targets = m_result.getTargets();
       m_bestTarget = m_result.getBestTarget();
+      m_lastPoseEstimate = m_poseEstimator.update(m_result);
 
       if (m_connectionLost) {
         m_connectionLost = false;
@@ -333,18 +336,28 @@ public class PhotonVisionCamera extends SubsystemBase {
    *     no targets.
    */
   public VisionMeasurement getEstimatedPose() {
-    Optional<EstimatedRobotPose> optionalPose = m_poseEstimator.update();
 
-    if (!optionalPose.isPresent()) {
-      return null;
+    Pose3d pose3d = null;
+
+    if (m_lastPoseEstimate.isPresent()) {
+      pose3d = m_lastPoseEstimate.get().estimatedPose;
     }
 
-    Pose3d pose3d = optionalPose.get().estimatedPose;
+    Optional<Pose3d> tagPose =
+        PHOTON_VISION.APRIL_TAG_FIELD_LAYOUT.getTagPose(m_bestTarget.getFiducialId());
+
+    if (tagPose.isPresent()) {
+      pose3d =
+          PhotonUtils.estimateFieldToRobotAprilTag(
+              m_bestTarget.getBestCameraToTarget(), tagPose.get(), ROBOT_TO_CAMERA_TRANSFORM);
+    }
+
+    if (pose3d == null) return null;
 
     Pose2d pose =
         new Pose2d(pose3d.getX(), pose3d.getY(), new Rotation2d(pose3d.getRotation().getZ()));
 
-    return new VisionMeasurement(pose, optionalPose.get().timestampSeconds);
+    return new VisionMeasurement(pose, m_lastPoseEstimate.get().timestampSeconds);
   }
 
   /**
