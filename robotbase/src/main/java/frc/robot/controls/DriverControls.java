@@ -23,7 +23,7 @@ import frc.robot.commands.shooter.ShooterStop;
 import frc.robot.controls.util.AxisInterface;
 import frc.robot.controls.util.AxisThresholdTrigger;
 import frc.robot.controls.util.RumbleInterface;
-import frc.robot.state.RobotState.State;
+import frc.robot.state.RobotState.NoteState;
 
 public class DriverControls implements RumbleInterface {
   private XboxController m_controller;
@@ -85,7 +85,9 @@ public class DriverControls implements RumbleInterface {
     // m_rightBumper.onTrue(new DriverAmpScore());
     m_aButton.onTrue(
         new ConditionalCommand(
-            new AmpScore(), new AmpPrepose(), () -> Robot.state.isInState(State.AMP_PRE_POSE)));
+            new AmpScore(),
+            new AmpPrepose(),
+            () -> Robot.state.isNote(NoteState.END_AFFECTOR_PRELOAD)));
 
     m_rightTriggerPrime.whileTrue(
         new SpeakerShotPrime(

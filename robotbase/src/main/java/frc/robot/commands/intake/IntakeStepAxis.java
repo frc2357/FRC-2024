@@ -24,7 +24,7 @@ public class IntakeStepAxis extends Command {
   public void execute() {
     double axisValue = m_axis.getValue();
     axisValue = Math.floor(axisValue / m_step) * m_step;
-    Robot.intake.setAxisSpeed(axisValue, axisValue);
+    Robot.intake.setAxisSpeed(axisValue);
   }
 
   @Override

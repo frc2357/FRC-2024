@@ -8,10 +8,14 @@ public class RobotState {
   public static enum State {
     INIT, // Robot is initializing
     DISABLED, // Robot is in disabled mode and no alliance is selected
+  }
+
+  public static enum NoteState {
     EMPTY, // Robot has nothing in it
-    NOTE_STOWED, // Robot has a note in the intake
-    NOTE_PRELOAD, // Robot has a note preloaded into the end affector
-    AMP_PRE_POSE, // Robot is in position to score in the amp
+    NOTE_IN_INTAKE,
+    NOTE_PAST_BEAM_BREAK,
+    NOTE_STOWED,
+    END_AFFECTOR_PRELOAD
   };
 
   public static enum DriveControlState {
@@ -20,42 +24,72 @@ public class RobotState {
     TARGET_LOCK
   }
 
+  public static enum AutoClimbState {
+    NONE
+  }
+
+  public static enum ShooterState {
+    VISION_TARGETING,
+    CLOSED_LOOP,
+    NONE
+  }
+
+  public static enum PivotState {
+    VISION_TARGETING,
+    CLOSED_LOOP,
+    NONE
+  }
+
   private Alliance m_alliance;
   private State m_currentState;
+  private NoteState m_currentNoteState;
+  private ShooterState m_currentShooterState;
+  private PivotState m_currentPivotState;
+  private AutoClimbState m_currentClimbState;
   private DriveControlState m_currentDriveControlState;
-  private boolean m_zeroed;
   private PhotonVisionCamera m_targetLockCamera;
 
   public RobotState() {
     m_alliance = null;
     m_currentState = State.INIT;
+    m_currentNoteState = NoteState.EMPTY;
+    m_currentShooterState = ShooterState.NONE;
+    m_currentPivotState = PivotState.NONE;
+    m_currentClimbState = AutoClimbState.NONE;
     m_currentDriveControlState = DriveControlState.FIELD_RELATIVE;
-    m_zeroed = false;
     m_targetLockCamera = Robot.shooterCam;
+  }
+
+  public void setNoteState(NoteState state) {
+    m_currentNoteState = state;
+  }
+
+  public boolean isNote(NoteState state) {
+    return m_currentNoteState == state;
+  }
+
+  public void setShooterState(ShooterState state) {
+    m_currentShooterState = state;
+  }
+
+  public boolean isShooter(ShooterState state) {
+    return m_currentShooterState == state;
+  }
+
+  public void setPivotState(PivotState state) {
+    m_currentPivotState = state;
+  }
+
+  public boolean isPivot(PivotState state) {
+    return m_currentPivotState == state;
+  }
+
+  public boolean isRobot(State state) {
+    return m_currentState == state;
   }
 
   public Alliance getAlliance() {
     return m_alliance;
-  }
-
-  public State getState() {
-    return m_currentState;
-  }
-
-  public boolean isZeroed() {
-    return m_zeroed;
-  }
-
-  public void setRobotZeroed(boolean zeroed) {
-    setZeroed(zeroed);
-  }
-
-  public boolean isInState(State state) {
-    return m_currentState == state;
-  }
-
-  public void onDriverAllianceSelect(Alliance alliance) {
-    setAlliance(alliance);
   }
 
   public void robotInit() {
@@ -83,29 +117,15 @@ public class RobotState {
   }
 
   public void setDriveControlState(DriveControlState driveControlState) {
-    setCurrentDriveControlState(driveControlState);
+    m_currentDriveControlState = driveControlState;
   }
 
-  private void setAlliance(Alliance alliance) {
+  public void setAlliance(Alliance alliance) {
     m_alliance = alliance;
-  }
-
-  private void setZeroed(boolean zeroed) {
-    m_zeroed = zeroed;
   }
 
   private void setCurrentState(State newState) {
     m_currentState = newState;
-  }
-
-  private void setCurrentDriveControlState(DriveControlState driveControlState) {
-    m_currentDriveControlState = driveControlState;
-  }
-
-  public boolean hasNote() {
-    return m_currentState == State.AMP_PRE_POSE
-        || m_currentState == State.NOTE_STOWED
-        || m_currentState == State.NOTE_PRELOAD;
   }
 
   public void setTargetLockCamera(PhotonVisionCamera targetLockCamera) {

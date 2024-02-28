@@ -25,6 +25,6 @@ public class PivotAxis extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    Robot.pivot.stop();
+    Robot.pivot.setPivotRotation(Robot.pivot.getPivotRotations());
   }
 }

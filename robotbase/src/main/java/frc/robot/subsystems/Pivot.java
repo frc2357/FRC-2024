@@ -11,13 +11,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.PIVOT;
 import frc.robot.Robot;
+import frc.robot.state.RobotState.PivotState;
 import frc.robot.util.RobotMath;
 import frc.robot.util.Utility;
 
 public class Pivot extends SubsystemBase {
-  private boolean m_isClosedLoopEnabled = false;
-  private boolean m_isVisionTargeting = false;
-
   private CANSparkMax m_pivotMotor;
   private SparkPIDController m_pivotPIDController;
   private SparkAbsoluteEncoder m_absoluteEncoder;
@@ -54,20 +52,24 @@ public class Pivot extends SubsystemBase {
     m_pivotPIDController.setFeedbackDevice(m_absoluteEncoder);
   }
 
+  public void setManualRotation(double rotation) {
+    Robot.state.setPivotState(PivotState.CLOSED_LOOP);
+    setPivotRotation(rotation);
+  }
+
   public void setPivotRotation(double rotation) {
-    m_isClosedLoopEnabled = true;
     m_targetRotation = rotation;
     m_pivotPIDController.setReference(m_targetRotation, ControlType.kPosition);
   }
 
   public void setPivotAxisSpeed(double axisSpeed) {
-    m_isClosedLoopEnabled = false;
+    Robot.state.setPivotState(PivotState.NONE);
     double motorSpeed = (-axisSpeed) * PIVOT.AXIS_MAX_SPEED;
     m_pivotMotor.set(motorSpeed);
   }
 
   public void stop() {
-    m_isClosedLoopEnabled = false;
+    Robot.state.setPivotState(PivotState.NONE);
     m_pivotMotor.stopMotor();
   }
 
@@ -102,15 +104,14 @@ public class Pivot extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (m_isClosedLoopEnabled) {
+    if (Robot.state.isPivot(PivotState.VISION_TARGETING)) {
+      visionTargetingPeriodic();
+    }
+    if (Robot.state.isPivot(PivotState.CLOSED_LOOP)) {
       if (isPivotAtRotation()) {
         stop();
       } else {
         m_pivotPIDController.setReference(m_targetRotation, ControlType.kPosition);
-      }
-
-      if (m_isVisionTargeting) {
-        visionTargetingPeriodic();
       }
     }
 
@@ -118,13 +119,11 @@ public class Pivot extends SubsystemBase {
   }
 
   public void startVisionTargeting() {
-    m_isVisionTargeting = true;
-    m_isClosedLoopEnabled = true;
+    Robot.state.setPivotState(PivotState.VISION_TARGETING);
   }
 
   public void stopVisionTargeting() {
-    m_isVisionTargeting = false;
-    m_isClosedLoopEnabled = false;
+    Robot.state.setPivotState(PivotState.NONE);
     stop();
   }
 
