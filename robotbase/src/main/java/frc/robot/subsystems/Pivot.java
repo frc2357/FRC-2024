@@ -6,6 +6,7 @@ import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkPIDController;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.PIVOT;
@@ -16,13 +17,17 @@ public class Pivot extends SubsystemBase {
   private SparkPIDController m_pivotPIDController;
   private SparkAbsoluteEncoder m_absoluteEncoder;
   private double m_targetAngle;
-  private boolean m_isZeroed;
+  private double m_zeroOffset;
 
   public Pivot() {
     m_pivotMotor = new CANSparkMax(Constants.CAN_ID.PIVOT_MOTOR_ID, MotorType.kBrushless);
     m_targetAngle = Double.NaN;
-    m_isZeroed = false;
     configure();
+
+    m_zeroOffset = Preferences.getDouble(Constants.PIVOT.PREFERENCES_ZERO_OFFSET_KEY, Double.NaN);
+    if (!Double.isNaN(m_zeroOffset)) {
+      setZeroOffset(m_zeroOffset);
+    }
   }
 
   private void configure() {
@@ -52,7 +57,7 @@ public class Pivot extends SubsystemBase {
   }
 
   public boolean isZeroed() {
-    return m_isZeroed;
+    return !Double.isNaN(m_zeroOffset);
   }
 
   public boolean isSettingAngle() {
@@ -60,7 +65,7 @@ public class Pivot extends SubsystemBase {
   }
 
   public void setAngle(double angle) {
-    if (!m_isZeroed) {
+    if (!isZeroed()) {
       System.err.println("PIVOT: Cannot set angle, Pivot not zeroed!");
       return;
     }
@@ -107,7 +112,12 @@ public class Pivot extends SubsystemBase {
     double currentOffset = m_absoluteEncoder.getZeroOffset();
     double newOffset = getCurrentAngle() + currentOffset - Constants.PIVOT.MIN_PIVOT_ANGLE;
     newOffset %= 360;
+    setZeroOffset(newOffset);
+  }
+
+  private void setZeroOffset(double newOffset) {
     m_absoluteEncoder.setZeroOffset(newOffset);
-    m_isZeroed = true;
+    m_zeroOffset = newOffset;
+    Preferences.setDouble(Constants.PIVOT.PREFERENCES_ZERO_OFFSET_KEY, newOffset);
   }
 }

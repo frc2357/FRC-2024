@@ -277,6 +277,7 @@ public final class Constants {
     public static final double PIVOT_D = 0;
     public static final double PIVOT_FF = 0.0005; // Barely moving: .000465
 
+    public static final String PREFERENCES_ZERO_OFFSET_KEY = "PivotZeroOffset";
     public static final double ZERO_SPEED = 0.1;
     public static final double ZERO_SPEED_STOP_TOLERANCE = 0.015;
     public static final double ZERO_SPEED_INITIAL_SECONDS = 0.15;
