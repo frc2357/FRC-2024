@@ -45,7 +45,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_controller = new XboxController(0);
 
-    // intake = new IntakeTuningSubsystem();
+    intake = new IntakeTuningSubsystem();
     shooter = new ShooterTuningSubsystem();
     pivot = new ShooterPivotTuningSubsystem();
     // arm = new ExtensionArmTuningSubsystem();
@@ -103,6 +103,12 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     // intake.update();
     shooter.update();
+    boolean rightBumperPressed = m_controller.getRightBumper();
+    if (rightBumperPressed) {
+      intake.axisRun(0.75, 0.75, false);
+    } else {
+      intake.axisRun(0, 0, false);
+    }
     // pivot.update();
     // arm.teleopPeriodic();
   }
