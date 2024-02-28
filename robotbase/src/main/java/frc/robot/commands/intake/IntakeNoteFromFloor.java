@@ -1,7 +1,9 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.INTAKE;
 import frc.robot.Robot;
 import frc.robot.commands.state.SetNoteState;
@@ -14,8 +16,10 @@ public class IntakeNoteFromFloor extends SequentialCommandGroup {
         new SetNoteState(NoteState.NOTE_IN_INTAKE),
         new IntakeRunUntilBeamState(INTAKE.SLOW_PICKUP_SPEED_PERCENT_OUTPUT, false),
         new SetNoteState(NoteState.NOTE_PAST_BEAM_BREAK),
-        new InstantCommand(() -> Robot.intake.set(INTAKE.REVERSE_FEED_SPEED_PERCENT_OUTPUT))
-            .withTimeout(INTAKE.FLOOR_INTAKE_REVERSE_TIMEOUT),
+        new ParallelDeadlineGroup(
+            new WaitCommand(INTAKE.FLOOR_INTAKE_REVERSE_TIMEOUT),
+            new InstantCommand(() -> Robot.intake.set(INTAKE.REVERSE_FEED_SPEED_PERCENT_OUTPUT))),
+        new IntakeStop(),
         new SetNoteState(NoteState.NOTE_STOWED));
   }
 }
