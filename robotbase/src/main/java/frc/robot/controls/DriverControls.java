@@ -58,8 +58,8 @@ public class DriverControls implements RumbleInterface {
     m_leftBumper = new JoystickButton(controller, Button.kLeftBumper.value);
     m_rightBumper = new JoystickButton(controller, Button.kRightBumper.value);
 
-    m_rightTriggerPrime = new AxisThresholdTrigger(m_controller, Axis.kRightTrigger, 0.0);
-    m_rightTriggerShoot = new AxisThresholdTrigger(m_controller, Axis.kRightTrigger, .8);
+    m_rightTriggerPrime = new AxisThresholdTrigger(m_controller, Axis.kRightTrigger, 0.1);
+    m_rightTriggerShoot = new AxisThresholdTrigger(m_controller, Axis.kRightTrigger, .7);
     m_leftTrigger = new AxisThresholdTrigger(m_controller, Axis.kLeftTrigger, 0);
 
     m_rightDPad = new POVButton(m_controller, 90);
@@ -83,7 +83,7 @@ public class DriverControls implements RumbleInterface {
     m_leftTrigger.whileTrue(new IntakeNoteFromFloor());
 
     // m_rightBumper.onTrue(new DriverAmpScore());
-    m_aButton.onTrue(
+    m_rightBumper.onTrue(
         new ConditionalCommand(
             new AmpScore(),
             new AmpPrepose(),

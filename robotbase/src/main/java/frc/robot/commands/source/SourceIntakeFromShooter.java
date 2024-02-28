@@ -11,7 +11,6 @@ import frc.robot.commands.intake.WaitForBeamBreak;
 import frc.robot.commands.pivot.PivotSetRotation;
 import frc.robot.commands.shooter.ShooterSetRPMs;
 import frc.robot.commands.shooter.ShooterStop;
-import frc.robot.state.RobotState.NoteState;
 
 public class SourceIntakeFromShooter extends SequentialCommandGroup {
   public SourceIntakeFromShooter() {

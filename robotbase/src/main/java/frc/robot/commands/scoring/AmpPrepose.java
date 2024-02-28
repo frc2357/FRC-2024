@@ -31,7 +31,7 @@ public class AmpPrepose extends SequentialCommandGroup {
         // Run end affector, shooter, and intake to load note
         new ParallelDeadlineGroup(
             new WaitCommand(SCORING.SECONDS_PRELOAD_NOTE),
-            new SequentialCommandGroup(new WaitCommand(0.25), new IntakeFeedToShooter()),
+            new SequentialCommandGroup(new WaitCommand(0.125), new IntakeFeedToShooter()),
             new EndAffectorSetSpeed(END_AFFECTOR.PRELOAD_SPEED),
             new ShooterSetRPMs(
                 SHOOTER.TOP_MOTOR_FEED_END_AFFECTOR_RPMS,

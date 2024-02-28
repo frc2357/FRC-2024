@@ -11,8 +11,7 @@ public class SpeakerShotFire extends Command {
 
   @Override
   public void initialize() {
-    Robot.intake.set(
-        INTAKE.TOP_MOTOR_FEED_SPEED_PERCENT_OUTPUT, INTAKE.BOTTOM_MOTOR_FEED_SPEED_PERCENT_OUTPUT);
+    Robot.intake.set(INTAKE.FEED_SPEED_PERCENT_OUTPUT);
   }
 
   @Override

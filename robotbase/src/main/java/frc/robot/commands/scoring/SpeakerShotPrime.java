@@ -18,7 +18,7 @@ public class SpeakerShotPrime extends Command {
   @Override
   public void initialize() {
     Robot.shooter.setRPMs(m_topRPMs, m_bottomRPMs);
-    // Robot.pivot.setPivotRotation(m_pivotRotation);
+    Robot.pivot.setPivotRotation(m_pivotRotation);
   }
 
   @Override
