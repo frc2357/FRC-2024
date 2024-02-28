@@ -5,8 +5,8 @@ import frc.robot.Robot;
 import frc.robot.util.RobotMath;
 
 // TODO: Make this part of a larger command that handles the speed too.
-public class SetPivotVisionTargeting extends Command {
-  public SetPivotVisionTargeting() {}
+public class PivotVisionTargeting extends Command {
+  public PivotVisionTargeting() {}
 
   @Override
   public boolean isFinished() {

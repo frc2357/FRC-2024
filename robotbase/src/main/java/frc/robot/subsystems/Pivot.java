@@ -16,13 +16,11 @@ public class Pivot extends SubsystemBase {
   private SparkPIDController m_pivotPIDController;
   private SparkAbsoluteEncoder m_absoluteEncoder;
   private double m_targetAngle;
-  private double m_axisSpeed;
   private boolean m_isZeroed;
 
   public Pivot() {
     m_pivotMotor = new CANSparkMax(Constants.CAN_ID.PIVOT_MOTOR_ID, MotorType.kBrushless);
     m_targetAngle = Double.NaN;
-    m_axisSpeed = Double.NaN;
     m_isZeroed = false;
     configure();
   }
@@ -57,16 +55,8 @@ public class Pivot extends SubsystemBase {
     return m_isZeroed;
   }
 
-  public boolean isStopped() {
-    return Double.isNaN(m_targetAngle) && Double.isNaN(m_axisSpeed);
-  }
-
   public boolean isSettingAngle() {
     return !Double.isNaN(m_targetAngle);
-  }
-
-  public boolean isRunningAxisSpeed() {
-    return !Double.isNaN(m_axisSpeed);
   }
 
   public void setAngle(double angle) {
@@ -83,21 +73,17 @@ public class Pivot extends SubsystemBase {
       return;
     }
     m_targetAngle = angle;
-    m_axisSpeed = Double.NaN;
     m_pivotPIDController.setReference(m_targetAngle, ControlType.kPosition);
   }
 
-  public void setAxisSpeed(double axisSpeed) {
-    m_axisSpeed = axisSpeed;
+  public void setSpeed(double speed) {
+    m_pivotMotor.set(speed);
     m_targetAngle = Double.NaN;
-    double motorSpeed = (-axisSpeed) * PIVOT.AXIS_MAX_SPEED;
-    m_pivotMotor.set(motorSpeed);
   }
 
   public void stop() {
     m_pivotMotor.stopMotor();
     m_targetAngle = Double.NaN;
-    m_axisSpeed = Double.NaN;
   }
 
   public double getVelocity() {
