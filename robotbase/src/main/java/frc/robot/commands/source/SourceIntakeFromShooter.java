@@ -18,12 +18,9 @@ public class SourceIntakeFromShooter extends SequentialCommandGroup {
         new ParallelDeadlineGroup(
             new WaitForBeamBreak(),
             new IntakeReverseFeed(),
-            new ShooterSetRPMs(SHOOTER.TOP_MOTOR_SOURCE_INTAKE_RPMS, SHOOTER.BOTTOM_MOTOR_SOURCE_INTAKE_RPMS),
+            new ShooterSetRPMs(
+                SHOOTER.TOP_MOTOR_SOURCE_INTAKE_RPMS, SHOOTER.BOTTOM_MOTOR_SOURCE_INTAKE_RPMS),
             new PivotSetRotation(PIVOT.INTAKE_FROM_SOURCE_ROTATION)),
-        new ParallelCommandGroup(
-            new IntakeStop(),
-            new ShooterStop())
-
-    );
+        new ParallelCommandGroup(new IntakeStop(), new ShooterStop()));
   }
 }

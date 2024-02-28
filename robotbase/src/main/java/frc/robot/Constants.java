@@ -149,11 +149,11 @@ public final class Constants {
   }
 
   public static final class SHOOTER {
-    public static final double TOP_MOTOR_SOURCE_INTAKE_RPMS = 0;
-    public static final double BOTTOM_MOTOR_SOURCE_INTAKE_RPMS = 0;
+    public static final double TOP_MOTOR_SOURCE_INTAKE_RPMS = 2000;
+    public static final double BOTTOM_MOTOR_SOURCE_INTAKE_RPMS = 2000;
 
-    public static final double TOP_MOTOR_FEED_END_AFFECTOR_RPMS = 500;
-    public static final double BOTTOM_MOTOR_FEED_END_AFFECTOR_RPMS = 500;
+    public static final double TOP_MOTOR_FEED_END_AFFECTOR_RPMS = 1000;
+    public static final double BOTTOM_MOTOR_FEED_END_AFFECTOR_RPMS = 1000;
 
     public static final double SHOOTER_AXIS_STEP_INTERVAL = 0.1;
 
@@ -164,8 +164,8 @@ public final class Constants {
     public static final boolean TOP_MOTOR_INVERTED = false;
     public static final boolean BOTTOM_MOTOR_INVERTED = true;
 
-    public static final double TOP_MOTOR_SUBWOOFER_SHOT_RPMS = 0;
-    public static final double BOTTOM_MOTOR_SUBWOOFER_SHOT_RPMS = 0;
+    public static final double TOP_MOTOR_SUBWOOFER_SHOT_RPMS = 3000;
+    public static final double BOTTOM_MOTOR_SUBWOOFER_SHOT_RPMS = 3000;
 
     public static final int TOP_MOTOR_STALL_LIMIT_AMPS = 40;
     public static final int TOP_MOTOR_FREE_LIMIT_AMPS = 40;
