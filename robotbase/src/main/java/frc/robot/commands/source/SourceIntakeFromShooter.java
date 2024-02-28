@@ -1,27 +1,29 @@
 package frc.robot.commands.source;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
-import frc.robot.Constants;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.PIVOT;
-import frc.robot.Robot;
+import frc.robot.Constants.SHOOTER;
 import frc.robot.commands.intake.IntakeReverseFeed;
+import frc.robot.commands.intake.IntakeStop;
+import frc.robot.commands.intake.WaitForBeamBreak;
 import frc.robot.commands.pivot.PivotSetRotation;
 import frc.robot.commands.shooter.ShooterSetRPMs;
-import frc.robot.state.RobotState;
+import frc.robot.commands.shooter.ShooterStop;
 
-public class SourceIntakeFromShooter extends ParallelDeadlineGroup {
+public class SourceIntakeFromShooter extends SequentialCommandGroup {
   public SourceIntakeFromShooter() {
     super(
-        new IntakeReverseFeed()
-            .finallyDo(
-                (boolean interrupted) -> {
-                  if (!interrupted) Robot.state.setState(RobotState.State.NOTE_STOWED);
-                }));
-    addCommands(
-        new ShooterSetRPMs(
-            Constants.SHOOTER.TOP_MOTOR_SOURCE_INTAKE_RPMS,
-            Constants.SHOOTER.BOTTOM_MOTOR_SOURCE_INTAKE_RPMS));
-    addCommands(new SourceIntakeFromShooter());
-    addCommands(new PivotSetRotation(PIVOT.INTAKE_FROM_SOURCE_ROTATION));
+        new ParallelDeadlineGroup(
+            new WaitForBeamBreak(),
+            new IntakeReverseFeed(),
+            new ShooterSetRPMs(SHOOTER.TOP_MOTOR_SOURCE_INTAKE_RPMS, SHOOTER.BOTTOM_MOTOR_SOURCE_INTAKE_RPMS),
+            new PivotSetRotation(PIVOT.INTAKE_FROM_SOURCE_ROTATION)),
+        new ParallelCommandGroup(
+            new IntakeStop(),
+            new ShooterStop())
+
+    );
   }
 }
