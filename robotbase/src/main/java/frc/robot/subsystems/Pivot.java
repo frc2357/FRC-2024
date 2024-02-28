@@ -82,6 +82,10 @@ public class Pivot extends SubsystemBase {
     return m_pivotMotor.getEncoder().getPosition();
   }
 
+  public double getPivotVelocity() {
+    return m_pivotMotor.getEncoder().getVelocity();
+  }
+
   public double getPosition() {
     return m_absoluteEncoder.getPosition();
   }
