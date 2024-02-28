@@ -6,23 +6,24 @@ import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkPIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.PIVOT;
-import frc.robot.Robot;
-import frc.robot.state.RobotState.PivotState;
-import frc.robot.util.RobotMath;
 import frc.robot.util.Utility;
 
 public class Pivot extends SubsystemBase {
   private CANSparkMax m_pivotMotor;
   private SparkPIDController m_pivotPIDController;
   private SparkAbsoluteEncoder m_absoluteEncoder;
-  private double m_targetRotation;
+  private double m_targetAngle;
+  private double m_axisSpeed;
+  private boolean m_isZeroed;
 
   public Pivot() {
     m_pivotMotor = new CANSparkMax(Constants.CAN_ID.PIVOT_MOTOR_ID, MotorType.kBrushless);
+    m_targetAngle = Double.NaN;
+    m_axisSpeed = Double.NaN;
+    m_isZeroed = false;
     configure();
   }
 
@@ -52,116 +53,75 @@ public class Pivot extends SubsystemBase {
     m_pivotPIDController.setFeedbackDevice(m_absoluteEncoder);
   }
 
-  public void setManualRotation(double rotation) {
-    Robot.state.setPivotState(PivotState.CLOSED_LOOP);
-    setPivotRotation(rotation);
+  public boolean isZeroed() {
+    return m_isZeroed;
   }
 
-  public void setPivotRotation(double rotation) {
-    m_targetRotation = rotation;
-    m_pivotPIDController.setReference(m_targetRotation, ControlType.kPosition);
+  public boolean isStopped() {
+    return Double.isNaN(m_targetAngle) && Double.isNaN(m_axisSpeed);
   }
 
-  public void setPivotAxisSpeed(double axisSpeed) {
-    Robot.state.setPivotState(PivotState.NONE);
+  public boolean isSettingAngle() {
+    return !Double.isNaN(m_targetAngle);
+  }
+
+  public boolean isRunningAxisSpeed() {
+    return !Double.isNaN(m_axisSpeed);
+  }
+
+  public void setAngle(double angle) {
+    if (!m_isZeroed) {
+      System.err.println("PIVOT: Cannot set angle, Pivot not zeroed!");
+      return;
+    }
+    if (angle < Constants.PIVOT.MIN_PIVOT_ANGLE) {
+      System.err.println("PIVOT: Cannot set angle lower than minimum");
+      return;
+    }
+    if (angle > Constants.PIVOT.MAX_PIVOT_ANGLE) {
+      System.err.println("PIVOT: Cannot set angle higher than minimum");
+      return;
+    }
+    m_targetAngle = angle;
+    m_axisSpeed = Double.NaN;
+    m_pivotPIDController.setReference(m_targetAngle, ControlType.kPosition);
+  }
+
+  public void setAxisSpeed(double axisSpeed) {
+    m_axisSpeed = axisSpeed;
+    m_targetAngle = Double.NaN;
     double motorSpeed = (-axisSpeed) * PIVOT.AXIS_MAX_SPEED;
     m_pivotMotor.set(motorSpeed);
   }
 
   public void stop() {
-    Robot.state.setPivotState(PivotState.NONE);
     m_pivotMotor.stopMotor();
+    m_targetAngle = Double.NaN;
+    m_axisSpeed = Double.NaN;
   }
 
-  public void resetEncoder() {
-    m_pivotMotor.getEncoder().setPosition(0);
-    m_targetRotation = 0;
+  public double getVelocity() {
+    return m_absoluteEncoder.getVelocity();
   }
 
-  public double getPivotRotations() {
-    return m_pivotMotor.getEncoder().getPosition();
+  public double getTargetAngle() {
+    return m_targetAngle;
   }
 
-  public double getPivotVelocity() {
-    return m_pivotMotor.getEncoder().getVelocity();
-  }
-
-  public double getPosition() {
+  public double getCurrentAngle() {
     return m_absoluteEncoder.getPosition();
   }
 
-  public boolean isPivotAtRotation() {
-    return Utility.isWithinTolerance(getPosition(), m_targetRotation, PIVOT.POSITION_ALLOWED_ERROR);
+  public boolean isPivotAtAngle() {
+    return Utility.isWithinTolerance(
+        getCurrentAngle(), m_targetAngle, PIVOT.POSITION_ALLOWED_ERROR);
   }
 
-  private boolean hasTarget() {
-    return Robot.shooterCam.validTargetExists();
-  }
-
-  public void zero() {
-    double position = getPosition();
+  public void setZero() {
     double currentOffset = m_absoluteEncoder.getZeroOffset();
-    double newOffset = position + currentOffset - Constants.PIVOT.MIN_PIVOT_ROTATION;
+    double newOffset = getCurrentAngle() + currentOffset - Constants.PIVOT.MIN_PIVOT_ANGLE;
     newOffset %= 360;
     m_absoluteEncoder.setZeroOffset(newOffset);
-  }
-
-  @Override
-  public void periodic() {
-    if (Robot.state.isPivot(PivotState.VISION_TARGETING)) {
-      visionTargetingPeriodic();
-    }
-    if (Robot.state.isPivot(PivotState.CLOSED_LOOP)) {
-      if (isPivotAtRotation()) {
-        stop();
-      } else {
-        m_pivotPIDController.setReference(m_targetRotation, ControlType.kPosition);
-      }
-    }
-
-    SmartDashboard.putNumber("Pivot Rotation", getPosition());
-  }
-
-  public void startVisionTargeting() {
-    Robot.state.setPivotState(PivotState.VISION_TARGETING);
-  }
-
-  public void stopVisionTargeting() {
-    Robot.state.setPivotState(PivotState.NONE);
-    stop();
-  }
-
-  private void visionTargetingPeriodic() {
-    if (hasTarget()) {
-      setVisionTargetingRotation(Robot.shooterCam.getTY());
-    } else {
-      System.err.println("----- No vision target (Pivot) -----");
-    }
-  }
-
-  private void setVisionTargetingRotation(double ty) {
-    int curveIndex = RobotMath.getCurveSegmentIndex(Robot.shooterCurve, ty);
-    if (curveIndex == -1) {
-      // System.err.println("----- Curve segment index out of bounds (Pivot) -----");
-      return;
-    }
-
-    double[] high = Robot.shooterCurve[curveIndex];
-    double[] low = Robot.shooterCurve[curveIndex + 1];
-
-    double highTY = high[0];
-    double lowTY = low[0];
-    double highPivotRotation = high[1];
-    double lowPivotRotation = low[1];
-
-    double pivotRotation =
-        RobotMath.linearlyInterpolate(highPivotRotation, lowPivotRotation, highTY, lowTY, ty);
-
-    if (Double.isNaN(pivotRotation)) {
-      // System.err.println("----- Invalid shooter pivot values -----");
-      return;
-    }
-
-    setPivotRotation(pivotRotation);
+    m_isZeroed = true;
   }
 }

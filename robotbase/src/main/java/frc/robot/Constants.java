@@ -184,9 +184,6 @@ public final class Constants {
     public static final double BOTTOM_MOTOR_I = 0.0;
     public static final double BOTTOM_MOTOR_D = 0.0;
     public static final double BOTTOM_MOTOR_FF = 0.0001825;
-
-    public static final double ZERO_SPEED = 0.05; // TODO: TUNE
-    public static final double ZERO_SPEED_STOP_TOLERANCE = 0.01; // TODO: TUNE
   }
 
   public static final class INTAKE {
@@ -248,13 +245,13 @@ public final class Constants {
 
   public static final class PIVOT {
     public static final double FEED_TO_END_AFFECTOR_LOCATION = 63.5;
-    public static final double MAX_PIVOT_ROTATION = 67.5;
-    public static final double MIN_PIVOT_ROTATION = 10;
+    public static final double MAX_PIVOT_ANGLE = 67.5;
+    public static final double MIN_PIVOT_ANGLE = 10;
 
-    public static final double SUBWOOFER_SHOT_ROTATION = 60;
-    public static final double SPEAKER_SCORE_FROM_BASE_ROTATION = 0;
-    public static final double INTAKE_FROM_SOURCE_ROTATION = 45;
-    public static final double DEFAULT_PIVOT_ROTATION = 45; // angle of intake
+    public static final double SUBWOOFER_SHOT_ANGLE = 60;
+    public static final double SPEAKER_SCORE_FROM_BASE_ANGLE = 0;
+    public static final double INTAKE_FROM_SOURCE_ANGLE = 45;
+    public static final double DEFAULT_PIVOT_ANGLE = 45; // angle of intake
 
     public static final boolean MOTOR_INVERTED = false;
     public static final boolean ENCODER_INVERTED = false;
@@ -279,6 +276,10 @@ public final class Constants {
     public static final double PIVOT_I = 0;
     public static final double PIVOT_D = 0;
     public static final double PIVOT_FF = 0.0005; // Barely moving: .000465
+
+    public static final double ZERO_SPEED = 0.1;
+    public static final double ZERO_SPEED_STOP_TOLERANCE = 0.015;
+    public static final double ZERO_SPEED_INITIAL_SECONDS = 0.15;
   }
 
   public static final class CLIMBER {

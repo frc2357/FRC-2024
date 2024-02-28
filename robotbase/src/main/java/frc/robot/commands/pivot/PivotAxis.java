@@ -15,7 +15,7 @@ public class PivotAxis extends Command {
   @Override
   public void execute() {
     double axisSpeed = m_axis.getValue();
-    Robot.pivot.setPivotAxisSpeed(axisSpeed);
+    Robot.pivot.setAxisSpeed(axisSpeed);
   }
 
   @Override
@@ -25,6 +25,6 @@ public class PivotAxis extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    Robot.pivot.setPivotRotation(Robot.pivot.getPivotRotations());
+    Robot.pivot.stop();
   }
 }
