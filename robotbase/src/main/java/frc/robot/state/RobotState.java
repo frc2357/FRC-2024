@@ -27,15 +27,23 @@ public class RobotState {
   public static enum AutoClimbState {
   }
 
-  public static enum ShootingState {
+  public static enum ShooterState {
     VISION_TARGETING,
-    MANUAL
+    CLOSED_LOOP,
+    NONE
+  }
+
+  public static enum PivotState {
+    VISION_TARGETING,
+    CLOSED_LOOP,
+    NONE
   }
 
   private Alliance m_alliance;
   private State m_currentState;
   private NoteState m_currentNoteState;
-  private ShootingState m_currentShootingState;
+  private ShooterState m_currentShooterState;
+  private PivotState m_currentPivotState;
   private DriveControlState m_currentDriveControlState;
   private PhotonVisionCamera m_targetLockCamera;
 
@@ -55,12 +63,20 @@ public class RobotState {
     return m_currentNoteState == state;
   }
 
-  public void setShootingState(ShootingState state) {
-    m_currentShootingState = state;
+  public void setShooterState(ShooterState state) {
+    m_currentShooterState = state;
   }
 
-  public boolean isShooting(ShootingState state) {
-    return m_currentShootingState == state;
+  public boolean isShooter(ShooterState state) {
+    return m_currentShooterState == state;
+  }
+
+  public void setPivotState(PivotState state) {
+    m_currentPivotState = state;
+  }
+
+  public boolean isPivot(PivotState state) {
+    return m_currentPivotState == state;
   }
 
   public Alliance getAlliance() {

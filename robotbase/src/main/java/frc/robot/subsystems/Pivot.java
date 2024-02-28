@@ -6,12 +6,13 @@ import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkPIDController;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.PIVOT;
 import frc.robot.Robot;
-import frc.robot.state.RobotState.ShootingState;
+import frc.robot.state.RobotState.PivotState;
 import frc.robot.util.RobotMath;
 import frc.robot.util.Utility;
 
@@ -53,7 +54,7 @@ public class Pivot extends SubsystemBase {
   }
 
   public void setManualRotation(double rotation) {
-    Robot.state.setShootingState(ShootingState.MANUAL);
+    Robot.state.setPivotState(PivotState.CLOSED_LOOP);
     setPivotRotation(rotation);
   }
 
@@ -63,13 +64,13 @@ public class Pivot extends SubsystemBase {
   }
 
   public void setPivotAxisSpeed(double axisSpeed) {
-    Robot.state.setShootingState(ShootingState.MANUAL);
+    Robot.state.setPivotState(PivotState.NONE);
     double motorSpeed = (-axisSpeed) * PIVOT.AXIS_MAX_SPEED;
     m_pivotMotor.set(motorSpeed);
   }
 
   public void stop() {
-    Robot.state.setShootingState(ShootingState.MANUAL);
+    Robot.state.setPivotState(PivotState.NONE);
     m_pivotMotor.stopMotor();
   }
 
@@ -104,10 +105,10 @@ public class Pivot extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (Robot.state.isShooting(ShootingState.VISION_TARGETING)) {
+    if (Robot.state.isPivot(PivotState.VISION_TARGETING)) {
       visionTargetingPeriodic();
     }
-    if (Robot.state.isShooting(ShootingState.MANUAL)) {
+    if (Robot.state.isPivot(PivotState.CLOSED_LOOP)) {
       if (isPivotAtRotation()) {
         stop();
       } else {
@@ -119,11 +120,11 @@ public class Pivot extends SubsystemBase {
   }
 
   public void startVisionTargeting() {
-    Robot.state.setShootingState(ShootingState.VISION_TARGETING);
+    Robot.state.setPivotState(PivotState.VISION_TARGETING);
   }
 
   public void stopVisionTargeting() {
-    Robot.state.setShootingState(ShootingState.MANUAL);
+    Robot.state.setPivotState(PivotState.NONE);
     stop();
   }
 
@@ -150,8 +151,7 @@ public class Pivot extends SubsystemBase {
     double highPivotRotation = high[1];
     double lowPivotRotation = low[1];
 
-    double pivotRotation =
-        RobotMath.linearlyInterpolate(highPivotRotation, lowPivotRotation, highTY, lowTY, ty);
+    double pivotRotation = RobotMath.linearlyInterpolate(highPivotRotation, lowPivotRotation, highTY, lowTY, ty);
 
     if (Double.isNaN(pivotRotation)) {
       // System.err.println("----- Invalid shooter pivot values -----");

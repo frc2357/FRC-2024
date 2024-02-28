@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.networkTables.ShooterCurveTuner;
-import frc.robot.state.RobotState.ShootingState;
+import frc.robot.state.RobotState.ShooterState;
 import frc.robot.util.RobotMath;
 import frc.robot.util.Utility;
 
@@ -25,10 +25,8 @@ public class Shooter extends SubsystemBase {
   private ShooterCurveTuner m_curveTuner;
 
   public Shooter() {
-    m_topShooterMotor =
-        new CANSparkMax(Constants.CAN_ID.TOP_SHOOTER_MOTOR_ID, MotorType.kBrushless);
-    m_bottomShooterMotor =
-        new CANSparkMax(Constants.CAN_ID.BOTTOM_SHOOTER_MOTOR_ID, MotorType.kBrushless);
+    m_topShooterMotor = new CANSparkMax(Constants.CAN_ID.TOP_SHOOTER_MOTOR_ID, MotorType.kBrushless);
+    m_bottomShooterMotor = new CANSparkMax(Constants.CAN_ID.BOTTOM_SHOOTER_MOTOR_ID, MotorType.kBrushless);
     m_curveTuner = new ShooterCurveTuner();
     configure();
   }
@@ -68,7 +66,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setManualRPMs(double topRPMs, double bottomRPMs) {
-    Robot.state.setShootingState(ShootingState.MANUAL);
+    Robot.state.setShooterState(ShooterState.CLOSED_LOOP);
     setRPMs(topRPMs, bottomRPMs);
   }
 
@@ -80,7 +78,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setAxisSpeed(double top, double bottom) {
-    Robot.state.setShootingState(ShootingState.MANUAL);
+    Robot.state.setShooterState(ShooterState.NONE);
     top *= Constants.SHOOTER.SHOOTER_AXIS_MAX_SPEED;
     bottom *= Constants.SHOOTER.SHOOTER_AXIS_MAX_SPEED;
     m_topShooterMotor.set(top);
@@ -88,7 +86,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void stop() {
-    Robot.state.setShootingState(ShootingState.MANUAL);
+    Robot.state.setShooterState(ShooterState.NONE);
     m_topShooterMotor.set(0.0);
     m_bottomShooterMotor.set(0.0);
   }
@@ -116,7 +114,7 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (Robot.state.isShooting(ShootingState.VISION_TARGETING)) {
+    if (Robot.state.isShooter(ShooterState.VISION_TARGETING)) {
       visionShotPeriodic();
     }
 
@@ -124,11 +122,11 @@ public class Shooter extends SubsystemBase {
   }
 
   public void startVisionShooting() {
-    Robot.state.setShootingState(ShootingState.VISION_TARGETING);
+    Robot.state.setShooterState(ShooterState.VISION_TARGETING);
   }
 
   public void stopVisionShooting() {
-    Robot.state.setShootingState(ShootingState.MANUAL);
+    Robot.state.setShooterState(ShooterState.NONE);
     stop();
   }
 
@@ -159,8 +157,7 @@ public class Shooter extends SubsystemBase {
     double lowTopRPMs = low[3];
 
     double topRPMs = RobotMath.linearlyInterpolate(highTopRPMs, lowTopRPMs, highTY, lowTY, ty);
-    double bottomRPMs =
-        RobotMath.linearlyInterpolate(highBottomRPMs, lowBottomRPMs, highTY, lowTY, ty);
+    double bottomRPMs = RobotMath.linearlyInterpolate(highBottomRPMs, lowBottomRPMs, highTY, lowTY, ty);
 
     if (Double.isNaN(topRPMs) || Double.isNaN(bottomRPMs)) {
       System.err.println("----- Invalid shooter values -----");
