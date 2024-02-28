@@ -8,7 +8,7 @@ import frc.robot.Constants.CAN_ID;
 import frc.robot.Constants.DIGITAL_INPUT;
 import frc.robot.Constants.INTAKE;
 import frc.robot.Robot;
-import frc.robot.state.RobotState.IntakeState;
+import frc.robot.state.RobotState.NoteState;
 
 public class Intake extends SubsystemBase {
   private CANSparkMax m_topIntakeMotor;
@@ -72,8 +72,8 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (Robot.state.isIntake(IntakeState.NOTE_STOWED) && !isBeamBroken()) {
-      Robot.state.setIntakeState(IntakeState.EMPTY);
+    if (Robot.state.isNote(NoteState.NOTE_STOWED) && !isBeamBroken()) {
+      Robot.state.setNoteState(NoteState.EMPTY);
     }
   }
 }

@@ -10,11 +10,12 @@ public class RobotState {
     DISABLED, // Robot is in disabled mode and no alliance is selected
   }
 
-  public static enum IntakeState {
+  public static enum NoteState {
     EMPTY, // Robot has nothing in it
     NOTE_IN_INTAKE,
     NOTE_PAST_BEAM_BREAK,
     NOTE_STOWED,
+    END_AFFECTOR_PRELOAD
   };
 
   public static enum DriveControlState {
@@ -23,42 +24,35 @@ public class RobotState {
     TARGET_LOCK
   }
 
-  public static enum AutoClimbState {}
+  public static enum AutoClimbState {
+  }
 
   public static enum ShootingState {
     VISION_TARGETING,
     MANUAL
   }
 
-  public static enum AmpState {
-    EMPTY,
-    AMP_PRELOAD,
-    AMP_PREPOSE
-  }
-
   private Alliance m_alliance;
   private State m_currentState;
-  private IntakeState m_currentIntakeState;
+  private NoteState m_currentNoteState;
   private ShootingState m_currentShootingState;
-  private AmpState m_currentAmpState;
   private DriveControlState m_currentDriveControlState;
   private PhotonVisionCamera m_targetLockCamera;
 
   public RobotState() {
     m_alliance = null;
     m_currentState = State.INIT;
-    m_currentIntakeState = IntakeState.EMPTY;
-    m_currentAmpState = AmpState.EMPTY;
+    m_currentNoteState = NoteState.EMPTY;
     m_currentDriveControlState = DriveControlState.FIELD_RELATIVE;
     m_targetLockCamera = Robot.shooterCam;
   }
 
-  public void setIntakeState(IntakeState state) {
-    m_currentIntakeState = state;
+  public void setNoteState(NoteState state) {
+    m_currentNoteState = state;
   }
 
-  public boolean isIntake(IntakeState state) {
-    return m_currentIntakeState == state;
+  public boolean isNote(NoteState state) {
+    return m_currentNoteState == state;
   }
 
   public void setShootingState(ShootingState state) {
@@ -67,14 +61,6 @@ public class RobotState {
 
   public boolean isShooting(ShootingState state) {
     return m_currentShootingState == state;
-  }
-
-  public void setAmpState(AmpState state) {
-    m_currentAmpState = state;
-  }
-
-  public boolean isAmp(AmpState state) {
-    return m_currentAmpState == state;
   }
 
   public Alliance getAlliance() {

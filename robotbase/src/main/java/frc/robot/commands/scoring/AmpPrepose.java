@@ -17,8 +17,8 @@ import frc.robot.commands.intake.IntakeStop;
 import frc.robot.commands.pivot.PivotSetRotation;
 import frc.robot.commands.shooter.ShooterSetRPMs;
 import frc.robot.commands.shooter.ShooterStop;
-import frc.robot.commands.state.SetAmpState;
-import frc.robot.state.RobotState.AmpState;
+import frc.robot.commands.state.SetNoteState;
+import frc.robot.state.RobotState.NoteState;
 
 public class AmpPrepose extends SequentialCommandGroup {
   public AmpPrepose() {
@@ -41,6 +41,6 @@ public class AmpPrepose extends SequentialCommandGroup {
 
         // Arm Prepose
         new ExtensionArmMoveToRotations(EXTENSION_ARM.AMP_PREPOSE_ROTATIONS),
-        new SetAmpState(AmpState.AMP_PREPOSE));
+        new SetNoteState(NoteState.END_AFFECTOR_PRELOAD));
   }
 }

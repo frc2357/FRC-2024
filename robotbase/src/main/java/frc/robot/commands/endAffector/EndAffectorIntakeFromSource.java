@@ -3,7 +3,7 @@ package frc.robot.commands.endAffector;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.END_AFFECTOR;
 import frc.robot.Robot;
-import frc.robot.state.RobotState.AmpState;
+import frc.robot.state.RobotState.NoteState;
 
 public class EndAffectorIntakeFromSource extends Command {
 
@@ -26,7 +26,7 @@ public class EndAffectorIntakeFromSource extends Command {
     Robot.endAffector.stop();
 
     if (!interrupted) {
-      Robot.state.setAmpState(AmpState.AMP_PRELOAD);
+      Robot.state.setNoteState(NoteState.END_AFFECTOR_PRELOAD);
     }
   }
 }

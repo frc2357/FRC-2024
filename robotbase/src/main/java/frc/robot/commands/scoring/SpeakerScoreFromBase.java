@@ -8,8 +8,8 @@ import frc.robot.commands.intake.IntakeFeedToShooter;
 import frc.robot.commands.pivot.PivotSetRotation;
 import frc.robot.commands.shooter.ShooterSetRPMs;
 import frc.robot.commands.shooter.ShooterWaitForRPMs;
-import frc.robot.commands.state.SetAmpState;
-import frc.robot.state.RobotState.AmpState;
+import frc.robot.commands.state.SetNoteState;
+import frc.robot.state.RobotState.NoteState;
 
 public class SpeakerScoreFromBase extends ParallelCommandGroup {
   public SpeakerScoreFromBase() {
@@ -19,7 +19,7 @@ public class SpeakerScoreFromBase extends ParallelCommandGroup {
         new SequentialCommandGroup(
             new PivotSetRotation(PIVOT.SUBWOOFER_SHOT_ROTATION),
             new ShooterWaitForRPMs(),
-            new SetAmpState(AmpState.EMPTY),
+            new SetNoteState(NoteState.EMPTY),
             new IntakeFeedToShooter()));
   }
 }
