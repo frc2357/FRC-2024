@@ -25,6 +25,7 @@ public class RobotState {
   }
 
   public static enum AutoClimbState {
+    NONE
   }
 
   public static enum ShooterState {
@@ -44,6 +45,7 @@ public class RobotState {
   private NoteState m_currentNoteState;
   private ShooterState m_currentShooterState;
   private PivotState m_currentPivotState;
+  private AutoClimbState m_currentClimbState;
   private DriveControlState m_currentDriveControlState;
   private PhotonVisionCamera m_targetLockCamera;
 
@@ -51,6 +53,9 @@ public class RobotState {
     m_alliance = null;
     m_currentState = State.INIT;
     m_currentNoteState = NoteState.EMPTY;
+    m_currentShooterState = ShooterState.NONE;
+    m_currentPivotState = PivotState.NONE;
+    m_currentClimbState = AutoClimbState.NONE;
     m_currentDriveControlState = DriveControlState.FIELD_RELATIVE;
     m_targetLockCamera = Robot.shooterCam;
   }
@@ -77,6 +82,10 @@ public class RobotState {
 
   public boolean isPivot(PivotState state) {
     return m_currentPivotState == state;
+  }
+
+  public boolean isRobot(State state) {
+    return m_currentState == state;
   }
 
   public Alliance getAlliance() {
@@ -108,7 +117,7 @@ public class RobotState {
   }
 
   public void setDriveControlState(DriveControlState driveControlState) {
-    setCurrentDriveControlState(driveControlState);
+    m_currentDriveControlState = driveControlState;
   }
 
   public void setAlliance(Alliance alliance) {
@@ -118,16 +127,6 @@ public class RobotState {
   private void setCurrentState(State newState) {
     m_currentState = newState;
   }
-
-  private void setCurrentDriveControlState(DriveControlState driveControlState) {
-    m_currentDriveControlState = driveControlState;
-  }
-
-  // public boolean hasNote() {
-  // return m_currentState == State.AMP_PRE_POSE
-  // || m_currentState == State.NOTE_STOWED
-  // || m_currentState == State.NOTE_PRELOAD;
-  // }
 
   public void setTargetLockCamera(PhotonVisionCamera targetLockCamera) {
     m_targetLockCamera = targetLockCamera;

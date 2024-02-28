@@ -6,7 +6,6 @@ import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkPIDController;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -151,7 +150,8 @@ public class Pivot extends SubsystemBase {
     double highPivotRotation = high[1];
     double lowPivotRotation = low[1];
 
-    double pivotRotation = RobotMath.linearlyInterpolate(highPivotRotation, lowPivotRotation, highTY, lowTY, ty);
+    double pivotRotation =
+        RobotMath.linearlyInterpolate(highPivotRotation, lowPivotRotation, highTY, lowTY, ty);
 
     if (Double.isNaN(pivotRotation)) {
       // System.err.println("----- Invalid shooter pivot values -----");
