@@ -9,11 +9,12 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Robot;
+import frc.robot.commands.intake.IntakeFeedToShooter;
 import frc.robot.commands.intake.IntakeNoteFromFloor;
-import frc.robot.commands.pivot.DefaultPivot;
-import frc.robot.commands.pivot.PivotStop;
 import frc.robot.commands.scoring.AmpPrepose;
 import frc.robot.commands.scoring.AmpScore;
+import frc.robot.commands.shooter.ShooterSetRPMs;
+import frc.robot.commands.shooter.ShooterStop;
 import frc.robot.controls.util.AxisInterface;
 import frc.robot.controls.util.AxisThresholdTrigger;
 import frc.robot.controls.util.RumbleInterface;
@@ -81,7 +82,9 @@ public class DriverControls implements RumbleInterface {
         new ConditionalCommand(
             new AmpScore(), new AmpPrepose(), () -> Robot.state.isInState(State.AMP_PRE_POSE)));
 
-    m_rightTriggerShoot.whileTrue(new DefaultPivot().andThen(new PivotStop()));
+    m_rightTriggerPrime.whileTrue(new ShooterSetRPMs(5000, 5000));
+    m_rightTriggerShoot.whileTrue(
+        new IntakeFeedToShooter().withTimeout(0.5).andThen(new ShooterStop()));
     // m_rightTriggerPrime.whileTrue(
     // new ParallelCommandGroup(
     // new ShooterSetRPMs(2000, 2000),

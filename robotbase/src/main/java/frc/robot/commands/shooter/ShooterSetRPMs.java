@@ -25,6 +25,6 @@ public class ShooterSetRPMs extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    Robot.shooter.stop();
+    // Stop rollers manually
   }
 }
