@@ -15,8 +15,6 @@ public class Intake extends SubsystemBase {
   private CANSparkMax m_bottomIntakeMotor;
 
   private DigitalInput m_beamBreakSensor;
-  private boolean m_hasBeamBeenBroken = false;
-  private boolean m_notePassedBeamBreak = false;
 
   public Intake() {
     m_topIntakeMotor = new CANSparkMax(CAN_ID.TOP_INTAKE_MOTOR_ID, MotorType.kBrushless);
@@ -56,18 +54,9 @@ public class Intake extends SubsystemBase {
     return !m_beamBreakSensor.get();
   }
 
-  public boolean hasNotePassedIntake() {
-    return m_notePassedBeamBreak;
-  }
-
   public void stop() {
     m_topIntakeMotor.set(0);
     m_bottomIntakeMotor.set(0);
-  }
-
-  public void resetNotePassedBeamBreak() {
-    m_notePassedBeamBreak = false;
-    m_hasBeamBeenBroken = false;
   }
 
   @Override
