@@ -3,17 +3,17 @@ package frc.robot.commands.shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 
-public class ShooterSetRPMs extends Command {
-  private double m_RPMs;
+public class ShooterSetRPM extends Command {
+  private double m_RPM;
 
-  public ShooterSetRPMs(double top) {
-    m_RPMs = top;
+  public ShooterSetRPM(double RPM) {
+    m_RPM = RPM;
     addRequirements(Robot.shooter);
   }
 
   @Override
   public void initialize() {
-    Robot.shooter.setRPMs(m_RPMs);
+    Robot.shooter.setRPM(m_RPM);
   }
 
   @Override

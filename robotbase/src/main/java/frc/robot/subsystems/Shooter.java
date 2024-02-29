@@ -6,14 +6,12 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Robot;
+import frc.robot.Constants.SHOOTER;
 import frc.robot.networkTables.ShooterCurveTuner;
-import frc.robot.state.RobotState.ShooterState;
-import frc.robot.util.RobotMath;
 import frc.robot.util.Utility;
 
 public class Shooter extends SubsystemBase {
-  private double m_targetSpeed;
+  private double m_targetRPM;
 
   private CANSparkMax m_topShooterMotor;
   private CANSparkMax m_bottomShooterMotor;
@@ -29,6 +27,8 @@ public class Shooter extends SubsystemBase {
     m_bottomShooterMotor =
         new CANSparkMax(Constants.CAN_ID.BOTTOM_SHOOTER_MOTOR_ID, MotorType.kBrushless);
     m_curveTuner = new ShooterCurveTuner();
+
+    m_targetRPM = Double.NaN;
     configure();
   }
 
@@ -66,26 +66,21 @@ public class Shooter extends SubsystemBase {
     m_bottomPIDController.setOutputRange(-1, 1);
   }
 
-  public void setManualRPMs(double topRPMs) {
-    Robot.state.setShooterState(ShooterState.CLOSED_LOOP);
-    setRPMs(topRPMs);
-  }
-
-  public void setRPMs(double topRPMS) {
-    m_targetSpeed = topRPMS;
-    m_topPIDController.setReference(m_targetSpeed, ControlType.kVelocity);
-    m_bottomPIDController.setReference(m_targetSpeed, ControlType.kVelocity);
+  public void setRPM(double topRPM) {
+    m_targetRPM = topRPM;
+    m_topPIDController.setReference(m_targetRPM, ControlType.kVelocity);
+    m_bottomPIDController.setReference(m_targetRPM, ControlType.kVelocity);
   }
 
   public void setAxisSpeed(double speed) {
-    Robot.state.setShooterState(ShooterState.NONE);
+    m_targetRPM = Double.NaN;
     speed *= Constants.SHOOTER.SHOOTER_AXIS_MAX_SPEED;
     m_topShooterMotor.set(speed);
     m_bottomShooterMotor.set(speed);
   }
 
   public void stop() {
-    Robot.state.setShooterState(ShooterState.NONE);
+    m_targetRPM = Double.NaN;
     m_topShooterMotor.set(0.0);
     m_bottomShooterMotor.set(0.0);
   }
@@ -98,69 +93,18 @@ public class Shooter extends SubsystemBase {
     return m_bottomShooterMotor.getEncoder().getVelocity();
   }
 
-  public boolean isAtRPMs(double RPMs) {
-    return Utility.isWithinTolerance(getTopVelocity(), RPMs, 100)
-        && Utility.isWithinTolerance(getBottomVelocity(), RPMs, 100);
+  public boolean isAtRPM(double RPM) {
+    return Utility.isWithinTolerance(getTopVelocity(), RPM, SHOOTER.RPM_TOLERANCE)
+        && Utility.isWithinTolerance(getBottomVelocity(), RPM, SHOOTER.RPM_TOLERANCE);
   }
 
   public boolean isAtTargetSpeed() {
-    return isAtRPMs(m_targetSpeed);
-  }
-
-  private boolean hasTarget() {
-    return Robot.shooterCam.validTargetExists();
+    return isAtRPM(m_targetRPM);
   }
 
   @Override
   public void periodic() {
-    if (Robot.state.isShooter(ShooterState.VISION_TARGETING)) {
-      visionShotPeriodic();
-    }
-
     m_curveTuner.updateCurveValues();
-  }
-
-  public void startVisionShooting() {
-    Robot.state.setShooterState(ShooterState.VISION_TARGETING);
-  }
-
-  public void stopVisionShooting() {
-    Robot.state.setShooterState(ShooterState.NONE);
-    stop();
-  }
-
-  private void visionShotPeriodic() {
-    if (hasTarget()) {
-      setVisionShotRPMs(Robot.shooterCam.getTY());
-    } else {
-      System.err.println("----- No vision target (Shooter) -----");
-    }
-  }
-
-  private void setVisionShotRPMs(double ty) {
-    int curveIndex = RobotMath.getCurveSegmentIndex(Robot.shooterCurve, ty);
-    if (curveIndex == -1) {
-      // System.err.println("----- Curve segment index out of bounds (Shooter)
-      // -----");
-      return;
-    }
-
-    double[] high = Robot.shooterCurve[curveIndex];
-    double[] low = Robot.shooterCurve[curveIndex + 1];
-
-    double highTY = high[0];
-    double lowTY = low[0];
-    double highRPMs = high[2];
-    double lowRPMs = low[2];
-
-    double shooterRPMs = RobotMath.linearlyInterpolate(highRPMs, lowRPMs, highTY, lowTY, ty);
-
-    if (Double.isNaN(shooterRPMs)) {
-      System.err.println("----- Invalid shooter values -----");
-      return;
-    }
-
-    setRPMs(shooterRPMs);
   }
 
   public double[] getShooterCurveRow() {

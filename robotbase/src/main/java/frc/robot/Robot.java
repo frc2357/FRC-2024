@@ -58,7 +58,7 @@ public class Robot extends TimedRobot {
   // Aligned with stage tag
   // Wing line
   // Center line
-  // {ty, pivotRotations, shooterRPMs}
+  // {ty, pivotRotations, shooterRPM}
   public static final double[][] shooterCurve = {
     {8.55, 0.0, 0.0}, // Side subwoofer (lower bound)
     {8.4, 0.0, 0.0}, // Center subwoofer

@@ -28,23 +28,9 @@ public class RobotState {
     NONE
   }
 
-  public static enum ShooterState {
-    VISION_TARGETING,
-    CLOSED_LOOP,
-    NONE
-  }
-
-  public static enum PivotState {
-    VISION_TARGETING,
-    CLOSED_LOOP,
-    NONE
-  }
-
   private Alliance m_alliance;
   private State m_currentState;
   private NoteState m_currentNoteState;
-  private ShooterState m_currentShooterState;
-  private PivotState m_currentPivotState;
   private AutoClimbState m_currentClimbState;
   private DriveControlState m_currentDriveControlState;
   private PhotonVisionCamera m_targetLockCamera;
@@ -53,8 +39,6 @@ public class RobotState {
     m_alliance = null;
     m_currentState = State.INIT;
     m_currentNoteState = NoteState.EMPTY;
-    m_currentShooterState = ShooterState.NONE;
-    m_currentPivotState = PivotState.NONE;
     m_currentClimbState = AutoClimbState.NONE;
     m_currentDriveControlState = DriveControlState.FIELD_RELATIVE;
     m_targetLockCamera = Robot.shooterCam;
@@ -66,22 +50,6 @@ public class RobotState {
 
   public boolean isNote(NoteState state) {
     return m_currentNoteState == state;
-  }
-
-  public void setShooterState(ShooterState state) {
-    m_currentShooterState = state;
-  }
-
-  public boolean isShooter(ShooterState state) {
-    return m_currentShooterState == state;
-  }
-
-  public void setPivotState(PivotState state) {
-    m_currentPivotState = state;
-  }
-
-  public boolean isPivot(PivotState state) {
-    return m_currentPivotState == state;
   }
 
   public boolean isRobot(State state) {
