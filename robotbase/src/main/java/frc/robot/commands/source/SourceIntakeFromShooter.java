@@ -15,8 +15,7 @@ public class SourceIntakeFromShooter extends SequentialCommandGroup {
         new IntakeReverseFeed()
             .finallyDo(
                 (boolean interrupted) -> {
-                  if (!interrupted)
-                    Robot.state.setNoteState(NoteState.NOTE_STOWED);
+                  if (!interrupted) Robot.state.setNoteState(NoteState.NOTE_STOWED);
                 }),
         new ShooterSetRPMs(
             Constants.SHOOTER.TOP_MOTOR_SOURCE_INTAKE_RPMS,

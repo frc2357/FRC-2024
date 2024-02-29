@@ -21,29 +21,29 @@ import frc.robot.commands.state.SetNoteState;
 import frc.robot.state.RobotState.NoteState;
 
 public class AmpPrepose extends ParallelDeadlineGroup {
-    public AmpPrepose() {
-        super(
-                new SequentialCommandGroup(
-                        // Note Preload
-                        new ExtensionArmMoveToRotations(EXTENSION_ARM.NOTE_STOW_ROTATIONS),
+  public AmpPrepose() {
+    super(
+        new SequentialCommandGroup(
+            // Note Preload
+            new ExtensionArmMoveToRotations(EXTENSION_ARM.NOTE_STOW_ROTATIONS),
 
-                        // Run end affector, shooter, and intake to load note
-                        new ParallelDeadlineGroup(
-                                new WaitCommand(SCORING.SECONDS_PRELOAD_NOTE),
-                                new SequentialCommandGroup(new WaitCommand(0.25), new IntakeFeedToShooter()),
-                                new EndAffectorSetSpeed(END_AFFECTOR.PRELOAD_SPEED),
-                                new ShooterSetRPMs(
-                                        SHOOTER.TOP_MOTOR_FEED_END_AFFECTOR_RPMS,
-                                        SHOOTER.BOTTOM_MOTOR_FEED_END_AFFECTOR_RPMS)),
+            // Run end affector, shooter, and intake to load note
+            new ParallelDeadlineGroup(
+                new WaitCommand(SCORING.SECONDS_PRELOAD_NOTE),
+                new SequentialCommandGroup(new WaitCommand(0.25), new IntakeFeedToShooter()),
+                new EndAffectorSetSpeed(END_AFFECTOR.PRELOAD_SPEED),
+                new ShooterSetRPMs(
+                    SHOOTER.TOP_MOTOR_FEED_END_AFFECTOR_RPMS,
+                    SHOOTER.BOTTOM_MOTOR_FEED_END_AFFECTOR_RPMS)),
 
-                        // Stop motors
-                        new ParallelCommandGroup(new IntakeStop(), new ShooterStop(), new EndAffectorStop()),
+            // Stop motors
+            new ParallelCommandGroup(new IntakeStop(), new ShooterStop(), new EndAffectorStop()),
 
-                        // Arm Prepose
-                        new ExtensionArmMoveToRotations(EXTENSION_ARM.AMP_PREPOSE_ROTATIONS),
-                        new SetNoteState(NoteState.END_AFFECTOR_PRELOAD)),
+            // Arm Prepose
+            new ExtensionArmMoveToRotations(EXTENSION_ARM.AMP_PREPOSE_ROTATIONS),
+            new SetNoteState(NoteState.END_AFFECTOR_PRELOAD)),
 
-                // Hold until end of above command
-                new PivotHoldAngle(PIVOT.END_AFFECTOR_PRELOAD_ANGLE));
-    }
+        // Hold until end of above command
+        new PivotHoldAngle(PIVOT.END_AFFECTOR_PRELOAD_ANGLE));
+  }
 }
