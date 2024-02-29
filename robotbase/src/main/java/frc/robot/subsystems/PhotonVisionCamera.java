@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,8 +68,13 @@ public class PhotonVisionCamera extends SubsystemBase {
   public void updateResult() {
     if (m_camera.isConnected()) {
       m_result = m_camera.getLatestResult();
-      m_targets = m_result.getTargets();
-      m_bestTarget = m_result.getBestTarget();
+      if (m_result.hasTargets()) {
+        m_targets = m_result.targets;
+        m_bestTarget = m_result.getBestTarget();
+      } else {
+        m_targets = null;
+        m_bestTarget = null;
+      }
 
       if (m_connectionLost) {
         m_connectionLost = false;
@@ -115,6 +121,9 @@ public class PhotonVisionCamera extends SubsystemBase {
    * @return If the limelight sees the april tag
    */
   public boolean validAprilTagTargetExists(int id) {
+    if (m_targets == null) {
+      return false;
+    }
     for (PhotonTrackedTarget target : m_targets) {
       if (target.getFiducialId() == id) {
         return true;
@@ -155,14 +164,14 @@ public class PhotonVisionCamera extends SubsystemBase {
    * @return Whether the camera has a valid target and is connected
    */
   public boolean getTV() {
-    return isConnected() && m_result.hasTargets();
+    return !m_connectionLost & (m_targets != null & m_result.hasTargets());
   }
 
   /**
    * @return Horizontal offset from crosshair to target (degrees)
    */
   public double getTX() {
-    return getTV() ? m_bestTarget.getYaw() : Double.NaN;
+    return (validTargetExists()) ? m_bestTarget.getYaw() : Double.NaN;
   }
 
   /**
@@ -181,7 +190,7 @@ public class PhotonVisionCamera extends SubsystemBase {
    *     to be pixels. Returns NaN if the camera has no targets or is disconnected.
    */
   public double getHorizontalTargetLength() {
-    if (!getTV()) {
+    if (!validTargetExists()) {
       return Double.NaN;
     }
     List<TargetCorner> corners = m_bestTarget.getDetectedCorners();
@@ -214,7 +223,7 @@ public class PhotonVisionCamera extends SubsystemBase {
    *     be pixels. Returns NaN if the camera has no targets or is disconnected.
    */
   public double getVerticalTargetLength() {
-    if (!getTV()) {
+    if (!validTargetExists()) {
       return Double.NaN;
     }
     List<TargetCorner> corners = m_bestTarget.getDetectedCorners();
@@ -256,7 +265,7 @@ public class PhotonVisionCamera extends SubsystemBase {
 
   /** Percent of image covered by target [0, 100] */
   public double getTA() {
-    return m_bestTarget.getArea();
+    return getTV() ? m_bestTarget.getArea() : Double.NaN;
   }
 
   /**
@@ -376,17 +385,16 @@ public class PhotonVisionCamera extends SubsystemBase {
     return getTV() ? m_bestTarget.getFiducialId() : -2;
   }
 
-  public List<PhotonTrackedTarget> filterAprilTags(int[] tagsToFilterFor) {
-    List<PhotonTrackedTarget> filteredTargets = m_targets;
-    for (int i = 0; i < m_targets.size(); i++) {
-      boolean removeTag = true;
-      for (int targetIDWanted : tagsToFilterFor) {
-        if (filteredTargets.get(i).getFiducialId() == targetIDWanted) {
-          removeTag = false;
+  public ArrayList<PhotonTrackedTarget> filterAprilTags(int[] tagsToFilterFor) {
+    if (!getTV()) {
+      return null;
+    }
+    ArrayList<PhotonTrackedTarget> filteredTargets = new ArrayList<>();
+    for (PhotonTrackedTarget seenTarget : m_targets) {
+      for (int desiredTargetID : tagsToFilterFor) {
+        if (seenTarget.getFiducialId() == desiredTargetID) {
+          filteredTargets.add(seenTarget);
         }
-      }
-      if (removeTag) {
-        filteredTargets.remove(i);
       }
     }
     return filteredTargets;

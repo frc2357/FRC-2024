@@ -9,8 +9,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Robot;
+import frc.robot.commands.drive.TargetLockOnAmp;
+import frc.robot.commands.drive.TargetLockOnSpeaker;
 import frc.robot.commands.intake.IntakeFeedToShooter;
-import frc.robot.commands.intake.IntakeNoteFromFloor;
 import frc.robot.commands.scoring.AmpPrepose;
 import frc.robot.commands.scoring.AmpScore;
 import frc.robot.commands.shooter.ShooterSetRPMs;
@@ -75,8 +76,9 @@ public class DriverControls implements RumbleInterface {
     m_backButton.onTrue(new InstantCommand(() -> Robot.swerve.setYaw(0)));
     m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.setYaw(180)));
 
-    m_leftTrigger.whileTrue(new IntakeNoteFromFloor());
-
+    // m_leftTrigger.whileTrue(new IntakeNoteFromFloor());
+    m_leftTrigger.whileTrue(new TargetLockOnSpeaker());
+    m_leftBumper.whileTrue(new TargetLockOnAmp());
     // m_rightBumper.onTrue(new DriverAmpScore());
     m_aButton.onTrue(
         new ConditionalCommand(

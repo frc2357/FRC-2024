@@ -1,9 +1,9 @@
 package frc.robot.subsystems;
 
-import org.photonvision.targeting.PhotonTrackedTarget;
-
 import edu.wpi.first.math.geometry.Transform3d;
+import frc.robot.Constants;
 import frc.robot.Constants.SHOOTER_PHOTON_CAMERA;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class ShooterPhotonCamera extends PhotonVisionCamera {
 
@@ -29,6 +29,19 @@ public class ShooterPhotonCamera extends PhotonVisionCamera {
     super.setPipeline(SHOOTER_PHOTON_CAMERA.DEFAULT_PIPELINE);
   }
 
-  public PhotonTrackedTarget getSpeakerTarget(){
+  public PhotonTrackedTarget getSpeakerTarget() {
+    var targets = super.filterAprilTags(Constants.APRIL_TAG_IDS.SPEAKER_CENTER_TAGS);
+    if (targets == null || targets.isEmpty()) {
+      return null;
+    }
+    return targets.get(0);
+  }
+
+  public PhotonTrackedTarget getAmpTarget() {
+    var targets = super.filterAprilTags(Constants.APRIL_TAG_IDS.SPEAKER_CENTER_TAGS);
+    if (targets == null || !targets.isEmpty()) {
+      return null;
+    }
+    return targets.get(0);
   }
 }
