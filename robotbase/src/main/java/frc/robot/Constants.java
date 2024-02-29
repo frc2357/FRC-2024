@@ -290,8 +290,9 @@ public final class Constants {
     public static final int MOTOR_FREE_LIMIT_AMPS = 40; // TODO: Tune climber amp limits
     public static final int MOTOR_STALL_LIMIT_AMPS = 40;
 
-    public static final double ZERO_SPEED = 0.05; // TODO: TUNE
-    public static final double ZERO_SPEED_STOP_TOLERANCE = 0.01; // TODO: TUNE
+    public static final double ZERO_SPEED = 0.1;
+    public static final double ZERO_SPEED_STOP_TOLERANCE = 3.0;
+    public static final double ZERO_SPEED_INITIAL_SECONDS = 0.01;
   }
 
   public static final class END_AFFECTOR {

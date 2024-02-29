@@ -33,13 +33,13 @@ public class Climber extends SubsystemBase {
     m_leftClimberMotor.enableVoltageCompensation(12);
   }
 
-  public void set(double right, double left) {
-    m_rightClimberMotor.set(right);
-    m_leftClimberMotor.set(left);
+  public void setSpeed(double leftSpeed, double rightSpeed) {
+    m_leftClimberMotor.set(leftSpeed);
+    m_rightClimberMotor.set(rightSpeed);
   }
 
   public void stop() {
-    set(0, 0);
+    setSpeed(0, 0);
   }
 
   public double getRightVelocity() {
@@ -50,8 +50,16 @@ public class Climber extends SubsystemBase {
     return m_leftClimberMotor.getEncoder().getVelocity();
   }
 
-  public void zero() {
-    m_leftClimberMotor.getEncoder().setPosition(0.0);
+  public double getRightRotations() {
+    return m_rightClimberMotor.getEncoder().getPosition();
+  }
+
+  public double getLeftRotations() {
+    return m_leftClimberMotor.getEncoder().getPosition();
+  }
+
+  public void setZero() {
     m_rightClimberMotor.getEncoder().setPosition(0.0);
+    m_leftClimberMotor.getEncoder().setPosition(0.0);
   }
 }
