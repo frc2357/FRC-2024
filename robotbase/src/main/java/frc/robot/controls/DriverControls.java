@@ -6,18 +6,14 @@ import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Robot;
 import frc.robot.commands.intake.IntakeNoteFromFloor;
-import frc.robot.commands.intake.IntakeStop;
-import frc.robot.commands.pivot.PivotStop;
 import frc.robot.commands.scoring.AmpPrepose;
 import frc.robot.commands.scoring.AmpScore;
 import frc.robot.commands.scoring.SpeakerShotFire;
 import frc.robot.commands.scoring.SpeakerShotPrime;
-import frc.robot.commands.shooter.ShooterStop;
 import frc.robot.controls.util.AxisInterface;
 import frc.robot.controls.util.AxisThresholdTrigger;
 import frc.robot.controls.util.RumbleInterface;
@@ -87,19 +83,7 @@ public class DriverControls implements RumbleInterface {
             new AmpPrepose(),
             () -> Robot.state.isNote(NoteState.END_AFFECTOR_PRELOAD)));
 
-    // m_rightTriggerPrime.whileTrue(
-    // new SpeakerShotPrime(
-    // SHOOTER.TOP_MOTOR_SUBWOOFER_SHOT_RPMS,
-    // SHOOTER.BOTTOM_MOTOR_SUBWOOFER_SHOT_RPMS,
-    // PIVOT.SUBWOOFER_SHOT_ANGLE));
-
-    m_rightTriggerPrime.whileTrue(
-        new SpeakerShotPrime(
-            Robot.shooter.getShooterCurveRow()[2],
-            Robot.shooter.getShooterCurveRow()[2],
-            Robot.shooter.getShooterCurveRow()[1]));
-    m_rightTriggerPrime.onFalse(
-        new ParallelCommandGroup(new ShooterStop(), new PivotStop(), new IntakeStop()));
+    m_rightTriggerPrime.whileTrue(new SpeakerShotPrime());
     m_rightTriggerShoot.whileTrue(new SpeakerShotFire());
   }
 

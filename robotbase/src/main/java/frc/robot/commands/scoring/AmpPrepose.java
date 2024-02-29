@@ -16,7 +16,6 @@ import frc.robot.commands.intake.IntakeFeedToShooter;
 import frc.robot.commands.intake.IntakeStop;
 import frc.robot.commands.pivot.PivotHoldAngle;
 import frc.robot.commands.shooter.ShooterSetRPMs;
-import frc.robot.commands.shooter.ShooterStop;
 import frc.robot.commands.state.SetNoteState;
 import frc.robot.state.RobotState.NoteState;
 
@@ -32,12 +31,10 @@ public class AmpPrepose extends ParallelDeadlineGroup {
                 new WaitCommand(SCORING.SECONDS_PRELOAD_NOTE),
                 new SequentialCommandGroup(new WaitCommand(0.25), new IntakeFeedToShooter()),
                 new EndAffectorSetSpeed(END_AFFECTOR.PRELOAD_SPEED),
-                new ShooterSetRPMs(
-                    SHOOTER.TOP_MOTOR_FEED_END_AFFECTOR_RPMS,
-                    SHOOTER.BOTTOM_MOTOR_FEED_END_AFFECTOR_RPMS)),
+                new ShooterSetRPMs(SHOOTER.FEED_END_AFFECTOR_RPMS)),
 
             // Stop motors
-            new ParallelCommandGroup(new IntakeStop(), new ShooterStop(), new EndAffectorStop()),
+            new ParallelCommandGroup(new IntakeStop(), new EndAffectorStop()),
 
             // Arm Prepose
             new ExtensionArmMoveToRotations(EXTENSION_ARM.AMP_PREPOSE_ROTATIONS),

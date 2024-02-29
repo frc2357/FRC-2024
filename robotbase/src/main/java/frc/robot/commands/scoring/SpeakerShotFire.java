@@ -10,8 +10,10 @@ public class SpeakerShotFire extends Command {
   }
 
   @Override
-  public void initialize() {
-    Robot.intake.set(INTAKE.FEED_SPEED_PERCENT_OUTPUT);
+  public void execute() {
+    if (Robot.shooter.isAtTargetSpeed() && Robot.pivot.isPivotAtAngle()) {
+      Robot.intake.set(INTAKE.FEED_SPEED_PERCENT_OUTPUT);
+    }
   }
 
   @Override

@@ -13,8 +13,7 @@ import frc.robot.util.RobotMath;
 import frc.robot.util.Utility;
 
 public class Shooter extends SubsystemBase {
-  private double m_targetSpeedTop;
-  private double m_targetSpeedBottom;
+  private double m_targetSpeed;
 
   private CANSparkMax m_topShooterMotor;
   private CANSparkMax m_bottomShooterMotor;
@@ -67,24 +66,22 @@ public class Shooter extends SubsystemBase {
     m_bottomPIDController.setOutputRange(-1, 1);
   }
 
-  public void setManualRPMs(double topRPMs, double bottomRPMs) {
+  public void setManualRPMs(double topRPMs) {
     Robot.state.setShooterState(ShooterState.CLOSED_LOOP);
-    setRPMs(topRPMs, bottomRPMs);
+    setRPMs(topRPMs);
   }
 
-  public void setRPMs(double topRPMS, double bottomRPMS) {
-    m_targetSpeedTop = topRPMS;
-    m_targetSpeedBottom = bottomRPMS;
-    m_topPIDController.setReference(m_targetSpeedTop, ControlType.kVelocity);
-    m_bottomPIDController.setReference(m_targetSpeedBottom, ControlType.kVelocity);
+  public void setRPMs(double topRPMS) {
+    m_targetSpeed = topRPMS;
+    m_topPIDController.setReference(m_targetSpeed, ControlType.kVelocity);
+    m_bottomPIDController.setReference(m_targetSpeed, ControlType.kVelocity);
   }
 
-  public void setAxisSpeed(double top, double bottom) {
+  public void setAxisSpeed(double speed) {
     Robot.state.setShooterState(ShooterState.NONE);
-    top *= Constants.SHOOTER.SHOOTER_AXIS_MAX_SPEED;
-    bottom *= Constants.SHOOTER.SHOOTER_AXIS_MAX_SPEED;
-    m_topShooterMotor.set(top);
-    m_bottomShooterMotor.set(bottom);
+    speed *= Constants.SHOOTER.SHOOTER_AXIS_MAX_SPEED;
+    m_topShooterMotor.set(speed);
+    m_bottomShooterMotor.set(speed);
   }
 
   public void stop() {
@@ -101,13 +98,13 @@ public class Shooter extends SubsystemBase {
     return m_bottomShooterMotor.getEncoder().getVelocity();
   }
 
-  public boolean isAtRPMs(double topRPMs, double bottomRPMs) {
-    return Utility.isWithinTolerance(getTopVelocity(), topRPMs, 100)
-        && Utility.isWithinTolerance(getBottomVelocity(), bottomRPMs, 100);
+  public boolean isAtRPMs(double RPMs) {
+    return Utility.isWithinTolerance(getTopVelocity(), RPMs, 100)
+        && Utility.isWithinTolerance(getBottomVelocity(), RPMs, 100);
   }
 
   public boolean isAtTargetSpeed() {
-    return isAtRPMs(m_targetSpeedTop, m_targetSpeedBottom);
+    return isAtRPMs(m_targetSpeed);
   }
 
   private boolean hasTarget() {
@@ -163,7 +160,7 @@ public class Shooter extends SubsystemBase {
       return;
     }
 
-    setRPMs(shooterRPMs, shooterRPMs);
+    setRPMs(shooterRPMs);
   }
 
   public double[] getShooterCurveRow() {
