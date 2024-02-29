@@ -26,7 +26,7 @@ public class PivotZero extends ParallelDeadlineGroup {
                   if (!interrupted) {
                     Robot.pivot.setZero();
                   } else {
-                    System.err.println("Pivot Zero interrupted!");
+                    System.err.println("[Pivot] Zero interrupted!");
                   }
                 }),
 

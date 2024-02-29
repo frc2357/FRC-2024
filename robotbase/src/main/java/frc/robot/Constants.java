@@ -337,10 +337,11 @@ public final class Constants {
 
     public static final double AXIS_MAX_SPEED = 0.5;
 
-    public static final double ZERO_SPEED = 0.05; // TODO: TUNE
-    public static final double ZERO_SPEED_STOP_TOLERANCE = 0.01; // TODO: TUNE
+    public static final double ZERO_SPEED = 0.1;
+    public static final double ZERO_SPEED_STOP_TOLERANCE = 0.01;
+    public static final double ZERO_SPEED_INITIAL_SECONDS = 0.01;
 
-    public static final double HOME_ROTATIONS = 0.1;
+    public static final double HOME_ROTATIONS = 0.0;
     public static final double NOTE_STOW_ROTATIONS = 1.4;
     public static final double AMP_PREPOSE_ROTATIONS = 3.75; // TODO: TUNE
     public static final double AMP_SCORE_ROTATIONS = 6;
