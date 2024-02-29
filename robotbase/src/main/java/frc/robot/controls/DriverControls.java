@@ -9,8 +9,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-import frc.robot.Constants.PIVOT;
-import frc.robot.Constants.SHOOTER;
 import frc.robot.Robot;
 import frc.robot.commands.intake.IntakeNoteFromFloor;
 import frc.robot.commands.intake.IntakeStop;
@@ -89,11 +87,17 @@ public class DriverControls implements RumbleInterface {
             new AmpPrepose(),
             () -> Robot.state.isNote(NoteState.END_AFFECTOR_PRELOAD)));
 
+    // m_rightTriggerPrime.whileTrue(
+    // new SpeakerShotPrime(
+    // SHOOTER.TOP_MOTOR_SUBWOOFER_SHOT_RPMS,
+    // SHOOTER.BOTTOM_MOTOR_SUBWOOFER_SHOT_RPMS,
+    // PIVOT.SUBWOOFER_SHOT_ANGLE));
+
     m_rightTriggerPrime.whileTrue(
         new SpeakerShotPrime(
-            SHOOTER.TOP_MOTOR_SUBWOOFER_SHOT_RPMS,
-            SHOOTER.BOTTOM_MOTOR_SUBWOOFER_SHOT_RPMS,
-            PIVOT.SUBWOOFER_SHOT_ANGLE));
+            Robot.shooter.getShooterCurveRow()[2],
+            Robot.shooter.getShooterCurveRow()[2],
+            Robot.shooter.getShooterCurveRow()[1]));
     m_rightTriggerPrime.onFalse(
         new ParallelCommandGroup(new ShooterStop(), new PivotStop(), new IntakeStop()));
     m_rightTriggerShoot.whileTrue(new SpeakerShotFire());

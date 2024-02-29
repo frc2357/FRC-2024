@@ -25,8 +25,10 @@ public class Shooter extends SubsystemBase {
   private ShooterCurveTuner m_curveTuner;
 
   public Shooter() {
-    m_topShooterMotor = new CANSparkMax(Constants.CAN_ID.TOP_SHOOTER_MOTOR_ID, MotorType.kBrushless);
-    m_bottomShooterMotor = new CANSparkMax(Constants.CAN_ID.BOTTOM_SHOOTER_MOTOR_ID, MotorType.kBrushless);
+    m_topShooterMotor =
+        new CANSparkMax(Constants.CAN_ID.TOP_SHOOTER_MOTOR_ID, MotorType.kBrushless);
+    m_bottomShooterMotor =
+        new CANSparkMax(Constants.CAN_ID.BOTTOM_SHOOTER_MOTOR_ID, MotorType.kBrushless);
     m_curveTuner = new ShooterCurveTuner();
     configure();
   }
@@ -162,5 +164,9 @@ public class Shooter extends SubsystemBase {
     }
 
     setRPMs(shooterRPMs, shooterRPMs);
+  }
+
+  public double[] getShooterCurveRow() {
+    return m_curveTuner.getSelectedRow();
   }
 }

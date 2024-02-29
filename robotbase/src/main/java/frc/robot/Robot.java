@@ -63,10 +63,10 @@ public class Robot extends TimedRobot {
   // Center line
   // {ty, pivotRotations, shooterRPMs}
   public static final double[][] shooterCurve = {
-      { 0.0, 0.0, 0.0 }, // Side subwoofer (lower bound)
-      { 0.0, 0.0, 0.0 }, // Center subwoofer
-      { 0.0, 0.0, 0.0 }, // Podium
-      { 0.0, 0.0, 0.0 }, // Stage Apriltag
+      { 8.55, 0.0, 0.0 }, // Side subwoofer (lower bound)
+      { 8.4, 0.0, 0.0 }, // Center subwoofer
+      { -16.9, 0.0, 0.0 }, // Podium
+      { -23.0, 0.0, 0.0 }, // Stage Apriltag
       { 0.0, 0.0, 0.0 }, // Wing line
       { 0.0, 0.0, 0.0 } // Center line
   };

@@ -40,4 +40,10 @@ public class ShooterCurveTuner {
     Robot.shooterCurve[index][2] = topShooterSetpoint;
     Robot.shooterCurve[index][3] = bottomShooterSetpoint;
   }
+
+  public double[] getSelectedRow() {
+    int selected = m_rowChooser.getSelected();
+    double[] row = Robot.shooterCurve[selected];
+    return row;
+  }
 }
