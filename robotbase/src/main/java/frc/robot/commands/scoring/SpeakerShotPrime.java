@@ -18,12 +18,12 @@ public class SpeakerShotPrime extends Command {
   @Override
   public void initialize() {
     Robot.shooter.setRPMs(m_topRPMs, m_bottomRPMs);
-    Robot.pivot.setPivotRotation(m_pivotRotation);
+    Robot.pivot.setAngle(m_pivotRotation);
   }
 
   @Override
   public boolean isFinished() {
-    return Robot.shooter.isAtRPMs(m_topRPMs, m_bottomRPMs) && Robot.pivot.isPivotAtRotation();
+    return Robot.shooter.isAtRPMs(m_topRPMs, m_bottomRPMs) && Robot.pivot.isPivotAtAngle();
   }
 
   @Override
