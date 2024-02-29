@@ -15,6 +15,7 @@ public class AutoCommandChooser {
     m_autoCommands =
         new Command[] {
           new DriveChoreoPath("Line"),
+          new DriveChoreoPath("Close3Speaker"),
           // new DriveChoreoPath("RotationTest"),
           // new DriveChoreoPath("BoxTest"),
           // new DriveChoreoPath("TriangleTest"),
@@ -30,7 +31,6 @@ public class AutoCommandChooser {
     for (Command autoCommand : m_autoCommands) {
       m_chooser.addOption(autoCommand.toString(), autoCommand);
     }
-
     SmartDashboard.putData("Auto chooser", m_chooser);
   }
 
