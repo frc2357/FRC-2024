@@ -215,7 +215,7 @@ public class CodriverControls implements RumbleInterface {
     downDPadAndY.onTrue(
         new InstantCommand(
             () -> {
-              Robot.extensionArm.zeroArm();
+              Robot.extensionArm.setZero();
             }));
     downDPadAndB.whileTrue(new ExtensionArmZero());
 

@@ -113,6 +113,7 @@ public class Pivot extends SubsystemBase {
     double newOffset = getCurrentAngle() + currentOffset - Constants.PIVOT.MIN_PIVOT_ANGLE;
     newOffset %= 360;
     setZeroOffset(newOffset);
+    System.out.println("[Pivot] Zero Set");
   }
 
   private void setZeroOffset(double newOffset) {
