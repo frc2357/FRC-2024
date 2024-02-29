@@ -5,6 +5,7 @@
 package frc.robot;
 
 import com.ctre.phoenix6.signals.NeutralModeValue;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -55,12 +56,13 @@ public class Robot extends TimedRobot {
 
   // {ty, pivotRotations, shooterRPM}
   public static final double[][] shooterCurve = {
-    {8.55, 45, 3000}, // Side subwoofer (lower bound)
-    {8.4, 45, 3000}, // Center subwoofer
-    {-16.9, 45, 3000}, // Podium
-    {-23.0, 45, 3000}, // Stage Apriltag
-    {-50, 45, 3000}, // Wing line
-    {-50, 45, 3000} // Center line
+    {50, 95, 3000}, // Lower bound
+    {7.5, 95, 3000}, // Side Subwoofer
+    {7.3, 95, 3000}, // Center Subwoofer
+    {-15.42, 55, 4000}, // Podium
+    {-20.8, 45, 4250}, // Stage Apriltag
+    {-50, 45, 4250}, // Wing line
+    {-50, 45, 4250} // Center line (Upper bound)
   };
 
   /**

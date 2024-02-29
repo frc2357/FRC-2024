@@ -14,6 +14,7 @@ import frc.robot.commands.scoring.AmpPrepose;
 import frc.robot.commands.scoring.AmpScore;
 import frc.robot.commands.scoring.SpeakerShotFire;
 import frc.robot.commands.scoring.SpeakerShotPrime;
+import frc.robot.commands.source.SourceIntakeFromShooter;
 import frc.robot.controls.util.AxisInterface;
 import frc.robot.controls.util.AxisThresholdTrigger;
 import frc.robot.controls.util.RumbleInterface;
@@ -81,6 +82,8 @@ public class DriverControls implements RumbleInterface {
             new AmpScore(),
             new AmpPrepose(),
             () -> Robot.state.isNote(NoteState.END_AFFECTOR_PRELOAD)));
+
+    m_leftBumper.whileTrue(new SourceIntakeFromShooter());
 
     m_rightTriggerPrime.whileTrue(new SpeakerShotPrime());
     m_rightTriggerShoot.whileTrue(new SpeakerShotFire());

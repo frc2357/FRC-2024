@@ -4,7 +4,12 @@
 
 package frc.robot;
 
+import java.util.function.BooleanSupplier;
+
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+
 import com.revrobotics.CANSparkBase.IdleMode;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
@@ -12,8 +17,6 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
-import java.util.function.BooleanSupplier;
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -149,7 +152,7 @@ public final class Constants {
   }
 
   public static final class SHOOTER {
-    public static final double SOURCE_INTAKE_RPM = 2000;
+    public static final double SOURCE_INTAKE_RPM = -1000;
 
     public static final double FEED_END_AFFECTOR_RPM = 2000;
 
@@ -241,7 +244,7 @@ public final class Constants {
   }
 
   public static final class PIVOT {
-    public static final double MAX_PIVOT_ANGLE = 67.5;
+    public static final double MAX_PIVOT_ANGLE = 100; //TODO TUNE
     public static final double MIN_PIVOT_ANGLE = 10;
 
     public static final double END_AFFECTOR_PRELOAD_ANGLE = 63.5;
