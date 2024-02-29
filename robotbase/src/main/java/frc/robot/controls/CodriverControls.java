@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.commands.climber.ClimberAxis;
-import frc.robot.commands.climber.ClimberZero;
+import frc.robot.commands.climber.ClimberRunThenZero;
 import frc.robot.commands.endAffector.EndAffectorAxis;
 import frc.robot.commands.extensionArm.ExtensionArmAxis;
 import frc.robot.commands.extensionArm.ExtensionArmZero;
@@ -91,6 +91,11 @@ public class CodriverControls implements RumbleInterface {
     mapControls();
   }
 
+  public double getRightXAxis() {
+    double value = m_controller.getRightX();
+    return Utility.deadband(value, m_deadband);
+  }
+
   public double getRightYAxis() {
     double value = m_controller.getRightY();
     return Utility.deadband(value, m_deadband);
@@ -106,6 +111,10 @@ public class CodriverControls implements RumbleInterface {
 
   private void mapControls() {
 
+    AxisInterface axisRightStickX =
+        () -> {
+          return getRightXAxis();
+        };
     AxisInterface axisRightStickY =
         () -> {
           return getRightYAxis();
@@ -191,7 +200,7 @@ public class CodriverControls implements RumbleInterface {
     rightDPadAndY.onTrue(
         new InstantCommand(
             () -> {
-              Robot.climber.zero();
+              Robot.pivot.setZero();
             }));
     rightDPadAndB.whileTrue(new PivotZero());
 
@@ -210,10 +219,10 @@ public class CodriverControls implements RumbleInterface {
     upDPadAndY.onTrue(
         new InstantCommand(
             () -> {
-              Robot.climber.zero();
+              Robot.climber.setZero();
             }));
-    upDPadAndB.whileTrue(new ClimberZero());
-    upDPadOnly.whileTrue(new ClimberAxis(axisRightStickY));
+    upDPadAndB.whileTrue(new ClimberRunThenZero());
+    upDPadOnly.whileTrue(new ClimberAxis(axisRightStickX, axisRightStickY));
 
     // Extension/EndAffector - Down DPad
     downDPadOnly.whileTrue(new ExtensionArmAxis(axisRightStickY));

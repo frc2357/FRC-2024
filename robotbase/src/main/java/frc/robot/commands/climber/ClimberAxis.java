@@ -5,17 +5,24 @@ import frc.robot.Robot;
 import frc.robot.controls.util.AxisInterface;
 
 public class ClimberAxis extends Command {
-  private AxisInterface m_axis;
+  private AxisInterface m_xAxis;
+  private AxisInterface m_yAxis;
 
-  public ClimberAxis(AxisInterface axis) {
-    m_axis = axis;
+  public ClimberAxis(AxisInterface xAxis, AxisInterface yAxis) {
+    m_xAxis = xAxis;
+    m_yAxis = yAxis;
     addRequirements(Robot.climber);
   }
 
   @Override
   public void execute() {
-    double axisSpeed = m_axis.getValue();
-    Robot.climber.set(axisSpeed, axisSpeed);
+    double xAxisSpeed = m_xAxis.getValue();
+    double yAxisSpeed = m_yAxis.getValue();
+
+    double leftSpeed = (-xAxisSpeed + yAxisSpeed) / 2.0;
+    double rightSpeed = (xAxisSpeed + yAxisSpeed) / 2.0;
+
+    Robot.climber.setSpeed(leftSpeed, rightSpeed);
   }
 
   @Override
