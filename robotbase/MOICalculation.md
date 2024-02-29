@@ -1,4 +1,4 @@
-Formula: 
+Formula:
 (1/12) * m * ((a/12)^2 + (b/12)^2)
 
 Where:
