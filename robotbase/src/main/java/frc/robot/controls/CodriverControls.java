@@ -196,6 +196,11 @@ public class CodriverControls implements RumbleInterface {
     rightDPadAndB.whileTrue(new PivotZero());
 
     rightDPadOnly.whileTrue(new PivotAxis(axisRightStickY));
+    rightDPadAndY.onTrue(
+        new InstantCommand(
+            () -> {
+              Robot.pivot.setZero();
+            }));
 
     // Intake - Left DPad
     leftDPadAndRightTrigger.whileTrue(new IntakeAxis(subsystemRollerForwardAxis));

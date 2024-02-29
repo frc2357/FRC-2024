@@ -9,12 +9,11 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Robot;
-import frc.robot.commands.intake.IntakeFeedToShooter;
 import frc.robot.commands.intake.IntakeNoteFromFloor;
 import frc.robot.commands.scoring.AmpPrepose;
 import frc.robot.commands.scoring.AmpScore;
-import frc.robot.commands.shooter.ShooterSetRPMs;
-import frc.robot.commands.shooter.ShooterStop;
+import frc.robot.commands.scoring.SpeakerShotFire;
+import frc.robot.commands.scoring.SpeakerShotPrime;
 import frc.robot.controls.util.AxisInterface;
 import frc.robot.controls.util.AxisThresholdTrigger;
 import frc.robot.controls.util.RumbleInterface;
@@ -53,8 +52,8 @@ public class DriverControls implements RumbleInterface {
     m_leftBumper = new JoystickButton(controller, Button.kLeftBumper.value);
     m_rightBumper = new JoystickButton(controller, Button.kRightBumper.value);
 
-    m_rightTriggerPrime = new AxisThresholdTrigger(m_controller, Axis.kRightTrigger, .1);
-    m_rightTriggerShoot = new AxisThresholdTrigger(m_controller, Axis.kRightTrigger, .6);
+    m_rightTriggerPrime = new AxisThresholdTrigger(m_controller, Axis.kRightTrigger, 0.1);
+    m_rightTriggerShoot = new AxisThresholdTrigger(m_controller, Axis.kRightTrigger, .7);
     m_leftTrigger = new AxisThresholdTrigger(m_controller, Axis.kLeftTrigger, 0);
 
     m_rightDPad = new POVButton(m_controller, 90);
@@ -77,21 +76,14 @@ public class DriverControls implements RumbleInterface {
 
     m_leftTrigger.whileTrue(new IntakeNoteFromFloor());
 
-    // m_rightBumper.onTrue(new DriverAmpScore());
-    m_aButton.onTrue(
+    m_rightBumper.onTrue(
         new ConditionalCommand(
             new AmpScore(),
             new AmpPrepose(),
             () -> Robot.state.isNote(NoteState.END_AFFECTOR_PRELOAD)));
 
-    m_rightTriggerPrime.whileTrue(new ShooterSetRPMs(5000, 5000));
-    m_rightTriggerShoot.whileTrue(
-        new IntakeFeedToShooter().withTimeout(0.5).andThen(new ShooterStop()));
-    // m_rightTriggerPrime.whileTrue(
-    // new ParallelCommandGroup(
-    // new ShooterSetRPMs(2000, 2000),
-    // new PivotSetRotation(Constants.PIVOT.SUBWOOFER_SHOT_ROTATION)));
-    // m_rightTriggerShoot.whileTrue(new IntakeFeedToShooter().withTimeout(0.5));
+    m_rightTriggerPrime.whileTrue(new SpeakerShotPrime());
+    m_rightTriggerShoot.whileTrue(new SpeakerShotFire());
   }
 
   public double getX() {
