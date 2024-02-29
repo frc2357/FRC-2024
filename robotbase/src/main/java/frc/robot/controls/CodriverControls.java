@@ -13,10 +13,13 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.commands.climber.ClimberAxis;
+import frc.robot.commands.climber.ClimberZero;
 import frc.robot.commands.endAffector.EndAffectorAxis;
 import frc.robot.commands.extensionArm.ExtensionArmAxis;
+import frc.robot.commands.extensionArm.ExtensionArmZero;
 import frc.robot.commands.intake.IntakeAxis;
 import frc.robot.commands.pivot.PivotAxis;
+import frc.robot.commands.pivot.PivotZero;
 import frc.robot.commands.shooter.ShooterStepAxis;
 import frc.robot.controls.util.AxisInterface;
 import frc.robot.controls.util.AxisThresholdTrigger;
@@ -185,6 +188,13 @@ public class CodriverControls implements RumbleInterface {
         new ShooterStepAxis(
             subsystemRollerReverseAxis, Constants.SHOOTER.SHOOTER_AXIS_STEP_INTERVAL));
 
+    rightDPadAndY.onTrue(
+        new InstantCommand(
+            () -> {
+              Robot.climber.zero();
+            }));
+    rightDPadAndB.whileTrue(new PivotZero());
+
     rightDPadOnly.whileTrue(new PivotAxis(axisRightStickY));
     rightDPadAndY.onTrue(
         new InstantCommand(
@@ -197,6 +207,12 @@ public class CodriverControls implements RumbleInterface {
     leftDPadAndLeftTrigger.whileTrue(new IntakeAxis(subsystemRollerReverseAxis));
 
     // Climber - Up DPad
+    upDPadAndY.onTrue(
+        new InstantCommand(
+            () -> {
+              Robot.climber.zero();
+            }));
+    upDPadAndB.whileTrue(new ClimberZero());
     upDPadOnly.whileTrue(new ClimberAxis(axisRightStickY));
 
     // Extension/EndAffector - Down DPad
@@ -206,6 +222,7 @@ public class CodriverControls implements RumbleInterface {
             () -> {
               Robot.extensionArm.zeroArm();
             }));
+    downDPadAndB.whileTrue(new ExtensionArmZero());
 
     downDPadAndRightTrigger.whileTrue(new EndAffectorAxis(subsystemRollerForwardAxis));
     downDPadAndLeftTrigger.whileTrue(new EndAffectorAxis(subsystemRollerReverseAxis));
