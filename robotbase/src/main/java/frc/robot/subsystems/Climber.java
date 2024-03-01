@@ -38,6 +38,11 @@ public class Climber extends SubsystemBase {
     m_rightClimberMotor.set(rightSpeed);
   }
 
+  public void setAmpLimits(int freeLimit, int stallLimit) {
+    m_leftClimberMotor.setSmartCurrentLimit(stallLimit, freeLimit);
+    m_rightClimberMotor.setSmartCurrentLimit(stallLimit, freeLimit);
+  }
+
   public void stop() {
     setSpeed(0, 0);
   }

@@ -76,7 +76,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     double rotation = Constants.SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.calculate(tx, 0);
     double rotationOutput =
         !hasTarget
-            ? 0
+            ? Robot.driverControls.getRotation()
             : rotation + Math.copySign(Constants.SWERVE.TARGET_LOCK_FEED_FORWARD, rotation);
     applyRequest(
         () ->

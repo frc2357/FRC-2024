@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkPIDController;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.PIVOT;
@@ -120,5 +121,11 @@ public class Pivot extends SubsystemBase {
     m_absoluteEncoder.setZeroOffset(newOffset);
     m_zeroOffset = newOffset;
     Preferences.setDouble(Constants.PIVOT.PREFERENCES_ZERO_OFFSET_KEY, newOffset);
+  }
+
+  @Override
+  public void periodic() {
+    SmartDashboard.putNumber("Pivot angle", getCurrentAngle());
+    SmartDashboard.putNumber("Pivot target angle", getTargetAngle());
   }
 }

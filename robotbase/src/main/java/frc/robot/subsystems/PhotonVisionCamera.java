@@ -162,7 +162,7 @@ public class PhotonVisionCamera extends SubsystemBase {
    * @return Whether the camera has a valid target and is connected
    */
   public boolean getTV() {
-    return !m_connectionLost & (m_targets != null & m_result.hasTargets());
+    return !m_connectionLost && (m_targets != null && m_result.hasTargets());
   }
 
   /**
@@ -180,7 +180,8 @@ public class PhotonVisionCamera extends SubsystemBase {
    * ⟶  +X  3 ----- 2
    * |      |       |
    * V      |       |
-   * +Y     0 ----- 1</pre>
+   * +Y     0 ----- 1
+   * </pre>
    *
    * X and Y increase opposite usual ways. Use accordingly.
    *
@@ -213,7 +214,8 @@ public class PhotonVisionCamera extends SubsystemBase {
    * ⟶  +X  3 ----- 2
    * |      |       |
    * V      |       |
-   * +Y     0 ----- 1</pre>
+   * +Y     0 ----- 1
+   * </pre>
    *
    * X and Y increase opposite usual ways. Use accordingly.
    *

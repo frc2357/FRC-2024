@@ -93,7 +93,7 @@ public final class Constants {
     public static final double PIECE_TRACKING_X_METERS_PER_SECOND = 2;
 
     // Target Lock
-    public static final double TARGET_LOCK_ROTATION_KP = 0.2;
+    public static final double TARGET_LOCK_ROTATION_KP = 0.02;
     public static final double TARGET_LOCK_ROTATION_KI = 0.0;
     public static final double TARGET_LOCK_ROTATION_KD = 0.0;
     public static final PIDController TARGET_LOCK_ROTATION_PID_CONTROLLER =
@@ -101,7 +101,7 @@ public final class Constants {
             TARGET_LOCK_ROTATION_KP, TARGET_LOCK_ROTATION_KI, TARGET_LOCK_ROTATION_KD);
 
     public static final double TARGET_LOCK_FEED_FORWARD = 0.0;
-    public static final double TARGET_LOCK_TOLERANCE = 0.25;
+    public static final double TARGET_LOCK_TOLERANCE = 1;
 
     // Translate to Apriltag
     public static final PIDController APRILTAG_ROTATION_PID_CONTROLLER =
@@ -149,7 +149,7 @@ public final class Constants {
   }
 
   public static final class SHOOTER {
-    public static final double SOURCE_INTAKE_RPM = 2000;
+    public static final double SOURCE_INTAKE_RPM = -2000;
 
     public static final double FEED_END_AFFECTOR_RPM = 2000;
 
@@ -241,11 +241,11 @@ public final class Constants {
   }
 
   public static final class PIVOT {
-    public static final double MAX_PIVOT_ANGLE = 67.5;
+    public static final double MAX_PIVOT_ANGLE = 100; // TODO TUNE
     public static final double MIN_PIVOT_ANGLE = 10;
 
     public static final double END_AFFECTOR_PRELOAD_ANGLE = 63.5;
-    public static final double INTAKE_FROM_SOURCE_ANGLE = 45;
+    public static final double INTAKE_FROM_SOURCE_ANGLE = 80;
     public static final double DEFAULT_PIVOT_ANGLE = 45; // angle of intake
 
     public static final boolean MOTOR_INVERTED = false;
@@ -285,9 +285,12 @@ public final class Constants {
     public static final int MOTOR_FREE_LIMIT_AMPS = 40; // TODO: Tune climber amp limits
     public static final int MOTOR_STALL_LIMIT_AMPS = 40;
 
+    public static final int ZERO_MOTOR_FREE_LIMIT_AMPS = 20; // TODO: Tune climber amp limits
+    public static final int ZERO_MOTOR_STALL_LIMIT_AMPS = 20;
+
     public static final double ZERO_SPEED = 0.1;
-    public static final double ZERO_SPEED_STOP_TOLERANCE = 3.0;
-    public static final double ZERO_SPEED_INITIAL_SECONDS = 0.01;
+    public static final double ZERO_SPEED_STOP_TOLERANCE = 50.0;
+    public static final double ZERO_SPEED_INITIAL_SECONDS = 0.1;
   }
 
   public static final class END_AFFECTOR {
@@ -333,7 +336,7 @@ public final class Constants {
 
     public static final double AXIS_MAX_SPEED = 0.5;
 
-    public static final double ZERO_SPEED = 0.1;
+    public static final double ZERO_SPEED = -0.1;
     public static final double ZERO_SPEED_STOP_TOLERANCE = 0.01;
     public static final double ZERO_SPEED_INITIAL_SECONDS = 0.01;
 
