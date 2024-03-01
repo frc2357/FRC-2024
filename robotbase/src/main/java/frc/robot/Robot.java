@@ -5,7 +5,6 @@
 package frc.robot;
 
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -63,7 +62,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    DriverStation.silenceJoystickConnectionWarning(true);
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
     // autonomous chooser on the dashboard.

@@ -4,12 +4,7 @@
 
 package frc.robot;
 
-import java.util.function.BooleanSupplier;
-
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
-
 import com.revrobotics.CANSparkBase.IdleMode;
-
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
@@ -17,6 +12,8 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import java.util.function.BooleanSupplier;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -96,7 +93,7 @@ public final class Constants {
     public static final double PIECE_TRACKING_X_METERS_PER_SECOND = 2;
 
     // Target Lock
-    public static final double TARGET_LOCK_ROTATION_KP = 0.8;
+    public static final double TARGET_LOCK_ROTATION_KP = 0.2;
     public static final double TARGET_LOCK_ROTATION_KI = 0.0;
     public static final double TARGET_LOCK_ROTATION_KD = 0.0;
     public static final PIDController TARGET_LOCK_ROTATION_PID_CONTROLLER =

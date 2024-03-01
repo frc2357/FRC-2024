@@ -36,14 +36,11 @@ public class DriveToGamepeice extends Command {
   public void execute() {
     if (!m_canSeePieceDebouncer.calculate(Robot.intakeCam.validTargetExists())) {
       System.out.println("No Gamepiece Detected");
-      Robot.swerve.driveRobotRelative(0, 0, 0);
+      Robot.swerve.stopMotors();
       return;
     }
 
     double rotationError = Robot.intakeCam.getTX();
-    if (rotationError == Double.NaN) {
-      rotationError = 0;
-    }
     double rotationSpeed = SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.calculate(rotationError, 0);
     double translationSpeed =
         distanceTraveled() > SWERVE.PIECE_TRACKING_SLOW_DOWN_METERS
@@ -59,7 +56,7 @@ public class DriveToGamepeice extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    Robot.swerve.driveRobotRelative(0, 0, 0);
+    Robot.swerve.stopMotors();
     SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.setTolerance(0);
     Robot.state.setDriveControlState(DriveControlState.FIELD_RELATIVE);
     System.out.println(interrupted);

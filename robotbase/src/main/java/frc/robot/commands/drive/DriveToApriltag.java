@@ -65,18 +65,12 @@ public class DriveToApriltag extends Command {
   public void execute() {
     if (!m_canSeePieceDebouncer.calculate(m_camera.validTargetExists())) {
       System.out.println("No Target Detected");
-      Robot.swerve.driveRobotRelative(m_tyOffset, m_rotationGoal, m_pipelineIndex);
+      Robot.swerve.stopMotors();
       return;
     }
 
     double tx = m_camera.getTX();
     double ty = m_camera.getTY();
-    if (tx == Double.NaN) {
-      tx = 0;
-    }
-    if (ty == Double.NaN) {
-      ty = 0;
-    }
     double rotationError = Robot.swerve.getPose().getRotation().getRadians();
 
     // Increase tx tolerance when close to target since tx is more sensitive at
@@ -104,11 +98,11 @@ public class DriveToApriltag extends Command {
             * (m_invertSpeeds ? -1 : 1);
     double yMetersPerSecond = m_xController.calculate(tx) * (m_invertSpeeds ? -1 : 1);
     double rotationRadiansPerSecond = m_rotationController.calculate(rotationError);
-    Robot.swerve.driveRobotRelative(m_tyOffset, m_rotationGoal, m_pipelineIndex);
+    Robot.swerve.driveRobotRelative(xMetersPerSecond, yMetersPerSecond, rotationRadiansPerSecond);
   }
 
   @Override
   public void end(boolean interrupted) {
-    Robot.swerve.driveRobotRelative(m_tyOffset, m_rotationGoal, m_pipelineIndex);
+    Robot.swerve.stopMotors();
   }
 }

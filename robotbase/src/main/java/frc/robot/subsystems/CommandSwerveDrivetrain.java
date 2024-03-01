@@ -76,7 +76,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     double rotation = Constants.SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.calculate(tx, 0);
     double rotationOutput =
         !hasTarget
-            ? Robot.driverControls.getRotation()
+            ? 0
             : rotation + Math.copySign(Constants.SWERVE.TARGET_LOCK_FEED_FORWARD, rotation);
     applyRequest(
         () ->
@@ -85,7 +85,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
                     velocityXSpeedMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
                 .withVelocityY(
                     velocityYSpeedMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
-                .withRotationalRate(rotationOutput));
+                .withRotationalRate(
+                    rotationOutput * Constants.SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND));
   }
 
   public void driveRobotRelative(
