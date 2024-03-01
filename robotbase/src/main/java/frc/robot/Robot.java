@@ -57,11 +57,11 @@ public class Robot extends TimedRobot {
   public static final double[][] shooterCurve = {
     {50, 95, 3000}, // Lower bound
     {7.5, 95, 3000}, // Side Subwoofer
-    {7.3, 95, 3000}, // Center Subwoofer
-    {-15.42, 55, 4000}, // Podium
-    {-20.8, 45, 4250}, // Stage Apriltag
-    {-50, 45, 4250}, // Wing line
-    {-50, 45, 4250} // Center line (Upper bound)
+    {11.10, 95, 3000}, // Center Subwoofer
+    {-9.33, 55, 4000}, // Podium
+    {-14.15, 45, 4250}, // Stage Apriltag
+    {-17.75, 45, 4250}, // Wing line
+    {-19, 45, 4250} // Center line (Upper bound)
   };
 
   /**
