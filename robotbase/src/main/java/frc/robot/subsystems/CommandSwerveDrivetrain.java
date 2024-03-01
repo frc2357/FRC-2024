@@ -63,37 +63,62 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     getPigeon2().setYaw(yaw);
   }
 
-  public void drive(
+  public void driveTargetLock(
+      double velocityXSpeedMetersPerSecond,
+      double velocityYSpeedMetersPerSecond,
+      double tx,
+      boolean hasTarget) {
+    double vy = getChassisSpeeds().vyMetersPerSecond; // Horizontal velocity
+    double kp = Constants.SWERVE.TARGET_LOCK_ROTATION_KP;
+    kp *= Math.max(1, vy * 1);
+    Constants.SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.setP(kp);
+
+    double rotation = Constants.SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.calculate(tx, 0);
+    double rotationOutput =
+        !hasTarget
+            ? 0
+            : rotation + Math.copySign(Constants.SWERVE.TARGET_LOCK_FEED_FORWARD, rotation);
+    applyRequest(
+        () ->
+            fieldRelative
+                .withVelocityX(
+                    velocityXSpeedMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
+                .withVelocityY(
+                    velocityYSpeedMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
+                .withRotationalRate(
+                    rotationOutput * Constants.SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND));
+  }
+
+  public void driveRobotRelative(
       double velocityXMetersPerSecond,
       double velocityYMetersPerSecond,
       double rotationRateRadiansPerSecond) {
+    applyRequest(
+        () ->
+            robotRelative
+                .withVelocityX(
+                    velocityXMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
+                .withVelocityY(
+                    velocityYMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
+                .withRotationalRate(
+                    rotationRateRadiansPerSecond
+                        * Constants.SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND));
+  }
 
-    switch (Robot.state.getDriveControlState()) {
-      case ROBOT_RELATIVE:
-        applyRequest(
-            () ->
-                robotRelative
-                    .withVelocityX(velocityXMetersPerSecond)
-                    .withVelocityY(velocityYMetersPerSecond)
-                    .withRotationalRate(rotationRateRadiansPerSecond));
-        break;
-      case FIELD_RELATIVE:
-        applyRequest(
-            () ->
-                fieldRelative
-                    .withVelocityX(velocityXMetersPerSecond)
-                    .withVelocityY(velocityYMetersPerSecond)
-                    .withRotationalRate(rotationRateRadiansPerSecond));
-        break;
-      case TARGET_LOCK:
-        applyRequest(
-            () ->
-                fieldRelative
-                    .withVelocityX(velocityXMetersPerSecond)
-                    .withVelocityY(velocityYMetersPerSecond)
-                    .withRotationalRate(getTargetLockRotation()));
-        break;
-    }
+  public void driveFieldRelative(
+      double velocityXMetersPerSecond,
+      double velocityYMetersPerSecond,
+      double rotationRateRadiansPerSecond) {
+    applyRequest(
+        () ->
+            fieldRelative
+                .withVelocityX(
+                    velocityXMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
+                .withVelocityY(
+                    velocityYMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
+                .withRotationalRate(
+                    rotationRateRadiansPerSecond
+                        * Constants.SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND));
   }
 
   /**
@@ -148,7 +173,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   }
 
   public void stopMotors() {
-    drive(0, 0, 0);
+    driveFieldRelative(0, 0, 0);
   }
 
   public void setPose(Pose2d poseToSet) {
