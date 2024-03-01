@@ -65,7 +65,7 @@ public class DriveToApriltag extends Command {
   public void execute() {
     if (!m_canSeePieceDebouncer.calculate(m_camera.validTargetExists())) {
       System.out.println("No Target Detected");
-      Robot.swerve.drive(0, 0, 0);
+      Robot.swerve.stopMotors();
       return;
     }
 
@@ -98,11 +98,11 @@ public class DriveToApriltag extends Command {
             * (m_invertSpeeds ? -1 : 1);
     double yMetersPerSecond = m_xController.calculate(tx) * (m_invertSpeeds ? -1 : 1);
     double rotationRadiansPerSecond = m_rotationController.calculate(rotationError);
-    Robot.swerve.drive(xMetersPerSecond, yMetersPerSecond, rotationRadiansPerSecond);
+    Robot.swerve.driveRobotRelative(xMetersPerSecond, yMetersPerSecond, rotationRadiansPerSecond);
   }
 
   @Override
   public void end(boolean interrupted) {
-    Robot.swerve.drive(0, 0, 0);
+    Robot.swerve.stopMotors();
   }
 }

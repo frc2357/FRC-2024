@@ -36,7 +36,7 @@ public class DriveToGamepeice extends Command {
   public void execute() {
     if (!m_canSeePieceDebouncer.calculate(Robot.intakeCam.validTargetExists())) {
       System.out.println("No Gamepiece Detected");
-      Robot.swerve.drive(0, 0, 0);
+      Robot.swerve.stopMotors();
       return;
     }
 
@@ -46,7 +46,7 @@ public class DriveToGamepeice extends Command {
         distanceTraveled() > SWERVE.PIECE_TRACKING_SLOW_DOWN_METERS
             ? SWERVE.PIECE_TRACKING_X_METERS_PER_SECOND / 2.0
             : SWERVE.PIECE_TRACKING_X_METERS_PER_SECOND;
-    Robot.swerve.drive(-translationSpeed, 0, rotationSpeed);
+    Robot.swerve.driveRobotRelative(-translationSpeed, 0, rotationSpeed);
   }
 
   @Override
@@ -56,7 +56,7 @@ public class DriveToGamepeice extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    Robot.swerve.drive(0, 0, 0);
+    Robot.swerve.stopMotors();
     SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.setTolerance(0);
     Robot.state.setDriveControlState(DriveControlState.FIELD_RELATIVE);
     System.out.println(interrupted);

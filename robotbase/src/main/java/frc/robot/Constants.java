@@ -93,7 +93,7 @@ public final class Constants {
     public static final double PIECE_TRACKING_X_METERS_PER_SECOND = 2;
 
     // Target Lock
-    public static final double TARGET_LOCK_ROTATION_KP = 0.15;
+    public static final double TARGET_LOCK_ROTATION_KP = 0.2;
     public static final double TARGET_LOCK_ROTATION_KI = 0.0;
     public static final double TARGET_LOCK_ROTATION_KD = 0.0;
     public static final PIDController TARGET_LOCK_ROTATION_PID_CONTROLLER =
@@ -407,5 +407,50 @@ public final class Constants {
                 -Units.inchesToMeters(LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES),
                 Units.inchesToMeters(LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES)),
             new Rotation3d(0, -LENS_ANGLE_TILTED_DOWN_DEGREES, 0));
+  }
+
+  public static final class APRIL_TAG_IDS {
+
+    public static final int BLUE_SOURCE_RIGHT = 1;
+    public static final int BLUE_SOURCE_LEFT = 2;
+
+    public static final int RED_SPEAKER_OFFSET = 3;
+    public static final int RED_SPEAKER_CENTER = 4;
+
+    public static final int RED_AMP = 5;
+    public static final int BLUE_AMP = 6;
+
+    public static final int BLUE_SPEAKER_CENTER = 7;
+    public static final int BLUE_SPEAKER_OFFSET = 8;
+
+    public static final int RED_SOURCE_RIGHT = 9;
+    public static final int RED_SOURCE_LEFT = 10;
+
+    // stage tags are oriented from looking at the stage from the center line.
+    public static final int RED_STAGE_RIGHT = 11;
+    public static final int RED_STAGE_LEFT = 12;
+    public static final int RED_STAGE_MIDDLE = 13;
+
+    public static final int BLUE_STAGE_MIDDLE = 14;
+    public static final int BLUE_STAGE_RIGHT = 15;
+    public static final int BLUE_STAGE_LEFT = 16;
+
+    public static final int[] BLUE_STAGE_TAGS =
+        new int[] {BLUE_STAGE_LEFT, BLUE_STAGE_MIDDLE, BLUE_STAGE_RIGHT};
+    public static final int[] RED_STAGE_TAGS =
+        new int[] {RED_STAGE_LEFT, RED_STAGE_MIDDLE, RED_STAGE_RIGHT};
+
+    public static final int[] STAGE_TAGS =
+        new int[] {
+          BLUE_STAGE_LEFT,
+          BLUE_STAGE_MIDDLE,
+          BLUE_STAGE_RIGHT,
+          RED_STAGE_LEFT,
+          RED_STAGE_MIDDLE,
+          RED_STAGE_RIGHT
+        };
+    public static final int[] SPEAKER_CENTER_TAGS =
+        new int[] {BLUE_SPEAKER_CENTER, RED_SPEAKER_CENTER};
+    public static final int[] AMP_TAGS = new int[] {BLUE_AMP, RED_AMP};
   }
 }

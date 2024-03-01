@@ -1,6 +1,8 @@
 package frc.robot.commands.drive;
 
-import com.choreo.lib.*;
+import com.choreo.lib.Choreo;
+import com.choreo.lib.ChoreoTrajectory;
+import com.choreo.lib.ChoreoTrajectoryState;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -50,7 +52,7 @@ public class DriveChoreoPath extends SequentialCommandGroup {
     addCommands(
         new InstantCommand(
             () ->
-                Robot.swerve.drive(
+                Robot.swerve.driveFieldRelative(
                     m_startingState.velocityX,
                     m_startingState.velocityY,
                     m_startingState.angularVelocity)),
