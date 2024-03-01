@@ -3,19 +3,17 @@ package frc.robot.commands.shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 
-public class ShooterSetRPMs extends Command {
-  private double m_topRpms;
-  private double m_bottomRpms;
+public class ShooterSetRPM extends Command {
+  private double m_RPM;
 
-  public ShooterSetRPMs(double top, double bottom) {
-    m_topRpms = top;
-    m_bottomRpms = bottom;
+  public ShooterSetRPM(double RPM) {
+    m_RPM = RPM;
     addRequirements(Robot.shooter);
   }
 
   @Override
   public void initialize() {
-    Robot.shooter.setRPMs(m_topRpms, m_bottomRpms);
+    Robot.shooter.setRPM(m_RPM);
   }
 
   @Override
@@ -25,6 +23,6 @@ public class ShooterSetRPMs extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    // Stop rollers manually
+    Robot.shooter.stop();
   }
 }

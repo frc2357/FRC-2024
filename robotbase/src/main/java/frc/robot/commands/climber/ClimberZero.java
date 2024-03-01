@@ -1,6 +1,5 @@
 package frc.robot.commands.climber;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -16,7 +15,14 @@ public class ClimberZero extends Command {
 
   @Override
   public void initialize() {
-    Robot.climber.set(Constants.CLIMBER.ZERO_SPEED, Constants.CLIMBER.ZERO_SPEED);
+    Robot.climber.setSpeed(Constants.CLIMBER.ZERO_SPEED, Constants.CLIMBER.ZERO_SPEED);
+  }
+
+  @Override
+  public void execute() {
+    double leftSpeed = isLeftZeroed() ? 0.0 : Constants.CLIMBER.ZERO_SPEED;
+    double rightSpeed = isRightZeroed() ? 0.0 : Constants.CLIMBER.ZERO_SPEED;
+    Robot.climber.setSpeed(leftSpeed, rightSpeed);
   }
 
   @Override
@@ -29,9 +35,10 @@ public class ClimberZero extends Command {
     Robot.climber.stop();
 
     if (!interrupted) {
-      Robot.climber.zero();
+      Robot.climber.setZero();
+      System.out.println("[Climber] Zero set");
     } else {
-      DriverStation.reportError("Climber Zero interrupted!", false);
+      System.err.println("[Climber] Zero interrupted!");
     }
   }
 }

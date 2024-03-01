@@ -15,7 +15,7 @@ public class ShooterAxis extends Command {
   @Override
   public void execute() {
     double axisValue = m_axis.getValue();
-    Robot.shooter.setAxisSpeed(axisValue, axisValue);
+    Robot.shooter.setAxisSpeed(axisValue);
   }
 
   @Override

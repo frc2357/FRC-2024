@@ -6,15 +6,12 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.SparkPIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.EXTENSION_ARM;
 import frc.robot.util.Utility;
 
 public class ExtensionArm extends SubsystemBase {
-  private boolean m_isClosedLoopEnabled = false;
-
   private CANSparkMax m_motor;
   private SparkPIDController m_PIDController;
   private RelativeEncoder m_encoder;
@@ -52,30 +49,24 @@ public class ExtensionArm extends SubsystemBase {
         EXTENSION_ARM.SMART_MOTION_ALLOWED_ERROR, 0);
   }
 
-  public void set(double speed) {
-    m_isClosedLoopEnabled = false;
+  public void setSpeed(double speed) {
     m_motor.set(speed);
+    m_targetRotations = Double.NaN;
   }
 
   public void setTargetRotations(double targetRotations) {
     m_targetRotations = targetRotations;
-    m_isClosedLoopEnabled = true;
     m_PIDController.setReference(m_targetRotations, ControlType.kSmartMotion);
   }
 
   public void stop() {
-    m_isClosedLoopEnabled = false;
     m_motor.stopMotor();
+    m_targetRotations = Double.NaN;
   }
 
-  public void zeroArm() {
+  public void setZero() {
     m_encoder.setPosition(0);
-  }
-
-  public void setAxisSpeed(double axisSpeed) {
-    m_isClosedLoopEnabled = false;
-    double motorSpeed = (-axisSpeed) * EXTENSION_ARM.AXIS_MAX_SPEED;
-    m_motor.set(motorSpeed);
+    System.out.println("[Extension Arm] Zero Set");
   }
 
   public double getRotations() {
@@ -89,14 +80,5 @@ public class ExtensionArm extends SubsystemBase {
   public boolean isAtTargetRotations() {
     return Utility.isWithinTolerance(
         getRotations(), m_targetRotations, EXTENSION_ARM.SMART_MOTION_ALLOWED_ERROR);
-  }
-
-  @Override
-  public void periodic() {
-    if (m_isClosedLoopEnabled && isAtTargetRotations()) {
-      m_isClosedLoopEnabled = false;
-    }
-
-    SmartDashboard.putNumber("Arm position", getRotations());
   }
 }

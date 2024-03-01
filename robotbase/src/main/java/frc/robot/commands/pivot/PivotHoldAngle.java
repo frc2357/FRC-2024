@@ -3,22 +3,22 @@ package frc.robot.commands.pivot;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 
-public class PivotSetRotation extends Command {
-  private double m_rotation;
+public class PivotHoldAngle extends Command {
+  private double m_angle;
 
-  public PivotSetRotation(double rotation) {
-    m_rotation = rotation;
+  public PivotHoldAngle(double angle) {
+    m_angle = angle;
     addRequirements(Robot.pivot);
   }
 
   @Override
   public void initialize() {
-    Robot.pivot.setPivotRotation(m_rotation);
+    Robot.pivot.setAngle(m_angle);
   }
 
   @Override
   public boolean isFinished() {
-    return Robot.pivot.isPivotAtRotation();
+    return false;
   }
 
   @Override
