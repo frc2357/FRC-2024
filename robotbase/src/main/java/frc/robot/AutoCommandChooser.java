@@ -14,8 +14,7 @@ public class AutoCommandChooser {
 
     m_autoCommands =
         new Command[] {
-          new DriveChoreoPath("Line"),
-          new DriveChoreoPath("Close3Speaker"),
+          new DriveChoreoPath("Line"), new DriveChoreoPath("Close3Speaker"),
           // new DriveChoreoPath("RotationTest"),
           // new DriveChoreoPath("BoxTest"),
           // new DriveChoreoPath("TriangleTest"),

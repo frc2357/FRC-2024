@@ -27,8 +27,7 @@ public class DriveChoreoPath extends SequentialCommandGroup {
 
   /**
    * @param trajectoryFileName The name of the path file with '.traj' excluded.
-   * @param pathName           The name of the path, is returned in the toString
-   *                           for the auto command chooser.
+   * @param pathName The name of the path, is returned in the toString for the auto command chooser.
    */
   public DriveChoreoPath(String trajectoryFileName, String pathName) {
     this(trajectoryFileName, pathName, true);
@@ -37,13 +36,10 @@ public class DriveChoreoPath extends SequentialCommandGroup {
   /**
    * A utility command to run a Choreo path correctly.
    *
-   * @param trajectoryFileName       The name of the path file with '.traj'
-   *                                 excluded.
-   * @param pathName                 The name of the path, is returned in the
-   *                                 toString for the auto command chooser.
-   * @param setPoseToStartTrajectory Whether or not to set the robot pose to the
-   *                                 paths starting
-   *                                 trajectory.
+   * @param trajectoryFileName The name of the path file with '.traj' excluded.
+   * @param pathName The name of the path, is returned in the toString for the auto command chooser.
+   * @param setPoseToStartTrajectory Whether or not to set the robot pose to the paths starting
+   *     trajectory.
    */
   public DriveChoreoPath(
       String trajectoryFileName, String pathName, boolean setPoseToStartTrajectory) {
@@ -61,10 +57,11 @@ public class DriveChoreoPath extends SequentialCommandGroup {
 
     addCommands(
         new InstantCommand(
-            () -> Robot.swerve.drive(
-                m_startingState.velocityX,
-                m_startingState.velocityY,
-                m_startingState.angularVelocity)),
+            () ->
+                Robot.swerve.driveFieldRelative(
+                    m_startingState.velocityX,
+                    m_startingState.velocityY,
+                    m_startingState.angularVelocity)),
         Choreo.choreoSwerveCommand(
             Choreo.getTrajectory(trajectoryFileName),
             Robot.swerve.getPoseSupplier(),
