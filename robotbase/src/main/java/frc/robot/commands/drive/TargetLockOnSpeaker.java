@@ -1,8 +1,9 @@
 package frc.robot.commands.drive;
 
+import org.photonvision.targeting.PhotonTrackedTarget;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
-import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class TargetLockOnSpeaker extends Command {
   public TargetLockOnSpeaker() {

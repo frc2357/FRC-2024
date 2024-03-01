@@ -15,8 +15,10 @@ public class SourceIntakeFromShooter extends ParallelDeadlineGroup {
         new IntakeReverseFeed()
             .finallyDo(
                 (boolean interrupted) -> {
-                  if (!interrupted) Robot.state.setNoteState(NoteState.NOTE_STOWED);
+                  if (!interrupted)
+                    Robot.state.setNoteState(NoteState.NOTE_STOWED);
                 }),
+
         new ShooterSetRPM(Constants.SHOOTER.SOURCE_INTAKE_RPM),
         new PivotHoldAngle(PIVOT.INTAKE_FROM_SOURCE_ANGLE));
   }
