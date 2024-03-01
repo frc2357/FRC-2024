@@ -5,9 +5,15 @@ import frc.robot.Robot;
 
 public class PivotHoldAngle extends Command {
   private double m_angle;
+  private boolean m_stopOnEnd;
 
   public PivotHoldAngle(double angle) {
+    this(angle, true);
+  }
+
+  public PivotHoldAngle(double angle, boolean stopOnEnd) {
     m_angle = angle;
+    m_stopOnEnd = stopOnEnd;
     addRequirements(Robot.pivot);
   }
 
@@ -23,6 +29,8 @@ public class PivotHoldAngle extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    Robot.pivot.stop();
+    if (m_stopOnEnd) {
+      Robot.pivot.stop();
+    }
   }
 }
