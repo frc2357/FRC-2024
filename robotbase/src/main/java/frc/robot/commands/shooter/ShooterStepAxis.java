@@ -24,7 +24,7 @@ public class ShooterStepAxis extends Command {
   public void execute() {
     double axisValue = m_axis.getValue();
     axisValue = Math.floor(axisValue / m_step) * m_step;
-    Robot.shooter.setAxisSpeed(axisValue, axisValue);
+    Robot.shooter.setAxisSpeed(axisValue);
   }
 
   @Override
