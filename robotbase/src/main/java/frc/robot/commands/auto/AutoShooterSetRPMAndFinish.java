@@ -5,6 +5,7 @@ import frc.robot.Robot;
 
 public class AutoShooterSetRPMAndFinish extends Command {
   private double m_RPM;
+
   public AutoShooterSetRPMAndFinish(double RPM) {
     m_RPM = RPM;
     addRequirements(Robot.shooter);

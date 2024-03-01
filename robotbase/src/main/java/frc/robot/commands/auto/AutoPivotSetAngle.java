@@ -10,7 +10,7 @@ public class AutoPivotSetAngle extends Command {
     m_angle = angle;
     addRequirements(Robot.pivot);
   }
-  
+
   @Override
   public boolean isFinished() {
     return true;

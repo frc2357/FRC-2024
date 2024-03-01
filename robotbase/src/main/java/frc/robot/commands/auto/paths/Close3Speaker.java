@@ -37,8 +37,7 @@ public class Close3Speaker extends SequentialCommandGroup {
 
         // Stop motors
         new AutoPivotStop(),
-        new AutoShooterStopRPM()
-      );
+        new AutoShooterStopRPM());
   }
 
   @Override
