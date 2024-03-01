@@ -1,14 +1,10 @@
 package frc.robot.subsystems;
 
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -19,22 +15,24 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.util.Utility;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
- * Class that extends the Phoenix SwerveDrivetrain class and implements
- * subsystem so it can be used
+ * Class that extends the Phoenix SwerveDrivetrain class and implements subsystem so it can be used
  * in command-based projects easily.
  */
 public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsystem {
 
-  private final SwerveRequest.ApplyChassisSpeeds chassisSpeedRequest = new SwerveRequest.ApplyChassisSpeeds();
+  private final SwerveRequest.ApplyChassisSpeeds chassisSpeedRequest =
+      new SwerveRequest.ApplyChassisSpeeds();
 
   // Comment out below requests for CUBE_BOT
-  private final SwerveRequest.FieldCentric fieldRelative = new SwerveRequest.FieldCentric()
-      .withDriveRequestType(DriveRequestType.Velocity);
+  private final SwerveRequest.FieldCentric fieldRelative =
+      new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.Velocity);
 
-  private final SwerveRequest.RobotCentric robotRelative = new SwerveRequest.RobotCentric()
-      .withDriveRequestType(DriveRequestType.Velocity);
+  private final SwerveRequest.RobotCentric robotRelative =
+      new SwerveRequest.RobotCentric().withDriveRequestType(DriveRequestType.Velocity);
 
   // Uncomment below for CUBE_BOT
   // private final SwerveRequest.FieldCentric fieldRelative =
@@ -76,17 +74,19 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     Constants.SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.setP(kp);
 
     double rotation = Constants.SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.calculate(tx, 0);
-    double rotationOutput = !hasTarget
-        ? Robot.driverControls.getRotation()
-        : rotation + Math.copySign(Constants.SWERVE.TARGET_LOCK_FEED_FORWARD, rotation);
+    double rotationOutput =
+        !hasTarget
+            ? Robot.driverControls.getRotation()
+            : rotation + Math.copySign(Constants.SWERVE.TARGET_LOCK_FEED_FORWARD, rotation);
     applyRequest(
-        () -> fieldRelative
-            .withVelocityX(
-                velocityXSpeedMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
-            .withVelocityY(
-                velocityYSpeedMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
-            .withRotationalRate(
-                rotationOutput * Constants.SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND));
+        () ->
+            fieldRelative
+                .withVelocityX(
+                    velocityXSpeedMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
+                .withVelocityY(
+                    velocityYSpeedMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
+                .withRotationalRate(
+                    rotationOutput * Constants.SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND));
   }
 
   public void driveRobotRelative(
@@ -94,14 +94,15 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
       double velocityYMetersPerSecond,
       double rotationRateRadiansPerSecond) {
     applyRequest(
-        () -> robotRelative
-            .withVelocityX(
-                velocityXMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
-            .withVelocityY(
-                velocityYMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
-            .withRotationalRate(
-                rotationRateRadiansPerSecond
-                    * Constants.SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND));
+        () ->
+            robotRelative
+                .withVelocityX(
+                    velocityXMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
+                .withVelocityY(
+                    velocityYMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
+                .withRotationalRate(
+                    rotationRateRadiansPerSecond
+                        * Constants.SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND));
   }
 
   public void driveFieldRelative(
@@ -109,20 +110,20 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
       double velocityYMetersPerSecond,
       double rotationRateRadiansPerSecond) {
     applyRequest(
-        () -> fieldRelative
-            .withVelocityX(
-                velocityXMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
-            .withVelocityY(
-                velocityYMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
-            .withRotationalRate(
-                rotationRateRadiansPerSecond
-                    * Constants.SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND));
+        () ->
+            fieldRelative
+                .withVelocityX(
+                    velocityXMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
+                .withVelocityY(
+                    velocityYMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
+                .withRotationalRate(
+                    rotationRateRadiansPerSecond
+                        * Constants.SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND));
   }
 
   /**
-   * @return A list of the module positions in the order Front Left, Front Right,
-   *         Back Left, Back
-   *         Right
+   * @return A list of the module positions in the order Front Left, Front Right, Back Left, Back
+   *     Right
    */
   public SwerveModulePosition[] getModulePositions() {
     return super.m_modulePositions;

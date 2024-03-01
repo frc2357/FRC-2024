@@ -43,7 +43,7 @@ public class VisionTargeting extends Command {
     int curveIndex = RobotMath.getCurveSegmentIndex(Robot.shooterCurve, ty);
     if (curveIndex == -1) {
       // System.err.println("----- Curve segment index out of bounds (Pivot) -----");
-      return new Double[] { Double.NaN, Double.NaN };
+      return new Double[] {Double.NaN, Double.NaN};
     }
 
     double[] high = Robot.shooterCurve[curveIndex];
@@ -57,8 +57,8 @@ public class VisionTargeting extends Command {
     double lowShooterRPM = low[2];
 
     return new Double[] {
-        RobotMath.linearlyInterpolate(highPivotRotation, lowPivotRotation, highTY, lowTY, ty),
-        RobotMath.linearlyInterpolate(highShooterRPM, lowShooterRPM, highTY, lowTY, ty)
+      RobotMath.linearlyInterpolate(highPivotRotation, lowPivotRotation, highTY, lowTY, ty),
+      RobotMath.linearlyInterpolate(highShooterRPM, lowShooterRPM, highTY, lowTY, ty)
     };
   }
 }

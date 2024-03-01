@@ -1,9 +1,14 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.PHOTON_VISION;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -11,13 +16,6 @@ import org.photonvision.targeting.PNPResult;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import org.photonvision.targeting.TargetCorner;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.PHOTON_VISION;
 
 /** Controls the photon vision camera options. */
 public class PhotonVisionCamera extends SubsystemBase {
@@ -36,14 +34,11 @@ public class PhotonVisionCamera extends SubsystemBase {
   /**
    * Sets the camera stream.
    *
-   * @param cameraName             Name of the cameras Photon Vision network
-   *                               table. MUST match the net tables
-   *                               name, or it wont work.
-   * @param robotToCameraTransform The Transform3d of the robots coordinate center
-   *                               to the camera.
-   * @param headOnTolerance        The tolerance for declaring whether or not the
-   *                               camera is facing a target
-   *                               head on.
+   * @param cameraName Name of the cameras Photon Vision network table. MUST match the net tables
+   *     name, or it wont work.
+   * @param robotToCameraTransform The Transform3d of the robots coordinate center to the camera.
+   * @param headOnTolerance The tolerance for declaring whether or not the camera is facing a target
+   *     head on.
    */
   public PhotonVisionCamera(
       String cameraName, Transform3d robotToCameraTransform, double headOnTolerance) {
@@ -54,19 +49,18 @@ public class PhotonVisionCamera extends SubsystemBase {
 
   public void configure() {
     setDriverModeActive();
-    m_poseEstimator = new PhotonPoseEstimator(
-        PHOTON_VISION.APRIL_TAG_FIELD_LAYOUT,
-        PHOTON_VISION.POSE_STRATEGY,
-        m_camera,
-        ROBOT_TO_CAMERA_TRANSFORM);
+    m_poseEstimator =
+        new PhotonPoseEstimator(
+            PHOTON_VISION.APRIL_TAG_FIELD_LAYOUT,
+            PHOTON_VISION.POSE_STRATEGY,
+            m_camera,
+            ROBOT_TO_CAMERA_TRANSFORM);
   }
 
   /**
    * Fetches the latest pipeline result.
    *
-   * <p>
-   * YOU SHOULD NEVER CALL THIS! This is for the Robot periodic ONLY. NEVER call
-   * this method
+   * <p>YOU SHOULD NEVER CALL THIS! This is for the Robot periodic ONLY. NEVER call this method
    * outside of it.
    */
   public void updateResult() {
@@ -105,18 +99,16 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * @return The current pipelines latency in milliseconds. Returns NaN if the
-   *         camera is not
-   *         connected.
+   * @return The current pipelines latency in milliseconds. Returns NaN if the camera is not
+   *     connected.
    */
   public double getLatencyMillis() {
     return isConnected() ? m_result.getLatencyMillis() : Double.NaN;
   }
 
   /**
-   * @return The timestamp of the latest pipeline result in seconds. Returns
-   *         Double.NaN if the
-   *         camera is not connected.
+   * @return The timestamp of the latest pipeline result in seconds. Returns Double.NaN if the
+   *     camera is not connected.
    */
   public double getTimestampSeconds() {
     return isConnected() ? m_result.getTimestampSeconds() : Double.NaN;
@@ -139,9 +131,8 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * @return Whether or not the driver mode on the camera is active. Returns null
-   *         if the camera is
-   *         not connected.
+   * @return Whether or not the driver mode on the camera is active. Returns null if the camera is
+   *     not connected.
    */
   public boolean isDriverModeActive() {
     return isConnected() ? m_camera.getDriverMode() : null;
@@ -182,8 +173,7 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * Gets the best targets detected bounding box horizontal distance, uses unknown
-   * units, assume
+   * Gets the best targets detected bounding box horizontal distance, uses unknown units, assume
    * pixels. TAKE NOTE!
    *
    * <pre>
@@ -195,10 +185,8 @@ public class PhotonVisionCamera extends SubsystemBase {
    *
    * X and Y increase opposite usual ways. Use accordingly.
    *
-   * @return The best targets detected bounding box horizontal side length in what
-   *         are are assumed
-   *         to be pixels. Returns NaN if the camera has no targets or is
-   *         disconnected.
+   * @return The best targets detected bounding box horizontal side length in what are are assumed
+   *     to be pixels. Returns NaN if the camera has no targets or is disconnected.
    */
   public double getHorizontalTargetLength() {
     if (!validTargetExists()) {
@@ -219,8 +207,7 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * Gets the best targets detected bounding box vertical distance, uses unknown
-   * units, assume
+   * Gets the best targets detected bounding box vertical distance, uses unknown units, assume
    * pixels. TAKE NOTE!
    *
    * <pre>
@@ -232,10 +219,8 @@ public class PhotonVisionCamera extends SubsystemBase {
    *
    * X and Y increase opposite usual ways. Use accordingly.
    *
-   * @return The best targets detected bounding box vertical side length in what
-   *         are are assumed to
-   *         be pixels. Returns NaN if the camera has no targets or is
-   *         disconnected.
+   * @return The best targets detected bounding box vertical side length in what are are assumed to
+   *     be pixels. Returns NaN if the camera has no targets or is disconnected.
    */
   public double getVerticalTargetLength() {
     if (!validTargetExists()) {
@@ -298,11 +283,9 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * Yaw of target in degrees. Positive values are to the left, negative to the
-   * right.
+   * Yaw of target in degrees. Positive values are to the left, negative to the right.
    *
-   * <p>
-   * The "getSkew()" equivalent in PhotonVision.
+   * <p>The "getSkew()" equivalent in PhotonVision.
    */
   public double getFilteredYaw() {
     if (!validTargetExists()) {
@@ -354,15 +337,12 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * Gets an estimated pose from the subsystems pose estimator. Should only be
-   * used if the camera
-   * does not see more than 1 april tag, if it does, use getPNPResult instead, as
-   * it is more
+   * Gets an estimated pose from the subsystems pose estimator. Should only be used if the camera
+   * does not see more than 1 april tag, if it does, use getPNPResult instead, as it is more
    * accurate.
    *
-   * @return The robots estimated pose, if it has any april tag targets. Returns
-   *         null if there are
-   *         no targets.
+   * @return The robots estimated pose, if it has any april tag targets. Returns null if there are
+   *     no targets.
    */
   public EstimatedRobotPose getEstimatedPose() {
     Optional<EstimatedRobotPose> estimatedPose = m_poseEstimator.update(m_result);
@@ -370,8 +350,7 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * Gets the information of the multiple tag pose estimate if it exists. If the
-   * camera does not see
+   * Gets the information of the multiple tag pose estimate if it exists. If the camera does not see
    * more than 1 april tag, this will return null.
    *
    * @return The PNPResult for you to get information from.
@@ -399,9 +378,8 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * @return The best targets fiducial ID, returns -1 if it doesnt have one, and
-   *         -2 if there are no
-   *         targets
+   * @return The best targets fiducial ID, returns -1 if it doesnt have one, and -2 if there are no
+   *     targets
    */
   public int getLastTargetID() {
     return getTV() ? m_bestTarget.getFiducialId() : -2;
