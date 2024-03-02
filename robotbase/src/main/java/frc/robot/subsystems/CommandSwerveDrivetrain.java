@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
@@ -174,6 +175,10 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
   public void stopMotors() {
     driveFieldRelative(0, 0, 0);
+    for (SwerveModule module : super.Modules) {
+      module.getDriveMotor().stopMotor();
+      module.getSteerMotor().stopMotor();
+    }
   }
 
   public void setPose(Pose2d poseToSet) {

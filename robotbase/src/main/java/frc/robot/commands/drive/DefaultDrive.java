@@ -10,10 +10,17 @@ public class DefaultDrive extends Command {
 
   @Override
   public void execute() {
-    Robot.swerve.driveFieldRelative(
-        Robot.driverControls.getY(),
-        Robot.driverControls.getX(),
-        Robot.driverControls.getRotation());
+    double x = Robot.driverControls.getX();
+    double y = Robot.driverControls.getY();
+    double roto = Robot.driverControls.getRotation();
+    if (x == 0 && y == 0 && roto == 0) {
+      Robot.swerve.stopMotors();
+    } else {
+      Robot.swerve.driveFieldRelative(
+          Robot.driverControls.getY(),
+          Robot.driverControls.getX(),
+          Robot.driverControls.getRotation());
+    }
   }
 
   @Override
