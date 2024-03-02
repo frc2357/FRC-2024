@@ -4,7 +4,12 @@
 
 package frc.robot;
 
+import java.util.function.BooleanSupplier;
+
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+
 import com.revrobotics.CANSparkBase.IdleMode;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
@@ -12,8 +17,6 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
-import java.util.function.BooleanSupplier;
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -149,9 +152,9 @@ public final class Constants {
   }
 
   public static final class SHOOTER {
-    public static final double SOURCE_INTAKE_RPM = -2000;
+    public static final double SOURCE_INTAKE_RPM = -1500;
 
-    public static final double FEED_END_AFFECTOR_RPM = 2000;
+    public static final double FEED_END_AFFECTOR_RPM = 1500;
 
     public static final double SHOOTER_AXIS_STEP_INTERVAL = 0.1;
 
@@ -241,14 +244,14 @@ public final class Constants {
   }
 
   public static final class PIVOT {
-    public static final double MAX_PIVOT_ANGLE = 100; // TODO TUNE
-    public static final double MIN_PIVOT_ANGLE = 10;
+    public static final double MAX_PIVOT_ANGLE = 70; // TODO TUNE
+    public static final double MIN_PIVOT_ANGLE = 17.5;
 
-    public static final double END_AFFECTOR_PRELOAD_ANGLE = 63.5;
-    public static final double INTAKE_FROM_SOURCE_ANGLE = 80;
+    public static final double END_AFFECTOR_PRELOAD_ANGLE = 60;
+    public static final double INTAKE_FROM_SOURCE_ANGLE = 55;
     public static final double DEFAULT_PIVOT_ANGLE = 45; // angle of intake
 
-    public static final boolean MOTOR_INVERTED = false;
+    public static final boolean MOTOR_INVERTED = true;
     public static final boolean ENCODER_INVERTED = false;
 
     public static final IdleMode IDLE_MODE = IdleMode.kBrake;
@@ -267,10 +270,10 @@ public final class Constants {
 
     // Closed loop - lines with comments were used for arm rotation 2023 and we will
     // probably need for this
-    public static final double PIVOT_P = 0.015;
+    public static final double PIVOT_P = 0.0195;
     public static final double PIVOT_I = 0;
     public static final double PIVOT_D = 0;
-    public static final double PIVOT_FF = 0.0005; // Barely moving: .000465
+    public static final double PIVOT_FF = 0.00045; // Barely moving: .000465
 
     public static final String PREFERENCES_ZERO_OFFSET_KEY = "PivotZeroOffset";
     public static final double ZERO_SPEED = 0.1;

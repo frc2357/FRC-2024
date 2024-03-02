@@ -6,7 +6,6 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.drive.DefaultDrive;
-import frc.robot.commands.pivot.PivotHoldAngle;
 
 public class RobotContainer {
   private AutoCommandChooser m_autoCommandChooser;
@@ -14,7 +13,7 @@ public class RobotContainer {
   public RobotContainer() {
     m_autoCommandChooser = new AutoCommandChooser();
     Robot.swerve.setDefaultCommand(new DefaultDrive());
-    Robot.pivot.setDefaultCommand(new PivotHoldAngle(Constants.PIVOT.DEFAULT_PIVOT_ANGLE));
+    // Robot.pivot.setDefaultCommand(new PivotHoldAngle(Constants.PIVOT.DEFAULT_PIVOT_ANGLE));
   }
 
   public Command getAutonomousCommand() {
