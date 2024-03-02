@@ -1,5 +1,10 @@
 package frc.robot.commands.drive;
 
+import java.util.ArrayList;
+import java.util.function.Supplier;
+
+import org.photonvision.targeting.PhotonTrackedTarget;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
@@ -12,17 +17,21 @@ import frc.robot.util.Utility;
 public class DriveToApriltag extends Command {
   private double m_tySetpoint;
   private double m_txSetpoint;
-  private double m_rotationGoal;
+  private Supplier<Double> m_rotationGoalSupplier;
+  private int[] m_tags;
+
   private Debouncer m_canSeePieceDebouncer;
 
   private PIDController m_xController;
   private PIDController m_yController;
   private PIDController m_rotationController;
 
-  public DriveToApriltag(double tySetpoint, double txSetpoint, double rotationGoal) {
+  public DriveToApriltag(double tySetpoint, double txSetpoint, Supplier<Double> rotationGoal, int[] tags) {
     m_tySetpoint = tySetpoint;
     m_txSetpoint = txSetpoint;
-    m_rotationGoal = rotationGoal;
+    m_rotationGoalSupplier = rotationGoal;
+    m_tags = tags;
+
     m_xController = Constants.SWERVE.APRILTAG_X_TRANSLATION_PID_CONTROLLER;
     m_yController = Constants.SWERVE.APRILTAG_Y_TRANSLATION_PID_CONTROLLER;
     m_rotationController = Constants.SWERVE.APRILTAG_ROTATION_PID_CONTROLLER;
@@ -39,7 +48,7 @@ public class DriveToApriltag extends Command {
     m_xController.reset();
 
     m_rotationController.enableContinuousInput(-Math.PI, Math.PI);
-    m_rotationController.setSetpoint(m_rotationGoal);
+    m_rotationController.setSetpoint(m_rotationGoalSupplier.get());
     m_rotationController.reset();
 
     m_canSeePieceDebouncer =
@@ -48,15 +57,24 @@ public class DriveToApriltag extends Command {
 
   @Override
   public void execute() {
-    if (!m_canSeePieceDebouncer.calculate(Robot.shooterCam.validTargetExists())) {
+    ArrayList<PhotonTrackedTarget> targets = Robot.shooterCam.filterAprilTags(m_tags);
+    if (targets == null || targets.size() == 0) {
       System.out.println("No Target Detected");
       Robot.swerve.stopMotors();
       return;
     }
+    if (Double.isNaN(m_rotationController.getSetpoint())) {
+      System.err.println("Could not calculate Rotation Setpoint");
+      m_rotationController.setSetpoint(m_rotationGoalSupplier.get());
+      return;
+    }
 
-    double tx = Robot.shooterCam.getTX();
-    double ty = Robot.shooterCam.getTY();
-    double rotationError = Robot.swerve.getPose().getRotation().getRadians();
+    PhotonTrackedTarget target = targets.get(0);
+
+    double tx = target.getYaw();
+    double ty = target.getPitch();
+    double yaw = Robot.swerve.getPose().getRotation().getDegrees();
+    double rotationError = Rotation2d.fromDegrees(m_rotationController.getSetpoint() - yaw).getRadians();
 
     // Increase tx tolerance when close to target since tx is more sensitive at
     // shorter distances
@@ -82,7 +100,8 @@ public class DriveToApriltag extends Command {
         -m_yController.calculate(ty + Constants.SWERVE.APRILTAG_TY_MAGIC_OFFSET);
     double yMetersPerSecond = -m_xController.calculate(tx);
     double rotationRadiansPerSecond = m_rotationController.calculate(rotationError);
-    Robot.swerve.driveRobotRelative(xMetersPerSecond, yMetersPerSecond, rotationRadiansPerSecond);
+    Robot.swerve.driveRobotRelative(0, 0, rotationRadiansPerSecond);
+    // Robot.swerve.driveRobotRelative(yMetersPerSecond, xMetersPerSecond, rotationRadiansPerSecond);
   }
 
   @Override

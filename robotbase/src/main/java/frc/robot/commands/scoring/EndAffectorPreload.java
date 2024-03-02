@@ -10,8 +10,10 @@ import frc.robot.Constants.PIVOT;
 import frc.robot.Constants.SCORING;
 import frc.robot.Constants.SHOOTER;
 import frc.robot.commands.endAffector.EndAffectorSetSpeed;
+import frc.robot.commands.endAffector.EndAffectorStop;
 import frc.robot.commands.extensionArm.ExtensionArmMoveToRotations;
 import frc.robot.commands.intake.IntakeFeedToShooter;
+import frc.robot.commands.intake.IntakeStop;
 import frc.robot.commands.pivot.PivotHoldAngle;
 import frc.robot.commands.shooter.ShooterSetRPM;
 
@@ -21,10 +23,15 @@ public class EndAffectorPreload extends SequentialCommandGroup {
         new ParallelCommandGroup(
             new ExtensionArmMoveToRotations(EXTENSION_ARM.NOTE_STOW_ROTATIONS),
             new PivotHoldAngle(PIVOT.END_AFFECTOR_PRELOAD_ANGLE)),
+
+        // Run end affector, shooter, and intake to load note
         new ParallelDeadlineGroup(
             new WaitCommand(SCORING.SECONDS_PRELOAD_NOTE),
             new SequentialCommandGroup(new WaitCommand(0.25), new IntakeFeedToShooter()),
             new EndAffectorSetSpeed(END_AFFECTOR.PRELOAD_SPEED),
-            new ShooterSetRPM(SHOOTER.FEED_END_AFFECTOR_RPM)));
+            new ShooterSetRPM(SHOOTER.FEED_END_AFFECTOR_RPM)),
+
+        // Stop motors
+        new ParallelCommandGroup(new IntakeStop(), new EndAffectorStop()));
   }
 }
