@@ -121,6 +121,8 @@ public final class Constants {
     public static final double AMP_YAW_SETPOINT = 0;
     public static final double AMP_PITCH_SETPOINT = 3;
     public static final double AMP_ROTATION_SETPOINT = Math.PI / 2;
+
+    public static final double TIME_TO_COAST_SECONDS = 5;
   }
 
   public static final class CHOREO {
