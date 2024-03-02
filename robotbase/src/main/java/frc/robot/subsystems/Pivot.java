@@ -66,6 +66,10 @@ public class Pivot extends SubsystemBase {
   }
 
   public void setAngle(double angle) {
+    if (Double.isNaN(angle)) {
+      System.err.println("PIVOT: Cannot set angle to NaN!");
+      return;
+    }
     if (!isZeroed()) {
       System.err.println("PIVOT: Cannot set angle, Pivot not zeroed!");
       return;

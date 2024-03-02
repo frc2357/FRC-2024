@@ -7,7 +7,7 @@ public class IntakePhotonCamera extends PhotonVisionCamera {
 
   public IntakePhotonCamera(
       String cameraName, Transform3d robotToCameraTransform, double headOnTolerance) {
-    super(cameraName, robotToCameraTransform, headOnTolerance);
+    super(cameraName, robotToCameraTransform);
   }
 
   public void setAprilTagPipelineActive() {
@@ -24,5 +24,13 @@ public class IntakePhotonCamera extends PhotonVisionCamera {
 
   public void setDefaultPipelineActive() {
     super.setPipeline(INTAKE_PHOTON_CAMERA.DEFAULT_PIPELINE);
+  }
+
+  public double getNoteTargetYaw() {
+    return super.getTargetYaw(0, INTAKE_PHOTON_CAMERA.NOTE_TARGET_TIMEOUT_MS);
+  }
+
+  public double getNoteTargetPitch() {
+    return super.getTargetPitch(0, INTAKE_PHOTON_CAMERA.NOTE_TARGET_TIMEOUT_MS);
   }
 }

@@ -111,13 +111,15 @@ public final class Constants {
     public static final PIDController APRILTAG_Y_TRANSLATION_PID_CONTROLLER =
         new PIDController(0.08, 0, 0);
 
-    public static final double APRILTAG_X_TOLERANCE = 0.5;
-    public static final double APRILTAG_Y_TOLERANCE = 0.5;
+    public static final double APRILTAG_YAW_TOLERANCE = 0.5;
+    public static final double APRILTAG_PITCH_TOLERANCE = 0.5;
     public static final double APRILTAG_ROTATION_TOLERANCE = .025; // Radians
-    public static final double APRILTAG_TY_MAGIC_OFFSET = 12.5;
+    public static final double APRILTAG_PITCH_MAGIC_OFFSET = 12.5;
+    public static final double APRILTAG_CLOSE_PITCH = 4.0;
+    public static final double APRILTAG_CLOSE_YAW_FACTOR = 2.0;
 
-    public static final double AMP_TX_SETPOINT = 0;
-    public static final double AMP_TY_SETPOINT = 3;
+    public static final double AMP_YAW_SETPOINT = 0;
+    public static final double AMP_PITCH_SETPOINT = 3;
     public static final double AMP_ROTATION_SETPOINT = Math.PI / 2;
   }
 
@@ -378,7 +380,7 @@ public final class Constants {
     public static final double LENS_BEHIND_ROBOT_ORIGIN_INCHES = 6.01824;
     public static final double LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES = 0;
     public static final double LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES = 5.38192;
-    public static final double LENS_ANGLE_TILTED_UP_DEGREES = 50;
+    public static final double LENS_ANGLE_TILTED_UP_DEGREES = 35;
     public static final Transform3d ROBOT_TO_CAMERA_TRANSFORM =
         new Transform3d(
             new Translation3d(
@@ -386,6 +388,9 @@ public final class Constants {
                 -Units.inchesToMeters(LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES),
                 Units.inchesToMeters(LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES)),
             new Rotation3d(0, LENS_ANGLE_TILTED_UP_DEGREES, 0));
+    public static final int SPEAKER_TARGET_TIMEOUT_MS = 60;
+    public static final int AMP_TARGET_TIMEOUT_MS = 60;
+    public static final int STAGE_TARGET_TIMEOUT_MS = 60;
   }
 
   public static final class INTAKE_PHOTON_CAMERA {
@@ -410,6 +415,7 @@ public final class Constants {
                 -Units.inchesToMeters(LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES),
                 Units.inchesToMeters(LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES)),
             new Rotation3d(0, -LENS_ANGLE_TILTED_DOWN_DEGREES, 0));
+    public static final int NOTE_TARGET_TIMEOUT_MS = 80;
   }
 
   public static final class APRIL_TAG_IDS {

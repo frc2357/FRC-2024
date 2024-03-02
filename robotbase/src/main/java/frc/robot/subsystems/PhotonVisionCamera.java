@@ -6,7 +6,6 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.PHOTON_VISION;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
@@ -15,21 +14,26 @@ import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.targeting.PNPResult;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
-import org.photonvision.targeting.TargetCorner;
 
 /** Controls the photon vision camera options. */
 public class PhotonVisionCamera extends SubsystemBase {
+
+  private static class TargetInfo {
+    public double yaw = Double.NaN;
+    public double pitch = Double.NaN;
+    public long timestamp = 0;
+  }
+  ;
 
   // all of these are protected so we can use them in the extended classes
   // which are only extended so we can control which pipelines we are using.
   protected PhotonCamera m_camera;
   protected PhotonPipelineResult m_result;
-  protected List<PhotonTrackedTarget> m_targets;
-  protected PhotonTrackedTarget m_bestTarget;
+  protected final TargetInfo[] m_targetInfo;
   protected PhotonPoseEstimator m_poseEstimator;
   protected final Transform3d ROBOT_TO_CAMERA_TRANSFORM; // if this changes, we have bigger issues.
-  protected final double HEAD_ON_TOLERANCE;
   protected static boolean m_connectionLost;
+  protected int m_bestTargetFiducialId;
 
   /**
    * Sets the camera stream.
@@ -40,11 +44,12 @@ public class PhotonVisionCamera extends SubsystemBase {
    * @param headOnTolerance The tolerance for declaring whether or not the camera is facing a target
    *     head on.
    */
-  public PhotonVisionCamera(
-      String cameraName, Transform3d robotToCameraTransform, double headOnTolerance) {
+  public PhotonVisionCamera(String cameraName, Transform3d robotToCameraTransform) {
     m_camera = new PhotonCamera(cameraName);
     ROBOT_TO_CAMERA_TRANSFORM = robotToCameraTransform;
-    HEAD_ON_TOLERANCE = headOnTolerance;
+
+    // 0 is for note detection, 1-16 correspond to apriltag fiducial IDs
+    m_targetInfo = new TargetInfo[17];
   }
 
   public void configure() {
@@ -67,11 +72,15 @@ public class PhotonVisionCamera extends SubsystemBase {
     if (m_camera.isConnected()) {
       m_result = m_camera.getLatestResult();
       if (m_result.hasTargets()) {
-        m_targets = m_result.targets;
-        m_bestTarget = m_result.getBestTarget();
-      } else {
-        m_targets = null;
-        m_bestTarget = null;
+        long now = System.currentTimeMillis();
+        List<PhotonTrackedTarget> targetList = m_result.targets;
+        m_bestTargetFiducialId = m_result.getBestTarget().getFiducialId();
+        for (PhotonTrackedTarget targetSeen : targetList) {
+          TargetInfo targetInfo = m_targetInfo[targetSeen.getFiducialId()];
+          targetInfo.yaw = targetSeen.getYaw();
+          targetInfo.pitch = targetSeen.getPitch();
+          targetInfo.timestamp = now;
+        }
       }
 
       if (m_connectionLost) {
@@ -92,13 +101,6 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * @return Whether the camera has a valid target and is connected
-   */
-  public boolean validTargetExists() {
-    return getTV();
-  }
-
-  /**
    * @return The current pipelines latency in milliseconds. Returns NaN if the camera is not
    *     connected.
    */
@@ -115,19 +117,18 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * @param id Id of the desired april tag
-   * @return If the limelight sees the april tag
+   * Compares the current system time to the last cached timestamp and sees if it is older than is
+   * acceptable.
+   *
+   * @param fiducialId Fiducial ID of the desired target to valid the data of.
+   * @param timeoutMs The amount of milliseconds past which target info is deemed expired
+   * @return If the camera has seen the target within the timeout given
    */
-  public boolean validAprilTagTargetExists(int id) {
-    if (m_targets == null) {
-      return false;
-    }
-    for (PhotonTrackedTarget target : m_targets) {
-      if (target.getFiducialId() == id) {
-        return true;
-      }
-    }
-    return false;
+  public boolean isValidTarget(int fiducialId, long timeoutMs) {
+    long now = System.currentTimeMillis();
+    long then = now - timeoutMs;
+
+    return m_targetInfo[fiducialId].timestamp > then;
   }
 
   /**
@@ -151,7 +152,9 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   public void setPipeline(int index) {
-    m_camera.setPipelineIndex(index);
+    if (m_camera.getPipelineIndex() != index) {
+      m_camera.setPipelineIndex(index);
+    }
   }
 
   public int getPipeline() {
@@ -159,181 +162,66 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * @return Whether the camera has a valid target and is connected
+   * Gets what PhotonVision said the best target was last time it looked.
+   *
+   * @return The fiducial id of the best target
    */
-  public boolean getTV() {
-    return !m_connectionLost && (m_targets != null && m_result.hasTargets());
+  public int getBestTargetFiducialId() {
+    return m_bestTargetFiducialId;
   }
 
   /**
-   * @return Horizontal offset from crosshair to target (degrees)
+   * @param fiducialId The fiducial ID of the target to get the yaw of.
+   * @param timeoutMs The amount of milliseconds past which target info is deemed expired
+   * @return Returns the desired targets yaw, will be NaN if the cached data was invalid.
    */
-  public double getTX() {
-    return (validTargetExists()) ? m_bestTarget.getYaw() : Double.NaN;
-  }
-
-  /**
-   * Gets the best targets detected bounding box horizontal distance, uses unknown units, assume
-   * pixels. TAKE NOTE!
-   *
-   * <pre>
-   * ⟶  +X  3 ----- 2
-   * |      |       |
-   * V      |       |
-   * +Y     0 ----- 1
-   * </pre>
-   *
-   * X and Y increase opposite usual ways. Use accordingly.
-   *
-   * @return The best targets detected bounding box horizontal side length in what are are assumed
-   *     to be pixels. Returns NaN if the camera has no targets or is disconnected.
-   */
-  public double getHorizontalTargetLength() {
-    if (!validTargetExists()) {
-      return Double.NaN;
+  public double getTargetYaw(int fiducialId, long timeoutMs) {
+    if (isValidTarget(fiducialId, timeoutMs)) {
+      return m_targetInfo[fiducialId].yaw;
     }
-    List<TargetCorner> corners = m_bestTarget.getDetectedCorners();
-    TargetCorner originCorner = corners.get(0); // basing off of known fiducial corner order
-    TargetCorner bottomRightCorner = corners.get(1);
-    for (TargetCorner corner : corners) {
-      if (corner.x < originCorner.x && corner.y > originCorner.y) {
-        originCorner = corner;
-      }
-      if (corner.x > bottomRightCorner.x && corner.y > bottomRightCorner.y) {
-        bottomRightCorner = corner;
+    return Double.NaN;
+  }
+
+  /**
+   * @param fiducialIds The list of fiducial IDs to check.
+   * @param timeoutMs The amount of milliseconds past which target info is deemed expired
+   * @return Returns the yaw of the first id in the list, or NaN if none are valid.
+   */
+  public double getTargetYaw(int[] fiducialIds, long timeoutMs) {
+    for (int id : fiducialIds) {
+      double yaw = getTargetYaw(id, timeoutMs);
+      if (yaw != Double.NaN) {
+        return yaw;
       }
     }
-    return bottomRightCorner.x - originCorner.x;
+    return Double.NaN;
   }
 
   /**
-   * Gets the best targets detected bounding box vertical distance, uses unknown units, assume
-   * pixels. TAKE NOTE!
-   *
-   * <pre>
-   * ⟶  +X  3 ----- 2
-   * |      |       |
-   * V      |       |
-   * +Y     0 ----- 1
-   * </pre>
-   *
-   * X and Y increase opposite usual ways. Use accordingly.
-   *
-   * @return The best targets detected bounding box vertical side length in what are are assumed to
-   *     be pixels. Returns NaN if the camera has no targets or is disconnected.
+   * @param id The ID of the target to get the pitch of.
+   * @param timeoutMs The amount of milliseconds past which target info is deemed expired
+   * @return Returns the desired targets pitch, will be NaN if the cached data was invalid.
    */
-  public double getVerticalTargetLength() {
-    if (!validTargetExists()) {
-      return Double.NaN;
+  public double getTargetPitch(int fiducialId, long timeoutMs) {
+    if (isValidTarget(fiducialId, timeoutMs)) {
+      return m_targetInfo[fiducialId].pitch;
     }
-    List<TargetCorner> corners = m_bestTarget.getDetectedCorners();
-    TargetCorner originCorner = corners.get(0); // basing off of known fiducial corner order
-    TargetCorner bottomRightCorner = corners.get(1);
-    for (TargetCorner corner : corners) {
-      if (corner.x < originCorner.x && corner.y > originCorner.y) {
-        originCorner = corner;
-      }
-      if (corner.x > bottomRightCorner.x && corner.y > bottomRightCorner.y) {
-        bottomRightCorner = corner;
+    return Double.NaN;
+  }
+
+  /**
+   * @param fiducialIds The list of fiducial IDs to check.
+   * @param timeoutMs The amount of milliseconds past which target info is deemed expired
+   * @return Returns the pitch of the first id in the list, or NaN if none are valid.
+   */
+  public double getTargetPitch(int[] fiducialIds, long timeoutMs) {
+    for (int id : fiducialIds) {
+      double yaw = getTargetPitch(id, timeoutMs);
+      if (yaw != Double.NaN) {
+        return yaw;
       }
     }
-    return bottomRightCorner.y - originCorner.y;
-  }
-
-  /**
-   * Gets the best targets yaw from the crosshair to the target
-   *
-   * @return Best targets yaw from crosshair to target
-   */
-  public double getYaw() {
-    return getTV() ? m_bestTarget.getYaw() : Double.NaN;
-  }
-
-  /** Vertical offset from crosshair to target (degrees) */
-  public double getTY() {
-    return getTV() ? m_bestTarget.getPitch() : Double.NaN;
-  }
-
-  /**
-   * Gets the best targets pitch from the crosshair to the target
-   *
-   * @return Best targets pitch from crosshair to target
-   */
-  public double getPitch() {
-    return getTV() ? m_bestTarget.getPitch() : Double.NaN;
-  }
-
-  /** Percent of image covered by target [0, 100] */
-  public double getTA() {
-    return getTV() ? m_bestTarget.getArea() : Double.NaN;
-  }
-
-  /**
-   * Percent of image covered by the best target [0, 100]
-   *
-   * @return percentage of the image that the best target covers
-   */
-  public double getArea() {
-    return getTV() ? m_bestTarget.getArea() : Double.NaN;
-  }
-
-  /** Skew or rotation (degrees, [-90, 0]) */
-  public double getTS() {
-    return getTV() ? m_bestTarget.getSkew() : Double.NaN;
-  }
-
-  /**
-   * Yaw of target in degrees. Positive values are to the left, negative to the right.
-   *
-   * <p>The "getSkew()" equivalent in PhotonVision.
-   */
-  public double getFilteredYaw() {
-    if (!validTargetExists()) {
-      return Double.NaN;
-    }
-
-    double yaw = getYaw();
-    if (yaw < -45) {
-      return yaw + 90;
-    } else {
-      return yaw;
-    }
-  }
-
-  public boolean isHeadOn() {
-    if (!validTargetExists()) {
-      return false;
-    }
-
-    double skew = getYaw();
-    return (HEAD_ON_TOLERANCE <= skew && skew <= HEAD_ON_TOLERANCE);
-  }
-
-  public boolean isToLeft() {
-    if (!validTargetExists()) {
-      return false;
-    }
-
-    return getFilteredYaw() > HEAD_ON_TOLERANCE;
-  }
-
-  public boolean isToRight() {
-    if (!validTargetExists()) {
-      return false;
-    }
-
-    return getFilteredYaw() < HEAD_ON_TOLERANCE;
-  }
-
-  public double getTargetRotationDegrees() {
-    if (!validTargetExists()) {
-      return Double.NaN;
-    }
-
-    if (isHeadOn()) {
-      return 0.0;
-    }
-    return getFilteredYaw();
+    return Double.NaN;
   }
 
   /**
@@ -375,28 +263,5 @@ public class PhotonVisionCamera extends SubsystemBase {
   public Pose2d pose2dFromPNPResult(PNPResult result) {
     return new Pose2d(
         result.best.getTranslation().toTranslation2d(), result.best.getRotation().toRotation2d());
-  }
-
-  /**
-   * @return The best targets fiducial ID, returns -1 if it doesnt have one, and -2 if there are no
-   *     targets
-   */
-  public int getLastTargetID() {
-    return getTV() ? m_bestTarget.getFiducialId() : -2;
-  }
-
-  public ArrayList<PhotonTrackedTarget> filterAprilTags(int[] tagsToFilterFor) {
-    if (!getTV()) {
-      return null;
-    }
-    ArrayList<PhotonTrackedTarget> filteredTargets = new ArrayList<>();
-    for (PhotonTrackedTarget seenTarget : m_targets) {
-      for (int desiredTargetID : tagsToFilterFor) {
-        if (seenTarget.getFiducialId() == desiredTargetID) {
-          filteredTargets.add(seenTarget);
-        }
-      }
-    }
-    return filteredTargets;
   }
 }

@@ -15,12 +15,12 @@ public class TargetLockOnAmp extends Command {
 
   @Override
   public void execute() {
-    var target = Robot.shooterCam.getAmpTarget();
-    double targetYaw = 0;
-    if (target != null) {
-      targetYaw = target.getYaw();
-    }
+    var targetYaw = Robot.shooterCam.getAmpTargetYaw();
+
     Robot.swerve.driveTargetLock(
-        Robot.driverControls.getY(), Robot.driverControls.getX(), targetYaw, target != null);
+        Robot.driverControls.getY(),
+        Robot.driverControls.getX(),
+        targetYaw != Double.NaN ? targetYaw : 0,
+        targetYaw != Double.NaN);
   }
 }

@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.geometry.Transform3d;
 import frc.robot.Constants;
 import frc.robot.Constants.SHOOTER_PHOTON_CAMERA;
-import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class ShooterPhotonCamera extends PhotonVisionCamera {
 
@@ -14,7 +13,7 @@ public class ShooterPhotonCamera extends PhotonVisionCamera {
    */
   public ShooterPhotonCamera(
       String cameraName, Transform3d robotToCameraTransform, double headOnTolerance) {
-    super(cameraName, robotToCameraTransform, headOnTolerance);
+    super(cameraName, robotToCameraTransform);
   }
 
   public void setNeuralNetworkPipelineActive() {
@@ -29,19 +28,59 @@ public class ShooterPhotonCamera extends PhotonVisionCamera {
     super.setPipeline(SHOOTER_PHOTON_CAMERA.DEFAULT_PIPELINE);
   }
 
-  public PhotonTrackedTarget getSpeakerTarget() {
-    var targets = super.filterAprilTags(Constants.APRIL_TAG_IDS.SPEAKER_CENTER_TAGS);
-    if (targets == null || targets.isEmpty()) {
-      return null;
-    }
-    return targets.get(0);
+  /**
+   * @return The yaw of any seen speaker april tag. Will return NaN if it doesnt see one or doesnt
+   *     have one cached.
+   */
+  public double getSpeakerTargetYaw() {
+    return super.getTargetYaw(
+        Constants.APRIL_TAG_IDS.SPEAKER_CENTER_TAGS,
+        SHOOTER_PHOTON_CAMERA.SPEAKER_TARGET_TIMEOUT_MS);
   }
 
-  public PhotonTrackedTarget getAmpTarget() {
-    var targets = super.filterAprilTags(Constants.APRIL_TAG_IDS.SPEAKER_CENTER_TAGS);
-    if (targets == null || !targets.isEmpty()) {
-      return null;
-    }
-    return targets.get(0);
+  /**
+   * @return The pitch of any seen speaker april tag. Will return NaN if it doesnt see one or doesnt
+   *     have one cached.
+   */
+  public double getSpeakerTargetPitch() {
+    return super.getTargetPitch(
+        Constants.APRIL_TAG_IDS.SPEAKER_CENTER_TAGS,
+        SHOOTER_PHOTON_CAMERA.SPEAKER_TARGET_TIMEOUT_MS);
+  }
+
+  /**
+   * @return The yaw of any seen amp april tag. Will return NaN if it doesnt see one or doesnt have
+   *     one cached.
+   */
+  public double getAmpTargetYaw() {
+    return super.getTargetYaw(
+        Constants.APRIL_TAG_IDS.AMP_TAGS, SHOOTER_PHOTON_CAMERA.AMP_TARGET_TIMEOUT_MS);
+  }
+
+  /**
+   * @return The pitch of any seen amp april tag. Will return NaN if it doesnt see one or doesnt
+   *     have one cached.
+   */
+  public double getAmpTargetPitch() {
+    return super.getTargetPitch(
+        Constants.APRIL_TAG_IDS.AMP_TAGS, SHOOTER_PHOTON_CAMERA.AMP_TARGET_TIMEOUT_MS);
+  }
+
+  /**
+   * @return The yaw of any seen amp april tag. Will return NaN if it doesnt see one or doesnt have
+   *     one cached.
+   */
+  public double getStageTargetYaw() {
+    return super.getTargetYaw(
+        Constants.APRIL_TAG_IDS.STAGE_TAGS, SHOOTER_PHOTON_CAMERA.STAGE_TARGET_TIMEOUT_MS);
+  }
+
+  /**
+   * @return The pitch of any seen amp april tag. Will return NaN if it doesnt see one or doesnt
+   *     have one cached.
+   */
+  public double getStageTargetPitch() {
+    return super.getTargetPitch(
+        Constants.APRIL_TAG_IDS.STAGE_TAGS, SHOOTER_PHOTON_CAMERA.STAGE_TARGET_TIMEOUT_MS);
   }
 }
