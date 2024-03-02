@@ -4,7 +4,12 @@
 
 package frc.robot;
 
+import java.util.function.BooleanSupplier;
+
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+
 import com.revrobotics.CANSparkBase.IdleMode;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
@@ -12,8 +17,6 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
-import java.util.function.BooleanSupplier;
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -378,7 +381,7 @@ public final class Constants {
     public static final double LENS_BEHIND_ROBOT_ORIGIN_INCHES = 6.01824;
     public static final double LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES = 0;
     public static final double LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES = 5.38192;
-    public static final double LENS_ANGLE_TILTED_UP_DEGREES = 45;
+    public static final double LENS_ANGLE_TILTED_UP_DEGREES = 35;
     public static final Transform3d ROBOT_TO_CAMERA_TRANSFORM =
         new Transform3d(
             new Translation3d(
