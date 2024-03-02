@@ -1,7 +1,11 @@
 package frc.robot.commands.drive;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import frc.robot.Constants.APRIL_TAG_IDS;
+import frc.robot.Constants.SHOOTER_PHOTON_CAMERA;
 import frc.robot.Constants.SWERVE;
+import frc.robot.Robot;
 import frc.robot.util.Utility;
 
 public class DriveUtility {
@@ -43,10 +47,31 @@ public class DriveUtility {
     return yawTolerance;
   }
 
-  public static double calculateRotationError(double rotationError) {
-    if (Utility.isWithinTolerance(rotationError, 0, SWERVE.APRILTAG_ROTATION_TOLERANCE)) {
-      return 0;
+  public static double calculateRotationError(double rotationError, double rotationSetpoint) {
+    if (Utility.isWithinTolerance(rotationError, rotationSetpoint, SWERVE.APRILTAG_ROTATION_TOLERANCE_RADIANS)) {
+      return rotationSetpoint;
     }
     return rotationError;
+  }
+
+  public static double getAmpRotationGoal() {
+    boolean redAmpValid =
+        Robot.shooterCam.isValidTarget(
+            APRIL_TAG_IDS.RED_AMP, SHOOTER_PHOTON_CAMERA.AMP_TARGET_TIMEOUT_MS);
+    boolean blueAmpValid =
+        Robot.shooterCam.isValidTarget(
+            APRIL_TAG_IDS.BLUE_AMP, SHOOTER_PHOTON_CAMERA.AMP_TARGET_TIMEOUT_MS);
+
+    if (redAmpValid && blueAmpValid) {
+      DriverStation.reportError("How in the world do you see both amps at the same time", false);
+      return Double.NaN;
+    } else if (blueAmpValid) {
+      return SWERVE.BLUE_AMP_ROTATION_SETPOINT;
+    } else if (redAmpValid) {
+      return SWERVE.RED_AMP_ROTATION_SETPOINT;
+    } else {
+      System.err.println("No Amp target");
+      return Double.NaN;
+    }
   }
 }
