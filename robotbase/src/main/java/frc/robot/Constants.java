@@ -4,7 +4,12 @@
 
 package frc.robot;
 
+import java.util.function.BooleanSupplier;
+
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+
 import com.revrobotics.CANSparkBase.IdleMode;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
@@ -12,8 +17,6 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
-import java.util.function.BooleanSupplier;
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -206,40 +209,6 @@ public final class Constants {
 
     public static final int BOTTOM_MOTOR_STALL_LIMIT_AMPS = 60;
     public static final int BOTTOM_MOTOR_FREE_LIMIT_AMPS = 60;
-  }
-
-  /*
-   * TODO: Make Limelight pipelines match the following list
-   * 0: Human pipeline
-   * 1: Gamepiece pipeline
-   * 2: Speaker apriltag pipeline
-   * 3: Amp apriltag pipeline
-   * 4: Source apriltag pipeline
-   * 5: Stage apriltag pipeline
-   */
-
-  public static final class SHOOTER_LIMELIGHT {
-    public static final String NAME = "limelight-shooter";
-
-    public static final int HUMAN_PIPELINE_INDEX = 0;
-
-    public static final int GAMEPIECE_INDEX = 2;
-    public static final int AMP_PIPELINE_INDEX = 3;
-    public static final int SPEAKER_PIPELINE_INDEX = 4; // ids 4 and 7
-
-    public static final boolean IS_PRIMARY_STREAM = false;
-
-    public static final double MOUNTING_ANGLE_DEGREES = 0.0; // TODO: tune limelight constants
-    public static final double MOUNTING_HEIGHT_INCHES = 0.0;
-
-    public static final double DEFAULT_RETURN_VALUE = 0.0;
-
-    public static final double HEAD_ON_TOLERANCE = 0.0;
-
-    public static final double TARGET_WIDTH = 0.0;
-    public static final double TARGET_HEIGHT = 0.0;
-
-    public static final double TARGET_HEIGHT_FROM_FLOOR = 0.0;
   }
 
   public static final class PIVOT {
