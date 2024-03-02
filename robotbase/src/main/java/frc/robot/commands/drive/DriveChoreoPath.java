@@ -47,7 +47,6 @@ public class DriveChoreoPath extends SequentialCommandGroup {
     m_finalTargetPose = m_traj.getFinalPose();
     m_pathName = pathName;
     m_startingState = m_traj.getInitialState();
-    new Choreo();
 
     if (setPoseToStartTrajectory) {
       addCommands(
