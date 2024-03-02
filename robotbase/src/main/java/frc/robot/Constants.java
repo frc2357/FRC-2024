@@ -291,6 +291,20 @@ public final class Constants {
     public static final double ZERO_SPEED = 0.1;
     public static final double ZERO_SPEED_STOP_TOLERANCE = 50.0;
     public static final double ZERO_SPEED_INITIAL_SECONDS = 0.1;
+
+    // Level climb
+    public static final PIDController LEVEL_CLIMB_PID_CONTROLLER = new PIDController(0.05, 0, 0);
+    public static final double LEVEL_CLIMB_FEEDFORWARD = 0.65;
+    public static final double LEVEL_CLIMB_TOLERANCE = 3;
+
+    public static final double ROTATE_PAST_EXTENSION_SPEED = -0.2;
+    public static final double NOTE_HANDOFF_MAX_ROTATIONS = -105;
+
+    public static final double ROTATE_PAST_PREPOSE_SPEED = 0.2;
+    public static final double PREPOSE_ROTATIONS = -75;
+
+    public static final double ROTATE_PAST_TEN_DEGREES_SPEED = 0.2;
+    public static final double TEN_DEGREES_ROTATIONS = -150;
   }
 
   public static final class END_AFFECTOR {

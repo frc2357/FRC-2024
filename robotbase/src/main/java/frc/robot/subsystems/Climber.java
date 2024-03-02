@@ -63,6 +63,17 @@ public class Climber extends SubsystemBase {
     return m_leftClimberMotor.getEncoder().getPosition();
   }
 
+  public boolean isPastRotations(double rotations, int direction) {
+    switch (direction) {
+      case 1:
+        return getLeftRotations() >= rotations && getRightRotations() >= rotations;
+      case -1:
+        return getLeftRotations() <= rotations && getRightRotations() <= rotations;
+      default:
+        return true;
+    }
+  }
+
   public void setZero() {
     m_rightClimberMotor.getEncoder().setPosition(0.0);
     m_leftClimberMotor.getEncoder().setPosition(0.0);
