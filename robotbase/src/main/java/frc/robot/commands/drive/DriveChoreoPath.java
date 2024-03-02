@@ -4,7 +4,6 @@ import com.choreo.lib.Choreo;
 import com.choreo.lib.ChoreoTrajectory;
 import com.choreo.lib.ChoreoTrajectoryState;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.CHOREO;
@@ -49,6 +48,13 @@ public class DriveChoreoPath extends SequentialCommandGroup {
     m_pathName = pathName;
     m_startingState = m_traj.getInitialState();
     new Choreo();
+
+    if (setPoseToStartTrajectory) {
+      addCommands(
+          new InstantCommand(() -> Robot.swerve.zeroAll()),
+          new InstantCommand(() -> Robot.swerve.setPose(m_traj.getInitialPose())));
+    }
+
     addCommands(
         new InstantCommand(
             () ->
@@ -56,12 +62,6 @@ public class DriveChoreoPath extends SequentialCommandGroup {
                     m_startingState.velocityX,
                     m_startingState.velocityY,
                     m_startingState.angularVelocity)),
-        new ConditionalCommand(
-            new SequentialCommandGroup(
-                new InstantCommand(() -> Robot.swerve.zeroAll()),
-                new InstantCommand(() -> Robot.swerve.setPose(m_traj.getInitialPose()))),
-            new InstantCommand(),
-            () -> setPoseToStartTrajectory),
         Choreo.choreoSwerveCommand(
             Choreo.getTrajectory(trajectoryFileName),
             Robot.swerve.getPoseSupplier(),

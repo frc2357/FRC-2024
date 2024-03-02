@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.auto.paths.Close3Speaker;
 import frc.robot.commands.drive.DriveChoreoPath;
 
 public class AutoCommandChooser {
@@ -14,14 +15,16 @@ public class AutoCommandChooser {
 
     m_autoCommands =
         new Command[] {
-          new DriveChoreoPath("Close3Speaker"),
-          new DriveChoreoPath("RotationTest"),
-          new DriveChoreoPath("BoxTest"),
-          new DriveChoreoPath("TriangleTest"),
-          new DriveChoreoPath("RightClose1Speaker"),
-          new DriveChoreoPath("LoadAmp"),
-          new DriveChoreoPath("RefSideFar1"),
-          new DriveChoreoPath("RefSideFar3"),
+          new DriveChoreoPath("Line"),
+          // new DriveChoreoPath("Close3Speaker"),
+          new Close3Speaker(),
+          // new DriveChoreoPath("RotationTest"),
+          // new DriveChoreoPath("BoxTest"),
+          // new DriveChoreoPath("TriangleTest"),
+          // new DriveChoreoPath("RightClose1Speaker"),
+          // new DriveChoreoPath("LoadAmp"),
+          // new DriveChoreoPath("RefSideFar1"),
+          // new DriveChoreoPath("RefSideFar3"),
         };
 
     m_chooser = new SendableChooser<>();
@@ -30,7 +33,6 @@ public class AutoCommandChooser {
     for (Command autoCommand : m_autoCommands) {
       m_chooser.addOption(autoCommand.toString(), autoCommand);
     }
-
     SmartDashboard.putData("Auto chooser", m_chooser);
   }
 
