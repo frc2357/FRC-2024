@@ -196,7 +196,9 @@ public final class Constants {
     public static final double SLOW_PICKUP_SPEED_PERCENT_OUTPUT = .1;
     public static final double REVERSE_FEED_SPEED_PERCENT_OUTPUT = -0.2;
     public static final double FEED_SPEED_PERCENT_OUTPUT = 0.75;
-    public static final double DECOMPRESS_SPEED_PERCENT_OUTPUT = 0.75;
+
+    public static final double DECOMPRESS_NOTE_TIMEOUT = .5; // TODO: TUNE THIS
+    public static final double DECOMPRESS_NOTE_SPEED_PERCENT_OUTPUT = 0.5;
 
     public static final IdleMode IDLE_MODE = IdleMode.kBrake;
 
