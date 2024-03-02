@@ -20,7 +20,7 @@ public class IntakeNoteFromFloor extends SequentialCommandGroup {
             new WaitCommand(INTAKE.COMPRESS_NOTE_TIMEOUT),
             new RumbleDriverController(),
             new IntakeRun(INTAKE.COMPRESS_NOTE_SPEED_PERCENT_OUTPUT, true)),
-            
+
         // Run the note back down until the sensor sees it
         new IntakeRunUntilBeamState(INTAKE.REVERSE_FEED_SPEED_PERCENT_OUTPUT, true),
         new IntakeStop(),
