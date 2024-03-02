@@ -15,8 +15,8 @@ public class VisionTargeting extends Command {
   public void execute() {
     boolean hasTarget = Robot.shooterCam.validTargetExists();
     if (hasTarget) {
-      Double[] setpoints = calculateVisionTargetingSetpoints(Robot.shooterCam.getTY());
-      SmartDashboard.putNumber("Current ty", Robot.shooterCam.getTY());
+      Double[] setpoints = calculateVisionTargetingSetpoints(Robot.shooterCam.getBestTargetTY());
+      SmartDashboard.putNumber("Current ty", Robot.shooterCam.getBestTargetTY());
       if (!Double.isNaN(setpoints[0])) {
         SmartDashboard.putNumber("Pivot vision setpoint", setpoints[0]);
         Robot.pivot.setAngle(setpoints[0]);

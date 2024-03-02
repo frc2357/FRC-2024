@@ -7,7 +7,7 @@ public class IntakePhotonCamera extends PhotonVisionCamera {
 
   public IntakePhotonCamera(
       String cameraName, Transform3d robotToCameraTransform, double headOnTolerance) {
-    super(cameraName, robotToCameraTransform, headOnTolerance);
+    super(cameraName, robotToCameraTransform, headOnTolerance, INTAKE_PHOTON_CAMERA.LOOPS_TO_KEEP_CACHED_DATA_VALID);
   }
 
   public void setAprilTagPipelineActive() {

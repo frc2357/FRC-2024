@@ -1,10 +1,14 @@
 package frc.robot.subsystems;
 
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -15,8 +19,6 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.util.Utility;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 /**
  * Class that extends the Phoenix SwerveDrivetrain class and implements subsystem so it can be used
@@ -200,7 +202,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
   public double getTargetLockRotation() {
     PhotonVisionCamera camera = Robot.state.getTargetLockCamera();
-    double tx = camera.getTX();
+    double tx = camera.getBestTargetYaw();
     if (!camera.validTargetExists()
         || Utility.isWithinTolerance(tx, 0, Constants.SWERVE.TARGET_LOCK_TOLERANCE)) {
       return 0;

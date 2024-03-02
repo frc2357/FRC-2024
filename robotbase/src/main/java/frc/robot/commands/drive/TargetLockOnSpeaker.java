@@ -2,7 +2,6 @@ package frc.robot.commands.drive;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
-import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class TargetLockOnSpeaker extends Command {
   public TargetLockOnSpeaker() {
@@ -16,10 +15,10 @@ public class TargetLockOnSpeaker extends Command {
 
   @Override
   public void execute() {
-    PhotonTrackedTarget target = Robot.shooterCam.getSpeakerTarget();
-    double targetYaw = target != null ? target.getYaw() : 0;
+    var targetYaw = Robot.shooterCam.getSpeakerTargetYaw();
+
     Robot.swerve.driveTargetLock(
-        Robot.driverControls.getY(), Robot.driverControls.getX(), targetYaw, target != null);
+        Robot.driverControls.getY(), Robot.driverControls.getX(), targetYaw != Double.NaN ? targetYaw : 0, targetYaw != Double.NaN);
   }
 
   @Override

@@ -69,8 +69,8 @@ public class DriveToApriltag extends Command {
       return;
     }
 
-    double tx = m_camera.getTX();
-    double ty = m_camera.getTY();
+    double tx = m_camera.getBestTargetYaw();
+    double ty = m_camera.getBestTargetTY();
     double rotationError = Robot.swerve.getPose().getRotation().getRadians();
 
     // Increase tx tolerance when close to target since tx is more sensitive at

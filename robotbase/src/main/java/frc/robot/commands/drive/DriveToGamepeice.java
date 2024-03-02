@@ -40,7 +40,7 @@ public class DriveToGamepeice extends Command {
       return;
     }
 
-    double rotationError = Robot.intakeCam.getTX();
+    double rotationError = Robot.intakeCam.getBestTargetYaw();
     double rotationSpeed = SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.calculate(rotationError, 0);
     double translationSpeed =
         distanceTraveled() > SWERVE.PIECE_TRACKING_SLOW_DOWN_METERS
