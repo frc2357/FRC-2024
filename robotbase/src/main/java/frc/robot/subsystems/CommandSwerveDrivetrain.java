@@ -14,7 +14,6 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.util.Utility;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -196,24 +195,5 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   public ChassisSpeeds getChassisSpeeds() {
     ChassisSpeeds chassisSpeeds = getKinematics().toChassisSpeeds(getModuleStates());
     return chassisSpeeds;
-  }
-
-  public double getTargetLockRotation() {
-    PhotonVisionCamera camera = Robot.state.getTargetLockCamera();
-    double tx = camera.getBestTargetYaw();
-    if (!camera.validTargetExists()
-        || Utility.isWithinTolerance(tx, 0, Constants.SWERVE.TARGET_LOCK_TOLERANCE)) {
-      return 0;
-    }
-
-    // Increase kP based on horizontal velocity to reduce lag
-    double vy = getChassisSpeeds().vyMetersPerSecond; // Horizontal velocity
-    double kp = Constants.SWERVE.TARGET_LOCK_ROTATION_KP;
-    kp *= Math.max(1, vy * 1);
-    Constants.SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.setP(kp);
-
-    double rotation = -Constants.SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.calculate(0, tx);
-    double output = rotation + Math.copySign(Constants.SWERVE.TARGET_LOCK_FEED_FORWARD, rotation);
-    return output;
   }
 }

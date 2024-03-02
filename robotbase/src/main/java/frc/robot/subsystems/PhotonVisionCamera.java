@@ -18,19 +18,22 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 /** Controls the photon vision camera options. */
 public class PhotonVisionCamera extends SubsystemBase {
 
+  private static class TargetInfo {
+    public double yaw = Double.NaN;
+    public double pitch = Double.NaN;
+    public long timestamp = 0;
+  }
+  ;
+
   // all of these are protected so we can use them in the extended classes
   // which are only extended so we can control which pipelines we are using.
   protected PhotonCamera m_camera;
   protected PhotonPipelineResult m_result;
-  protected final double[] m_targetYawCache;
-  protected final double[] m_targetPitchCache;
-  protected final double[] m_targetTimeStampMillisCache;
+  protected final TargetInfo[] m_targetInfo;
   protected PhotonPoseEstimator m_poseEstimator;
   protected final Transform3d ROBOT_TO_CAMERA_TRANSFORM; // if this changes, we have bigger issues.
-  protected final double HEAD_ON_TOLERANCE;
   protected static boolean m_connectionLost;
-  protected final int LOOPS_TO_CACHE_TARGET_DATA;
-  protected int m_bestTargetAdjustedId;
+  protected int m_bestTargetFiducialId;
 
   /**
    * Sets the camera stream.
@@ -41,29 +44,12 @@ public class PhotonVisionCamera extends SubsystemBase {
    * @param headOnTolerance The tolerance for declaring whether or not the camera is facing a target
    *     head on.
    */
-  public PhotonVisionCamera(
-      String cameraName,
-      Transform3d robotToCameraTransform,
-      double headOnTolerance,
-      int loopsToCacheTargetData) {
+  public PhotonVisionCamera(String cameraName, Transform3d robotToCameraTransform) {
     m_camera = new PhotonCamera(cameraName);
     ROBOT_TO_CAMERA_TRANSFORM = robotToCameraTransform;
-    HEAD_ON_TOLERANCE = headOnTolerance;
-    LOOPS_TO_CACHE_TARGET_DATA = loopsToCacheTargetData;
-    m_targetYawCache =
-        new double
-            [17]; // set to have enough slots for every april tag + 1, for the gamepeice caching.
-    m_targetPitchCache = new double[17];
-    m_targetTimeStampMillisCache = new double[17];
-    for (double number : m_targetYawCache) {
-      number = Double.NaN; // setting them to NaN by default.
-    }
-    for (double number : m_targetPitchCache) {
-      number = Double.NaN; // setting them to NaN by default.
-    }
-    for (double number : m_targetTimeStampMillisCache) {
-      number = Double.NaN; // setting them to NaN by default.
-    }
+
+    // 0 is for note detection, 1-16 correspond to apriltag fiducial IDs
+    m_targetInfo = new TargetInfo[17];
   }
 
   public void configure() {
@@ -86,17 +72,14 @@ public class PhotonVisionCamera extends SubsystemBase {
     if (m_camera.isConnected()) {
       m_result = m_camera.getLatestResult();
       if (m_result.hasTargets()) {
-        var currentTimeMillis = System.currentTimeMillis();
+        long now = System.currentTimeMillis();
         List<PhotonTrackedTarget> targetList = m_result.targets;
-        m_bestTargetAdjustedId = m_result.getBestTarget().getFiducialId() + 1;
+        m_bestTargetFiducialId = m_result.getBestTarget().getFiducialId();
         for (PhotonTrackedTarget targetSeen : targetList) {
-          var adjustedTargetId =
-              targetSeen.getFiducialId()
-                  + 1; // adds one to make sure that gamepeices work for caching.
-          // they have a fiducial ID of -1, so adding one makes them 0. Yes, its magic.
-          m_targetYawCache[adjustedTargetId] = targetSeen.getYaw();
-          m_targetPitchCache[adjustedTargetId] = targetSeen.getPitch();
-          m_targetTimeStampMillisCache[adjustedTargetId] = currentTimeMillis;
+          TargetInfo targetInfo = m_targetInfo[targetSeen.getFiducialId()];
+          targetInfo.yaw = targetSeen.getYaw();
+          targetInfo.pitch = targetSeen.getPitch();
+          targetInfo.timestamp = now;
         }
       }
 
@@ -115,13 +98,6 @@ public class PhotonVisionCamera extends SubsystemBase {
    */
   public boolean isConnected() {
     return m_connectionLost; // uses this because it will be checked every loop
-  }
-
-  /**
-   * @return Whether the camera has a valid target from the latest result and is connected.
-   */
-  public boolean validTargetExists() {
-    return isConnected() && (m_result.hasTargets());
   }
 
   /**
@@ -144,39 +120,15 @@ public class PhotonVisionCamera extends SubsystemBase {
    * Compares the current system time to the last cached timestamp and sees if it is older than is
    * acceptable.
    *
-   * <p>If it is older than acceptable, sets the target data to NaN. <code> isValidTarget(int id)
-   * </code> is a better option if you want to see if a target is valid, but not set it to NaN if it
-   * is invalid.
-   *
-   * @param id Id of the desired target
-   * @return If the camera sees the target, or a valid version of its data is cached.
+   * @param fiducialId Fiducial ID of the desired target to valid the data of.
+   * @param timeoutMs The amount of milliseconds past which target info is deemed expired
+   * @return If the camera has seen the target within the timeout given
    */
-  public boolean validateTarget(int id) {
-    int adjustedId = id + 1;
-    boolean isValidTarget = isValidTarget(adjustedId);
-    if (!isValidTarget) {
-      m_targetYawCache[adjustedId] = Double.NaN;
-      m_targetPitchCache[adjustedId] = Double.NaN;
-      m_targetTimeStampMillisCache[adjustedId] = Double.NaN;
-    }
-    return isValidTarget;
-  }
+  public boolean isValidTarget(int fiducialId, long timeoutMs) {
+    long now = System.currentTimeMillis();
+    long then = now - timeoutMs;
 
-  /**
-   * Compares the current system time to the last cached timestamp and sees if it is older than is
-   * acceptable.
-   *
-   * <p><code> validateTarget(int id) </code> is a better option if you want to see if a target is
-   * valid, and set it to NaN if it is invalid.
-   *
-   * @param id Fiducial ID of the desired target to valid the data of.
-   * @return If the camera sees the target, or if a valid version of its data is cached.
-   */
-  public boolean isValidTarget(int id) {
-    return (m_targetTimeStampMillisCache[id + 1] != Double.NaN
-        ? (System.currentTimeMillis() - m_targetTimeStampMillisCache[id + 1]) / 20
-            > LOOPS_TO_CACHE_TARGET_DATA
-        : false);
+    return m_targetInfo[fiducialId].timestamp > then;
   }
 
   /**
@@ -200,7 +152,9 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   public void setPipeline(int index) {
-    m_camera.setPipelineIndex(index);
+    if (m_camera.getPipelineIndex() != index) {
+      m_camera.setPipelineIndex(index);
+    }
   }
 
   public int getPipeline() {
@@ -208,114 +162,66 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * Gets the best targets yaw from the crosshair to the target
+   * Gets what PhotonVision said the best target was last time it looked.
    *
-   * @return Best targets yaw from crosshair to target
+   * @return The fiducial id of the best target
    */
-  public double getBestTargetYaw() {
-    return validateTarget(m_bestTargetAdjustedId)
-        ? m_targetYawCache[m_bestTargetAdjustedId]
-        : Double.NaN;
+  public int getBestTargetFiducialId() {
+    return m_bestTargetFiducialId;
   }
 
   /**
-   * Gets the best targets pitch from the crosshair to the target
-   *
-   * @return Best targets pitch from crosshair to target
-   */
-  public double getBestTargetPitch() {
-    return validateTarget(m_bestTargetAdjustedId)
-        ? m_targetPitchCache[m_bestTargetAdjustedId]
-        : Double.NaN;
-  }
-
-  /** Vertical offset from crosshair to target (degrees) */
-  public double getBestTargetTY() {
-    return getBestTargetPitch();
-  }
-
-  /**
-   * @param id The ID of the target to get the yaw of.
+   * @param fiducialId The fiducial ID of the target to get the yaw of.
+   * @param timeoutMs The amount of milliseconds past which target info is deemed expired
    * @return Returns the desired targets yaw, will be NaN if the cached data was invalid.
    */
-  public double getTargetYaw(int id) {
-    int adjustedId = id + 1;
-    validateTarget(adjustedId);
-    return m_targetYawCache[adjustedId];
+  public double getTargetYaw(int fiducialId, long timeoutMs) {
+    if (isValidTarget(fiducialId, timeoutMs)) {
+      return m_targetInfo[fiducialId].yaw;
+    }
+    return Double.NaN;
+  }
+
+  /**
+   * @param fiducialIds The list of fiducial IDs to check.
+   * @param timeoutMs The amount of milliseconds past which target info is deemed expired
+   * @return Returns the yaw of the first id in the list, or NaN if none are valid.
+   */
+  public double getTargetYaw(int[] fiducialIds, long timeoutMs) {
+    for (int id : fiducialIds) {
+      double yaw = getTargetYaw(id, timeoutMs);
+      if (yaw != Double.NaN) {
+        return yaw;
+      }
+    }
+    return Double.NaN;
   }
 
   /**
    * @param id The ID of the target to get the pitch of.
+   * @param timeoutMs The amount of milliseconds past which target info is deemed expired
    * @return Returns the desired targets pitch, will be NaN if the cached data was invalid.
    */
-  public double getTargetPitch(int id) {
-    int adjustedId = id + 1;
-    validateTarget(adjustedId);
-    return m_targetPitchCache[adjustedId];
+  public double getTargetPitch(int fiducialId, long timeoutMs) {
+    if (isValidTarget(fiducialId, timeoutMs)) {
+      return m_targetInfo[fiducialId].pitch;
+    }
+    return Double.NaN;
   }
 
   /**
-   * @param id The ID of the target to get the yaw of.
-   * @return Returns the desired targets yaw, will be NaN if the cached data was invalid.
+   * @param fiducialIds The list of fiducial IDs to check.
+   * @param timeoutMs The amount of milliseconds past which target info is deemed expired
+   * @return Returns the pitch of the first id in the list, or NaN if none are valid.
    */
-  public double getTargetTimestampMillis(int id) {
-    int adjustedId = id + 1;
-    validateTarget(adjustedId);
-    return m_targetTimeStampMillisCache[adjustedId];
-  }
-
-  /**
-   * Yaw of target in degrees. Positive values are to the left, negative to the right.
-   *
-   * <p>The "getSkew()" equivalent in PhotonVision.
-   */
-  public double getFilteredYaw() {
-    if (!validTargetExists()) {
-      return Double.NaN;
+  public double getTargetPitch(int[] fiducialIds, long timeoutMs) {
+    for (int id : fiducialIds) {
+      double yaw = getTargetPitch(id, timeoutMs);
+      if (yaw != Double.NaN) {
+        return yaw;
+      }
     }
-
-    double yaw = getBestTargetYaw();
-    if (yaw < -45) {
-      return yaw + 90;
-    } else {
-      return yaw;
-    }
-  }
-
-  public boolean isHeadOn() {
-    if (!validTargetExists()) {
-      return false;
-    }
-
-    double skew = getBestTargetYaw();
-    return (HEAD_ON_TOLERANCE <= skew && skew <= HEAD_ON_TOLERANCE);
-  }
-
-  public boolean isToLeft() {
-    if (!validTargetExists()) {
-      return false;
-    }
-
-    return getFilteredYaw() > HEAD_ON_TOLERANCE;
-  }
-
-  public boolean isToRight() {
-    if (!validTargetExists()) {
-      return false;
-    }
-
-    return getFilteredYaw() < HEAD_ON_TOLERANCE;
-  }
-
-  public double getTargetRotationDegrees() {
-    if (!validTargetExists()) {
-      return Double.NaN;
-    }
-
-    if (isHeadOn()) {
-      return 0.0;
-    }
-    return getFilteredYaw();
+    return Double.NaN;
   }
 
   /**
@@ -357,13 +263,5 @@ public class PhotonVisionCamera extends SubsystemBase {
   public Pose2d pose2dFromPNPResult(PNPResult result) {
     return new Pose2d(
         result.best.getTranslation().toTranslation2d(), result.best.getRotation().toRotation2d());
-  }
-
-  /**
-   * @return The best targets fiducial ID, returns -1 if it doesnt have one, and -2 if there are no
-   *     targets
-   */
-  public int getLastTargetID() {
-    return m_bestTargetAdjustedId;
   }
 }

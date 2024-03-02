@@ -67,6 +67,11 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setRPM(double topRPM) {
+    if (Double.isNaN(topRPM)) {
+      System.err.println("Shooter: Cannot set topRPM to NaN!");
+      return;
+    }
+
     m_targetRPM = topRPM;
     m_topPIDController.setReference(m_targetRPM, ControlType.kVelocity);
     m_bottomPIDController.setReference(m_targetRPM, ControlType.kVelocity);

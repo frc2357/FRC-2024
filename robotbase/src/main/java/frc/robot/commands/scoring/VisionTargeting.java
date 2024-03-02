@@ -6,6 +6,8 @@ import frc.robot.Robot;
 import frc.robot.util.RobotMath;
 
 public class VisionTargeting extends Command {
+  private double m_currentAngle;
+  private double m_currentRpms;
 
   public VisionTargeting() {
     addRequirements(Robot.pivot, Robot.shooter);
@@ -13,19 +15,20 @@ public class VisionTargeting extends Command {
 
   @Override
   public void execute() {
-    boolean hasTarget = Robot.shooterCam.validTargetExists();
-    if (hasTarget) {
-      Double[] setpoints = calculateVisionTargetingSetpoints(Robot.shooterCam.getBestTargetTY());
-      SmartDashboard.putNumber("Current ty", Robot.shooterCam.getBestTargetTY());
-      if (!Double.isNaN(setpoints[0])) {
-        SmartDashboard.putNumber("Pivot vision setpoint", setpoints[0]);
-        Robot.pivot.setAngle(setpoints[0]);
-      }
-      if (!Double.isNaN(setpoints[1])) {
-        SmartDashboard.putNumber("Shooter vision RPMs", setpoints[1]);
-        Robot.shooter.setRPM(setpoints[1]);
-      }
+    double yaw = Robot.shooterCam.getSpeakerTargetYaw();
+
+    if (Double.isNaN(yaw)) {
+      return;
     }
+
+    double pitch = Robot.shooterCam.getSpeakerTargetPitch();
+    updateVisionTargeting(pitch);
+    Robot.pivot.setAngle(m_currentAngle);
+    Robot.shooter.setRPM(m_currentRpms);
+
+    SmartDashboard.putNumber("Current pitch", pitch);
+    SmartDashboard.putNumber("Pivot vision setpoint", m_currentAngle);
+    SmartDashboard.putNumber("Shooter vision RPMs", m_currentRpms);
   }
 
   @Override
@@ -39,26 +42,29 @@ public class VisionTargeting extends Command {
     Robot.shooter.stop();
   }
 
-  private Double[] calculateVisionTargetingSetpoints(double ty) {
-    int curveIndex = RobotMath.getCurveSegmentIndex(Robot.shooterCurve, ty);
+  private void updateVisionTargeting(double pitch) {
+    int curveIndex = RobotMath.getCurveSegmentIndex(Robot.shooterCurve, pitch);
     if (curveIndex == -1) {
-      // System.err.println("----- Curve segment index out of bounds (Pivot) -----");
-      return new Double[] {Double.NaN, Double.NaN};
+      System.err.println("[VisionTargeting] pitch out of range");
+      m_currentAngle = Double.NaN;
+      m_currentRpms = Double.NaN;
+      return;
     }
 
     double[] high = Robot.shooterCurve[curveIndex];
     double[] low = Robot.shooterCurve[curveIndex + 1];
 
-    double highTY = high[0];
-    double lowTY = low[0];
+    double highPitch = high[0];
+    double lowPitch = low[0];
     double highPivotRotation = high[1];
     double lowPivotRotation = low[1];
     double highShooterRPM = high[2];
     double lowShooterRPM = low[2];
 
-    return new Double[] {
-      RobotMath.linearlyInterpolate(highPivotRotation, lowPivotRotation, highTY, lowTY, ty),
-      RobotMath.linearlyInterpolate(highShooterRPM, lowShooterRPM, highTY, lowTY, ty)
-    };
+    m_currentAngle =
+        RobotMath.linearlyInterpolate(
+            highPivotRotation, lowPivotRotation, highPitch, lowPitch, pitch);
+    m_currentRpms =
+        RobotMath.linearlyInterpolate(highShooterRPM, lowShooterRPM, highPitch, lowPitch, pitch);
   }
 }
