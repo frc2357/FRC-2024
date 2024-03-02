@@ -18,6 +18,9 @@ public class TargetLockOnAmp extends Command {
     var targetYaw = Robot.shooterCam.getAmpTargetYaw();
 
     Robot.swerve.driveTargetLock(
-        Robot.driverControls.getY(), Robot.driverControls.getX(), targetYaw != Double.NaN ? targetYaw : 0, targetYaw != Double.NaN);
+        Robot.driverControls.getY(),
+        Robot.driverControls.getX(),
+        targetYaw != Double.NaN ? targetYaw : 0,
+        targetYaw != Double.NaN);
   }
 }

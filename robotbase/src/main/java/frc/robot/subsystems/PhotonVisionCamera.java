@@ -1,21 +1,19 @@
 package frc.robot.subsystems;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.photonvision.EstimatedRobotPose;
-import org.photonvision.PhotonCamera;
-import org.photonvision.PhotonPoseEstimator;
-import org.photonvision.targeting.PNPResult;
-import org.photonvision.targeting.PhotonPipelineResult;
-import org.photonvision.targeting.PhotonTrackedTarget;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.PHOTON_VISION;
+import java.util.List;
+import java.util.Optional;
+import org.photonvision.EstimatedRobotPose;
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.targeting.PNPResult;
+import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 /** Controls the photon vision camera options. */
 public class PhotonVisionCamera extends SubsystemBase {
@@ -44,22 +42,27 @@ public class PhotonVisionCamera extends SubsystemBase {
    *     head on.
    */
   public PhotonVisionCamera(
-      String cameraName, Transform3d robotToCameraTransform, double headOnTolerance, int loopsToCacheTargetData) {
+      String cameraName,
+      Transform3d robotToCameraTransform,
+      double headOnTolerance,
+      int loopsToCacheTargetData) {
     m_camera = new PhotonCamera(cameraName);
     ROBOT_TO_CAMERA_TRANSFORM = robotToCameraTransform;
     HEAD_ON_TOLERANCE = headOnTolerance;
     LOOPS_TO_CACHE_TARGET_DATA = loopsToCacheTargetData;
-    m_targetYawCache = new double[17];//set to have enough slots for every april tag + 1, for the gamepeice caching.
+    m_targetYawCache =
+        new double
+            [17]; // set to have enough slots for every april tag + 1, for the gamepeice caching.
     m_targetPitchCache = new double[17];
     m_targetTimeStampMillisCache = new double[17];
-    for(double number : m_targetYawCache){
-      number = Double.NaN; //setting them to NaN by default.
+    for (double number : m_targetYawCache) {
+      number = Double.NaN; // setting them to NaN by default.
     }
-    for(double number : m_targetPitchCache){
-      number = Double.NaN; //setting them to NaN by default.
+    for (double number : m_targetPitchCache) {
+      number = Double.NaN; // setting them to NaN by default.
     }
-    for(double number : m_targetTimeStampMillisCache){
-      number = Double.NaN; //setting them to NaN by default.
+    for (double number : m_targetTimeStampMillisCache) {
+      number = Double.NaN; // setting them to NaN by default.
     }
   }
 
@@ -86,9 +89,11 @@ public class PhotonVisionCamera extends SubsystemBase {
         var currentTimeMillis = System.currentTimeMillis();
         List<PhotonTrackedTarget> targetList = m_result.targets;
         m_bestTargetAdjustedId = m_result.getBestTarget().getFiducialId() + 1;
-        for(PhotonTrackedTarget targetSeen : targetList){
-          var adjustedTargetId = targetSeen.getFiducialId()+1; //adds one to make sure that gamepeices work for caching.
-          //they have a fiducial ID of -1, so adding one makes them 0. Yes, its magic.
+        for (PhotonTrackedTarget targetSeen : targetList) {
+          var adjustedTargetId =
+              targetSeen.getFiducialId()
+                  + 1; // adds one to make sure that gamepeices work for caching.
+          // they have a fiducial ID of -1, so adding one makes them 0. Yes, its magic.
           m_targetYawCache[adjustedTargetId] = targetSeen.getYaw();
           m_targetPitchCache[adjustedTargetId] = targetSeen.getPitch();
           m_targetTimeStampMillisCache[adjustedTargetId] = currentTimeMillis;
@@ -136,16 +141,20 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * Compares the current system time to the last cached timestamp and sees if it is older than is acceptable.
-   * <p> If it is older than acceptable, sets the target data to NaN. 
-   * <code> isValidTarget(int id) </code> is a better option if you want to see if a target is valid, but not set it to NaN if it is invalid.
+   * Compares the current system time to the last cached timestamp and sees if it is older than is
+   * acceptable.
+   *
+   * <p>If it is older than acceptable, sets the target data to NaN. <code> isValidTarget(int id)
+   * </code> is a better option if you want to see if a target is valid, but not set it to NaN if it
+   * is invalid.
+   *
    * @param id Id of the desired target
    * @return If the camera sees the target, or a valid version of its data is cached.
    */
   public boolean validateTarget(int id) {
     int adjustedId = id + 1;
     boolean isValidTarget = isValidTarget(adjustedId);
-    if(!isValidTarget){
+    if (!isValidTarget) {
       m_targetYawCache[adjustedId] = Double.NaN;
       m_targetPitchCache[adjustedId] = Double.NaN;
       m_targetTimeStampMillisCache[adjustedId] = Double.NaN;
@@ -154,15 +163,20 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * Compares the current system time to the last cached timestamp and sees if it is older than is acceptable.<p>
-   * <code> validateTarget(int id) </code> is a better option if you want to see if a target is valid, and set it to NaN if it is invalid.
+   * Compares the current system time to the last cached timestamp and sees if it is older than is
+   * acceptable.
+   *
+   * <p><code> validateTarget(int id) </code> is a better option if you want to see if a target is
+   * valid, and set it to NaN if it is invalid.
+   *
    * @param id Fiducial ID of the desired target to valid the data of.
    * @return If the camera sees the target, or if a valid version of its data is cached.
    */
-  public boolean isValidTarget(int id){
-    return (m_targetTimeStampMillisCache[id+1] != Double.NaN ?
-      (System.currentTimeMillis() - m_targetTimeStampMillisCache[id+1])/20 > 
-      LOOPS_TO_CACHE_TARGET_DATA : false);
+  public boolean isValidTarget(int id) {
+    return (m_targetTimeStampMillisCache[id + 1] != Double.NaN
+        ? (System.currentTimeMillis() - m_targetTimeStampMillisCache[id + 1]) / 20
+            > LOOPS_TO_CACHE_TARGET_DATA
+        : false);
   }
 
   /**
@@ -195,21 +209,24 @@ public class PhotonVisionCamera extends SubsystemBase {
 
   /**
    * Gets the best targets yaw from the crosshair to the target
-   * 
+   *
    * @return Best targets yaw from crosshair to target
    */
   public double getBestTargetYaw() {
-    return validateTarget(m_bestTargetAdjustedId) ? m_targetYawCache[m_bestTargetAdjustedId] : Double.NaN;
+    return validateTarget(m_bestTargetAdjustedId)
+        ? m_targetYawCache[m_bestTargetAdjustedId]
+        : Double.NaN;
   }
 
-  
   /**
    * Gets the best targets pitch from the crosshair to the target
    *
    * @return Best targets pitch from crosshair to target
    */
   public double getBestTargetPitch() {
-    return validateTarget(m_bestTargetAdjustedId) ? m_targetPitchCache[m_bestTargetAdjustedId] : Double.NaN;
+    return validateTarget(m_bestTargetAdjustedId)
+        ? m_targetPitchCache[m_bestTargetAdjustedId]
+        : Double.NaN;
   }
 
   /** Vertical offset from crosshair to target (degrees) */
@@ -221,7 +238,7 @@ public class PhotonVisionCamera extends SubsystemBase {
    * @param id The ID of the target to get the yaw of.
    * @return Returns the desired targets yaw, will be NaN if the cached data was invalid.
    */
-  public double getTargetYaw(int id){
+  public double getTargetYaw(int id) {
     int adjustedId = id + 1;
     validateTarget(adjustedId);
     return m_targetYawCache[adjustedId];
@@ -231,7 +248,7 @@ public class PhotonVisionCamera extends SubsystemBase {
    * @param id The ID of the target to get the pitch of.
    * @return Returns the desired targets pitch, will be NaN if the cached data was invalid.
    */
-  public double getTargetPitch(int id){
+  public double getTargetPitch(int id) {
     int adjustedId = id + 1;
     validateTarget(adjustedId);
     return m_targetPitchCache[adjustedId];
@@ -241,7 +258,7 @@ public class PhotonVisionCamera extends SubsystemBase {
    * @param id The ID of the target to get the yaw of.
    * @return Returns the desired targets yaw, will be NaN if the cached data was invalid.
    */
-  public double getTargetTimestampMillis(int id){
+  public double getTargetTimestampMillis(int id) {
     int adjustedId = id + 1;
     validateTarget(adjustedId);
     return m_targetTimeStampMillisCache[adjustedId];

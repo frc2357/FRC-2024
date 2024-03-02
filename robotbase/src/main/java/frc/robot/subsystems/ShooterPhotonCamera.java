@@ -13,7 +13,11 @@ public class ShooterPhotonCamera extends PhotonVisionCamera {
    */
   public ShooterPhotonCamera(
       String cameraName, Transform3d robotToCameraTransform, double headOnTolerance) {
-    super(cameraName, robotToCameraTransform, headOnTolerance, SHOOTER_PHOTON_CAMERA.LOOPS_TO_KEEP_CACHED_DATA_VALID);
+    super(
+        cameraName,
+        robotToCameraTransform,
+        headOnTolerance,
+        SHOOTER_PHOTON_CAMERA.LOOPS_TO_KEEP_CACHED_DATA_VALID);
   }
 
   public void setNeuralNetworkPipelineActive() {
@@ -29,12 +33,13 @@ public class ShooterPhotonCamera extends PhotonVisionCamera {
   }
 
   /**
-   * @return The yaw of any seen speaker april tag. WIll return NaN if it doesnt see one or doesnt have one cached.
+   * @return The yaw of any seen speaker april tag. WIll return NaN if it doesnt see one or doesnt
+   *     have one cached.
    */
-  public double getSpeakerTargetYaw(){
-    for(int targetID : Constants.APRIL_TAG_IDS.SPEAKER_CENTER_TAGS){
+  public double getSpeakerTargetYaw() {
+    for (int targetID : Constants.APRIL_TAG_IDS.SPEAKER_CENTER_TAGS) {
       var yaw = super.getTargetYaw(targetID);
-      if(yaw != Double.NaN){
+      if (yaw != Double.NaN) {
         return yaw;
       }
     }
@@ -42,12 +47,13 @@ public class ShooterPhotonCamera extends PhotonVisionCamera {
   }
 
   /**
-   * @return The pitch of any seen speaker april tag. WIll return NaN if it doesnt see one or doesnt have one cached.
+   * @return The pitch of any seen speaker april tag. WIll return NaN if it doesnt see one or doesnt
+   *     have one cached.
    */
-  public double getSpeakerTargetPitch(){
-    for(int targetID : Constants.APRIL_TAG_IDS.SPEAKER_CENTER_TAGS){
+  public double getSpeakerTargetPitch() {
+    for (int targetID : Constants.APRIL_TAG_IDS.SPEAKER_CENTER_TAGS) {
       var yaw = super.getTargetPitch(targetID);
-      if(yaw != Double.NaN){
+      if (yaw != Double.NaN) {
         return yaw;
       }
     }
@@ -55,12 +61,13 @@ public class ShooterPhotonCamera extends PhotonVisionCamera {
   }
 
   /**
-   * @return The yaw of any seen amp april tag. WIll return NaN if it doesnt see one or doesnt have one cached.
+   * @return The yaw of any seen amp april tag. WIll return NaN if it doesnt see one or doesnt have
+   *     one cached.
    */
-  public double getAmpTargetYaw(){
-    for(int targetID : Constants.APRIL_TAG_IDS.AMP_TAGS){
+  public double getAmpTargetYaw() {
+    for (int targetID : Constants.APRIL_TAG_IDS.AMP_TAGS) {
       var yaw = super.getTargetYaw(targetID);
-      if(yaw != Double.NaN){
+      if (yaw != Double.NaN) {
         return yaw;
       }
     }
@@ -68,12 +75,13 @@ public class ShooterPhotonCamera extends PhotonVisionCamera {
   }
 
   /**
-   * @return The pitch of any seen speaker april tag. WIll return NaN if it doesnt see one or doesnt have one cached.
+   * @return The pitch of any seen speaker april tag. WIll return NaN if it doesnt see one or doesnt
+   *     have one cached.
    */
-  public double getAmpTargetPitch(){
-    for(int targetID : Constants.APRIL_TAG_IDS.AMP_TAGS){
+  public double getAmpTargetPitch() {
+    for (int targetID : Constants.APRIL_TAG_IDS.AMP_TAGS) {
       var yaw = super.getTargetPitch(targetID);
-      if(yaw != Double.NaN){
+      if (yaw != Double.NaN) {
         return yaw;
       }
     }
