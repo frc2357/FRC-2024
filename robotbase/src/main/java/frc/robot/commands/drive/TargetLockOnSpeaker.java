@@ -5,7 +5,9 @@ import frc.robot.Constants.SWERVE;
 import frc.robot.Robot;
 
 public class TargetLockOnSpeaker extends Command {
+  public int m_startingPipeline;
   public TargetLockOnSpeaker() {
+    m_startingPipeline = Robot.intakeCam.getPipeline();
     addRequirements(Robot.swerve, Robot.shooterCam);
   }
 
@@ -28,5 +30,6 @@ public class TargetLockOnSpeaker extends Command {
   @Override
   public void end(boolean interupted) {
     Robot.swerve.stopMotors();
+    Robot.intakeCam.setPipeline(m_startingPipeline);
   }
 }
