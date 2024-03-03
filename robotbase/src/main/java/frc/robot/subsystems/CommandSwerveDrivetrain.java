@@ -35,15 +35,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   private final SwerveRequest.RobotCentric robotRelative =
       new SwerveRequest.RobotCentric().withDriveRequestType(DriveRequestType.Velocity);
 
-  // Uncomment below for CUBE_BOT
-  // private final SwerveRequest.FieldCentric fieldRelative =
-  // new
-  // SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.Velocity);
-
-  // private final SwerveRequest.RobotCentric robotRelative =
-  // new
-  // SwerveRequest.RobotCentric().withDriveRequestType(DriveRequestType.Velocity);
-
   public CommandSwerveDrivetrain(
       SwerveDrivetrainConstants driveTrainConstants,
       double OdometryUpdateFrequency,
@@ -87,12 +78,9 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     applyRequest(
         () ->
             fieldRelative
-                .withVelocityX(
-                    velocityXSpeedMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
-                .withVelocityY(
-                    velocityYSpeedMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
-                .withRotationalRate(
-                    rotationOutput * Constants.SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND));
+                .withVelocityX(velocityXSpeedMetersPerSecond)
+                .withVelocityY(velocityYSpeedMetersPerSecond)
+                .withRotationalRate(rotationOutput));
   }
 
   public void driveRobotRelative(
@@ -102,13 +90,9 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     applyRequest(
         () ->
             robotRelative
-                .withVelocityX(
-                    velocityXMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
-                .withVelocityY(
-                    velocityYMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
-                .withRotationalRate(
-                    rotationRateRadiansPerSecond
-                        * Constants.SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND));
+                .withVelocityX(velocityXMetersPerSecond)
+                .withVelocityY(velocityYMetersPerSecond)
+                .withRotationalRate(rotationRateRadiansPerSecond));
   }
 
   public void driveFieldRelative(
@@ -118,13 +102,9 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     applyRequest(
         () ->
             fieldRelative
-                .withVelocityX(
-                    velocityXMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
-                .withVelocityY(
-                    velocityYMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
-                .withRotationalRate(
-                    rotationRateRadiansPerSecond
-                        * Constants.SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND));
+                .withVelocityX(velocityXMetersPerSecond)
+                .withVelocityY(velocityYMetersPerSecond)
+                .withRotationalRate(rotationRateRadiansPerSecond));
   }
 
   /**

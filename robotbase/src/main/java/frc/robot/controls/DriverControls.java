@@ -27,6 +27,7 @@ public class DriverControls implements RumbleInterface {
   private double m_deadband;
 
   private JoystickButton m_aButton;
+  private JoystickButton m_bButton;
   private JoystickButton m_xButton;
   private JoystickButton m_yButton;
 
@@ -46,6 +47,7 @@ public class DriverControls implements RumbleInterface {
     m_deadband = deadband;
 
     m_aButton = new JoystickButton(m_controller, Button.kA.value);
+    m_bButton = new JoystickButton(m_controller, Button.kB.value);
     m_xButton = new JoystickButton(m_controller, Button.kX.value);
     m_yButton = new JoystickButton(m_controller, Button.kY.value);
 
