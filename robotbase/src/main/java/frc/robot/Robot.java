@@ -107,8 +107,9 @@ public class Robot extends TimedRobot {
 
     m_robotContainer = new RobotContainer();
 
+    System.out.println(Robot.swerve.configNeutralMode(NeutralModeValue.Brake));
     m_setCoastOnDisable = new SetCoastOnDisable();
-    m_setCoastOnDisable.schedule();
+    // m_setCoastOnDisable.schedule();
   }
 
   /**
@@ -138,7 +139,7 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    m_setCoastOnDisable.schedule();
+    // m_setCoastOnDisable.schedule();
   }
 
   @Override
@@ -147,7 +148,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    m_setCoastOnDisable.cancel();
+    // m_setCoastOnDisable.cancel();
     Robot.swerve.configNeutralMode(NeutralModeValue.Brake);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
@@ -167,8 +168,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    m_setCoastOnDisable.cancel();
-    Robot.swerve.configNeutralMode(NeutralModeValue.Brake);
+    //m_setCoastOnDisable.cancel();
+    System.out.println(Robot.swerve.configNeutralMode(NeutralModeValue.Brake));
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }

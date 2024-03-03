@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.auto.paths.Close3Speaker;
 import frc.robot.commands.drive.DriveChoreoPath;
+import frc.robot.commands.drive.VelDrive;
 
 public class AutoCommandChooser {
   private Command[] m_autoCommands;
@@ -15,9 +16,10 @@ public class AutoCommandChooser {
 
     m_autoCommands =
         new Command[] {
-          new DriveChoreoPath("Line"),
+          new VelDrive()
+          //new DriveChoreoPath("Line"),
           // new DriveChoreoPath("Close3Speaker"),
-          new Close3Speaker(),
+          //new Close3Speaker(),
           // new DriveChoreoPath("RotationTest"),
           // new DriveChoreoPath("BoxTest"),
           // new DriveChoreoPath("TriangleTest"),
