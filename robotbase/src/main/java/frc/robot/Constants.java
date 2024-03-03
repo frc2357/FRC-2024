@@ -192,7 +192,7 @@ public final class Constants {
     public static final double AXIS_MAX_SPEED = 0.8;
 
     public static final double FEED_TO_SHOOTER_TIMEOUT = 0;
-    public static final double FLOOR_INTAKE_REVERSE_TIMEOUT = 0.2;
+    public static final double FLOOR_INTAKE_REVERSE_TIMEOUT = 0.1;
 
     public static final double PICKUP_SPEED_PERCENT_OUTPUT = .75;
     public static final double SLOW_PICKUP_SPEED_PERCENT_OUTPUT = .1;
