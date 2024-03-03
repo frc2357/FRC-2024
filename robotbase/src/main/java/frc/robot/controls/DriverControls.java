@@ -79,7 +79,7 @@ public class DriverControls implements RumbleInterface {
     m_backButton.onTrue(new InstantCommand(() -> Robot.swerve.setYaw(0)));
     m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.setYaw(180)));
 
-    m_leftTrigger.onTrue(new IntakeNoteFromFloor());
+    m_leftTrigger.toggleOnTrue(new IntakeNoteFromFloor());
 
     m_rightBumper.onTrue(
         new ConditionalCommand(
