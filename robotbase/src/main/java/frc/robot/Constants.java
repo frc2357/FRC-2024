@@ -13,6 +13,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.util.Color;
 import java.util.function.BooleanSupplier;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
@@ -328,6 +329,13 @@ public final class Constants {
     public static final double AMP_PREPOSE_ROTATIONS = 3.75; // TODO: TUNE
     public static final double AMP_SCORE_ROTATIONS = 6;
     public static final double TRAP_SCORE_ROTATIONS = 0; // TODO: TUNE
+  }
+
+  public static final class LEDS {
+    public static final int STRIP_LEFT_LENGTH = 30;
+    public static final int STRIP_RIGHT_LENGTH = 30;
+    public static final boolean STRIPS_INVERTED = true;
+    public static final Color orange = new Color(150, 100, 0);
   }
 
   public static final class SCORING {

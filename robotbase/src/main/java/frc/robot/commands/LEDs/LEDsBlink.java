@@ -9,12 +9,12 @@ public class LEDsBlink extends Command {
 
   Timer timer = new Timer();
   Color m_color;
-  double seconds;
+  double m_seconds;
 
-  public LEDsBlink(Color color, double hz) {
+  public LEDsBlink(Color color, double seconds) {
     addRequirements(Robot.leds);
     m_color = color;
-    seconds = 1 / hz;
+    m_seconds = seconds;
   }
 
   @Override
@@ -25,8 +25,8 @@ public class LEDsBlink extends Command {
 
   @Override
   public void execute() {
-    if (timer.hasElapsed(seconds)) {
-      Robot.leds.toggle(m_color);
+    if (timer.hasElapsed(m_seconds)) {
+      Robot.leds.toggleColor(m_color);
       timer.restart();
     }
   }
