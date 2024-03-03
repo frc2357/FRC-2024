@@ -69,9 +69,10 @@ public class DriverControls implements RumbleInterface {
   }
 
   public void mapControls() {
-    AxisInterface righStickYAxis = () -> {
-      return getRightStickYAxis();
-    };
+    AxisInterface righStickYAxis =
+        () -> {
+          return getRightStickYAxis();
+        };
 
     m_backButton.onTrue(new InstantCommand(() -> Robot.swerve.setYaw(0)));
     m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.setYaw(180)));
@@ -88,7 +89,8 @@ public class DriverControls implements RumbleInterface {
     // m_leftBumper.onTrue(new InstantCommand(() ->
     // System.out.println(Robot.climber.getStageLineupRotationSetpoint())));
 
-    m_rightTriggerPrime.whileTrue(new ParallelCommandGroup(new VisionTargeting(), new TargetLockOnSpeaker()));
+    m_rightTriggerPrime.whileTrue(
+        new ParallelCommandGroup(new VisionTargeting(), new TargetLockOnSpeaker()));
     m_rightTriggerShoot.whileTrue(new IntakeFeedToShooter());
   }
 
