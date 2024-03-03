@@ -108,7 +108,6 @@ public class Robot extends TimedRobot {
 
     m_robotContainer = new RobotContainer();
 
-    System.out.println(Robot.swerve.configNeutralMode(NeutralModeValue.Brake));
     m_setCoastOnDisable = new SetCoastOnDisable();
     m_setCoastOnDisable.schedule();
   }
