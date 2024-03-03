@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
@@ -110,6 +111,8 @@ public class Robot extends TimedRobot {
     System.out.println(Robot.swerve.configNeutralMode(NeutralModeValue.Brake));
     m_setCoastOnDisable = new SetCoastOnDisable();
     // m_setCoastOnDisable.schedule();
+
+    SignalLogger.start();
   }
 
   /**
@@ -139,6 +142,7 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
+    SignalLogger.stop();
     // m_setCoastOnDisable.schedule();
   }
 

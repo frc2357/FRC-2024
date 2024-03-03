@@ -28,7 +28,7 @@ public class DriverControls implements RumbleInterface {
   private double m_deadband;
 
   private JoystickButton m_aButton;
-    private JoystickButton m_bButton;
+  private JoystickButton m_bButton;
   private JoystickButton m_xButton;
   private JoystickButton m_yButton;
 

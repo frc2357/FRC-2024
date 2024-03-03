@@ -1,9 +1,8 @@
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.Volts;
 import static edu.wpi.first.units.Units.Seconds;
+import static edu.wpi.first.units.Units.Volts;
 
-import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
@@ -48,12 +47,13 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   private SwerveVoltageRequest driveVoltageRequest = new SwerveVoltageRequest(true);
 
   // Spectrum's config
-  private SysIdRoutine.Config sysidConfig = new SysIdRoutine.Config(
-      Volts.of(1).per(Seconds.of(0.5)), // Default ramp rate is acceptable
-      Volts.of(10), // Reduce dynamic voltage to 4 to prevent motor brownout
-      Seconds.of(5), (state) -> SignalLogger.writeString("state", state.toString()) // Default timeout is acceptable
-  );
-
+  private SysIdRoutine.Config sysidConfig =
+      new SysIdRoutine.Config(
+          Volts.of(1).per(Seconds.of(0.5)), // Default ramp rate is acceptable
+          Volts.of(10), // Reduce dynamic voltage to 4 to prevent motor brownout
+          Seconds.of(5),
+          ModifiedSignalLogger.logState() // Default timeout is acceptable
+          );
 
   private SysIdRoutine m_driveSysIdRoutine =
       new SysIdRoutine(
