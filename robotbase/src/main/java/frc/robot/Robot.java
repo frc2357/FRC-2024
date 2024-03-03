@@ -111,7 +111,7 @@ public class Robot extends TimedRobot {
     System.out.println(Robot.swerve.configNeutralMode(NeutralModeValue.Brake));
     m_setCoastOnDisable = new SetCoastOnDisable();
     m_setCoastOnDisable.schedule();
-}
+  }
 
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics

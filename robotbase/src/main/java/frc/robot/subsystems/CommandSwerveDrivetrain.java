@@ -35,7 +35,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   private final SwerveRequest.RobotCentric robotRelative =
       new SwerveRequest.RobotCentric().withDriveRequestType(DriveRequestType.Velocity);
 
-      public CommandSwerveDrivetrain(
+  public CommandSwerveDrivetrain(
       SwerveDrivetrainConstants driveTrainConstants,
       double OdometryUpdateFrequency,
       SwerveModuleConstants... modules) {
