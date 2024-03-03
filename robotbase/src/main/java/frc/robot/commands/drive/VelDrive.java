@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 
 public class VelDrive extends Command {
-  
+
   public VelDrive() {
     addRequirements(Robot.swerve);
   }

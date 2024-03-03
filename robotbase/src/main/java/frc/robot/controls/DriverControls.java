@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Robot;
 import frc.robot.commands.drive.TargetLockOnSpeaker;
 import frc.robot.commands.intake.IntakeFeedToShooter;
@@ -27,6 +28,7 @@ public class DriverControls implements RumbleInterface {
   private double m_deadband;
 
   private JoystickButton m_aButton;
+    private JoystickButton m_bButton;
   private JoystickButton m_xButton;
   private JoystickButton m_yButton;
 
@@ -46,6 +48,7 @@ public class DriverControls implements RumbleInterface {
     m_deadband = deadband;
 
     m_aButton = new JoystickButton(m_controller, Button.kA.value);
+    m_bButton = new JoystickButton(m_controller, Button.kB.value);
     m_xButton = new JoystickButton(m_controller, Button.kX.value);
     m_yButton = new JoystickButton(m_controller, Button.kY.value);
 
@@ -92,6 +95,11 @@ public class DriverControls implements RumbleInterface {
     m_rightTriggerPrime.whileTrue(
         new ParallelCommandGroup(new VisionTargeting(), new TargetLockOnSpeaker()));
     m_rightTriggerShoot.whileTrue(new IntakeFeedToShooter());
+
+    m_aButton.whileTrue(Robot.swerve.runDriveQuasiTest(Direction.kForward));
+    m_bButton.whileTrue(Robot.swerve.runDriveQuasiTest(Direction.kReverse));
+    m_xButton.whileTrue(Robot.swerve.runDriveDynamTest(Direction.kForward));
+    m_yButton.whileTrue(Robot.swerve.runDriveDynamTest(Direction.kReverse));
   }
 
   public double getX() {

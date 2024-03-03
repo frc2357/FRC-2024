@@ -14,7 +14,7 @@ public class DefaultDrive extends Command {
     double x = Robot.driverControls.getX();
     double y = Robot.driverControls.getY();
     double rotation = Robot.driverControls.getRotation();
-    
+
     if (x == 0 && y == 0 && rotation == 0) {
       Robot.swerve.stopMotors();
     } else {
@@ -23,7 +23,7 @@ public class DefaultDrive extends Command {
           x * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND,
           rotation * Constants.SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND);
 
-          //Robot.swerve.driveFieldRelative(0, 0, 0);
+      // Robot.swerve.driveFieldRelative(0, 0, 0);
     }
   }
 

@@ -168,7 +168,7 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    //m_setCoastOnDisable.cancel();
+    // m_setCoastOnDisable.cancel();
     System.out.println(Robot.swerve.configNeutralMode(NeutralModeValue.Brake));
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
