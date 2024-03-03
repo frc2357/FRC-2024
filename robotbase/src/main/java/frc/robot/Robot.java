@@ -25,6 +25,7 @@ import frc.robot.subsystems.EndAffector;
 import frc.robot.subsystems.ExtensionArm;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakePhotonCamera;
+import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShooterPhotonCamera;
@@ -48,6 +49,7 @@ public class Robot extends TimedRobot {
   public static Pivot pivot;
   public static Intake intake;
   public static Climber climber;
+  public static LEDs leds;
 
   public static DriverControls driverControls;
   public static CodriverControls codriverControls;
@@ -104,6 +106,7 @@ public class Robot extends TimedRobot {
     climber = new Climber();
     endAffector = new EndAffector();
     extensionArm = new ExtensionArm();
+    leds = new LEDs();
 
     driverControls =
         new DriverControls(
