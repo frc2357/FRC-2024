@@ -23,7 +23,6 @@ public class PhotonVisionCamera extends SubsystemBase {
     public double pitch = Double.NaN;
     public long timestamp = 0;
   }
-  ;
 
   // all of these are protected so we can use them in the extended classes
   // which are only extended so we can control which pipelines we are using.
@@ -50,7 +49,7 @@ public class PhotonVisionCamera extends SubsystemBase {
 
     // 0 is for note detection, 1-16 correspond to apriltag fiducial IDs
     m_targetInfo = new TargetInfo[17];
-    for (int i = 0;i < m_targetInfo.length;i++) {
+    for (int i = 0; i < m_targetInfo.length; i++) {
       m_targetInfo[i] = new TargetInfo();
     }
   }
@@ -132,7 +131,11 @@ public class PhotonVisionCamera extends SubsystemBase {
     long now = System.currentTimeMillis();
     long then = now - timeoutMs;
 
-    return m_targetInfo[fiducialId].timestamp > then;
+    TargetInfo target = m_targetInfo[fiducialId];
+
+    return target.timestamp > then
+        || Math.abs(target.yaw) > PHOTON_VISION.MAX_ANGLE
+        || Math.abs(target.pitch) > PHOTON_VISION.MAX_ANGLE;
   }
 
   /**

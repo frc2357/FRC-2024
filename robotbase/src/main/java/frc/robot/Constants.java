@@ -102,7 +102,8 @@ public final class Constants {
 
     public static final double TARGET_LOCK_FEED_FORWARD = 0.0;
     public static final double TARGET_LOCK_TOLERANCE = 1.5;
-    public static final double TARGET_LOCK_YAW_SETPOINT = 2; // PhotonVision is consistently 2 degrees to the right of our target
+    public static final double TARGET_LOCK_YAW_SETPOINT =
+        2; // PhotonVision is consistently 2 degrees to the right of our target
 
     // Translate to Apriltag
     public static final PIDController APRILTAG_ROTATION_PID_CONTROLLER =
@@ -328,6 +329,8 @@ public final class Constants {
     public static final AprilTagFieldLayout APRIL_TAG_FIELD_LAYOUT =
         AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
     public static final PoseStrategy POSE_STRATEGY = PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
+
+    public static final double MAX_ANGLE = 45;
 
     public static final String LOST_CONNECTION_ERROR_MESSAGE =
         "----------\nPHOTON VISION HAS LOST CONNECTION!\nVISION RESULTS WILL NOT BE UPDATED!\n----------";

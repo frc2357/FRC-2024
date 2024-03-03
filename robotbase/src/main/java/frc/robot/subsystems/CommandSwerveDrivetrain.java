@@ -14,9 +14,8 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.Constants.SWERVE;
-
+import frc.robot.Robot;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -75,7 +74,9 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     kp *= Math.max(1, vy * 1);
     Constants.SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.setP(kp);
 
-    double rotation = Constants.SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.calculate(tx, SWERVE.TARGET_LOCK_YAW_SETPOINT);
+    double rotation =
+        Constants.SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.calculate(
+            tx, SWERVE.TARGET_LOCK_YAW_SETPOINT);
     double rotationOutput =
         !hasTarget
             ? Robot.driverControls.getRotation()
