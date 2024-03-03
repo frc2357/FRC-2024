@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 
+// For helping with tuning velocity drive PID on swerve drive
 public class VelDrive extends Command {
 
   public VelDrive() {

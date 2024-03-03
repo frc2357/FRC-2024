@@ -1,8 +1,5 @@
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.Seconds;
-import static edu.wpi.first.units.Units.Volts;
-
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
@@ -15,16 +12,10 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.units.Measure;
-import edu.wpi.first.units.Voltage;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Constants.SWERVE;
 import frc.robot.Robot;
-import frc.robot.util.ModifiedSignalLogger;
-import frc.robot.util.SwerveVoltageRequest;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -44,27 +35,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   private final SwerveRequest.RobotCentric robotRelative =
       new SwerveRequest.RobotCentric().withDriveRequestType(DriveRequestType.Velocity);
 
-  private SwerveVoltageRequest driveVoltageRequest = new SwerveVoltageRequest(true);
-
-  // Spectrum's config
-  private SysIdRoutine.Config sysidConfig =
-      new SysIdRoutine.Config(
-          Volts.of(1).per(Seconds.of(0.5)), // Default ramp rate is acceptable
-          Volts.of(10), // Reduce dynamic voltage to 4 to prevent motor brownout
-          Seconds.of(5),
-          ModifiedSignalLogger.logState() // Default timeout is acceptable
-          );
-
-  private SysIdRoutine m_driveSysIdRoutine =
-      new SysIdRoutine(
-          new SysIdRoutine.Config(null, null, null, ModifiedSignalLogger.logState()),
-          new SysIdRoutine.Mechanism(
-              (Measure<Voltage> volts) ->
-                  setControl(driveVoltageRequest.withVoltage(volts.in(Volts))),
-              null,
-              this));
-
-  public CommandSwerveDrivetrain(
+      public CommandSwerveDrivetrain(
       SwerveDrivetrainConstants driveTrainConstants,
       double OdometryUpdateFrequency,
       SwerveModuleConstants... modules) {
@@ -215,14 +186,5 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   public ChassisSpeeds getChassisSpeeds() {
     ChassisSpeeds chassisSpeeds = getKinematics().toChassisSpeeds(getModuleStates());
     return chassisSpeeds;
-  }
-
-  // SysID Commands
-  public Command runDriveQuasiTest(SysIdRoutine.Direction direction) {
-    return m_driveSysIdRoutine.quasistatic(direction);
-  }
-
-  public Command runDriveDynamTest(SysIdRoutine.Direction direction) {
-    return m_driveSysIdRoutine.dynamic(direction);
   }
 }

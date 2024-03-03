@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.drive.DriveChoreoPath;
 import frc.robot.commands.drive.VelDrive;
 
 public class AutoCommandChooser {
@@ -13,8 +14,9 @@ public class AutoCommandChooser {
   public AutoCommandChooser() {
 
     m_autoCommands =
-        new Command[] {new VelDrive()
-          // new DriveChoreoPath("Line"),
+        new Command[] {
+          //new VelDrive(),
+          new DriveChoreoPath("Line"),
           // new DriveChoreoPath("Close3Speaker"),
           // new Close3Speaker(),
           // new DriveChoreoPath("RotationTest"),

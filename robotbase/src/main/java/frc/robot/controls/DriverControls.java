@@ -95,11 +95,6 @@ public class DriverControls implements RumbleInterface {
     m_rightTriggerPrime.whileTrue(
         new ParallelCommandGroup(new VisionTargeting(), new TargetLockOnSpeaker()));
     m_rightTriggerShoot.whileTrue(new IntakeFeedToShooter());
-
-    m_aButton.whileTrue(Robot.swerve.runDriveQuasiTest(Direction.kForward));
-    m_bButton.whileTrue(Robot.swerve.runDriveQuasiTest(Direction.kReverse));
-    m_xButton.whileTrue(Robot.swerve.runDriveDynamTest(Direction.kForward));
-    m_yButton.whileTrue(Robot.swerve.runDriveDynamTest(Direction.kReverse));
   }
 
   public double getX() {
