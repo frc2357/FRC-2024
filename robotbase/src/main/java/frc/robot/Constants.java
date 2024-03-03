@@ -101,7 +101,8 @@ public final class Constants {
             TARGET_LOCK_ROTATION_KP, TARGET_LOCK_ROTATION_KI, TARGET_LOCK_ROTATION_KD);
 
     public static final double TARGET_LOCK_FEED_FORWARD = 0.0;
-    public static final double TARGET_LOCK_TOLERANCE = 1;
+    public static final double TARGET_LOCK_TOLERANCE = 1.5;
+    public static final double TARGET_LOCK_YAW_SETPOINT = 2; // PhotonVision is consistently 2 degrees to the right of our target
 
     // Translate to Apriltag
     public static final PIDController APRILTAG_ROTATION_PID_CONTROLLER =
@@ -214,7 +215,7 @@ public final class Constants {
     public static final double MAX_PIVOT_ANGLE = 70; // TODO TUNE
     public static final double MIN_PIVOT_ANGLE = 17.5;
 
-    public static final double END_AFFECTOR_PRELOAD_ANGLE = 60;
+    public static final double END_AFFECTOR_PRELOAD_ANGLE = 68;
     public static final double INTAKE_FROM_SOURCE_ANGLE = 55;
     public static final double DEFAULT_PIVOT_ANGLE = 45; // angle of intake
 

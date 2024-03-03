@@ -15,6 +15,8 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.Constants.SWERVE;
+
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -73,11 +75,14 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     kp *= Math.max(1, vy * 1);
     Constants.SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.setP(kp);
 
-    double rotation = Constants.SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.calculate(tx, 0);
+    double rotation = Constants.SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.calculate(tx, SWERVE.TARGET_LOCK_YAW_SETPOINT);
     double rotationOutput =
         !hasTarget
             ? Robot.driverControls.getRotation()
             : rotation + Math.copySign(Constants.SWERVE.TARGET_LOCK_FEED_FORWARD, rotation);
+    // System.out.println("Rotation: " + rotation);
+    // System.out.println("Rotation output: " + rotationOutput);
+    // System.out.println("Yaw: " + tx);
     applyRequest(
         () ->
             fieldRelative

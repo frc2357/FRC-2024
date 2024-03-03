@@ -50,6 +50,9 @@ public class PhotonVisionCamera extends SubsystemBase {
 
     // 0 is for note detection, 1-16 correspond to apriltag fiducial IDs
     m_targetInfo = new TargetInfo[17];
+    for (int i = 0;i < m_targetInfo.length;i++) {
+      m_targetInfo[i] = new TargetInfo();
+    }
   }
 
   public void configure() {
@@ -77,6 +80,7 @@ public class PhotonVisionCamera extends SubsystemBase {
         m_bestTargetFiducialId = m_result.getBestTarget().getFiducialId();
         for (PhotonTrackedTarget targetSeen : targetList) {
           TargetInfo targetInfo = m_targetInfo[targetSeen.getFiducialId()];
+          // System.out.println(targetSeen.getFiducialId());
           targetInfo.yaw = targetSeen.getYaw();
           targetInfo.pitch = targetSeen.getPitch();
           targetInfo.timestamp = now;
@@ -190,7 +194,7 @@ public class PhotonVisionCamera extends SubsystemBase {
   public double getTargetYaw(int[] fiducialIds, long timeoutMs) {
     for (int id : fiducialIds) {
       double yaw = getTargetYaw(id, timeoutMs);
-      if (yaw != Double.NaN) {
+      if (!Double.isNaN(yaw)) {
         return yaw;
       }
     }
@@ -216,9 +220,9 @@ public class PhotonVisionCamera extends SubsystemBase {
    */
   public double getTargetPitch(int[] fiducialIds, long timeoutMs) {
     for (int id : fiducialIds) {
-      double yaw = getTargetPitch(id, timeoutMs);
-      if (yaw != Double.NaN) {
-        return yaw;
+      double pitch = getTargetPitch(id, timeoutMs);
+      if (!Double.isNaN(pitch)) {
+        return pitch;
       }
     }
     return Double.NaN;

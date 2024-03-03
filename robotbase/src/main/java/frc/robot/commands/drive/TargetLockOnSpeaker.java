@@ -20,8 +20,8 @@ public class TargetLockOnSpeaker extends Command {
     Robot.swerve.driveTargetLock(
         Robot.driverControls.getY(),
         Robot.driverControls.getX(),
-        targetYaw != Double.NaN ? targetYaw : 0,
-        targetYaw != Double.NaN);
+        !Double.isNaN(targetYaw) ? targetYaw : 0,
+        !Double.isNaN(targetYaw));
   }
 
   @Override
