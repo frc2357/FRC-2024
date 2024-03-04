@@ -13,7 +13,7 @@ public class LEDs extends SubsystemBase {
   boolean m_LEDsOn;
 
   public LEDs() {
-    m_LED = new AddressableLED(0);
+    m_LED = new AddressableLED(LEDS.PORT_NUMBER);
     m_LEDBuffer = new AddressableLEDBuffer(LEDS.STRIP_LENGTH);
 
     m_LED.setLength(m_LEDBuffer.getLength());
