@@ -25,7 +25,8 @@ public class DriveUtility {
       double pitchOffset,
       double closePitchThreshold,
       double yawTolerance) {
-    yawTolerance = calculateYawToleranceForApriltag(pitch, pitchOffset, closePitchThreshold, yawTolerance);
+    yawTolerance =
+        calculateYawToleranceForApriltag(pitch, pitchOffset, closePitchThreshold, yawTolerance);
 
     // Reduce yaw based on how far off our rotation is so the x controller doesn't
     // over compensate
@@ -47,17 +48,20 @@ public class DriveUtility {
   }
 
   public static double calculateRotationError(double rotationError, double rotationSetpoint) {
-    if (Utility.isWithinTolerance(rotationError, rotationSetpoint, SWERVE.APRILTAG_ROTATION_TOLERANCE_RADIANS)) {
+    if (Utility.isWithinTolerance(
+        rotationError, rotationSetpoint, SWERVE.APRILTAG_ROTATION_TOLERANCE_RADIANS)) {
       return rotationSetpoint;
     }
     return rotationError;
   }
 
   public static double getAmpRotationGoal() {
-    boolean redAmpValid = Robot.shooterCam.isValidTarget(
-        APRIL_TAG_IDS.RED_AMP, SHOOTER_PHOTON_CAMERA.AMP_TARGET_TIMEOUT_MS);
-    boolean blueAmpValid = Robot.shooterCam.isValidTarget(
-        APRIL_TAG_IDS.BLUE_AMP, SHOOTER_PHOTON_CAMERA.AMP_TARGET_TIMEOUT_MS);
+    boolean redAmpValid =
+        Robot.shooterCam.isValidTarget(
+            APRIL_TAG_IDS.RED_AMP, SHOOTER_PHOTON_CAMERA.AMP_TARGET_TIMEOUT_MS);
+    boolean blueAmpValid =
+        Robot.shooterCam.isValidTarget(
+            APRIL_TAG_IDS.BLUE_AMP, SHOOTER_PHOTON_CAMERA.AMP_TARGET_TIMEOUT_MS);
 
     if (redAmpValid && blueAmpValid) {
       DriverStation.reportError("How in the world do you see both amps at the same time", false);

@@ -37,14 +37,11 @@ public class PhotonVisionCamera extends SubsystemBase {
   /**
    * Sets the camera stream.
    *
-   * @param cameraName             Name of the cameras Photon Vision network
-   *                               table. MUST match the net tables
-   *                               name, or it wont work.
-   * @param robotToCameraTransform The Transform3d of the robots coordinate center
-   *                               to the camera.
-   * @param headOnTolerance        The tolerance for declaring whether or not the
-   *                               camera is facing a target
-   *                               head on.
+   * @param cameraName Name of the cameras Photon Vision network table. MUST match the net tables
+   *     name, or it wont work.
+   * @param robotToCameraTransform The Transform3d of the robots coordinate center to the camera.
+   * @param headOnTolerance The tolerance for declaring whether or not the camera is facing a target
+   *     head on.
    */
   public PhotonVisionCamera(String cameraName, Transform3d robotToCameraTransform) {
     m_camera = new PhotonCamera(cameraName);
@@ -59,19 +56,18 @@ public class PhotonVisionCamera extends SubsystemBase {
 
   public void configure() {
     setDriverModeActive();
-    m_poseEstimator = new PhotonPoseEstimator(
-        PHOTON_VISION.APRIL_TAG_FIELD_LAYOUT,
-        PHOTON_VISION.POSE_STRATEGY,
-        m_camera,
-        ROBOT_TO_CAMERA_TRANSFORM);
+    m_poseEstimator =
+        new PhotonPoseEstimator(
+            PHOTON_VISION.APRIL_TAG_FIELD_LAYOUT,
+            PHOTON_VISION.POSE_STRATEGY,
+            m_camera,
+            ROBOT_TO_CAMERA_TRANSFORM);
   }
 
   /**
    * Fetches the latest pipeline result.
    *
-   * <p>
-   * YOU SHOULD NEVER CALL THIS! This is for the Robot periodic ONLY. NEVER call
-   * this method
+   * <p>YOU SHOULD NEVER CALL THIS! This is for the Robot periodic ONLY. NEVER call this method
    * outside of it.
    */
   public void updateResult() {
@@ -107,31 +103,27 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * @return The current pipelines latency in milliseconds. Returns NaN if the
-   *         camera is not
-   *         connected.
+   * @return The current pipelines latency in milliseconds. Returns NaN if the camera is not
+   *     connected.
    */
   public double getLatencyMillis() {
     return isConnected() ? m_result.getLatencyMillis() : Double.NaN;
   }
 
   /**
-   * @return The timestamp of the latest pipeline result in seconds. Returns
-   *         Double.NaN if the
-   *         camera is not connected.
+   * @return The timestamp of the latest pipeline result in seconds. Returns Double.NaN if the
+   *     camera is not connected.
    */
   public double getTimestampSeconds() {
     return isConnected() ? m_result.getTimestampSeconds() : Double.NaN;
   }
 
   /**
-   * Compares the current system time to the last cached timestamp and sees if it
-   * is older than is
+   * Compares the current system time to the last cached timestamp and sees if it is older than is
    * acceptable.
    *
    * @param fiducialId Fiducial ID of the desired target to valid the data of.
-   * @param timeoutMs  The amount of milliseconds past which target info is deemed
-   *                   expired
+   * @param timeoutMs The amount of milliseconds past which target info is deemed expired
    * @return If the camera has seen the target within the timeout given
    */
   public boolean isValidTarget(int fiducialId, long timeoutMs) {
@@ -146,9 +138,8 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * @return Whether or not the driver mode on the camera is active. Returns null
-   *         if the camera is
-   *         not connected.
+   * @return Whether or not the driver mode on the camera is active. Returns null if the camera is
+   *     not connected.
    */
   public boolean isDriverModeActive() {
     return isConnected() ? m_camera.getDriverMode() : null;
@@ -187,10 +178,8 @@ public class PhotonVisionCamera extends SubsystemBase {
 
   /**
    * @param fiducialId The fiducial ID of the target to get the yaw of.
-   * @param timeoutMs  The amount of milliseconds past which target info is deemed
-   *                   expired
-   * @return Returns the desired targets yaw, will be NaN if the cached data was
-   *         invalid.
+   * @param timeoutMs The amount of milliseconds past which target info is deemed expired
+   * @return Returns the desired targets yaw, will be NaN if the cached data was invalid.
    */
   public double getTargetYaw(int fiducialId, long timeoutMs) {
     if (isValidTarget(fiducialId, timeoutMs)) {
@@ -201,10 +190,8 @@ public class PhotonVisionCamera extends SubsystemBase {
 
   /**
    * @param fiducialIds The list of fiducial IDs to check.
-   * @param timeoutMs   The amount of milliseconds past which target info is
-   *                    deemed expired
-   * @return Returns the yaw of the first id in the list, or NaN if none are
-   *         valid.
+   * @param timeoutMs The amount of milliseconds past which target info is deemed expired
+   * @return Returns the yaw of the first id in the list, or NaN if none are valid.
    */
   public double getTargetYaw(int[] fiducialIds, long timeoutMs) {
     for (int id : fiducialIds) {
@@ -217,11 +204,9 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * @param id        The ID of the target to get the pitch of.
-   * @param timeoutMs The amount of milliseconds past which target info is deemed
-   *                  expired
-   * @return Returns the desired targets pitch, will be NaN if the cached data was
-   *         invalid.
+   * @param id The ID of the target to get the pitch of.
+   * @param timeoutMs The amount of milliseconds past which target info is deemed expired
+   * @return Returns the desired targets pitch, will be NaN if the cached data was invalid.
    */
   public double getTargetPitch(int fiducialId, long timeoutMs) {
     if (isValidTarget(fiducialId, timeoutMs)) {
@@ -232,10 +217,8 @@ public class PhotonVisionCamera extends SubsystemBase {
 
   /**
    * @param fiducialIds The list of fiducial IDs to check.
-   * @param timeoutMs   The amount of milliseconds past which target info is
-   *                    deemed expired
-   * @return Returns the pitch of the first id in the list, or NaN if none are
-   *         valid.
+   * @param timeoutMs The amount of milliseconds past which target info is deemed expired
+   * @return Returns the pitch of the first id in the list, or NaN if none are valid.
    */
   public double getTargetPitch(int[] fiducialIds, long timeoutMs) {
     for (int id : fiducialIds) {
@@ -248,15 +231,12 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * Gets an estimated pose from the subsystems pose estimator. Should only be
-   * used if the camera
-   * does not see more than 1 april tag, if it does, use getPNPResult instead, as
-   * it is more
+   * Gets an estimated pose from the subsystems pose estimator. Should only be used if the camera
+   * does not see more than 1 april tag, if it does, use getPNPResult instead, as it is more
    * accurate.
    *
-   * @return The robots estimated pose, if it has any april tag targets. Returns
-   *         null if there are
-   *         no targets.
+   * @return The robots estimated pose, if it has any april tag targets. Returns null if there are
+   *     no targets.
    */
   public EstimatedRobotPose getEstimatedPose() {
     Optional<EstimatedRobotPose> estimatedPose = m_poseEstimator.update(m_result);
@@ -264,8 +244,7 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * Gets the information of the multiple tag pose estimate if it exists. If the
-   * camera does not see
+   * Gets the information of the multiple tag pose estimate if it exists. If the camera does not see
    * more than 1 april tag, this will return null.
    *
    * @return The PNPResult for you to get information from.

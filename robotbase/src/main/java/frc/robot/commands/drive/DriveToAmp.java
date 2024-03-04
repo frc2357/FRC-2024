@@ -35,10 +35,12 @@ public class DriveToAmp extends Command {
   @Override
   public void execute() {
     // Rotation
-    double rotationError = DriveUtility.calculateRotationError(Robot.swerve.getPose().getRotation().getRadians(),
-        m_rotationController.getSetpoint());
+    double rotationError =
+        DriveUtility.calculateRotationError(
+            Robot.swerve.getPose().getRotation().getRadians(), m_rotationController.getSetpoint());
     double rotationRadiansPerSecond = m_rotationController.calculate(rotationError);
-    double rotationFeedforward = Math.copySign(SWERVE.APRILTAG_ROTATION_FEEDFORWARD, rotationRadiansPerSecond);
+    double rotationFeedforward =
+        Math.copySign(SWERVE.APRILTAG_ROTATION_FEEDFORWARD, rotationRadiansPerSecond);
 
     rotationRadiansPerSecond += rotationFeedforward;
     if (rotationError == m_rotationController.getSetpoint()) {
@@ -60,15 +62,17 @@ public class DriveToAmp extends Command {
 
     double pitch = Robot.shooterCam.getAmpTargetPitch();
 
-    yaw = DriveUtility.adjustYawForApriltag(
-        yaw,
-        pitch,
-        rotationError - m_rotationController.getSetpoint(),
-        SWERVE.AMP_PITCH_SETPOINT,
-        SWERVE.APRILTAG_CLOSE_PITCH,
-        SWERVE.APRILTAG_YAW_TOLERANCE);
-    pitch = DriveUtility.adjustPitchForApriltag(
-        pitch, SWERVE.AMP_PITCH_SETPOINT, SWERVE.APRILTAG_PITCH_TOLERANCE);
+    yaw =
+        DriveUtility.adjustYawForApriltag(
+            yaw,
+            pitch,
+            rotationError - m_rotationController.getSetpoint(),
+            SWERVE.AMP_PITCH_SETPOINT,
+            SWERVE.APRILTAG_CLOSE_PITCH,
+            SWERVE.APRILTAG_YAW_TOLERANCE);
+    pitch =
+        DriveUtility.adjustPitchForApriltag(
+            pitch, SWERVE.AMP_PITCH_SETPOINT, SWERVE.APRILTAG_PITCH_TOLERANCE);
 
     double xMetersPerSecond = m_xController.calculate(yaw);
     double yMetersPerSecond = m_yController.calculate(pitch);

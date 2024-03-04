@@ -130,7 +130,7 @@ public final class Constants {
     public static final double STAGE_PITCH_SETPOINT = 15;
 
     // Tune this during field calibration
-    public static final double BLUE_LEFT_STAGE_ROTATION_SETPOINT_RADIANS = 0; 
+    public static final double BLUE_LEFT_STAGE_ROTATION_SETPOINT_RADIANS = 0;
     public static final double BLUE_RIGHT_STAGE_ROTATION_SETPOINT_RADIANS = 0;
     public static final double BLUE_CENTER_STAGE_ROTATION_SETPOINT_RADIANS = 2.17;
     public static final double RED_LEFT_STAGE_ROTATION_SETPOINT_RADIANS = 0;
