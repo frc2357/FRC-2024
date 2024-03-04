@@ -10,12 +10,11 @@ public class LEDs extends SubsystemBase {
   private AddressableLED m_led;
   private AddressableLEDBuffer m_ledBuffer;
 
-  boolean rightLEDsOn = false;
-  boolean leftLEDsOn = false;
+  boolean ledsOn;
 
   public LEDs() {
     m_led = new AddressableLED(0);
-    m_ledBuffer = new AddressableLEDBuffer(LEDS.STRIP_LEFT_LENGTH + LEDS.STRIP_RIGHT_LENGTH);
+    m_ledBuffer = new AddressableLEDBuffer(LEDS.STRIP_LENGTH);
 
     m_led.setLength(m_ledBuffer.getLength());
 
@@ -30,26 +29,7 @@ public class LEDs extends SubsystemBase {
     }
 
     m_led.setData(m_ledBuffer);
-    rightLEDsOn = true;
-    leftLEDsOn = true;
-  }
-
-  public void setColorLeft(Color color) {
-    for (int i = 0; i < LEDS.STRIP_LEFT_LENGTH; i++) {
-      m_ledBuffer.setLED(i, color);
-    }
-
-    m_led.setData(m_ledBuffer);
-    leftLEDsOn = true;
-  }
-
-  public void setColorRight(Color color) {
-    for (int i = LEDS.STRIP_LEFT_LENGTH; i < m_ledBuffer.getLength(); i++) {
-      m_ledBuffer.setLED(i, color);
-    }
-
-    m_led.setData(m_ledBuffer);
-    rightLEDsOn = true;
+    ledsOn = true;
   }
 
   public void toggleColor(Color color) {
@@ -60,59 +40,16 @@ public class LEDs extends SubsystemBase {
     }
   }
 
-  public void toggleColorLeft(Color color) {
-    if (leftLEDsOn) {
-      stop();
-    } else {
-      setColorLeft(color);
-    }
-  }
-
-  public void toggleColorRight(Color color) {
-    if (leftLEDsOn) {
-      stop();
-    } else {
-      setColorRight(color);
-    }
-  }
-
   public void stop() {
     for (int i = 0; i < m_ledBuffer.getLength(); i++) {
       m_ledBuffer.setLED(i, new Color());
     }
 
     m_led.setData(m_ledBuffer);
-    leftLEDsOn = false;
-    rightLEDsOn = false;
-  }
-
-  public void stopLeft() {
-    for (int i = 0; i < LEDS.STRIP_LEFT_LENGTH; i++) {
-      m_ledBuffer.setLED(i, new Color());
-    }
-
-    m_led.setData(m_ledBuffer);
-    leftLEDsOn = false;
-  }
-
-  public void stopRight() {
-    for (int i = LEDS.STRIP_LEFT_LENGTH; i < m_ledBuffer.getLength(); i++) {
-      m_ledBuffer.setLED(i, new Color());
-    }
-
-    m_led.setData(m_ledBuffer);
-    rightLEDsOn = false;
+    ledsOn = false;
   }
 
   public boolean areLEDsOn() {
-    return leftLEDsOn | rightLEDsOn;
-  }
-
-  public boolean areLeftLEDsOn() {
-    return leftLEDsOn;
-  }
-
-  public boolean areRightLEDsOn() {
-    return rightLEDsOn;
+    return ledsOn;
   }
 }

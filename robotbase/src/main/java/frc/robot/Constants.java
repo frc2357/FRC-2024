@@ -332,9 +332,12 @@ public final class Constants {
   }
 
   public static final class LEDS {
-    public static final int STRIP_LEFT_LENGTH = 30;
-    public static final int STRIP_RIGHT_LENGTH = 30;
-    public static final Color orange = new Color(150, 100, 0);
+    public static final int STRIP_LENGTH = 60;
+
+    public static final Color GREEN = new Color(0, 255, 0);
+    public static final Color RED = new Color(255, 0, 0);
+    public static final Color YELLOW = new Color(255, 255, 0);
+    public static final Color ORANGE = new Color(255, 95, 21);
   }
 
   public static final class SCORING {

@@ -25,9 +25,8 @@ public class LEDsBlink extends Command {
 
   @Override
   public void execute() {
-    if (timer.hasElapsed(m_seconds)) {
+    if (timer.advanceIfElapsed(m_seconds)) {
       Robot.leds.toggleColor(m_color);
-      timer.restart();
     }
   }
 
