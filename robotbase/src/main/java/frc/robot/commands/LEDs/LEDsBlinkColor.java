@@ -5,13 +5,13 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 
-public class LEDsBlink extends Command {
+public class LEDsBlinkColor extends Command {
 
   Timer timer = new Timer();
   Color m_color;
   double m_seconds;
 
-  public LEDsBlink(Color color, double seconds) {
+  public LEDsBlinkColor(Color color, double seconds) {
     addRequirements(Robot.leds);
     m_color = color;
     m_seconds = seconds;
