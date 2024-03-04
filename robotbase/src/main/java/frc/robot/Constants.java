@@ -334,7 +334,6 @@ public final class Constants {
   public static final class LEDS {
     public static final int STRIP_LEFT_LENGTH = 30;
     public static final int STRIP_RIGHT_LENGTH = 30;
-    public static final boolean STRIPS_INVERTED = true;
     public static final Color orange = new Color(150, 100, 0);
   }
 
