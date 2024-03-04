@@ -7,28 +7,28 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LEDS;
 
 public class LEDs extends SubsystemBase {
-  private AddressableLED m_led;
-  private AddressableLEDBuffer m_ledBuffer;
+  private AddressableLED m_LED;
+  private AddressableLEDBuffer m_LEDBuffer;
 
   boolean m_LEDsOn;
 
   public LEDs() {
-    m_led = new AddressableLED(0);
-    m_ledBuffer = new AddressableLEDBuffer(LEDS.STRIP_LENGTH);
+    m_LED = new AddressableLED(0);
+    m_LEDBuffer = new AddressableLEDBuffer(LEDS.STRIP_LENGTH);
 
-    m_led.setLength(m_ledBuffer.getLength());
+    m_LED.setLength(m_LEDBuffer.getLength());
 
-    m_led.setData(m_ledBuffer);
-    m_led.start();
+    m_LED.setData(m_LEDBuffer);
+    m_LED.start();
   }
 
   public void setColor(Color color) {
 
-    for (int i = 0; i < m_ledBuffer.getLength(); i++) {
-      m_ledBuffer.setLED(i, color);
+    for (int i = 0; i < m_LEDBuffer.getLength(); i++) {
+      m_LEDBuffer.setLED(i, color);
     }
 
-    m_led.setData(m_ledBuffer);
+    m_LED.setData(m_LEDBuffer);
     m_LEDsOn = true;
   }
 
@@ -41,11 +41,11 @@ public class LEDs extends SubsystemBase {
   }
 
   public void stop() {
-    for (int i = 0; i < m_ledBuffer.getLength(); i++) {
-      m_ledBuffer.setLED(i, new Color());
+    for (int i = 0; i < m_LEDBuffer.getLength(); i++) {
+      m_LEDBuffer.setLED(i, new Color());
     }
 
-    m_led.setData(m_ledBuffer);
+    m_LED.setData(m_LEDBuffer);
     m_LEDsOn = false;
   }
 
