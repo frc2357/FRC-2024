@@ -5,12 +5,16 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.SWERVE;
 import frc.robot.Robot;
 
-public class DriveToAmp extends Command {
+/*
+ * New Plan:
+ * Rotate and horizontal translation using apriltag then robot relative forward translation to apriltag
+ */
+public class DriveToStage extends Command {
   private PIDController m_xController;
   private PIDController m_yController;
   private PIDController m_rotationController;
 
-  public DriveToAmp() {
+  public DriveToStage() {
     m_xController = SWERVE.APRILTAG_X_TRANSLATION_PID_CONTROLLER;
     m_yController = SWERVE.APRILTAG_Y_TRANSLATION_PID_CONTROLLER;
     m_rotationController = SWERVE.APRILTAG_ROTATION_PID_CONTROLLER;
@@ -22,12 +26,12 @@ public class DriveToAmp extends Command {
     Robot.shooterCam.setAprilTagPipelineActive();
 
     // reset pids
-    m_yController.setSetpoint(SWERVE.AMP_PITCH_SETPOINT);
+    m_yController.setSetpoint(SWERVE.STAGE_PITCH_SETPOINT);
     m_yController.reset();
-    m_xController.setSetpoint(SWERVE.AMP_YAW_SETPOINT);
+    m_xController.setSetpoint(SWERVE.STAGE_YAW_SETPOINT);
     m_xController.reset();
 
-    m_rotationController.setSetpoint(DriveUtility.getAmpRotationGoal());
+    m_rotationController.setSetpoint(DriveUtility.getStageRotationGoal());
     m_rotationController.enableContinuousInput(-Math.PI, Math.PI);
     m_rotationController.reset();
   }
@@ -48,34 +52,35 @@ public class DriveToAmp extends Command {
     }
 
     // Translation
-    double yaw = Robot.shooterCam.getAmpTargetYaw();
+    double yaw = Robot.shooterCam.getStageTargetYaw();
 
     // If rotation goal hasn't been set, try again
     if (Double.isNaN(m_rotationController.getSetpoint())) {
-      m_rotationController.setSetpoint(DriveUtility.getAmpRotationGoal());
+      m_rotationController.setSetpoint(DriveUtility.getStageRotationGoal());
     }
     if (Double.isNaN(yaw)) {
-      System.out.println("[DrivtToAmp] No AMP Detected");
+      System.out.println("[DrivtToStage] No STAGE Detected");
       Robot.swerve.driveRobotRelative(0.0, 0.0, rotationRadiansPerSecond);
       return;
     }
 
-    double pitch = Robot.shooterCam.getAmpTargetPitch();
+    double pitch = Robot.shooterCam.getStageTargetPitch();
 
     yaw =
         DriveUtility.adjustYawForApriltag(
             yaw,
             pitch,
             rotationError - m_rotationController.getSetpoint(),
-            SWERVE.AMP_PITCH_SETPOINT,
+            SWERVE.STAGE_PITCH_SETPOINT,
             SWERVE.APRILTAG_CLOSE_PITCH,
             SWERVE.APRILTAG_YAW_TOLERANCE);
     pitch =
         DriveUtility.adjustPitchForApriltag(
-            pitch, SWERVE.AMP_PITCH_SETPOINT, SWERVE.APRILTAG_PITCH_TOLERANCE);
+            pitch, SWERVE.STAGE_PITCH_SETPOINT, SWERVE.APRILTAG_PITCH_TOLERANCE);
 
     double xMetersPerSecond = m_xController.calculate(yaw);
     double yMetersPerSecond = m_yController.calculate(pitch);
+    // Robot.swerve.driveRobotRelative(0, 0, rotationRadiansPerSecond);
     Robot.swerve.driveRobotRelative(-yMetersPerSecond, -xMetersPerSecond, rotationRadiansPerSecond);
   }
 

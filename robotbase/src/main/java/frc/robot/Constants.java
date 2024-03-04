@@ -107,22 +107,35 @@ public final class Constants {
 
     // Translate to Apriltag
     public static final PIDController APRILTAG_ROTATION_PID_CONTROLLER =
-        new PIDController(0.03, 0, 0.01);
+        new PIDController(5, 0, 0.0);
+    public static final double APRILTAG_ROTATION_FEEDFORWARD = 0.00001;
     public static final PIDController APRILTAG_X_TRANSLATION_PID_CONTROLLER =
-        new PIDController(0.05, 0, 0);
+        new PIDController(0.15, 0, 0);
     public static final PIDController APRILTAG_Y_TRANSLATION_PID_CONTROLLER =
-        new PIDController(0.08, 0, 0);
+        new PIDController(0.15, 0, 0);
 
-    public static final double APRILTAG_YAW_TOLERANCE = 0.5;
+    public static final double APRILTAG_YAW_TOLERANCE = 1;
     public static final double APRILTAG_PITCH_TOLERANCE = 0.5;
-    public static final double APRILTAG_ROTATION_TOLERANCE = .025; // Radians
+    public static final double APRILTAG_ROTATION_TOLERANCE_RADIANS = 0.02;
     public static final double APRILTAG_PITCH_MAGIC_OFFSET = 12.5;
     public static final double APRILTAG_CLOSE_PITCH = 4.0;
     public static final double APRILTAG_CLOSE_YAW_FACTOR = 2.0;
 
     public static final double AMP_YAW_SETPOINT = 0;
-    public static final double AMP_PITCH_SETPOINT = 3;
-    public static final double AMP_ROTATION_SETPOINT = Math.PI / 2;
+    public static final double AMP_PITCH_SETPOINT = 5;
+    public static final double BLUE_AMP_ROTATION_SETPOINT_RADIANS = -Math.PI / 2;
+    public static final double RED_AMP_ROTATION_SETPOINT_RADIANS = Math.PI / 2;
+
+    public static final double STAGE_YAW_SETPOINT = 0;
+    public static final double STAGE_PITCH_SETPOINT = 15;
+
+    // Tune this during field calibration
+    public static final double BLUE_LEFT_STAGE_ROTATION_SETPOINT_RADIANS = 0;
+    public static final double BLUE_RIGHT_STAGE_ROTATION_SETPOINT_RADIANS = 0;
+    public static final double BLUE_CENTER_STAGE_ROTATION_SETPOINT_RADIANS = 2.17;
+    public static final double RED_LEFT_STAGE_ROTATION_SETPOINT_RADIANS = 0;
+    public static final double RED_RIGHT_STAGE_ROTATION_SETPOINT_RADIANS = 0;
+    public static final double RED_CENTER_STAGE_ROTATION_SETPOINT_RADIANS = 0;
 
     public static final double TIME_TO_COAST_SECONDS = 5;
   }
@@ -420,6 +433,10 @@ public final class Constants {
         new int[] {BLUE_STAGE_LEFT, BLUE_STAGE_MIDDLE, BLUE_STAGE_RIGHT};
     public static final int[] RED_STAGE_TAGS =
         new int[] {RED_STAGE_LEFT, RED_STAGE_MIDDLE, RED_STAGE_RIGHT};
+
+    public static final int[] RIGHT_STAGE_TAGS = new int[] {12, 16};
+    public static final int[] LEFT_STAGE_TAGS = new int[] {11, 15};
+    public static final int[] CENTER_STAGE_TAGS = new int[] {13, 14};
 
     public static final int[] STAGE_TAGS =
         new int[] {

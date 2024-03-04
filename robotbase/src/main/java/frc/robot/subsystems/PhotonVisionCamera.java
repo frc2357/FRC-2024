@@ -79,7 +79,6 @@ public class PhotonVisionCamera extends SubsystemBase {
         m_bestTargetFiducialId = m_result.getBestTarget().getFiducialId();
         for (PhotonTrackedTarget targetSeen : targetList) {
           TargetInfo targetInfo = m_targetInfo[targetSeen.getFiducialId()];
-          // System.out.println(targetSeen.getFiducialId());
           targetInfo.yaw = targetSeen.getYaw();
           targetInfo.pitch = targetSeen.getPitch();
           targetInfo.timestamp = now;

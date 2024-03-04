@@ -4,23 +4,20 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Robot;
+import frc.robot.commands.drive.DriveToStage;
 import frc.robot.commands.drive.TargetLockOnSpeaker;
 import frc.robot.commands.intake.IntakeFeedToShooter;
 import frc.robot.commands.intake.IntakeNoteFromFloor;
-import frc.robot.commands.scoring.AmpPrepose;
-import frc.robot.commands.scoring.AmpScore;
 import frc.robot.commands.scoring.VisionTargeting;
 import frc.robot.commands.source.SourceIntakeFromShooter;
 import frc.robot.controls.util.AxisInterface;
 import frc.robot.controls.util.AxisThresholdTrigger;
 import frc.robot.controls.util.RumbleInterface;
-import frc.robot.state.RobotState.NoteState;
 
 public class DriverControls implements RumbleInterface {
   private XboxController m_controller;
@@ -81,15 +78,11 @@ public class DriverControls implements RumbleInterface {
 
     m_leftTrigger.toggleOnTrue(new IntakeNoteFromFloor());
 
-    m_rightBumper.onTrue(
-        new ConditionalCommand(
-            new AmpScore(),
-            new AmpPrepose(),
-            () -> Robot.state.isNote(NoteState.END_AFFECTOR_PRELOAD)));
-
     m_leftBumper.whileTrue(new SourceIntakeFromShooter());
-    // m_leftBumper.onTrue(new InstantCommand(() ->
-    // System.out.println(Robot.climber.getStageLineupRotationSetpoint())));
+
+    // scoring
+    // m_rightBumper.onTrue(new AmpSequenceConditional());
+    m_rightBumper.whileTrue(new DriveToStage());
 
     m_rightTriggerPrime.whileTrue(
         new ParallelCommandGroup(new VisionTargeting(), new TargetLockOnSpeaker()));
