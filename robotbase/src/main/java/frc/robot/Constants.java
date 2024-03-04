@@ -107,16 +107,16 @@ public final class Constants {
 
     // Translate to Apriltag
     public static final PIDController APRILTAG_ROTATION_PID_CONTROLLER =
-        new PIDController(1, 0, 0.0);
+        new PIDController(3, 0, 0.0);
     public static final double APRILTAG_ROTATION_FEEDFORWARD = 0.00001;
     public static final PIDController APRILTAG_X_TRANSLATION_PID_CONTROLLER =
-        new PIDController(0.05, 0, 0);
+        new PIDController(0.15, 0, 0);
     public static final PIDController APRILTAG_Y_TRANSLATION_PID_CONTROLLER =
-        new PIDController(0.0, 0, 0);
+        new PIDController(0.15, 0, 0);
 
-    public static final double APRILTAG_YAW_TOLERANCE = 0.5;
+    public static final double APRILTAG_YAW_TOLERANCE = 1;
     public static final double APRILTAG_PITCH_TOLERANCE = 0.5;
-    public static final double APRILTAG_ROTATION_TOLERANCE_RADIANS = 0.025;
+    public static final double APRILTAG_ROTATION_TOLERANCE_RADIANS = 0.02;
     public static final double APRILTAG_PITCH_MAGIC_OFFSET = 12.5;
     public static final double APRILTAG_CLOSE_PITCH = 4.0;
     public static final double APRILTAG_CLOSE_YAW_FACTOR = 2.0;

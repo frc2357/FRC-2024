@@ -72,12 +72,12 @@ public class DriveToAmp extends Command {
         pitch, SWERVE.AMP_PITCH_SETPOINT, SWERVE.APRILTAG_PITCH_TOLERANCE);
 
     double xMetersPerSecond = m_xController.calculate(yaw);
-    double yMetersPerSecond = m_yController.calculate(pitch + SWERVE.APRILTAG_PITCH_MAGIC_OFFSET);
+    double yMetersPerSecond = m_yController.calculate(pitch);
     System.out.println("yaw: " + yaw);
     System.out.println("speed: " + xMetersPerSecond);
-    Robot.swerve.driveRobotRelative(0, xMetersPerSecond, rotationRadiansPerSecond);
-    // Robot.swerve.driveRobotRelative(yMetersPerSecond, xMetersPerSecond,
+    // Robot.swerve.driveRobotRelative(-yMetersPerSecond, 0,
     // rotationRadiansPerSecond);
+    Robot.swerve.driveRobotRelative(-yMetersPerSecond, -xMetersPerSecond, rotationRadiansPerSecond);
   }
 
   @Override
