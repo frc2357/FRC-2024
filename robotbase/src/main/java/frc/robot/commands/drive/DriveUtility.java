@@ -25,8 +25,7 @@ public class DriveUtility {
       double pitchOffset,
       double closePitchThreshold,
       double yawTolerance) {
-    yawTolerance =
-        calculateYawToleranceForApriltag(pitch, pitchOffset, closePitchThreshold, yawTolerance);
+    yawTolerance = calculateYawToleranceForApriltag(pitch, pitchOffset, closePitchThreshold, yawTolerance);
 
     // Reduce yaw based on how far off our rotation is so the x controller doesn't
     // over compensate
@@ -55,23 +54,42 @@ public class DriveUtility {
   }
 
   public static double getAmpRotationGoal() {
-    boolean redAmpValid =
-        Robot.shooterCam.isValidTarget(
-            APRIL_TAG_IDS.RED_AMP, SHOOTER_PHOTON_CAMERA.AMP_TARGET_TIMEOUT_MS);
-    boolean blueAmpValid =
-        Robot.shooterCam.isValidTarget(
-            APRIL_TAG_IDS.BLUE_AMP, SHOOTER_PHOTON_CAMERA.AMP_TARGET_TIMEOUT_MS);
+    boolean redAmpValid = Robot.shooterCam.isValidTarget(
+        APRIL_TAG_IDS.RED_AMP, SHOOTER_PHOTON_CAMERA.AMP_TARGET_TIMEOUT_MS);
+    boolean blueAmpValid = Robot.shooterCam.isValidTarget(
+        APRIL_TAG_IDS.BLUE_AMP, SHOOTER_PHOTON_CAMERA.AMP_TARGET_TIMEOUT_MS);
 
     if (redAmpValid && blueAmpValid) {
       DriverStation.reportError("How in the world do you see both amps at the same time", false);
       return Double.NaN;
     } else if (blueAmpValid) {
-      return SWERVE.BLUE_AMP_ROTATION_SETPOINT;
+      return SWERVE.BLUE_AMP_ROTATION_SETPOINT_RADIANS;
     } else if (redAmpValid) {
-      return SWERVE.RED_AMP_ROTATION_SETPOINT;
+      return SWERVE.RED_AMP_ROTATION_SETPOINT_RADIANS;
     } else {
       System.err.println("No Amp target");
       return Double.NaN;
     }
+  }
+
+  public static double getStageRotationGoal() {
+    int bestTagId = Robot.shooterCam.getBestTargetFiducialId();
+
+    for (int id : APRIL_TAG_IDS.RIGHT_STAGE_TAGS) {
+      if (id == bestTagId) {
+        return SWERVE.RIGHT_STAGE_ROTATION_SETPOINT_RADIANS;
+      }
+    }
+    for (int id : APRIL_TAG_IDS.LEFT_STAGE_TAGS) {
+      if (id == bestTagId) {
+        return SWERVE.LEFT_STAGE_ROTATION_SETPOINT_RADIANS;
+      }
+    }
+    for (int id : APRIL_TAG_IDS.CENTER_STAGE_TAGS) {
+      if (id == bestTagId) {
+        return SWERVE.CENTER_STAGE_ROTATION_SETPOINT_RADIANS;
+      }
+    }
+    return Double.NaN;
   }
 }

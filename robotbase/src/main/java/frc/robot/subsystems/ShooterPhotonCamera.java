@@ -83,4 +83,58 @@ public class ShooterPhotonCamera extends PhotonVisionCamera {
     return super.getTargetPitch(
         Constants.APRIL_TAG_IDS.STAGE_TAGS, SHOOTER_PHOTON_CAMERA.STAGE_TARGET_TIMEOUT_MS);
   }
+
+  /**
+   * @return The yaw of any seen amp april tag. Will return NaN if it doesnt see one or doesnt have
+   *     one cached.
+   */
+  public double getRightStageTargetYaw() {
+    return super.getTargetYaw(
+        Constants.APRIL_TAG_IDS.RIGHT_STAGE_TAGS, SHOOTER_PHOTON_CAMERA.STAGE_TARGET_TIMEOUT_MS);
+  }
+
+  /**
+   * @return The pitch of any seen amp april tag. Will return NaN if it doesnt see one or doesnt
+   *     have one cached.
+   */
+  public double getRightStageTargetPitch() {
+    return super.getTargetPitch(
+        Constants.APRIL_TAG_IDS.RIGHT_STAGE_TAGS, SHOOTER_PHOTON_CAMERA.STAGE_TARGET_TIMEOUT_MS);
+  }
+
+  /**
+   * @return The yaw of any seen amp april tag. Will return NaN if it doesnt see one or doesnt have
+   *     one cached.
+   */
+  public double getLeftStageTargetYaw() {
+    return super.getTargetYaw(
+        Constants.APRIL_TAG_IDS.LEFT_STAGE_TAGS, SHOOTER_PHOTON_CAMERA.STAGE_TARGET_TIMEOUT_MS);
+  }
+
+  /**
+   * @return The pitch of any seen amp april tag. Will return NaN if it doesnt see one or doesnt
+   *     have one cached.
+   */
+  public double getLeftStageTargetPitch() {
+    return super.getTargetPitch(
+        Constants.APRIL_TAG_IDS.LEFT_STAGE_TAGS, SHOOTER_PHOTON_CAMERA.STAGE_TARGET_TIMEOUT_MS);
+  }
+
+  /**
+   * @return The yaw of any seen amp april tag. Will return NaN if it doesnt see one or doesnt have
+   *     one cached.
+   */
+  public double getCenterStageTargetYaw() {
+    return super.getTargetYaw(
+        Constants.APRIL_TAG_IDS.CENTER_STAGE_TAGS, SHOOTER_PHOTON_CAMERA.STAGE_TARGET_TIMEOUT_MS);
+  }
+
+  /**
+   * @return The pitch of any seen amp april tag. Will return NaN if it doesnt see one or doesnt
+   *     have one cached.
+   */
+  public double getCenterStageTargetPitch() {
+    return super.getTargetPitch(
+        Constants.APRIL_TAG_IDS.CENTER_STAGE_TAGS, SHOOTER_PHOTON_CAMERA.STAGE_TARGET_TIMEOUT_MS);
+  }
 }

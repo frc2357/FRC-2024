@@ -123,8 +123,14 @@ public final class Constants {
 
     public static final double AMP_YAW_SETPOINT = 0;
     public static final double AMP_PITCH_SETPOINT = 5;
-    public static final double BLUE_AMP_ROTATION_SETPOINT = -Math.PI / 2;
-    public static final double RED_AMP_ROTATION_SETPOINT = Math.PI / 2;
+    public static final double BLUE_AMP_ROTATION_SETPOINT_RADIANS = -Math.PI / 2;
+    public static final double RED_AMP_ROTATION_SETPOINT_RADIANS = Math.PI / 2;
+
+    public static final double STAGE_YAW_SETPOINT = 0;
+    public static final double STAGE_PITCH_SETPOINT = 5;
+    public static final double LEFT_STAGE_ROTATION_SETPOINT_RADIANS = Math.PI * 2 / 3; // -30 degrees
+    public static final double RIGHT_STAGE_ROTATION_SETPOINT_RADIANS = -Math.PI * 2 / 3; // 30 degrees
+    public static final double CENTER_STAGE_ROTATION_SETPOINT_RADIANS = LEFT_STAGE_ROTATION_SETPOINT_RADIANS; // 0 degrees TODO: Change this back before competition PLEASE
 
     public static final double TIME_TO_COAST_SECONDS = 5;
   }
@@ -422,6 +428,10 @@ public final class Constants {
         new int[] {BLUE_STAGE_LEFT, BLUE_STAGE_MIDDLE, BLUE_STAGE_RIGHT};
     public static final int[] RED_STAGE_TAGS =
         new int[] {RED_STAGE_LEFT, RED_STAGE_MIDDLE, RED_STAGE_RIGHT};
+
+    public static final int[] RIGHT_STAGE_TAGS = new int[] {12, 16};
+    public static final int[] LEFT_STAGE_TAGS = new int[] {11, 15};
+    public static final int[] CENTER_STAGE_TAGS = new int[] {13, 14};
 
     public static final int[] STAGE_TAGS =
         new int[] {
