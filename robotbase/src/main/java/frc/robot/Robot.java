@@ -49,7 +49,7 @@ public class Robot extends TimedRobot {
   public static Pivot pivot;
   public static Intake intake;
   public static Climber climber;
-  public static LEDs leds;
+  public static LEDs LEDs;
 
   public static DriverControls driverControls;
   public static CodriverControls codriverControls;
@@ -106,7 +106,7 @@ public class Robot extends TimedRobot {
     climber = new Climber();
     endAffector = new EndAffector();
     extensionArm = new ExtensionArm();
-    leds = new LEDs();
+    LEDs = new LEDs();
 
     driverControls =
         new DriverControls(

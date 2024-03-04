@@ -10,7 +10,7 @@ public class LEDs extends SubsystemBase {
   private AddressableLED m_led;
   private AddressableLEDBuffer m_ledBuffer;
 
-  boolean ledsOn;
+  boolean m_LEDsOn;
 
   public LEDs() {
     m_led = new AddressableLED(0);
@@ -29,7 +29,7 @@ public class LEDs extends SubsystemBase {
     }
 
     m_led.setData(m_ledBuffer);
-    ledsOn = true;
+    m_LEDsOn = true;
   }
 
   public void toggleColor(Color color) {
@@ -46,10 +46,10 @@ public class LEDs extends SubsystemBase {
     }
 
     m_led.setData(m_ledBuffer);
-    ledsOn = false;
+    m_LEDsOn = false;
   }
 
   public boolean areLEDsOn() {
-    return ledsOn;
+    return m_LEDsOn;
   }
 }

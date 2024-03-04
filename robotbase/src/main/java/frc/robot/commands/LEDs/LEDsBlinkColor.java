@@ -12,7 +12,7 @@ public class LEDsBlinkColor extends Command {
   double m_seconds;
 
   public LEDsBlinkColor(Color color, double seconds) {
-    addRequirements(Robot.leds);
+    addRequirements(Robot.LEDs);
     m_color = color;
     m_seconds = seconds;
   }
@@ -20,13 +20,13 @@ public class LEDsBlinkColor extends Command {
   @Override
   public void initialize() {
     timer.start();
-    Robot.leds.setColor(m_color);
+    Robot.LEDs.setColor(m_color);
   }
 
   @Override
   public void execute() {
     if (timer.advanceIfElapsed(m_seconds)) {
-      Robot.leds.toggleColor(m_color);
+      Robot.LEDs.toggleColor(m_color);
     }
   }
 
@@ -38,6 +38,6 @@ public class LEDsBlinkColor extends Command {
   @Override
   public void end(boolean interrupted) {
     timer.stop();
-    Robot.leds.stop();
+    Robot.LEDs.stop();
   }
 }

@@ -9,13 +9,13 @@ public class LEDsSetColor extends Command {
   Color m_color;
 
   public LEDsSetColor(Color color) {
-    addRequirements(Robot.leds);
+    addRequirements(Robot.LEDs);
     m_color = color;
   }
 
   @Override
   public void initialize() {
-    Robot.leds.setColor(m_color);
+    Robot.LEDs.setColor(m_color);
   }
 
   @Override

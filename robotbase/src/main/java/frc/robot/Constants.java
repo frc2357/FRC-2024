@@ -332,7 +332,7 @@ public final class Constants {
   }
 
   public static final class LEDS {
-    public static final int STRIP_LENGTH = 60;
+    public static final int STRIP_LENGTH = 30;
 
     public static final Color GREEN = new Color(0, 255, 0);
     public static final Color RED = new Color(255, 0, 0);
