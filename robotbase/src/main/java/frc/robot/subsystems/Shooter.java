@@ -4,6 +4,8 @@ import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.SHOOTER;
@@ -109,6 +111,8 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Top RPM", getTopVelocity());
+    SmartDashboard.putNumber("Bottom RPM", getBottomVelocity());
     m_curveTuner.updateCurveValues();
   }
 

@@ -93,7 +93,7 @@ public final class Constants {
     public static final double PIECE_TRACKING_X_METERS_PER_SECOND = 2;
 
     // Target Lock
-    public static final double TARGET_LOCK_ROTATION_KP = 0.02;
+    public static final double TARGET_LOCK_ROTATION_KP = 0.1;
     public static final double TARGET_LOCK_ROTATION_KI = 0.0;
     public static final double TARGET_LOCK_ROTATION_KD = 0.0;
     public static final PIDController TARGET_LOCK_ROTATION_PID_CONTROLLER =
@@ -103,7 +103,7 @@ public final class Constants {
     public static final double TARGET_LOCK_FEED_FORWARD = 0.0;
     public static final double TARGET_LOCK_TOLERANCE = 1.5;
     public static final double TARGET_LOCK_YAW_SETPOINT =
-        2; // PhotonVision is consistently 2 degrees to the right of our target
+        0; // PhotonVision is consistently 2 degrees to the right of our target
 
     // Translate to Apriltag
     public static final PIDController APRILTAG_ROTATION_PID_CONTROLLER =
@@ -169,7 +169,7 @@ public final class Constants {
 
   public static final class SHOOTER {
     public static final double SOURCE_INTAKE_RPM = -1500;
-    public static final double FEED_END_AFFECTOR_RPM = 2000;
+    public static final double FEED_END_AFFECTOR_RPM = 1500;
     public static final double DEFAULT_STOWED_RPMS = 2000;
 
     public static final double SHOOTER_AXIS_STEP_INTERVAL = 0.1;
@@ -182,7 +182,7 @@ public final class Constants {
     public static final boolean BOTTOM_MOTOR_INVERTED = true;
 
     public static final int TOP_MOTOR_STALL_LIMIT_AMPS = 40;
-    public static final int TOP_MOTOR_FREE_LIMIT_AMPS = 40;
+    public static final int TOP_MOTOR_FREE_LIMIT_AMPS = 60;
 
     public static final int BOTTOM_MOTOR_STALL_LIMIT_AMPS = 40;
     public static final int BOTTOM_MOTOR_FREE_LIMIT_AMPS = 40;
@@ -197,7 +197,7 @@ public final class Constants {
     public static final double BOTTOM_MOTOR_P = 0.0;
     public static final double BOTTOM_MOTOR_I = 0.0;
     public static final double BOTTOM_MOTOR_D = 0.0;
-    public static final double BOTTOM_MOTOR_FF = 0.0001825;
+    public static final double BOTTOM_MOTOR_FF = 0.0002;
 
     public static final double RPM_TOLERANCE = 100;
   }

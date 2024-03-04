@@ -70,7 +70,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
             tx, SWERVE.TARGET_LOCK_YAW_SETPOINT);
     double rotationOutput =
         !hasTarget
-            ? Robot.driverControls.getRotation()
+            ? Robot.driverControls.getRotation() * SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND
             : rotation + Math.copySign(Constants.SWERVE.TARGET_LOCK_FEED_FORWARD, rotation);
     // System.out.println("Rotation: " + rotation);
     // System.out.println("Rotation output: " + rotationOutput);
