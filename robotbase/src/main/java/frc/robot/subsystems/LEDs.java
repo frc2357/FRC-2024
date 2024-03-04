@@ -10,8 +10,6 @@ public class LEDs extends SubsystemBase {
   private AddressableLED m_LED;
   private AddressableLEDBuffer m_LEDBuffer;
 
-  boolean m_LEDsOn;
-
   public LEDs() {
     m_LED = new AddressableLED(LEDS.PORT_NUMBER);
     m_LEDBuffer = new AddressableLEDBuffer(LEDS.STRIP_LENGTH);
@@ -29,27 +27,9 @@ public class LEDs extends SubsystemBase {
     }
 
     m_LED.setData(m_LEDBuffer);
-    m_LEDsOn = true;
-  }
-
-  public void toggleColor(Color color) {
-    if (areLEDsOn()) {
-      stop();
-    } else {
-      setColor(color);
-    }
   }
 
   public void stop() {
-    for (int i = 0; i < m_LEDBuffer.getLength(); i++) {
-      m_LEDBuffer.setLED(i, new Color());
-    }
-
-    m_LED.setData(m_LEDBuffer);
-    m_LEDsOn = false;
-  }
-
-  public boolean areLEDsOn() {
-    return m_LEDsOn;
+    setColor(new Color());
   }
 }
