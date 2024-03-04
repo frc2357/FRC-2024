@@ -76,8 +76,8 @@ public class DriveToStage extends Command {
 
     double xMetersPerSecond = m_xController.calculate(yaw);
     double yMetersPerSecond = m_yController.calculate(pitch);
-    Robot.swerve.driveRobotRelative(0, 0, rotationRadiansPerSecond);
-    // Robot.swerve.driveRobotRelative(-yMetersPerSecond, -xMetersPerSecond, rotationRadiansPerSecond);
+    // Robot.swerve.driveRobotRelative(0, 0, rotationRadiansPerSecond);
+    Robot.swerve.driveRobotRelative(-yMetersPerSecond, -xMetersPerSecond, rotationRadiansPerSecond);
   }
 
   @Override

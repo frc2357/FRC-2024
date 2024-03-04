@@ -133,6 +133,7 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putString(
         "Alliance", state.getAlliance() == null ? "None" : state.getAlliance().toString());
+    SmartDashboard.putNumber("Robot yaw", swerve.getPose().getRotation().getRadians());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

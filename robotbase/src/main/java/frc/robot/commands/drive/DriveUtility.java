@@ -75,21 +75,21 @@ public class DriveUtility {
   public static double getStageRotationGoal() {
     int bestTagId = Robot.shooterCam.getBestTargetFiducialId();
 
-    for (int id : APRIL_TAG_IDS.RIGHT_STAGE_TAGS) {
-      if (id == bestTagId) {
-        return SWERVE.RIGHT_STAGE_ROTATION_SETPOINT_RADIANS;
-      }
+    switch (bestTagId) {
+      case APRIL_TAG_IDS.BLUE_STAGE_LEFT:
+        return SWERVE.BLUE_LEFT_STAGE_ROTATION_SETPOINT_RADIANS;
+      case APRIL_TAG_IDS.BLUE_STAGE_RIGHT:
+        return SWERVE.BLUE_RIGHT_STAGE_ROTATION_SETPOINT_RADIANS;
+      case APRIL_TAG_IDS.BLUE_STAGE_MIDDLE:
+        return SWERVE.BLUE_CENTER_STAGE_ROTATION_SETPOINT_RADIANS;
+      case APRIL_TAG_IDS.RED_STAGE_LEFT:
+        return SWERVE.RED_LEFT_STAGE_ROTATION_SETPOINT_RADIANS;
+      case APRIL_TAG_IDS.RED_STAGE_RIGHT:
+        return SWERVE.RED_RIGHT_STAGE_ROTATION_SETPOINT_RADIANS;
+      case APRIL_TAG_IDS.RED_STAGE_MIDDLE:
+        return SWERVE.RED_CENTER_STAGE_ROTATION_SETPOINT_RADIANS;
+      default:
+        return Double.NaN;
     }
-    for (int id : APRIL_TAG_IDS.LEFT_STAGE_TAGS) {
-      if (id == bestTagId) {
-        return SWERVE.LEFT_STAGE_ROTATION_SETPOINT_RADIANS;
-      }
-    }
-    for (int id : APRIL_TAG_IDS.CENTER_STAGE_TAGS) {
-      if (id == bestTagId) {
-        return SWERVE.CENTER_STAGE_ROTATION_SETPOINT_RADIANS;
-      }
-    }
-    return Double.NaN;
   }
 }

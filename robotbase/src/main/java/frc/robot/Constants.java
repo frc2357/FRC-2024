@@ -107,7 +107,7 @@ public final class Constants {
 
     // Translate to Apriltag
     public static final PIDController APRILTAG_ROTATION_PID_CONTROLLER =
-        new PIDController(3, 0, 0.0);
+        new PIDController(5, 0, 0.0);
     public static final double APRILTAG_ROTATION_FEEDFORWARD = 0.00001;
     public static final PIDController APRILTAG_X_TRANSLATION_PID_CONTROLLER =
         new PIDController(0.15, 0, 0);
@@ -127,10 +127,15 @@ public final class Constants {
     public static final double RED_AMP_ROTATION_SETPOINT_RADIANS = Math.PI / 2;
 
     public static final double STAGE_YAW_SETPOINT = 0;
-    public static final double STAGE_PITCH_SETPOINT = 5;
-    public static final double LEFT_STAGE_ROTATION_SETPOINT_RADIANS = Math.PI * 2 / 3; // -30 degrees
-    public static final double RIGHT_STAGE_ROTATION_SETPOINT_RADIANS = -Math.PI * 2 / 3; // 30 degrees
-    public static final double CENTER_STAGE_ROTATION_SETPOINT_RADIANS = LEFT_STAGE_ROTATION_SETPOINT_RADIANS; // 0 degrees TODO: Change this back before competition PLEASE
+    public static final double STAGE_PITCH_SETPOINT = 15;
+
+    // Tune this during field calibration
+    public static final double BLUE_LEFT_STAGE_ROTATION_SETPOINT_RADIANS = 0; 
+    public static final double BLUE_RIGHT_STAGE_ROTATION_SETPOINT_RADIANS = 0;
+    public static final double BLUE_CENTER_STAGE_ROTATION_SETPOINT_RADIANS = 2.17;
+    public static final double RED_LEFT_STAGE_ROTATION_SETPOINT_RADIANS = 0;
+    public static final double RED_RIGHT_STAGE_ROTATION_SETPOINT_RADIANS = 0;
+    public static final double RED_CENTER_STAGE_ROTATION_SETPOINT_RADIANS = 0;
 
     public static final double TIME_TO_COAST_SECONDS = 5;
   }
