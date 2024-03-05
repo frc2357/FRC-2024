@@ -25,9 +25,6 @@ import org.photonvision.PhotonPoseEstimator.PoseStrategy;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static class OPERATOR_CONSTANTS {
-    public static final int DRIVER_CONTROLLER_PORT = 0;
-  }
 
   public static final class CAN_ID {
     public static final int PIGEON_ID = 5;
@@ -156,9 +153,9 @@ public final class Constants {
   }
 
   public static final class CONTROLLER {
-    public static final int DRIVE_CONTROLLER_PORT = 0;
+    public static final int DRIVE_CONTROLLER_PORT = 1;
     public static final double DRIVE_CONTROLLER_DEADBAND = 0.01;
-    public static final int CODRIVER_CONTROLLER_PORT = 1;
+    public static final int CODRIVER_CONTROLLER_PORT = 0;
     public static final double CODRIVE_CONTROLLER_DEADBAND = 0.025;
     public static final double SWERVE_TRANSLATIONAL_DEADBAND = 0.0;
     public static final double SWERVE_ROTATIONAL_DEADBAND = 0.0;
