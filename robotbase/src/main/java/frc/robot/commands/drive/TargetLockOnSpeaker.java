@@ -1,6 +1,7 @@
 package frc.robot.commands.drive;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.SWERVE;
 import frc.robot.Robot;
 
 public class TargetLockOnSpeaker extends Command {
@@ -18,8 +19,8 @@ public class TargetLockOnSpeaker extends Command {
     var targetYaw = Robot.shooterCam.getSpeakerTargetYaw();
 
     Robot.swerve.driveTargetLock(
-        Robot.driverControls.getY(),
-        Robot.driverControls.getX(),
+        Robot.driverControls.getY() * SWERVE.MAX_SPEED_METERS_PER_SECOND,
+        Robot.driverControls.getX() * SWERVE.MAX_SPEED_METERS_PER_SECOND,
         !Double.isNaN(targetYaw) ? targetYaw : 0,
         !Double.isNaN(targetYaw));
   }
