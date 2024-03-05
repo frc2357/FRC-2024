@@ -13,6 +13,7 @@ import frc.robot.commands.drive.DriveToStage;
 import frc.robot.commands.drive.TargetLockOnNote;
 import frc.robot.commands.drive.TargetLockOnSpeaker;
 import frc.robot.commands.intake.IntakeFeedToShooter;
+import frc.robot.commands.intake.IntakeNoteFromFloor;
 import frc.robot.commands.scoring.VisionTargeting;
 import frc.robot.commands.source.SourceIntakeFromShooter;
 import frc.robot.controls.util.AxisInterface;
@@ -76,7 +77,8 @@ public class DriverControls implements RumbleInterface {
     m_backButton.onTrue(new InstantCommand(() -> Robot.swerve.setYaw(0)));
     m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.setYaw(180)));
 
-    m_leftTrigger.whileTrue(new TargetLockOnNote());
+    m_leftTrigger.toggleOnTrue(
+        new ParallelCommandGroup(new IntakeNoteFromFloor(), new TargetLockOnNote()));
 
     m_leftBumper.whileTrue(new SourceIntakeFromShooter());
 
