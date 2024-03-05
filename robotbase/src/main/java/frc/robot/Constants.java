@@ -149,7 +149,7 @@ public final class Constants {
         new BooleanSupplier() {
           @Override
           public boolean getAsBoolean() {
-            return false;
+            return true;
           }
         };
   }
