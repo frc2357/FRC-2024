@@ -15,6 +15,7 @@ public class AutoCommandChooser {
 
     m_autoCommands =
         new Command[] {
+          // new VelDrive(),
           new DriveChoreoPath("Line"),
           // new DriveChoreoPath("Close3Speaker"),
           new Close3Speaker(),

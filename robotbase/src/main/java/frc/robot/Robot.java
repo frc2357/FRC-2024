@@ -5,12 +5,17 @@
 package frc.robot;
 
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import edu.wpi.first.util.datalog.DoubleArrayLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.drive.SetCoastOnDisable;
+import frc.robot.commands.state.GetAlliance;
 import frc.robot.controls.CodriverControls;
 import frc.robot.controls.DriverControls;
 import frc.robot.state.RobotState;
@@ -33,6 +38,7 @@ import frc.robot.subsystems.ShooterPhotonCamera;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private Command m_setCoastOnDisable;
+  private Command m_allianceGetter;
   private RobotContainer m_robotContainer;
 
   public static RobotState state;
@@ -55,14 +61,17 @@ public class Robot extends TimedRobot {
 
   // {ty, pivotRotations, shooterRPM}
   public static final double[][] shooterCurve = {
-    {50, 45, 3000}, // Lower bound
-    {7.5, 60, 3000}, // Side Subwoofer
-    {11.10, 60, 3000}, // Center Subwoofer
-    {-8.87, 35, 4000}, // Podium
-    {-15, 27, 4250}, // Stage Apriltag
-    {-17.75, 25, 4250}, // Wing line
-    {-19, 25, 4250} // Center line (Upper bound)
+    {50, 60, 3000}, // Lower bound
+    {15, 60, 3000}, // Center Subwoofer
+    {14, 60, 3000}, // Side Subwoofer
+    {9, 55, 3000}, // Between Subwoofer and Podium
+    {-10.75, 35, 4000}, // Podium
+    {-18.2, 28.5, 4250}, // Stage Apriltag
+    {-20.5, 26.5, 4250}, // Wing line
+    {-19, 26, 4250} // Center line (Upper bound)
   };
+  public static PowerDistribution m_pdp;
+  public static DoubleArrayLogEntry m_PDH_log;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -109,6 +118,15 @@ public class Robot extends TimedRobot {
 
     m_setCoastOnDisable = new SetCoastOnDisable();
     m_setCoastOnDisable.schedule();
+    m_allianceGetter = new GetAlliance();
+    m_allianceGetter.schedule();
+
+    // set up basic PDH data logging on RoboRIO
+    m_pdp = new PowerDistribution(); // this should automatically log b/c it implements Sendable!?
+    DataLogManager.logNetworkTables(false); // enable/disable automatic NetworksTable Logging
+    DataLogManager.start("", "", 1.0); // defaults, flush to flash every 0.25 seconds
+    DriverStation.startDataLog(DataLogManager.getLog());
+    m_PDH_log = new DoubleArrayLogEntry(DataLogManager.getLog(), "PDH");
   }
 
   /**
@@ -121,6 +139,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     shooterCam.updateResult();
+    intakeCam.updateResult();
 
     // Runs the Scheduler. This is responsible for polling buttons, adding
     // newly-scheduled
@@ -133,6 +152,9 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putString(
         "Alliance", state.getAlliance() == null ? "None" : state.getAlliance().toString());
+    SmartDashboard.putNumber("Robot yaw", swerve.getPose().getRotation().getRadians());
+    m_PDH_log.append(
+        new double[] {m_pdp.getVoltage(), m_pdp.getTotalCurrent(), m_pdp.getTemperature()});
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

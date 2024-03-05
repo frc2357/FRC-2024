@@ -23,7 +23,6 @@ public class PhotonVisionCamera extends SubsystemBase {
     public double pitch = Double.NaN;
     public long timestamp = 0;
   }
-  ;
 
   // all of these are protected so we can use them in the extended classes
   // which are only extended so we can control which pipelines we are using.
@@ -50,6 +49,9 @@ public class PhotonVisionCamera extends SubsystemBase {
 
     // 0 is for note detection, 1-16 correspond to apriltag fiducial IDs
     m_targetInfo = new TargetInfo[17];
+    for (int i = 0; i < m_targetInfo.length; i++) {
+      m_targetInfo[i] = new TargetInfo();
+    }
   }
 
   public void configure() {
@@ -76,7 +78,10 @@ public class PhotonVisionCamera extends SubsystemBase {
         List<PhotonTrackedTarget> targetList = m_result.targets;
         m_bestTargetFiducialId = m_result.getBestTarget().getFiducialId();
         for (PhotonTrackedTarget targetSeen : targetList) {
-          TargetInfo targetInfo = m_targetInfo[targetSeen.getFiducialId()];
+          int id = targetSeen.getFiducialId();
+          id = id == -1 ? 0 : id;
+          TargetInfo targetInfo = m_targetInfo[id];
+          // System.out.println(targetSeen.getFiducialId());
           targetInfo.yaw = targetSeen.getYaw();
           targetInfo.pitch = targetSeen.getPitch();
           targetInfo.timestamp = now;
@@ -120,7 +125,8 @@ public class PhotonVisionCamera extends SubsystemBase {
    * Compares the current system time to the last cached timestamp and sees if it is older than is
    * acceptable.
    *
-   * @param fiducialId Fiducial ID of the desired target to valid the data of.
+   * @param fiducialId Fiducial ID of the desired target to valid the data of. Notes have a
+   *     fiducialId of 0
    * @param timeoutMs The amount of milliseconds past which target info is deemed expired
    * @return If the camera has seen the target within the timeout given
    */
@@ -128,7 +134,11 @@ public class PhotonVisionCamera extends SubsystemBase {
     long now = System.currentTimeMillis();
     long then = now - timeoutMs;
 
-    return m_targetInfo[fiducialId].timestamp > then;
+    TargetInfo target = m_targetInfo[fiducialId];
+
+    return target.timestamp > then
+        || Math.abs(target.yaw) > PHOTON_VISION.MAX_ANGLE
+        || Math.abs(target.pitch) > PHOTON_VISION.MAX_ANGLE;
   }
 
   /**
@@ -190,7 +200,7 @@ public class PhotonVisionCamera extends SubsystemBase {
   public double getTargetYaw(int[] fiducialIds, long timeoutMs) {
     for (int id : fiducialIds) {
       double yaw = getTargetYaw(id, timeoutMs);
-      if (yaw != Double.NaN) {
+      if (!Double.isNaN(yaw)) {
         return yaw;
       }
     }
@@ -216,9 +226,9 @@ public class PhotonVisionCamera extends SubsystemBase {
    */
   public double getTargetPitch(int[] fiducialIds, long timeoutMs) {
     for (int id : fiducialIds) {
-      double yaw = getTargetPitch(id, timeoutMs);
-      if (yaw != Double.NaN) {
-        return yaw;
+      double pitch = getTargetPitch(id, timeoutMs);
+      if (!Double.isNaN(pitch)) {
+        return pitch;
       }
     }
     return Double.NaN;

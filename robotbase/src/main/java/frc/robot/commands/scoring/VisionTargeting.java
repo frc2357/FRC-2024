@@ -26,6 +26,7 @@ public class VisionTargeting extends Command {
     Robot.pivot.setAngle(m_currentAngle);
     Robot.shooter.setRPM(m_currentRpms);
 
+    SmartDashboard.putNumber("camera pitch", pitch);
     SmartDashboard.putNumber("Current pitch", pitch);
     SmartDashboard.putNumber("Pivot vision setpoint", m_currentAngle);
     SmartDashboard.putNumber("Shooter vision RPMs", m_currentRpms);
@@ -43,9 +44,10 @@ public class VisionTargeting extends Command {
   }
 
   private void updateVisionTargeting(double pitch) {
+    System.out.println(pitch);
     int curveIndex = RobotMath.getCurveSegmentIndex(Robot.shooterCurve, pitch);
     if (curveIndex == -1) {
-      System.err.println("[VisionTargeting] pitch out of range");
+      // System.err.println("[VisionTargeting] pitch out of range");
       m_currentAngle = Double.NaN;
       m_currentRpms = Double.NaN;
       return;

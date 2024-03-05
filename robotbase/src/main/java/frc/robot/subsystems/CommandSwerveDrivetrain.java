@@ -14,6 +14,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
+import frc.robot.Constants.SWERVE;
 import frc.robot.Robot;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -33,15 +34,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
   private final SwerveRequest.RobotCentric robotRelative =
       new SwerveRequest.RobotCentric().withDriveRequestType(DriveRequestType.Velocity);
-
-  // Uncomment below for CUBE_BOT
-  // private final SwerveRequest.FieldCentric fieldRelative =
-  // new
-  // SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.Velocity);
-
-  // private final SwerveRequest.RobotCentric robotRelative =
-  // new
-  // SwerveRequest.RobotCentric().withDriveRequestType(DriveRequestType.Velocity);
 
   public CommandSwerveDrivetrain(
       SwerveDrivetrainConstants driveTrainConstants,
@@ -73,20 +65,22 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     kp *= Math.max(1, vy * 1);
     Constants.SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.setP(kp);
 
-    double rotation = Constants.SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.calculate(tx, 0);
+    double rotation =
+        Constants.SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.calculate(
+            tx, SWERVE.TARGET_LOCK_YAW_SETPOINT);
     double rotationOutput =
         !hasTarget
-            ? Robot.driverControls.getRotation()
+            ? Robot.driverControls.getRotation() * SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND
             : rotation + Math.copySign(Constants.SWERVE.TARGET_LOCK_FEED_FORWARD, rotation);
+    // System.out.println("Rotation: " + rotation);
+    // System.out.println("Rotation output: " + rotationOutput);
+    // System.out.println("Yaw: " + tx);
     applyRequest(
         () ->
             fieldRelative
-                .withVelocityX(
-                    velocityXSpeedMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
-                .withVelocityY(
-                    velocityYSpeedMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
-                .withRotationalRate(
-                    rotationOutput * Constants.SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND));
+                .withVelocityX(velocityXSpeedMetersPerSecond)
+                .withVelocityY(velocityYSpeedMetersPerSecond)
+                .withRotationalRate(rotationOutput));
   }
 
   public void driveRobotRelative(
@@ -96,13 +90,9 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     applyRequest(
         () ->
             robotRelative
-                .withVelocityX(
-                    velocityXMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
-                .withVelocityY(
-                    velocityYMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
-                .withRotationalRate(
-                    rotationRateRadiansPerSecond
-                        * Constants.SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND));
+                .withVelocityX(velocityXMetersPerSecond)
+                .withVelocityY(velocityYMetersPerSecond)
+                .withRotationalRate(rotationRateRadiansPerSecond));
   }
 
   public void driveFieldRelative(
@@ -112,13 +102,9 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     applyRequest(
         () ->
             fieldRelative
-                .withVelocityX(
-                    velocityXMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
-                .withVelocityY(
-                    velocityYMetersPerSecond * Constants.SWERVE.MAX_SPEED_METERS_PER_SECOND)
-                .withRotationalRate(
-                    rotationRateRadiansPerSecond
-                        * Constants.SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND));
+                .withVelocityX(velocityXMetersPerSecond)
+                .withVelocityY(velocityYMetersPerSecond)
+                .withRotationalRate(rotationRateRadiansPerSecond));
   }
 
   /**

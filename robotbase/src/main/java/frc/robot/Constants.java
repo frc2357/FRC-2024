@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import java.util.function.BooleanSupplier;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
@@ -24,9 +25,6 @@ import org.photonvision.PhotonPoseEstimator.PoseStrategy;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static class OPERATOR_CONSTANTS {
-    public static final int DRIVER_CONTROLLER_PORT = 0;
-  }
 
   public static final class CAN_ID {
     public static final int PIGEON_ID = 5;
@@ -93,7 +91,7 @@ public final class Constants {
     public static final double PIECE_TRACKING_X_METERS_PER_SECOND = 2;
 
     // Target Lock
-    public static final double TARGET_LOCK_ROTATION_KP = 0.02;
+    public static final double TARGET_LOCK_ROTATION_KP = 0.1;
     public static final double TARGET_LOCK_ROTATION_KI = 0.0;
     public static final double TARGET_LOCK_ROTATION_KD = 0.0;
     public static final PIDController TARGET_LOCK_ROTATION_PID_CONTROLLER =
@@ -101,26 +99,41 @@ public final class Constants {
             TARGET_LOCK_ROTATION_KP, TARGET_LOCK_ROTATION_KI, TARGET_LOCK_ROTATION_KD);
 
     public static final double TARGET_LOCK_FEED_FORWARD = 0.0;
-    public static final double TARGET_LOCK_TOLERANCE = 1;
+    public static final double TARGET_LOCK_TOLERANCE = 1.5;
+    public static final double TARGET_LOCK_YAW_SETPOINT =
+        0; // PhotonVision is consistently 2 degrees to the right of our target
 
     // Translate to Apriltag
     public static final PIDController APRILTAG_ROTATION_PID_CONTROLLER =
-        new PIDController(0.03, 0, 0.01);
+        new PIDController(5, 0, 0.0);
+    public static final double APRILTAG_ROTATION_FEEDFORWARD = 0.00001;
     public static final PIDController APRILTAG_X_TRANSLATION_PID_CONTROLLER =
-        new PIDController(0.05, 0, 0);
+        new PIDController(0.15, 0, 0);
     public static final PIDController APRILTAG_Y_TRANSLATION_PID_CONTROLLER =
-        new PIDController(0.08, 0, 0);
+        new PIDController(0.15, 0, 0);
 
-    public static final double APRILTAG_YAW_TOLERANCE = 0.5;
+    public static final double APRILTAG_YAW_TOLERANCE = 1;
     public static final double APRILTAG_PITCH_TOLERANCE = 0.5;
-    public static final double APRILTAG_ROTATION_TOLERANCE = .025; // Radians
+    public static final double APRILTAG_ROTATION_TOLERANCE_RADIANS = 0.02;
     public static final double APRILTAG_PITCH_MAGIC_OFFSET = 12.5;
     public static final double APRILTAG_CLOSE_PITCH = 4.0;
     public static final double APRILTAG_CLOSE_YAW_FACTOR = 2.0;
 
     public static final double AMP_YAW_SETPOINT = 0;
-    public static final double AMP_PITCH_SETPOINT = 3;
-    public static final double AMP_ROTATION_SETPOINT = Math.PI / 2;
+    public static final double AMP_PITCH_SETPOINT = 5;
+    public static final double BLUE_AMP_ROTATION_SETPOINT_RADIANS = -Math.PI / 2;
+    public static final double RED_AMP_ROTATION_SETPOINT_RADIANS = Math.PI / 2;
+
+    public static final double STAGE_YAW_SETPOINT = 0;
+    public static final double STAGE_PITCH_SETPOINT = 15;
+
+    // Tune this during field calibration
+    public static final double BLUE_LEFT_STAGE_ROTATION_SETPOINT_RADIANS = 0;
+    public static final double BLUE_RIGHT_STAGE_ROTATION_SETPOINT_RADIANS = 0;
+    public static final double BLUE_CENTER_STAGE_ROTATION_SETPOINT_RADIANS = 2.17;
+    public static final double RED_LEFT_STAGE_ROTATION_SETPOINT_RADIANS = 0;
+    public static final double RED_RIGHT_STAGE_ROTATION_SETPOINT_RADIANS = 0;
+    public static final double RED_CENTER_STAGE_ROTATION_SETPOINT_RADIANS = 0;
 
     public static final double TIME_TO_COAST_SECONDS = 5;
   }
@@ -134,15 +147,15 @@ public final class Constants {
         new BooleanSupplier() {
           @Override
           public boolean getAsBoolean() {
-            return false;
+            return Robot.state.getAlliance() == Alliance.Red;
           }
         };
   }
 
   public static final class CONTROLLER {
-    public static final int DRIVE_CONTROLLER_PORT = 0;
+    public static final int DRIVE_CONTROLLER_PORT = 1;
     public static final double DRIVE_CONTROLLER_DEADBAND = 0.01;
-    public static final int CODRIVER_CONTROLLER_PORT = 1;
+    public static final int CODRIVER_CONTROLLER_PORT = 0;
     public static final double CODRIVE_CONTROLLER_DEADBAND = 0.025;
     public static final double SWERVE_TRANSLATIONAL_DEADBAND = 0.0;
     public static final double SWERVE_ROTATIONAL_DEADBAND = 0.0;
@@ -154,8 +167,8 @@ public final class Constants {
 
   public static final class SHOOTER {
     public static final double SOURCE_INTAKE_RPM = -1500;
-
     public static final double FEED_END_AFFECTOR_RPM = 1500;
+    public static final double DEFAULT_STOWED_RPMS = 2000;
 
     public static final double SHOOTER_AXIS_STEP_INTERVAL = 0.1;
 
@@ -182,7 +195,7 @@ public final class Constants {
     public static final double BOTTOM_MOTOR_P = 0.0;
     public static final double BOTTOM_MOTOR_I = 0.0;
     public static final double BOTTOM_MOTOR_D = 0.0;
-    public static final double BOTTOM_MOTOR_FF = 0.0001825;
+    public static final double BOTTOM_MOTOR_FF = 0.0002;
 
     public static final double RPM_TOLERANCE = 100;
   }
@@ -191,7 +204,7 @@ public final class Constants {
     public static final double AXIS_MAX_SPEED = 0.8;
 
     public static final double FEED_TO_SHOOTER_TIMEOUT = 0;
-    public static final double FLOOR_INTAKE_REVERSE_TIMEOUT = 0.2;
+    public static final double FLOOR_INTAKE_REVERSE_TIMEOUT = 0.1;
 
     public static final double PICKUP_SPEED_PERCENT_OUTPUT = .75;
     public static final double SLOW_PICKUP_SPEED_PERCENT_OUTPUT = .1;
@@ -214,7 +227,7 @@ public final class Constants {
     public static final double MAX_PIVOT_ANGLE = 70; // TODO TUNE
     public static final double MIN_PIVOT_ANGLE = 17.5;
 
-    public static final double END_AFFECTOR_PRELOAD_ANGLE = 60;
+    public static final double END_AFFECTOR_PRELOAD_ANGLE = 68;
     public static final double INTAKE_FROM_SOURCE_ANGLE = 55;
     public static final double DEFAULT_PIVOT_ANGLE = 45; // angle of intake
 
@@ -328,6 +341,8 @@ public final class Constants {
         AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
     public static final PoseStrategy POSE_STRATEGY = PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
 
+    public static final double MAX_ANGLE = 45;
+
     public static final String LOST_CONNECTION_ERROR_MESSAGE =
         "----------\nPHOTON VISION HAS LOST CONNECTION!\nVISION RESULTS WILL NOT BE UPDATED!\n----------";
     public static final String CONNECTION_REGAINED_NOFICATION_MESSAGE =
@@ -416,6 +431,10 @@ public final class Constants {
         new int[] {BLUE_STAGE_LEFT, BLUE_STAGE_MIDDLE, BLUE_STAGE_RIGHT};
     public static final int[] RED_STAGE_TAGS =
         new int[] {RED_STAGE_LEFT, RED_STAGE_MIDDLE, RED_STAGE_RIGHT};
+
+    public static final int[] RIGHT_STAGE_TAGS = new int[] {12, 16};
+    public static final int[] LEFT_STAGE_TAGS = new int[] {11, 15};
+    public static final int[] CENTER_STAGE_TAGS = new int[] {13, 14};
 
     public static final int[] STAGE_TAGS =
         new int[] {

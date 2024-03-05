@@ -16,7 +16,7 @@ public class Close3Speaker extends SequentialCommandGroup {
   public Close3Speaker() {
     super(
         // First Shot
-        new AutoPivotSetAngle(95),
+        new AutoPivotSetAngle(60),
         new AutoShooterSetRPMAndFinish(3000),
         new ShooterWaitForRPM().withTimeout(0.5),
         new IntakeRun(0.75, false).withTimeout(1),
@@ -24,12 +24,13 @@ public class Close3Speaker extends SequentialCommandGroup {
         // Run path
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(
-                new AutoPivotSetAngle(45),
+                new AutoPivotSetAngle(31),
                 new DriveChoreoPath("Close3Speaker.1"),
                 new WaitCommand(1),
-                new AutoPivotSetAngle(50),
+                new AutoPivotSetAngle(34.5),
                 new DriveChoreoPath("Close3Speaker.2"),
                 new WaitCommand(1),
+                new AutoPivotSetAngle(35),
                 new DriveChoreoPath("Close3Speaker.3"),
                 new WaitCommand(2)),
             new IntakeRun(0.75, true),

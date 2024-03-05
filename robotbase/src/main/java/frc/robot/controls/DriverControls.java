@@ -5,9 +5,13 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Robot;
+import frc.robot.commands.drive.DriveToStage;
+import frc.robot.commands.drive.TargetLockOnNote;
+import frc.robot.commands.drive.TargetLockOnSpeaker;
 import frc.robot.commands.intake.IntakeFeedToShooter;
 import frc.robot.commands.intake.IntakeNoteFromFloor;
 import frc.robot.commands.scoring.VisionTargeting;
@@ -21,6 +25,7 @@ public class DriverControls implements RumbleInterface {
   private double m_deadband;
 
   private JoystickButton m_aButton;
+  private JoystickButton m_bButton;
   private JoystickButton m_xButton;
   private JoystickButton m_yButton;
 
@@ -40,6 +45,7 @@ public class DriverControls implements RumbleInterface {
     m_deadband = deadband;
 
     m_aButton = new JoystickButton(m_controller, Button.kA.value);
+    m_bButton = new JoystickButton(m_controller, Button.kB.value);
     m_xButton = new JoystickButton(m_controller, Button.kX.value);
     m_yButton = new JoystickButton(m_controller, Button.kY.value);
 
@@ -70,21 +76,18 @@ public class DriverControls implements RumbleInterface {
 
     m_backButton.onTrue(new InstantCommand(() -> Robot.swerve.setYaw(0)));
     m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.setYaw(180)));
-    m_leftTrigger.whileTrue(new IntakeNoteFromFloor());
 
-    // m_rightBumper.onTrue(
-    //     new ConditionalCommand(
-    //         new AmpScore(),
-    //         new (),
-    //         () -> Robot.state.isNote(NoteState.END_AFFECTOR_PRELOAD)));
+    m_leftTrigger.toggleOnTrue(
+        new ParallelCommandGroup(new IntakeNoteFromFloor(), new TargetLockOnNote()));
 
     m_leftBumper.whileTrue(new SourceIntakeFromShooter());
-    // m_leftBumper.onTrue(new InstantCommand(() ->
-    // System.out.println(Robot.climber.getStageLineupRotationSetpoint())));
 
-    // m_rightTriggerPrime.whileTrue(new ParallelCommandGroup(new TargetLockOnSpeaker(), new
-    // VisionTargeting()));
-    m_rightTriggerPrime.whileTrue(new VisionTargeting());
+    // scoring
+    // m_rightBumper.onTrue(new AmpSequenceConditional());
+    m_rightBumper.whileTrue(new DriveToStage());
+
+    m_rightTriggerPrime.whileTrue(
+        new ParallelCommandGroup(new VisionTargeting(), new TargetLockOnSpeaker()));
     m_rightTriggerShoot.whileTrue(new IntakeFeedToShooter());
   }
 
