@@ -19,6 +19,7 @@ public class AutoCommandChooser {
           new DriveChoreoPath("Line"),
           // new DriveChoreoPath("Close3Speaker"),
           new Close3Speaker(),
+          new DriveChoreoPath("RefSideFar2", "Centerline 3 Peice Drive Path ONLY"),
           // new DriveChoreoPath("RotationTest"),
           // new DriveChoreoPath("BoxTest"),
           // new DriveChoreoPath("TriangleTest"),

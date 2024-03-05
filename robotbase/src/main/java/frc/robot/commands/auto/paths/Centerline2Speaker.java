@@ -17,7 +17,7 @@ public class Centerline2Speaker extends SequentialCommandGroup{
     public Centerline2Speaker(){
         super(
         // First Shot
-        new AutoPivotSetAngle(95),
+        new AutoPivotSetAngle(60),
         new AutoShooterSetRPMAndFinish(3000),
         new ShooterWaitForRPM().withTimeout(0.5),
         new IntakeRun(0.75, false).withTimeout(1),
