@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.drive.SetCoastOnDisable;
+import frc.robot.commands.state.GetAlliance;
 import frc.robot.controls.CodriverControls;
 import frc.robot.controls.DriverControls;
 import frc.robot.state.RobotState;
@@ -33,6 +34,7 @@ import frc.robot.subsystems.ShooterPhotonCamera;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private Command m_setCoastOnDisable;
+  private Command m_allianceGetter;
   private RobotContainer m_robotContainer;
 
   public static RobotState state;
@@ -110,6 +112,8 @@ public class Robot extends TimedRobot {
 
     m_setCoastOnDisable = new SetCoastOnDisable();
     m_setCoastOnDisable.schedule();
+    m_allianceGetter = new GetAlliance();
+    m_allianceGetter.schedule();
   }
 
   /**
