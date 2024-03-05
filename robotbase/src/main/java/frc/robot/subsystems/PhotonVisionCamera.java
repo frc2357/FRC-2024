@@ -78,7 +78,10 @@ public class PhotonVisionCamera extends SubsystemBase {
         List<PhotonTrackedTarget> targetList = m_result.targets;
         m_bestTargetFiducialId = m_result.getBestTarget().getFiducialId();
         for (PhotonTrackedTarget targetSeen : targetList) {
-          TargetInfo targetInfo = m_targetInfo[targetSeen.getFiducialId()];
+          int id = targetSeen.getFiducialId();
+          id = id == -1 ? 0 : id;
+          TargetInfo targetInfo = m_targetInfo[id];
+          // System.out.println(targetSeen.getFiducialId());
           targetInfo.yaw = targetSeen.getYaw();
           targetInfo.pitch = targetSeen.getPitch();
           targetInfo.timestamp = now;
@@ -122,7 +125,8 @@ public class PhotonVisionCamera extends SubsystemBase {
    * Compares the current system time to the last cached timestamp and sees if it is older than is
    * acceptable.
    *
-   * @param fiducialId Fiducial ID of the desired target to valid the data of.
+   * @param fiducialId Fiducial ID of the desired target to valid the data of. Notes have a
+   *     fiducialId of 0
    * @param timeoutMs The amount of milliseconds past which target info is deemed expired
    * @return If the camera has seen the target within the timeout given
    */

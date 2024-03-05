@@ -11,6 +11,7 @@ public class RumbleCodriverController extends Command {
   @Override
   public void initialize() {
     Robot.codriverControls.setRumble(CONTROLLER.CODRIVE_RUMBLE_INTENSITY);
+    timer.reset();
     timer.start();
   }
 
