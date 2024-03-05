@@ -58,7 +58,7 @@ public class Robot extends TimedRobot {
     {50, 60, 3000}, // Lower bound
     {15, 60, 3000}, // Center Subwoofer
     {14, 60, 3000}, // Side Subwoofer
-    {9, 55, 3000}, // Side Subwoofer
+    {9, 55, 3000}, // Between Subwoofer and Podium
     {-10.75, 35, 4000}, // Podium
     {-18.2, 28.5, 4250}, // Stage Apriltag
     {-20.5, 26.5, 4250}, // Wing line
