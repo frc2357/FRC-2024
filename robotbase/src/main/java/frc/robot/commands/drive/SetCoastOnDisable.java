@@ -7,11 +7,11 @@ import frc.robot.Constants.SWERVE;
 import frc.robot.Robot;
 
 public class SetCoastOnDisable extends Command {
-  Timer m_timer;
+  Timer m_timer = new Timer();
 
   @Override
   public void initialize() {
-    m_timer = new Timer();
+    m_timer.reset();
     m_timer.start();
   }
 
