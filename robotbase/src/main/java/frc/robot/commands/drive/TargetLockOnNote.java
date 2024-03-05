@@ -1,6 +1,7 @@
 package frc.robot.commands.drive;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.SWERVE;
 import frc.robot.Robot;
 
 public class TargetLockOnNote extends Command {
@@ -21,8 +22,8 @@ public class TargetLockOnNote extends Command {
     var targetYaw = Robot.intakeCam.getNoteTargetYaw();
 
     Robot.swerve.driveTargetLock(
-        Robot.driverControls.getY(),
-        Robot.driverControls.getX(),
+        Robot.driverControls.getY() * SWERVE.MAX_SPEED_METERS_PER_SECOND,
+        Robot.driverControls.getX() * SWERVE.MAX_SPEED_METERS_PER_SECOND,
         targetYaw != Double.NaN ? targetYaw : 0,
         targetYaw != Double.NaN);
   }
