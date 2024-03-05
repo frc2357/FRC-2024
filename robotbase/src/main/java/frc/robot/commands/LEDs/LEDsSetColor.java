@@ -14,7 +14,7 @@ public class LEDsSetColor extends Command {
   }
 
   @Override
-  public void initialize() {
+  public void end(boolean interrupted) {
     Robot.LEDs.setColor(m_color);
   }
 
