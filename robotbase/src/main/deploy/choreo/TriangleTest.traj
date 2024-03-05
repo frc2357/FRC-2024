@@ -1,5 +1,8 @@
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d3b38ec (Path adjustments)
   "samples": [
     {
       "x": 2.45543909072876,
@@ -1092,6 +1095,7 @@
     }
   ],
   "eventMarkers": []
+<<<<<<< HEAD
 =======
     "samples": [
         {
@@ -2185,4 +2189,6 @@
         }
     ]
 >>>>>>> 12b779f (set up auto, needs testing.)
+=======
+>>>>>>> d3b38ec (Path adjustments)
 }
