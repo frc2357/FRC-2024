@@ -125,7 +125,8 @@ public class PhotonVisionCamera extends SubsystemBase {
    * Compares the current system time to the last cached timestamp and sees if it is older than is
    * acceptable.
    *
-   * @param fiducialId Fiducial ID of the desired target to valid the data of. Notes have a fiducialId of 0
+   * @param fiducialId Fiducial ID of the desired target to valid the data of. Notes have a
+   *     fiducialId of 0
    * @param timeoutMs The amount of milliseconds past which target info is deemed expired
    * @return If the camera has seen the target within the timeout given
    */
