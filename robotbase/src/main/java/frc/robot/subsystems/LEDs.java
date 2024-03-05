@@ -34,5 +34,4 @@ public class LEDs extends SubsystemBase {
   }
 
   public static final Color MELTDOWN_ORANGE = new Color(255, 50, 0);
-
 }
