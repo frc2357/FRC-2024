@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import java.util.function.BooleanSupplier;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
@@ -149,7 +150,7 @@ public final class Constants {
         new BooleanSupplier() {
           @Override
           public boolean getAsBoolean() {
-            return false;
+            return Robot.state.getAlliance() == Alliance.Red;
           }
         };
   }
