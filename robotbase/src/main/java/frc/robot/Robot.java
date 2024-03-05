@@ -122,6 +122,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     shooterCam.updateResult();
+    intakeCam.updateResult();
 
     // Runs the Scheduler. This is responsible for polling buttons, adding
     // newly-scheduled
