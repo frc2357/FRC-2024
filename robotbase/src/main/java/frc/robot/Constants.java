@@ -182,7 +182,7 @@ public final class Constants {
     public static final boolean BOTTOM_MOTOR_INVERTED = true;
 
     public static final int TOP_MOTOR_STALL_LIMIT_AMPS = 40;
-    public static final int TOP_MOTOR_FREE_LIMIT_AMPS = 60;
+    public static final int TOP_MOTOR_FREE_LIMIT_AMPS = 40;
 
     public static final int BOTTOM_MOTOR_STALL_LIMIT_AMPS = 40;
     public static final int BOTTOM_MOTOR_FREE_LIMIT_AMPS = 40;
