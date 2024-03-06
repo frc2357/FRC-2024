@@ -41,7 +41,7 @@ public class ClimberLevelClimb extends Command {
       leftSpeed -= calculatedOffset;
     }
 
-    Robot.climber.setSpeed(rightSpeed + axisSpeed, leftSpeed + axisSpeed);
+    Robot.climber.setSpeed(rightSpeed * axisSpeed, leftSpeed * axisSpeed);
   }
 
   @Override
