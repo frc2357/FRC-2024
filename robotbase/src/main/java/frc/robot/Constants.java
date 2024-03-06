@@ -304,6 +304,9 @@ public final class Constants {
 
     public static final double ROTATE_PAST_READY_SPEED = -0.2;
     public static final double PAST_READY_ROTATIONS = -115;
+
+    public static final double FINAL_RETRACT_SPEED = -0.2;
+    public static final double FINAL_RETRACT_ROTATIONS = -115;
   }
 
   public static final class END_AFFECTOR {
@@ -359,6 +362,7 @@ public final class Constants {
     public static final double AMP_SCORE_ROTATIONS = 6;
     public static final double TRAP_PREPOSE_ROTATIONS = 4.0;
     public static final double TRAP_CLIMB_ROTATIONS = 7.0;
+    public static final double POST_TRAP_SCORE_ROTATIONS = 6.0;
   }
 
   public static final class LEDS {

@@ -106,7 +106,9 @@ public class AutoClimb extends SequentialCommandGroup {
                 CLIMBER.ROTATE_PAST_PREPOSE_SPEED, CLIMBER.PREPOSE_ROTATIONS),
             new SequentialCommandGroup(
                 new Print("[AutoClimb] Lining up"),
-                new DriveToStage(),
+                new ParallelDeadlineGroup(
+                    new PressToContinue(continueButton),
+                    new DriveToStage()),
                 new Print("[AutoClimb] Driving under chain"),
                 new DriveAtSpeed(
                     -(SWERVE.DISTANCE_TO_UNDER_CHAIN / SWERVE.SECONDS_TO_UNDER_CHAIN),
@@ -180,14 +182,19 @@ public class AutoClimb extends SequentialCommandGroup {
             new ExtensionArmMoveToRotations(EXTENSION_ARM.TRAP_CLIMB_ROTATIONS)),
         new Print(
             "[AutoClimb] Ready to climb! Co-driver climbs using right trigger, press Y to score when in position"),
-        new ParallelCommandGroup(
+        new ParallelDeadlineGroup(
             new SequentialCommandGroup(
                 new PressToContinue(continueButton),
                 new Print("[AutoClimb] Scoring note!"),
                 new EndAffectorSetSpeed(END_AFFECTOR.SCORE_SPEED_TRAP),
-                new WaitCommand(END_AFFECTOR.SECONDS_TO_SCORE_TRAP),
-                new EndAffectorStop(),
-                new Print("[AutoClimb] Scored! Co-driver can keep the robot up for climbing")),
+                new PressToContinue(continueButton),
+                new Print("[AutoClimb] Scored! Co-driver can keep the robot up for climbing"),
+                new EndAffectorStop()),
+            new ClimberLevelClimb()),
+        new SequentialCommandGroup(
+            new ClimberSpeed(-0.25, -0.25).withTimeout(1),
+            new ExtensionArmMoveToRotations(EXTENSION_ARM.POST_TRAP_SCORE_ROTATIONS),
+            new Print("[AutoClimb] Retracted extension arm."),
             new ClimberLevelClimb()));
   }
 }

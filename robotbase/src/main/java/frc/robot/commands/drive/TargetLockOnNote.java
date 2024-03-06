@@ -24,8 +24,8 @@ public class TargetLockOnNote extends Command {
     Robot.swerve.driveTargetLock(
         Robot.driverControls.getY() * SWERVE.MAX_SPEED_METERS_PER_SECOND,
         Robot.driverControls.getX() * SWERVE.MAX_SPEED_METERS_PER_SECOND,
-        targetYaw != Double.NaN ? targetYaw : 0,
-        targetYaw != Double.NaN);
+        !Double.isNaN(targetYaw) ? targetYaw : 0,
+        !Double.isNaN(targetYaw));
   }
 
   @Override

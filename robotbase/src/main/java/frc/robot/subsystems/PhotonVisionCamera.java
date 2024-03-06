@@ -31,7 +31,7 @@ public class PhotonVisionCamera extends SubsystemBase {
   protected final TargetInfo[] m_targetInfo;
   protected PhotonPoseEstimator m_poseEstimator;
   protected final Transform3d ROBOT_TO_CAMERA_TRANSFORM; // if this changes, we have bigger issues.
-  protected static boolean m_connectionLost;
+  protected boolean m_connectionLost;
   protected int m_bestTargetFiducialId;
 
   /**

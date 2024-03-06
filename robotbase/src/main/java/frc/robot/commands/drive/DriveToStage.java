@@ -26,11 +26,14 @@ public class DriveToStage extends Command {
     Robot.shooterCam.setAprilTagPipelineActive();
 
     // reset pids
+    m_pitchController.setTolerance(SWERVE.APRILTAG_PITCH_TOLERANCE);
     m_pitchController.setSetpoint(SWERVE.STAGE_PITCH_SETPOINT);
     m_pitchController.reset();
+    m_yawController.setTolerance(SWERVE.APRILTAG_YAW_TOLERANCE);
     m_yawController.setSetpoint(SWERVE.STAGE_YAW_SETPOINT);
     m_yawController.reset();
 
+    m_rotationController.setTolerance(SWERVE.APRILTAG_ROTATION_TOLERANCE_RADIANS);
     m_rotationController.setSetpoint(DriveUtility.getStageRotationGoal());
     m_rotationController.enableContinuousInput(-Math.PI, Math.PI);
     m_rotationController.reset();
