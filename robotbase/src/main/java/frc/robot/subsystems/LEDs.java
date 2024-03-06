@@ -7,12 +7,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LEDS;
 
 public class LEDs extends SubsystemBase {
-  
+
   private AddressableLED m_LED;
   private AddressableLEDBuffer m_LEDBuffer;
 
   public static final Color MELTDOWN_ORANGE = new Color(255, 50, 0);
-  
 
   public LEDs() {
     m_LED = new AddressableLED(LEDS.PORT_NUMBER);
@@ -36,5 +35,4 @@ public class LEDs extends SubsystemBase {
   public void stop() {
     setColor(new Color());
   }
-
 }
