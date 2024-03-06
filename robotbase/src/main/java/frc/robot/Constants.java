@@ -330,6 +330,11 @@ public final class Constants {
     public static final double TRAP_SCORE_ROTATIONS = 0; // TODO: TUNE
   }
 
+  public static final class LEDS {
+    public static final int PORT_NUMBER = 0;
+    public static final int STRIP_LENGTH = 30;
+  }
+
   public static final class SCORING {
     public static final double SECONDS_PRELOAD_NOTE = 1;
 
