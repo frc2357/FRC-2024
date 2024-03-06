@@ -24,7 +24,7 @@ public class ClimberLevelClimb extends Command {
 
     if (Robot.codriverControls.getRightTriggerAxis() > 0) {
       axisSpeed = 1;
-    } 
+    }
     if (Robot.codriverControls.getLeftTriggerAxis() > 0) {
       axisSpeed = -1;
     }
@@ -32,14 +32,17 @@ public class ClimberLevelClimb extends Command {
     double roll = Robot.swerve.getRoll();
     double calculatedOffset = Math.abs(CLIMBER.LEVEL_CLIMB_PID_CONTROLLER.calculate(roll));
 
-    double rightSpeed = CLIMBER.LEVEL_CLIMB_FEEDFORWARD * axisSpeed;
-    double leftSpeed = CLIMBER.LEVEL_CLIMB_FEEDFORWARD * axisSpeed;
+    double rightSpeed = CLIMBER.LEVEL_CLIMB_MAX * axisSpeed;
+    double leftSpeed = CLIMBER.LEVEL_CLIMB_MAX * axisSpeed;
 
     if (roll >= m_startingRollOffset + CLIMBER.LEVEL_CLIMB_TOLERANCE / 2) {
       rightSpeed -= calculatedOffset;
     } else if (roll <= m_startingRollOffset - CLIMBER.LEVEL_CLIMB_TOLERANCE / 2) {
       leftSpeed -= calculatedOffset;
     }
+
+    rightSpeed = Math.min(CLIMBER.LEVEL_CLIMB_MIN, rightSpeed);
+    leftSpeed = Math.min(CLIMBER.LEVEL_CLIMB_MIN, leftSpeed);
 
     Robot.climber.setSpeed(rightSpeed, leftSpeed);
   }

@@ -16,7 +16,6 @@ import frc.robot.Constants.SWERVE;
 import frc.robot.Robot;
 import frc.robot.commands.drive.DefaultDrive;
 import frc.robot.commands.drive.DriveAtSpeed;
-import frc.robot.commands.drive.DriveToStage;
 import frc.robot.commands.endAffector.EndAffectorSetSpeed;
 import frc.robot.commands.endAffector.EndAffectorStop;
 import frc.robot.commands.extensionArm.ExtensionArmMoveToRotations;
@@ -28,7 +27,7 @@ import frc.robot.commands.shooter.ShooterStop;
 import frc.robot.commands.state.SetNoteState;
 import frc.robot.state.RobotState.NoteState;
 
-public class AutoClimb extends SequentialCommandGroup {
+public class ManualLineUpClimb extends SequentialCommandGroup {
   private static class Print extends Command {
     private String m_msg;
 
@@ -38,7 +37,7 @@ public class AutoClimb extends SequentialCommandGroup {
 
     @Override
     public void initialize() {
-      System.out.println("[AutoClimb] " + m_msg);
+      System.out.println("[ManualLineUpClimb] " + m_msg);
     }
 
     public boolean isFinished() {
@@ -97,47 +96,38 @@ public class AutoClimb extends SequentialCommandGroup {
     }
   }
 
-  public AutoClimb(JoystickButton continueButton) {
+  public ManualLineUpClimb(JoystickButton continueButton) {
     super(
-        new Print("[AutoClimb] Starting Auto Climb..."),
-        new ParallelCommandGroup(
+        new Print("Extending Arm, line it up with the bottom of the stage."),
+        new ParallelDeadlineGroup(
+            new PressToContinue(continueButton),
             new ShooterStop(),
             new ClimberRotatePastRotations(
                 CLIMBER.ROTATE_PAST_PREPOSE_SPEED, CLIMBER.PREPOSE_ROTATIONS),
-            new SequentialCommandGroup(
-                new Print("[AutoClimb] Lining up"),
-                new ParallelDeadlineGroup(
-                    new PressToContinue(continueButton), new DriveToStage()))),
-        new ParallelDeadlineGroup(
-            new Print("[AutoClimb] Manual line up adjustment, if needed"),
-            new ParallelDeadlineGroup(new PressToContinue(continueButton), new DefaultDrive())),
-        new ParallelCommandGroup(
-            new Print("[AutoClimb] Driving under chain"),
-            new DriveAtSpeed(
-                -(SWERVE.DISTANCE_TO_UNDER_CHAIN / SWERVE.SECONDS_TO_UNDER_CHAIN),
-                0,
-                SWERVE.SECONDS_TO_UNDER_CHAIN)),
-        new Print("[AutoClimb] Engaging hooks on chain"),
+            new ExtensionArmMoveToRotations(EXTENSION_ARM.STAGE_LINE_UP_ROTATIONS),
+            new DefaultDrive()),
+        new Print("Lining up hooks on chain"),
         new ParallelCommandGroup(
             new ClimberRotatePastRotations(
                 CLIMBER.ROTATE_PAST_TEN_DEGREES_SPEED, CLIMBER.TEN_DEGREES_ROTATIONS),
+            new ExtensionArmMoveToRotations(EXTENSION_ARM.HOME_ROTATIONS),
             new DriveAtSpeed(
-                SWERVE.DISTANCE_TO_TOUCH_CHAIN / SWERVE.SECONDS_TO_TOUCH_CHAIN,
+                SWERVE.DISTANCE_FROM_STAGE_TO_CHAIN / SWERVE.SECONDS_FROM_STAGE_TO_CHAIN,
                 0,
-                SWERVE.SECONDS_TO_TOUCH_CHAIN)),
-        new Print("[AutoClimb] Ensure Hooks are engaged. Adjust if needed"),
+                SWERVE.SECONDS_FROM_STAGE_TO_CHAIN)),
+        new Print("Ensure Hooks are engaged. Adjust if needed"),
 
         // Allow drive base to move now
         // TODO: Slow down drive for this
         new ParallelDeadlineGroup(new PressToContinue(continueButton), new DefaultDrive()),
-        new Print("[AutoClimb] Setting hooks"),
+        new Print("Setting hooks"),
         new ClimberRotatePastRotations(CLIMBER.SET_HOOKS_SPEED, CLIMBER.SET_HOOKS_ROTATIONS),
-        new Print("[AutoClimb] Ensure Hooks are set. Adjust if needed"),
+        new Print("Ensure Hooks are set. Adjust if needed"),
 
         // Allow drive base to move now
         // TODO: Slow down drive for this
         new ParallelDeadlineGroup(new PressToContinue(continueButton), new DefaultDrive()),
-        new Print("[AutoClimb] Positioning to transfer note"),
+        new Print("Positioning to transfer note"),
         new ParallelCommandGroup(
             new ClimberRotatePastRotations(
                 CLIMBER.ROTATE_PAST_EXTENSION_SPEED, CLIMBER.PAST_EXTENSION_ROTATIONS),
@@ -146,9 +136,9 @@ public class AutoClimb extends SequentialCommandGroup {
                     / SWERVE.SECONDS_TO_ROTATE_PAST_EXTENSION),
                 0,
                 SWERVE.SECONDS_TO_ROTATE_PAST_EXTENSION)),
-        new Print("[AutoClimb] Check position before transferring note"),
+        new Print("Check position before transferring note"),
         new PressToContinue(continueButton),
-        new Print("[AutoClimb] Transferring note"),
+        new Print("Transferring note"),
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(
                 // Note Preload
@@ -174,8 +164,7 @@ public class AutoClimb extends SequentialCommandGroup {
 
             // Hold until end of above command
             new PivotHoldAngle(PIVOT.END_AFFECTOR_PRELOAD_ANGLE)),
-        new Print(
-            "[AutoClimb] Co-driver adjust note now: right trigger is up, left trigger is down"),
+        new Print("Co-driver adjust note: right trigger is up, left trigger is down"),
         new ParallelDeadlineGroup(new PressToContinue(continueButton), new AdjustNote()),
         new ParallelCommandGroup(
             new ClimberRotatePastRotations(
@@ -183,21 +172,20 @@ public class AutoClimb extends SequentialCommandGroup {
             new DriveAtSpeed(
                 SWERVE.DISTANCE_TO_READY / SWERVE.SECONDS_TO_READY, 0, SWERVE.SECONDS_TO_READY),
             new ExtensionArmMoveToRotations(EXTENSION_ARM.TRAP_CLIMB_ROTATIONS)),
-        new Print(
-            "[AutoClimb] Ready to climb! Co-driver climbs using right trigger, press Y to score when in position"),
+        new Print("Ready to climb! Co-driver using right trigger, press Y when in position"),
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(
                 new PressToContinue(continueButton),
-                new Print("[AutoClimb] Scoring note!"),
+                new Print("Scoring note!"),
                 new EndAffectorSetSpeed(END_AFFECTOR.SCORE_SPEED_TRAP),
                 new PressToContinue(continueButton),
-                new Print("[AutoClimb] Scored! Co-driver can keep the robot up for climbing"),
                 new EndAffectorStop()),
             new ClimberLevelClimb()),
         new SequentialCommandGroup(
             new ClimberSpeed(-0.25, -0.25).withTimeout(1),
             new ExtensionArmMoveToRotations(EXTENSION_ARM.POST_TRAP_SCORE_ROTATIONS),
-            new Print("[AutoClimb] Retracted extension arm."),
-            new ClimberLevelClimb()));
+            new Print("Retracted extension arm.")),
+        new Print("Continue to adjust climb as needed."),
+        new ClimberLevelClimb());
   }
 }

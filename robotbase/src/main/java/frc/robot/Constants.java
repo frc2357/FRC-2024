@@ -124,7 +124,7 @@ public final class Constants {
     public static final double BLUE_AMP_ROTATION_SETPOINT_RADIANS = -Math.PI / 2;
     public static final double RED_AMP_ROTATION_SETPOINT_RADIANS = Math.PI / 2;
 
-    public static final double STAGE_YAW_SETPOINT = 4.35;
+    public static final double STAGE_YAW_SETPOINT = 0.0;
     public static final double STAGE_PITCH_SETPOINT = 12.2;
 
     // Tune this during field calibration
@@ -146,6 +146,10 @@ public final class Constants {
     public static final double SECONDS_TO_ROTATE_PAST_EXTENSION = 0.75;
     public static final double DISTANCE_TO_READY = 0.25;
     public static final double SECONDS_TO_READY = 0.5;
+
+    // Manual Line Up Climb
+    public static final double DISTANCE_FROM_STAGE_TO_CHAIN = 0.8;
+    public static final double SECONDS_FROM_STAGE_TO_CHAIN = 2.1;
   }
 
   public static final class CHOREO {
@@ -287,14 +291,15 @@ public final class Constants {
 
     // Auto Climb
     public static final PIDController LEVEL_CLIMB_PID_CONTROLLER = new PIDController(0.05, 0, 0);
-    public static final double LEVEL_CLIMB_FEEDFORWARD = 0.65;
+    public static final double LEVEL_CLIMB_MIN = 0.55;
+    public static final double LEVEL_CLIMB_MAX = 0.65;
     public static final double LEVEL_CLIMB_TOLERANCE = 3;
 
     public static final double ROTATE_PAST_PREPOSE_SPEED = -1.0;
     public static final double PREPOSE_ROTATIONS = -75;
 
     public static final double ROTATE_PAST_TEN_DEGREES_SPEED = -1.0;
-    public static final double TEN_DEGREES_ROTATIONS = -165;
+    public static final double TEN_DEGREES_ROTATIONS = -160;
 
     public static final double SET_HOOKS_SPEED = 0.2;
     public static final double SET_HOOKS_ROTATIONS = -145;
@@ -360,6 +365,7 @@ public final class Constants {
     public static final double NOTE_STOW_ROTATIONS = 1.4;
     public static final double AMP_PREPOSE_ROTATIONS = 3.75;
     public static final double AMP_SCORE_ROTATIONS = 6;
+    public static final double STAGE_LINE_UP_ROTATIONS = 1.83;
     public static final double TRAP_PREPOSE_ROTATIONS = 4.0;
     public static final double TRAP_CLIMB_ROTATIONS = 7.0;
     public static final double POST_TRAP_SCORE_ROTATIONS = 6.0;
