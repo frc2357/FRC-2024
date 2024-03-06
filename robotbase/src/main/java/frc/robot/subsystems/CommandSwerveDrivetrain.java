@@ -51,6 +51,20 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     setControl(requestSupplier.get());
   }
 
+  public double getYaw() {
+    return getPigeon2().getYaw().getValueAsDouble();
+  }
+
+  // Pigeon is rotated 90 degrees so pitch and roll are flipped
+  public double getRoll() {
+    return getPigeon2().getPitch().getValueAsDouble();
+  }
+
+  // Pigeon is rotated 90 degrees so pitch and roll are flipped
+  public double getPitch() {
+    return getPigeon2().getRoll().getValueAsDouble();
+  }
+
   public void setYaw(double yaw) {
     getPigeon2().setYaw(yaw);
   }
