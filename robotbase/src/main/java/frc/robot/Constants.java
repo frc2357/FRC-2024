@@ -124,13 +124,13 @@ public final class Constants {
     public static final double BLUE_AMP_ROTATION_SETPOINT_RADIANS = -Math.PI / 2;
     public static final double RED_AMP_ROTATION_SETPOINT_RADIANS = Math.PI / 2;
 
-    public static final double STAGE_YAW_SETPOINT = 0;
-    public static final double STAGE_PITCH_SETPOINT = 15;
+    public static final double STAGE_YAW_SETPOINT = 4.35;
+    public static final double STAGE_PITCH_SETPOINT = 12.2;
 
     // Tune this during field calibration
     public static final double BLUE_LEFT_STAGE_ROTATION_SETPOINT_RADIANS = 0;
     public static final double BLUE_RIGHT_STAGE_ROTATION_SETPOINT_RADIANS = 0;
-    public static final double BLUE_CENTER_STAGE_ROTATION_SETPOINT_RADIANS = 2.217;
+    public static final double BLUE_CENTER_STAGE_ROTATION_SETPOINT_RADIANS = 2.11;
     public static final double RED_LEFT_STAGE_ROTATION_SETPOINT_RADIANS = 0;
     public static final double RED_RIGHT_STAGE_ROTATION_SETPOINT_RADIANS = 0;
     public static final double RED_CENTER_STAGE_ROTATION_SETPOINT_RADIANS = 0;
@@ -316,7 +316,7 @@ public final class Constants {
     public static final double SCORE_SPEED_AMP = 1;
     public static final double SCORE_SPEED_TRAP = 1;
 
-    public static final double SECONDS_TO_SCORE_TRAP = 0;
+    public static final double SECONDS_TO_SCORE_TRAP = 5;
 
     public static final double STOWED_NOTE_AMPERAGE_LIMIT = 0;
 
@@ -367,7 +367,7 @@ public final class Constants {
   }
 
   public static final class SCORING {
-    public static final double SECONDS_PRELOAD_NOTE = 0.75;
+    public static final double SECONDS_PRELOAD_NOTE = 0.5;
     public static final double SECONDS_PRELOAD_NOTE_FOR_TRAP = 0.75;
 
     public static final double SECONDS_AMP_SCORE = 1;
