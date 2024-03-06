@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Robot;
@@ -78,7 +79,7 @@ public class DriverControls implements RumbleInterface {
     m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.setYaw(180)));
 
     m_leftTrigger.toggleOnTrue(
-        new ParallelCommandGroup(new IntakeNoteFromFloor(), new TargetLockOnNote()));
+        new ParallelDeadlineGroup(new IntakeNoteFromFloor(), new TargetLockOnNote()));
 
     m_leftBumper.whileTrue(new SourceIntakeFromShooter());
 
