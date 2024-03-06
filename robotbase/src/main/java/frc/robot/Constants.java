@@ -384,7 +384,7 @@ public final class Constants {
 
     public static final double SUBWOOFER_SHOT_SHOOTER_RPMS = 3000;
     public static final double SUBWOOFER_SHOT_PIVOT_ANGLE = 60;
-    public static final double SUBWOOFER_SHOT_WAIT_TO_FIRE_SECONDS = 0.5;
+    public static final double SUBWOOFER_SHOT_WAIT_TO_FIRE_SECONDS = 1;
   }
 
   public static final class PHOTON_VISION {
