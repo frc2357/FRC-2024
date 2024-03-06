@@ -105,7 +105,7 @@ public final class Constants {
 
     // Translate to Apriltag
     public static final PIDController APRILTAG_ROTATION_PID_CONTROLLER =
-        new PIDController(5, 0, 0.0);
+        new PIDController(12, 0, 0.0);
     public static final double APRILTAG_ROTATION_FEEDFORWARD = 0.00001;
     public static final PIDController APRILTAG_X_TRANSLATION_PID_CONTROLLER =
         new PIDController(0.15, 0, 0);
@@ -130,12 +130,22 @@ public final class Constants {
     // Tune this during field calibration
     public static final double BLUE_LEFT_STAGE_ROTATION_SETPOINT_RADIANS = 0;
     public static final double BLUE_RIGHT_STAGE_ROTATION_SETPOINT_RADIANS = 0;
-    public static final double BLUE_CENTER_STAGE_ROTATION_SETPOINT_RADIANS = 2.17;
+    public static final double BLUE_CENTER_STAGE_ROTATION_SETPOINT_RADIANS = 2.217;
     public static final double RED_LEFT_STAGE_ROTATION_SETPOINT_RADIANS = 0;
     public static final double RED_RIGHT_STAGE_ROTATION_SETPOINT_RADIANS = 0;
     public static final double RED_CENTER_STAGE_ROTATION_SETPOINT_RADIANS = 0;
 
     public static final double TIME_TO_COAST_SECONDS = 5;
+
+    // Auto climb
+    public static final double DISTANCE_TO_UNDER_CHAIN = 1.2;
+    public static final double SECONDS_TO_UNDER_CHAIN = 1.0;
+    public static final double DISTANCE_TO_TOUCH_CHAIN = 1.1;
+    public static final double SECONDS_TO_TOUCH_CHAIN = 1.25;
+    public static final double DISTANCE_TO_ROTATE_PAST_EXTENSION = 0.5;
+    public static final double SECONDS_TO_ROTATE_PAST_EXTENSION = 0.75;
+    public static final double DISTANCE_TO_READY = 0.25;
+    public static final double SECONDS_TO_READY = 0.5;
   }
 
   public static final class CHOREO {
@@ -265,15 +275,35 @@ public final class Constants {
     public static final boolean RIGHT_MOTOR_INVERTED = false;
     public static final boolean LEFT_MOTOR_INVERTED = true;
 
-    public static final int MOTOR_FREE_LIMIT_AMPS = 40; // TODO: Tune climber amp limits
+    public static final int MOTOR_FREE_LIMIT_AMPS = 40;
     public static final int MOTOR_STALL_LIMIT_AMPS = 40;
 
-    public static final int ZERO_MOTOR_FREE_LIMIT_AMPS = 20; // TODO: Tune climber amp limits
-    public static final int ZERO_MOTOR_STALL_LIMIT_AMPS = 20;
+    public static final int ZERO_MOTOR_FREE_LIMIT_AMPS = 5;
+    public static final int ZERO_MOTOR_STALL_LIMIT_AMPS = 5;
 
     public static final double ZERO_SPEED = 0.1;
     public static final double ZERO_SPEED_STOP_TOLERANCE = 50.0;
     public static final double ZERO_SPEED_INITIAL_SECONDS = 0.1;
+
+    // Auto Climb
+    public static final PIDController LEVEL_CLIMB_PID_CONTROLLER = new PIDController(0.05, 0, 0);
+    public static final double LEVEL_CLIMB_FEEDFORWARD = 0.65;
+    public static final double LEVEL_CLIMB_TOLERANCE = 3;
+
+    public static final double ROTATE_PAST_PREPOSE_SPEED = -1.0;
+    public static final double PREPOSE_ROTATIONS = -75;
+
+    public static final double ROTATE_PAST_TEN_DEGREES_SPEED = -1.0;
+    public static final double TEN_DEGREES_ROTATIONS = -165;
+
+    public static final double SET_HOOKS_SPEED = 0.2;
+    public static final double SET_HOOKS_ROTATIONS = -145;
+
+    public static final double ROTATE_PAST_EXTENSION_SPEED = 0.5;
+    public static final double PAST_EXTENSION_ROTATIONS = -105;
+
+    public static final double ROTATE_PAST_READY_SPEED = -0.2;
+    public static final double PAST_READY_ROTATIONS = -115;
   }
 
   public static final class END_AFFECTOR {
@@ -325,9 +355,10 @@ public final class Constants {
 
     public static final double HOME_ROTATIONS = 0.0;
     public static final double NOTE_STOW_ROTATIONS = 1.4;
-    public static final double AMP_PREPOSE_ROTATIONS = 3.75; // TODO: TUNE
+    public static final double AMP_PREPOSE_ROTATIONS = 3.75;
     public static final double AMP_SCORE_ROTATIONS = 6;
-    public static final double TRAP_SCORE_ROTATIONS = 0; // TODO: TUNE
+    public static final double TRAP_PREPOSE_ROTATIONS = 4.0;
+    public static final double TRAP_CLIMB_ROTATIONS = 7.0;
   }
 
   public static final class LEDS {
@@ -336,7 +367,8 @@ public final class Constants {
   }
 
   public static final class SCORING {
-    public static final double SECONDS_PRELOAD_NOTE = 1;
+    public static final double SECONDS_PRELOAD_NOTE = 0.75;
+    public static final double SECONDS_PRELOAD_NOTE_FOR_TRAP = 0.75;
 
     public static final double SECONDS_AMP_SCORE = 1;
   }

@@ -10,13 +10,13 @@ import frc.robot.Robot;
  * Rotate and horizontal translation using apriltag then robot relative forward translation to apriltag
  */
 public class DriveToStage extends Command {
-  private PIDController m_xController;
-  private PIDController m_yController;
+  private PIDController m_yawController;
+  private PIDController m_pitchController;
   private PIDController m_rotationController;
 
   public DriveToStage() {
-    m_xController = SWERVE.APRILTAG_X_TRANSLATION_PID_CONTROLLER;
-    m_yController = SWERVE.APRILTAG_Y_TRANSLATION_PID_CONTROLLER;
+    m_yawController = SWERVE.APRILTAG_X_TRANSLATION_PID_CONTROLLER;
+    m_pitchController = SWERVE.APRILTAG_Y_TRANSLATION_PID_CONTROLLER;
     m_rotationController = SWERVE.APRILTAG_ROTATION_PID_CONTROLLER;
     addRequirements(Robot.swerve);
   }
@@ -26,10 +26,10 @@ public class DriveToStage extends Command {
     Robot.shooterCam.setAprilTagPipelineActive();
 
     // reset pids
-    m_yController.setSetpoint(SWERVE.STAGE_PITCH_SETPOINT);
-    m_yController.reset();
-    m_xController.setSetpoint(SWERVE.STAGE_YAW_SETPOINT);
-    m_xController.reset();
+    m_pitchController.setSetpoint(SWERVE.STAGE_PITCH_SETPOINT);
+    m_pitchController.reset();
+    m_yawController.setSetpoint(SWERVE.STAGE_YAW_SETPOINT);
+    m_yawController.reset();
 
     m_rotationController.setSetpoint(DriveUtility.getStageRotationGoal());
     m_rotationController.enableContinuousInput(-Math.PI, Math.PI);
@@ -39,15 +39,15 @@ public class DriveToStage extends Command {
   @Override
   public void execute() {
     // Rotation
-    double rotationError =
+    double rotation =
         DriveUtility.calculateRotationError(
             Robot.swerve.getPose().getRotation().getRadians(), m_rotationController.getSetpoint());
-    double rotationRadiansPerSecond = m_rotationController.calculate(rotationError);
+    double rotationRadiansPerSecond = m_rotationController.calculate(rotation);
     double rotationFeedforward =
         Math.copySign(SWERVE.APRILTAG_ROTATION_FEEDFORWARD, rotationRadiansPerSecond);
 
     rotationRadiansPerSecond += rotationFeedforward;
-    if (rotationError == m_rotationController.getSetpoint()) {
+    if (rotation == m_rotationController.getSetpoint()) {
       rotationRadiansPerSecond = 0;
     }
 
@@ -59,7 +59,7 @@ public class DriveToStage extends Command {
       m_rotationController.setSetpoint(DriveUtility.getStageRotationGoal());
     }
     if (Double.isNaN(yaw)) {
-      System.out.println("[DrivtToStage] No STAGE Detected");
+      System.out.println("[DriveToStage] No STAGE Detected");
       Robot.swerve.driveRobotRelative(0.0, 0.0, rotationRadiansPerSecond);
       return;
     }
@@ -70,7 +70,7 @@ public class DriveToStage extends Command {
         DriveUtility.adjustYawForApriltag(
             yaw,
             pitch,
-            rotationError - m_rotationController.getSetpoint(),
+            rotation - m_rotationController.getSetpoint(),
             SWERVE.STAGE_PITCH_SETPOINT,
             SWERVE.APRILTAG_CLOSE_PITCH,
             SWERVE.APRILTAG_YAW_TOLERANCE);
@@ -78,10 +78,17 @@ public class DriveToStage extends Command {
         DriveUtility.adjustPitchForApriltag(
             pitch, SWERVE.STAGE_PITCH_SETPOINT, SWERVE.APRILTAG_PITCH_TOLERANCE);
 
-    double xMetersPerSecond = m_xController.calculate(yaw);
-    double yMetersPerSecond = m_yController.calculate(pitch);
+    double xMetersPerSecond = m_yawController.calculate(yaw);
+    double yMetersPerSecond = m_pitchController.calculate(pitch);
     // Robot.swerve.driveRobotRelative(0, 0, rotationRadiansPerSecond);
     Robot.swerve.driveRobotRelative(-yMetersPerSecond, -xMetersPerSecond, rotationRadiansPerSecond);
+  }
+
+  @Override
+  public boolean isFinished() {
+    return (m_pitchController.atSetpoint()
+        && m_yawController.atSetpoint()
+        && m_rotationController.atSetpoint());
   }
 
   @Override
