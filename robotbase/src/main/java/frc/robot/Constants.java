@@ -101,7 +101,7 @@ public final class Constants {
     public static final double TARGET_LOCK_FEED_FORWARD = 0.0;
     public static final double TARGET_LOCK_TOLERANCE = 1.5;
     public static final double TARGET_LOCK_YAW_SETPOINT =
-        0; // PhotonVision is consistently 2 degrees to the right of our target
+        4.1; // PhotonVision is consistently 2 degrees to the right of our target
 
     // Translate to Apriltag
     public static final PIDController APRILTAG_ROTATION_PID_CONTROLLER =
