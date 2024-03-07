@@ -380,8 +380,8 @@ public final class Constants {
   }
 
   public static final class SCORING {
-    public static final double SECONDS_PRELOAD_NOTE = 0.5;
-    public static final double SECONDS_PRELOAD_NOTE_FOR_TRAP = 0.75;
+    public static final double SECONDS_PRELOAD_NOTE = 0.75;
+    public static final double SECONDS_PRELOAD_NOTE_FOR_TRAP = 0;
 
     public static final double SECONDS_AMP_SCORE = 1;
 
