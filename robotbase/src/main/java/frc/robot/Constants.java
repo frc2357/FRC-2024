@@ -293,6 +293,7 @@ public final class Constants {
 
     // Auto Climb
     public static final PIDController LEVEL_CLIMB_PID_CONTROLLER = new PIDController(0.05, 0, 0);
+    public static final PIDController LEVEL_CLIMB_PID_CONTROLLER_TWO = new PIDController(0.005, 0, 0);
     public static final double LEVEL_CLIMB_MIN = 0.55;
     public static final double LEVEL_CLIMB_MAX = 0.65;
     public static final double LEVEL_CLIMB_TOLERANCE = 3;
