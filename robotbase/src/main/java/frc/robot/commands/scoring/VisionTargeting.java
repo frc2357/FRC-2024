@@ -27,7 +27,6 @@ public class VisionTargeting extends Command {
     Robot.shooter.setRPM(m_currentRpms);
 
     SmartDashboard.putNumber("camera pitch", pitch);
-    SmartDashboard.putNumber("Current pitch", pitch);
     SmartDashboard.putNumber("Pivot vision setpoint", m_currentAngle);
     SmartDashboard.putNumber("Shooter vision RPMs", m_currentRpms);
   }
