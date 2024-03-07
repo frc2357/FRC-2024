@@ -26,7 +26,7 @@ public class Centerline2Speaker extends SequentialCommandGroup{
         new SequentialCommandGroup(
             new AutoPivotSetAngle(45),
             //get second note
-            new IntakeNoteFromFloor(false),
+            new IntakeNoteFromFloor(),
             new DriveChoreoPath("RefSideFar2.1"),
             new WaitCommand(0.5),
             //go to the spot to shoot and shoot
@@ -41,7 +41,7 @@ public class Centerline2Speaker extends SequentialCommandGroup{
                     new DriveChoreoPath("RefSideFar2.3"),
                     new WaitCommand(0.5)
                 ),
-                new IntakeNoteFromFloor(false)
+                new IntakeNoteFromFloor()
             ),
             //go the spot to shoot the last note
             new ParallelCommandGroup(

@@ -4,7 +4,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.auto.paths.Centerline2Speaker;
 import frc.robot.commands.auto.paths.Close3Speaker;
+import frc.robot.commands.auto.paths.LeftClose1Speaker;
+import frc.robot.commands.auto.paths.MiddleClose1Speaker;
+import frc.robot.commands.auto.paths.RightClose1Speaker;
 import frc.robot.commands.drive.DriveChoreoPath;
 
 public class AutoCommandChooser {
@@ -15,17 +19,12 @@ public class AutoCommandChooser {
 
     m_autoCommands =
         new Command[] {
-          // new VelDrive(),
           new DriveChoreoPath("Line"),
-          // new DriveChoreoPath("Close3Speaker"),
           new Close3Speaker(),
-          // new DriveChoreoPath("RotationTest"),
-          // new DriveChoreoPath("BoxTest"),
-          // new DriveChoreoPath("TriangleTest"),
-          // new DriveChoreoPath("RightClose1Speaker"),
-          // new DriveChoreoPath("LoadAmp"),
-          // new DriveChoreoPath("RefSideFar1"),
-          // new DriveChoreoPath("RefSideFar3"),
+          new Centerline2Speaker(),
+          new LeftClose1Speaker(),
+          new MiddleClose1Speaker(),
+          new RightClose1Speaker()
         };
 
     m_chooser = new SendableChooser<>();
