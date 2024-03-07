@@ -13,7 +13,7 @@
         "wheelRadius": 0.050799972568014815
     },
     "paths": {
-        "MidClose1Speaker": {
+        "MiddleClose1Speaker": {
             "waypoints": [
                 {
                     "x": 1.2738206386566162,
@@ -168,7 +168,7 @@
             "usesDefaultFieldObstacles": true,
             "circleObstacles": [],
             "eventMarkers": [],
-            "isTrajectoryStale": true
+            "isTrajectoryStale": false
         },
         "Close3Speaker": {
             "waypoints": [
@@ -2782,7 +2782,7 @@
             "usesDefaultFieldObstacles": true,
             "circleObstacles": [],
             "eventMarkers": [],
-            "isTrajectoryStale": false
+            "isTrajectoryStale": true
         },
         "RightClose1Speaker": {
             "waypoints": [
