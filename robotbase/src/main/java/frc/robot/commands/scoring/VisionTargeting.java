@@ -2,6 +2,7 @@ package frc.robot.commands.scoring;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.SHOOTER;
 import frc.robot.Robot;
 import frc.robot.util.RobotMath;
 
@@ -65,6 +66,7 @@ public class VisionTargeting extends Command {
         RobotMath.linearlyInterpolate(
             highPivotRotation, lowPivotRotation, highPitch, lowPitch, pitch);
     m_currentRpms =
-        RobotMath.linearlyInterpolate(highShooterRPM, lowShooterRPM, highPitch, lowPitch, pitch);
+        RobotMath.linearlyInterpolate(highShooterRPM, lowShooterRPM, highPitch, lowPitch, pitch)
+            + SmartDashboard.getNumber(SHOOTER.SHOOTER_OFFSET_KEY, 0.0);
   }
 }

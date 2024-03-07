@@ -212,6 +212,8 @@ public final class Constants {
     public static final double BOTTOM_MOTOR_FF = 0.0002;
 
     public static final double RPM_TOLERANCE = 100;
+
+    public static final String SHOOTER_OFFSET_KEY = "Shooter Offset";
   }
 
   public static final class INTAKE {
