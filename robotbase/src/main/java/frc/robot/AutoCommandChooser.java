@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.auto.paths.Centerline2Speaker;
 import frc.robot.commands.auto.paths.Close3Speaker;
@@ -14,6 +15,8 @@ import frc.robot.commands.drive.DriveChoreoPath;
 public class AutoCommandChooser {
   private Command[] m_autoCommands;
   private SendableChooser<Command> m_chooser;
+
+  private String m_waitCommandKey = "wait";
 
   public AutoCommandChooser() {
 
@@ -34,9 +37,15 @@ public class AutoCommandChooser {
       m_chooser.addOption(autoCommand.toString(), autoCommand);
     }
     SmartDashboard.putData("Auto chooser", m_chooser);
+    SmartDashboard.putNumber((m_waitCommandKey), 0.0);
+  }
+
+  public Command getWaitCommand() {
+    double waitTime = SmartDashboard.getNumber(m_waitCommandKey, 0.0);
+    return new WaitCommand(waitTime);
   }
 
   public Command getSelectedAutoCommand() {
-    return m_chooser.getSelected();
+    return new SequentialCommandGroup(getWaitCommand(), m_chooser.getSelected());
   }
 }
