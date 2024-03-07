@@ -44,7 +44,7 @@ public class ClimberLevelClimb extends Command {
     rightSpeed = Math.min(CLIMBER.LEVEL_CLIMB_MIN, rightSpeed);
     leftSpeed = Math.min(CLIMBER.LEVEL_CLIMB_MIN, leftSpeed);
 
-    Robot.climber.setSpeed(rightSpeed, leftSpeed);
+    Robot.climber.setSpeed(leftSpeed, rightSpeed);
   }
 
   @Override
