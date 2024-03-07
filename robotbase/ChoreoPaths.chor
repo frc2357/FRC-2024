@@ -4363,7 +4363,7 @@
             "usesDefaultFieldObstacles": true,
             "circleObstacles": [],
             "eventMarkers": [],
-            "isTrajectoryStale": true
+            "isTrajectoryStale": false
         },
         "LoadAmp": {
             "waypoints": [
@@ -5571,4 +5571,4 @@
     },
     "splitTrajectoriesAtStopPoints": true,
     "usesObstacles": false
-}}
+}
