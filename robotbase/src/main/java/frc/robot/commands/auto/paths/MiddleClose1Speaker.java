@@ -1,6 +1,5 @@
 package frc.robot.commands.auto.paths;
 
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.auto.AutoPivotSetAngle;
 import frc.robot.commands.auto.AutoShooterSetRPMAndFinish;
@@ -15,10 +14,7 @@ public class MiddleClose1Speaker extends SequentialCommandGroup {
         new AutoShooterSetRPMAndFinish(3000),
         new ShooterWaitForRPM().withTimeout(0.5),
         new IntakeRun(0.75, false).withTimeout(1),
-
-        // Run path
-        new ParallelDeadlineGroup(
-            new SequentialCommandGroup(
-                new AutoPivotSetAngle(34.5), new DriveChoreoPath("MiddleClose1Speaker"))));
+        new DriveChoreoPath("MiddleClose1Speaker")
+    );
   }
 }
