@@ -13,7 +13,7 @@ public class DefaultShooter extends Command {
   @Override
   public void execute() {
     if (Robot.state.isNote(NoteState.NOTE_STOWED)) {
-      Robot.shooter.setRPM(SHOOTER.DEFAULT_STOWED_RPMS);
+      // Robot.shooter.setRPM(SHOOTER.DEFAULT_STOWED_RPMS);
     } else {
       Robot.shooter.stop();
     }
