@@ -2,7 +2,6 @@ package frc.robot.commands.scoring;
 
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.SCORING;
 import frc.robot.commands.intake.IntakeFeedToShooter;
 import frc.robot.commands.pivot.PivotHoldAngle;
