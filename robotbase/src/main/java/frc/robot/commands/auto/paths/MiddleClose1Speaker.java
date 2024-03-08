@@ -19,7 +19,6 @@ public class MiddleClose1Speaker extends SequentialCommandGroup {
         new DriveChoreoPath("MiddleClose1Speaker.1"));
   }
 
-  
   @Override
   public String toString() {
     return "MiddleClose1Speaker";

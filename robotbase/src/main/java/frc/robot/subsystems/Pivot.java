@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkPIDController;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.PIVOT;
@@ -28,6 +29,8 @@ public class Pivot extends SubsystemBase {
     if (!Double.isNaN(m_zeroOffset)) {
       setZeroOffset(m_zeroOffset);
     }
+
+    SmartDashboard.putNumber(PIVOT.PIVOT_OFFSET_KEY, 0.0);
   }
 
   private void configure() {

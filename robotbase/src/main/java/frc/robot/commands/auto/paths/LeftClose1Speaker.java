@@ -18,7 +18,7 @@ public class LeftClose1Speaker extends SequentialCommandGroup {
         new ShooterStop(),
         new DriveChoreoPath("LeftClose1Speaker.1"));
   }
-  
+
   @Override
   public String toString() {
     return "LeftClose1Speaker";

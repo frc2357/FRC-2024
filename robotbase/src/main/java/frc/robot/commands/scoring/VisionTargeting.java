@@ -2,16 +2,22 @@ package frc.robot.commands.scoring;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.SHOOTER;
+import frc.robot.Constants.PIVOT;
 import frc.robot.Robot;
 import frc.robot.util.RobotMath;
 
 public class VisionTargeting extends Command {
   private double m_currentAngle;
   private double m_currentRpms;
+  private double m_pivotOffsetAngle;
 
   public VisionTargeting() {
     addRequirements(Robot.pivot, Robot.shooter);
+  }
+
+  @Override
+  public void initialize() {
+    m_pivotOffsetAngle = SmartDashboard.getNumber(PIVOT.PIVOT_OFFSET_KEY, 0.0);
   }
 
   @Override
@@ -64,9 +70,9 @@ public class VisionTargeting extends Command {
 
     m_currentAngle =
         RobotMath.linearlyInterpolate(
-            highPivotRotation, lowPivotRotation, highPitch, lowPitch, pitch);
+                highPivotRotation, lowPivotRotation, highPitch, lowPitch, pitch)
+            + m_pivotOffsetAngle;
     m_currentRpms =
-        RobotMath.linearlyInterpolate(highShooterRPM, lowShooterRPM, highPitch, lowPitch, pitch)
-            + SmartDashboard.getNumber(SHOOTER.SHOOTER_OFFSET_KEY, 0.0);
+        RobotMath.linearlyInterpolate(highShooterRPM, lowShooterRPM, highPitch, lowPitch, pitch);
   }
 }
