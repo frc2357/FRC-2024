@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.auto.AutoPivotSetAngle;
 import frc.robot.commands.auto.AutoPivotStop;
+import frc.robot.commands.auto.AutoShoot;
 import frc.robot.commands.auto.AutoShooterSetRPMAndFinish;
 import frc.robot.commands.auto.AutoShooterStopRPM;
 import frc.robot.commands.drive.DriveChoreoPath;
@@ -31,13 +32,15 @@ public class Centerline2Speaker extends SequentialCommandGroup {
             new IntakeNoteFromFloor()),
         new WaitCommand(0.5), // Should be able to remove
 
-        // go to the spot to shoot and shoot
+        // Preset RPM and Angle to be close to targe
         new AutoPivotSetAngle(50),
         new AutoShooterSetRPMAndFinish(4000),
+
+        // Drive to spot to shoot second note
         new DriveChoreoPath("RefSideFar2.2"),
-        new ShooterWaitForRPM().withTimeout(0.5),
-        new IntakeRun(0.75, true).withTimeout(1),
-        new AutoShooterStopRPM(),
+
+        // Shoot
+        new AutoShoot(),
 
         // Go to next third note, and run intake
         new ParallelDeadlineGroup(
@@ -46,13 +49,15 @@ public class Centerline2Speaker extends SequentialCommandGroup {
                 new DriveChoreoPath("RefSideFar2.3"), new WaitCommand(1)),
             new IntakeNoteFromFloor()),
 
-        // go the spot to shoot the last note
+        // Preset RPM and Angle to be close to target
         new AutoShooterSetRPMAndFinish(4500),
         new AutoPivotSetAngle(50),
+
+        // Drive to spot to shoot third note
         new DriveChoreoPath("RefSideFar2.4"),
-        // shoot the last note
-        new ShooterWaitForRPM().withTimeout(0.5),
-        new IntakeRun(0.75, true).withTimeout(1),
+
+        // shoot the third note
+        new AutoShoot(),
 
         // Stop motors
         new AutoPivotStop(),

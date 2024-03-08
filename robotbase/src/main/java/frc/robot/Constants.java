@@ -103,6 +103,8 @@ public final class Constants {
     public static final double TARGET_LOCK_YAW_SETPOINT =
         4.1; // PhotonVision is consistently 2 degrees to the right of our target
 
+    public static final double AUTO_TARGET_LOCK_YAW_TOLERANCE = 3;
+
     // Translate to Apriltag
     public static final PIDController APRILTAG_ROTATION_PID_CONTROLLER =
         new PIDController(12, 0, 0.0);
