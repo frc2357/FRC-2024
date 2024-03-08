@@ -87,7 +87,7 @@ public class DriverControls implements RumbleInterface {
 
     m_leftBumper.whileTrue(new SourceIntakeFromShooter());
 
-    m_yButton.onTrue(new ManualLineUpClimb(m_yButton));
+    m_yButton.onTrue(new ManualLineUpClimb(m_yButton, m_bButton));
 
     // scoring
     m_rightBumper.onTrue(new AmpSequenceConditional());
