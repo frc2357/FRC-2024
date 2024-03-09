@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Robot;
 import frc.robot.commands.climber.ManualLineUpClimb;
+import frc.robot.commands.drive.RobotRelativeDrive;
 import frc.robot.commands.drive.TargetLockOnNote;
 import frc.robot.commands.drive.TargetLockOnSpeaker;
 import frc.robot.commands.intake.IntakeFeedToShooter;
@@ -77,8 +78,8 @@ public class DriverControls implements RumbleInterface {
           return getRightStickYAxis();
         };
 
-    m_backButton.onTrue(new InstantCommand(() -> Robot.swerve.setYaw(0)));
-    m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.setYaw(180)));
+    m_backButton.onTrue(new InstantCommand(() -> Robot.swerve.zeroGyro(false)));
+    m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.zeroGyro(true)));
 
     m_aButton.whileTrue(new SubwooferShot());
 
@@ -95,6 +96,8 @@ public class DriverControls implements RumbleInterface {
     m_rightTriggerPrime.whileTrue(
         new ParallelCommandGroup(new VisionTargeting(), new TargetLockOnSpeaker()));
     m_rightTriggerShoot.whileTrue(new IntakeFeedToShooter());
+
+    m_xButton.toggleOnTrue(new RobotRelativeDrive());
   }
 
   public double getX() {

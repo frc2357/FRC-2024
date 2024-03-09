@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.util.datalog.DoubleArrayLogEntry;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
@@ -74,6 +75,7 @@ public class Robot extends TimedRobot {
   };
   public static PowerDistribution m_pdp;
   public static DoubleArrayLogEntry m_PDH_log;
+  public static DoubleLogEntry m_pigeonLog;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -130,6 +132,7 @@ public class Robot extends TimedRobot {
     DataLogManager.start("", "", 1.0); // defaults, flush to flash every 0.25 seconds
     DriverStation.startDataLog(DataLogManager.getLog());
     m_PDH_log = new DoubleArrayLogEntry(DataLogManager.getLog(), "PDH");
+    m_pigeonLog = new DoubleLogEntry(DataLogManager.getLog(), "Pigeon yaw");
   }
 
   /**
@@ -158,6 +161,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Robot yaw", swerve.getPose().getRotation().getRadians());
     m_PDH_log.append(
         new double[] {m_pdp.getVoltage(), m_pdp.getTotalCurrent(), m_pdp.getTemperature()});
+
+    m_pigeonLog.append(Robot.swerve.getYaw());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

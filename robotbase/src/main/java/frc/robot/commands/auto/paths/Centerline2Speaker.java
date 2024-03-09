@@ -28,9 +28,9 @@ public class Centerline2Speaker extends SequentialCommandGroup {
 
         // get second note
         new ParallelDeadlineGroup(
-            new SequentialCommandGroup(new DriveChoreoPath("RefSideFar2.1"), new WaitCommand(1)),
+            new SequentialCommandGroup(new DriveChoreoPath("RefSideFar2.1", "RefSifeFar2.1",
+             false, true), new WaitCommand(1)),
             new IntakeNoteFromFloor()),
-        new WaitCommand(0.5), // Should be able to remove
 
         // Preset RPM and Angle to be close to targe
         new AutoPivotSetAngle(50),

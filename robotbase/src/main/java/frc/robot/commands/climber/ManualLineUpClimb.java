@@ -119,14 +119,12 @@ public class ManualLineUpClimb extends SequentialCommandGroup {
 
         // Allow drive base to move now
         // TODO: Slow down drive for this
-        new ParallelDeadlineGroup(new PressToContinue(continueButton), new DefaultDrive()),
         new Print("Setting hooks"),
         new ClimberRotatePastRotations(CLIMBER.SET_HOOKS_SPEED, CLIMBER.SET_HOOKS_ROTATIONS),
         new Print("Ensure Hooks are set. Adjust if needed"),
 
         // Allow drive base to move now
         // TODO: Slow down drive for this
-        new ParallelDeadlineGroup(new PressToContinue(continueButton), new DefaultDrive()),
         new Print("Positioning to transfer note"),
         new ParallelCommandGroup(
             new ClimberRotatePastRotations(
@@ -172,7 +170,7 @@ public class ManualLineUpClimb extends SequentialCommandGroup {
           new DriveAtSpeed(
               SWERVE.DISTANCE_TO_READY / SWERVE.SECONDS_TO_READY, 0, SWERVE.SECONDS_TO_READY),
           new ExtensionArmMoveToRotations(EXTENSION_ARM.TRAP_CLIMB_ROTATIONS)),
-        new ParallelDeadlineGroup(new PressToContinue(continueButton), new AdjustNote()),
+        // new ParallelDeadlineGroup(new PressToContinue(continueButton), new AdjustNote()),
         new Print("Ready to climb! Co-driver using right trigger, press Y when in position"),
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(

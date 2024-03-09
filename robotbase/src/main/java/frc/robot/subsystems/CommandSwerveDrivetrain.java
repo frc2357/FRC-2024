@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
@@ -156,12 +157,14 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   }
 
   public void zeroAll() {
-    zeroGyro();
+    zeroGyro(false);
     resetPose();
   }
 
-  public void zeroGyro() {
-    super.getPigeon2().setYaw(0);
+  public void zeroGyro(boolean flip) {
+    // Pigeon2Configuration config = new Pigeon2Configuration();
+    // super.getPigeon2().getConfigurator().apply(config);
+    super.getPigeon2().setYaw(flip ? 180 : 0);
   }
 
   public void resetPose() {
@@ -182,6 +185,20 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
   public void setPose(Pose2d poseToSet) {
     super.seedFieldRelative(poseToSet);
+  }
+
+  public void setPoseAndRotation(Pose2d location) {
+    // Set the pigeon's yaw to be the pose's rotation
+    super.getPigeon2().setYaw(location.getRotation().getDegrees());
+    try {
+      super.m_stateLock.writeLock().lock();
+      // Set the robot pose location to the given pose location, 
+      m_odometry.resetPosition(location.getRotation(), m_modulePositions, location);
+      /* We need to update our cached pose immediately so that race conditions don't happen */
+      m_cachedState.Pose = location;
+  } finally {
+      m_stateLock.writeLock().unlock();
+  }
   }
 
   public Consumer<ChassisSpeeds> getChassisSpeedsConsumer() {

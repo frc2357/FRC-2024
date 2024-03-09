@@ -5,11 +5,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.auto.TestAuto;
 import frc.robot.commands.auto.paths.Centerline2Speaker;
 import frc.robot.commands.auto.paths.Close3Speaker;
 import frc.robot.commands.auto.paths.LeftClose1Speaker;
 import frc.robot.commands.auto.paths.MiddleClose1Speaker;
 import frc.robot.commands.auto.paths.RightClose1Speaker;
+import frc.robot.commands.auto.paths.ShootAndNothing;
 import frc.robot.commands.drive.DriveChoreoPath;
 
 public class AutoCommandChooser {
@@ -22,12 +24,15 @@ public class AutoCommandChooser {
 
     m_autoCommands =
         new Command[] {
-          new DriveChoreoPath("Line"),
+          // new DriveChoreoPath("Line"),
           new Close3Speaker(),
           new Centerline2Speaker(),
           new LeftClose1Speaker(),
           new MiddleClose1Speaker(),
-          new RightClose1Speaker()
+          new RightClose1Speaker(),
+          new ShootAndNothing(),
+          // new DriveChoreoPath("TestAuto.1", "TestAuto.1",
+          //  false, true) 
         };
 
     m_chooser = new SendableChooser<>();

@@ -9,7 +9,7 @@ public class AutoShoot extends ParallelDeadlineGroup {
   public AutoShoot() {
     super(
       new SequentialCommandGroup( 
-        new AutoWaitForTargeting().withTimeout(5),
+        new AutoWaitForTargeting().withTimeout(1),
         new IntakeRun(0.75, true).withTimeout(0.5)
       ),
       new VisionTargeting(),
