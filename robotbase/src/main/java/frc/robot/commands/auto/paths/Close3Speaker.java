@@ -24,13 +24,13 @@ public class Close3Speaker extends SequentialCommandGroup {
         // Run path
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(
-                new AutoPivotSetAngle(32),
+                new AutoPivotSetAngle(31.5),
                 new DriveChoreoPath("Close3Speaker.1"),
                 new WaitCommand(1),
-                new AutoPivotSetAngle(35.5),
+                new AutoPivotSetAngle(35),
                 new DriveChoreoPath("Close3Speaker.2"),
                 new WaitCommand(1),
-                new AutoPivotSetAngle(36),
+                new AutoPivotSetAngle(35.5),
                 new DriveChoreoPath("Close3Speaker.3"),
                 new WaitCommand(2)),
             new IntakeRun(0.75, true),
