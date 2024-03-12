@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
@@ -163,7 +164,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   public void zeroGyro(boolean flip) {
     // Pigeon2Configuration config = new Pigeon2Configuration();
     // super.getPigeon2().getConfigurator().apply(config);
-    super.getPigeon2().setYaw(flip ? 180 : 0);
+    StatusCode code = super.getPigeon2().setYaw(flip ? 180 : 0);
+    System.out.println(code.toString());
   }
 
   public void resetPose() {
