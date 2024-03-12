@@ -22,8 +22,9 @@ public class DriveChoreoPath extends SequentialCommandGroup {
    * @param trajectoryFileName The name of the path file with '.traj' excluded.
    */
   public DriveChoreoPath(String trajectoryFileName) {
-    // Overloaded constructor, sets the gyro yaw to zero and pose x, y to starting position
-    this(trajectoryFileName, trajectoryFileName, true, false);
+    // Overloaded constructor, sets the gyro yaw to zero and pose x, y to starting
+    // position
+    this(trajectoryFileName, trajectoryFileName, false, false);
   }
 
   /**
@@ -31,8 +32,19 @@ public class DriveChoreoPath extends SequentialCommandGroup {
    * @param pathName The name of the path, is returned in the toString for the auto command chooser.
    */
   public DriveChoreoPath(String trajectoryFileName, String pathName) {
-    // Overloaded constructor, sets the gyro yaw to zero and pose x, y to starting position
-    this(trajectoryFileName, pathName, true, false);
+    // Overloaded constructor, sets the gyro yaw to zero and pose x, y to starting
+    // position
+    this(trajectoryFileName, pathName, false, false);
+  }
+
+  /**
+   * @param trajectoryFileName The name of the path file with '.traj' excluded.
+   * @param pathName The name of the path, is returned in the toString for the auto command chooser.
+   */
+  public DriveChoreoPath(String trajectoryFileName, boolean setPoseToStartTrajectory) {
+    // Overloaded constructor, sets the gyro yaw to zero and pose x, y to starting
+    // position
+    this(trajectoryFileName, trajectoryFileName, setPoseToStartTrajectory, false);
   }
 
   /**
@@ -78,7 +90,8 @@ public class DriveChoreoPath extends SequentialCommandGroup {
       // path
     }
 
-    // Set the gyro yaw, pose rotation, pose x, and pose y to the position of the starting path
+    // Set the gyro yaw, pose rotation, pose x, and pose y to the position of the
+    // starting path
     if (setStartRotation) {
       addCommands(
           new InstantCommand(() -> Robot.swerve.zeroAll()), // Zero the gyro and reset the odometry
@@ -86,11 +99,9 @@ public class DriveChoreoPath extends SequentialCommandGroup {
           new InstantCommand(() -> Robot.swerve.setPoseAndRotation(m_startingState.getPose())));
     }
 
-    // delete
-    addCommands(new InstantCommand(() -> System.out.println(Robot.swerve.getPose())));
-
     addCommands(
-        // Set the drive velocity x, y and angular velocity to the starting state's number
+        // Set the drive velocity x, y and angular velocity to the starting state's
+        // number
         // This should help the wheels "straighten" up before starting the path
         new InstantCommand(
             () ->
@@ -107,22 +118,7 @@ public class DriveChoreoPath extends SequentialCommandGroup {
                 CHOREO.X_CONTROLLER, CHOREO.Y_CONTROLLER, CHOREO.ROTATION_CONTROLLER),
             Robot.swerve.getChassisSpeedsConsumer(),
             CHOREO.CHOREO_AUTO_MIRROR_PATHS,
-            Robot.swerve),
-
-        // Print out the difference between the robot ending pose and the current pose
-        new InstantCommand(
-            () -> {
-              var pose = Robot.swerve.getPose();
-              var poseError = pose.minus(m_finalTargetPose);
-              System.out.println("Pose & Error | PathName: " + trajectoryFileName);
-              System.out.println("|X: " + pose.getX() + " | Err: " + poseError.getX());
-              System.out.println("|Y: " + pose.getY() + " | Err: " + poseError.getY());
-              System.out.println(
-                  "|Roto: "
-                      + pose.getRotation().getRadians()
-                      + " | Err: "
-                      + poseError.getRotation().getRadians());
-            }));
+            Robot.swerve));
   }
 
   @Override
