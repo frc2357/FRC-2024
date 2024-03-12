@@ -165,11 +165,11 @@ public class ManualLineUpClimb extends SequentialCommandGroup {
         new Print("Co-driver adjust note: right trigger is up, left trigger is down"),
         new ParallelDeadlineGroup(new PressToContinue(continueButton), new AdjustNote()),
         new ParallelCommandGroup(
-          new ClimberRotatePastRotations(
-              CLIMBER.ROTATE_PAST_READY_SPEED, CLIMBER.PAST_READY_ROTATIONS),
-          new DriveAtSpeed(
-              SWERVE.DISTANCE_TO_READY / SWERVE.SECONDS_TO_READY, 0, SWERVE.SECONDS_TO_READY),
-          new ExtensionArmMoveToRotations(EXTENSION_ARM.TRAP_CLIMB_ROTATIONS)),
+            new ClimberRotatePastRotations(
+                CLIMBER.ROTATE_PAST_READY_SPEED, CLIMBER.PAST_READY_ROTATIONS),
+            new DriveAtSpeed(
+                SWERVE.DISTANCE_TO_READY / SWERVE.SECONDS_TO_READY, 0, SWERVE.SECONDS_TO_READY),
+            new ExtensionArmMoveToRotations(EXTENSION_ARM.TRAP_CLIMB_ROTATIONS)),
         // new ParallelDeadlineGroup(new PressToContinue(continueButton), new AdjustNote()),
         new Print("Ready to climb! Co-driver using right trigger, press Y when in position"),
         new ParallelDeadlineGroup(

@@ -21,10 +21,7 @@ public class AutoTargetLockOnSpeaker extends Command {
   public void execute() {
     var targetYaw = Robot.shooterCam.getSpeakerTargetYaw();
 
-    Robot.swerve.driveTargetLock(
-        0, 0,
-        !Double.isNaN(targetYaw) ? targetYaw : 0,
-        true);
+    Robot.swerve.driveTargetLock(0, 0, !Double.isNaN(targetYaw) ? targetYaw : 0, true);
   }
 
   @Override

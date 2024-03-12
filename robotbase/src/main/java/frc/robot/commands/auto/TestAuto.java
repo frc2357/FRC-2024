@@ -3,7 +3,6 @@ package frc.robot.commands.auto;
 import com.choreo.lib.Choreo;
 import com.choreo.lib.ChoreoTrajectory;
 import com.choreo.lib.ChoreoTrajectoryState;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -19,16 +18,16 @@ public class TestAuto extends SequentialCommandGroup {
   /**
    * A utility command to run a Choreo path correctly.
    *
-   * @param trajectoryFileName       The name of the path file with '.traj'
-   *                                 excluded.
-   * @param pathName                 The name of the path, is returned in the
-   *                                 toString for the auto command chooser.
-   * @param setPoseToStartTrajectory Whether or not to set the robot pose to the
-   *                                 paths starting
-   *                                 trajectory.
+   * @param trajectoryFileName The name of the path file with '.traj' excluded.
+   * @param pathName The name of the path, is returned in the toString for the auto command chooser.
+   * @param setPoseToStartTrajectory Whether or not to set the robot pose to the paths starting
+   *     trajectory.
    */
   public TestAuto(
-      String trajectoryFileName, String pathName, boolean setPoseToStartTrajectory, boolean setStartRotation) {
+      String trajectoryFileName,
+      String pathName,
+      boolean setPoseToStartTrajectory,
+      boolean setStartRotation) {
     m_traj = Choreo.getTrajectory(trajectoryFileName);
     m_finalTargetPose = m_traj.getFinalPose();
     m_pathName = pathName;
@@ -37,9 +36,10 @@ public class TestAuto extends SequentialCommandGroup {
     addCommands(
         new InstantCommand(
             () -> {
-              m_startingState = CHOREO.CHOREO_AUTO_MIRROR_PATHS.getAsBoolean()
-                  ? m_startingState.flipped()
-                  : m_startingState;
+              m_startingState =
+                  CHOREO.CHOREO_AUTO_MIRROR_PATHS.getAsBoolean()
+                      ? m_startingState.flipped()
+                      : m_startingState;
             }));
     if (setPoseToStartTrajectory) {
       addCommands(
@@ -59,10 +59,11 @@ public class TestAuto extends SequentialCommandGroup {
         // number
         // This should help the wheels "straighten" up before starting the path
         new InstantCommand(
-            () -> Robot.swerve.driveFieldRelative(
-                m_startingState.velocityX,
-                m_startingState.velocityY,
-                m_startingState.angularVelocity)),
+            () ->
+                Robot.swerve.driveFieldRelative(
+                    m_startingState.velocityX,
+                    m_startingState.velocityY,
+                    m_startingState.angularVelocity)),
         // The library provided choreo command
         // Runs the actual path
         Choreo.choreoSwerveCommand(
@@ -88,7 +89,5 @@ public class TestAuto extends SequentialCommandGroup {
                       + " | Err: "
                       + poseError.getRotation().getRadians());
             }));
-
   }
-
 }

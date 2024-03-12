@@ -17,10 +17,8 @@ public class ShootAndNothing extends SequentialCommandGroup {
         new ShooterStop());
   }
 
-  
   @Override
   public String toString() {
     return "Only Shoot";
   }
-
 }

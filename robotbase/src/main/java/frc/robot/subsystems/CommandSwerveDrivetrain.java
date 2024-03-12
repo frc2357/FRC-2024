@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
@@ -192,13 +191,13 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     super.getPigeon2().setYaw(location.getRotation().getDegrees());
     try {
       super.m_stateLock.writeLock().lock();
-      // Set the robot pose location to the given pose location, 
+      // Set the robot pose location to the given pose location,
       m_odometry.resetPosition(location.getRotation(), m_modulePositions, location);
       /* We need to update our cached pose immediately so that race conditions don't happen */
       m_cachedState.Pose = location;
-  } finally {
+    } finally {
       m_stateLock.writeLock().unlock();
-  }
+    }
   }
 
   public Consumer<ChassisSpeeds> getChassisSpeedsConsumer() {

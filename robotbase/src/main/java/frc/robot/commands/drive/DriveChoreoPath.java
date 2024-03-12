@@ -44,10 +44,14 @@ public class DriveChoreoPath extends SequentialCommandGroup {
    *     trajectory.
    */
   public DriveChoreoPath(
-      String trajectoryFileName, String pathName, boolean setPoseToStartTrajectory, boolean setStartRotation) {
+      String trajectoryFileName,
+      String pathName,
+      boolean setPoseToStartTrajectory,
+      boolean setStartRotation) {
     m_traj = Choreo.getTrajectory(trajectoryFileName); // Loads choreo file into trajctory object
     m_finalTargetPose = m_traj.getFinalPose(); // Gets the last pose out of the trajectory
-    m_pathName = pathName; // Gets the path name to display on the smardashboard via the toString() method
+    m_pathName =
+        pathName; // Gets the path name to display on the smardashboard via the toString() method
     m_startingState = m_traj.getInitialState(); // Gets the starting pose out of the trajectory
     // A sequential command group to run a single choreo path
 
@@ -66,16 +70,20 @@ public class DriveChoreoPath extends SequentialCommandGroup {
     if (setPoseToStartTrajectory) {
       addCommands(
           new InstantCommand(() -> Robot.swerve.zeroAll()), // Zero the gyro and reset odometry
-          new InstantCommand(() -> Robot.swerve.setPose(m_startingState.getPose()))); // Zero the gyro and set pose odomety to x, y of starting path
+          new InstantCommand(
+              () ->
+                  Robot.swerve.setPose(
+                      m_startingState
+                          .getPose()))); // Zero the gyro and set pose odomety to x, y of starting
+      // path
     }
 
     // Set the gyro yaw, pose rotation, pose x, and pose y to the position of the starting path
-    if(setStartRotation) {
+    if (setStartRotation) {
       addCommands(
           new InstantCommand(() -> Robot.swerve.zeroAll()), // Zero the gyro and reset the odometry
           // Zero the gyro and set the pose rotation, x, y all off start pose
-          new InstantCommand(() -> Robot.swerve.setPoseAndRotation(m_startingState.getPose())) 
-      );
+          new InstantCommand(() -> Robot.swerve.setPoseAndRotation(m_startingState.getPose())));
     }
 
     // delete

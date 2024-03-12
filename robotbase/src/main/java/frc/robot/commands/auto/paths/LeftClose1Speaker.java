@@ -16,8 +16,7 @@ public class LeftClose1Speaker extends SequentialCommandGroup {
         new ShooterWaitForRPM().withTimeout(0.5),
         new IntakeRun(0.75, true).withTimeout(1),
         new ShooterStop(),
-        new DriveChoreoPath("LeftClose1Speaker.1", "LeftClose1Speaker.1",
-         false, true));
+        new DriveChoreoPath("LeftClose1Speaker.1", "LeftClose1Speaker.1", false, true));
   }
 
   @Override
