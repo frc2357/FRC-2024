@@ -32,7 +32,7 @@ public class DriveChoreoPath extends SequentialCommandGroup {
    */
   public DriveChoreoPath(String trajectoryFileName, String pathName) {
     // Overloaded constructor, sets the gyro yaw to zero and pose x, y to starting position
-    this(trajectoryFileName, pathName, true, false);
+    this(trajectoryFileName, pathName, true, true);
   }
 
   /**
