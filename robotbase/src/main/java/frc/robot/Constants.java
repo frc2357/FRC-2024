@@ -62,6 +62,7 @@ public final class Constants {
 
   public static final class DIGITAL_INPUT {
     public static final int INTAKE_BEAM_BREAK_ID = 0;
+    public static final int END_AFFECTOR_PROXIMITY_SENSOR_ID = 2;
   }
 
   public static final class SWERVE {
