@@ -102,7 +102,7 @@ public class AutoClimb extends SequentialCommandGroup {
         new Print("[AutoClimb] Starting Auto Climb..."),
         new ParallelCommandGroup(
             new ShooterStop(),
-            new ClimberRotatePastRotations(
+            new ClimberRotateToRotations(
                 CLIMBER.ROTATE_PAST_PREPOSE_SPEED, CLIMBER.PREPOSE_ROTATIONS),
             new SequentialCommandGroup(
                 new Print("[AutoClimb] Lining up"),
@@ -119,7 +119,7 @@ public class AutoClimb extends SequentialCommandGroup {
                 SWERVE.SECONDS_TO_UNDER_CHAIN)),
         new Print("[AutoClimb] Engaging hooks on chain"),
         new ParallelCommandGroup(
-            new ClimberRotatePastRotations(
+            new ClimberRotateToRotations(
                 CLIMBER.ROTATE_PAST_TEN_DEGREES_SPEED, CLIMBER.TEN_DEGREES_ROTATIONS),
             new DriveAtSpeed(
                 SWERVE.DISTANCE_TO_TOUCH_CHAIN / SWERVE.SECONDS_TO_TOUCH_CHAIN,
@@ -131,7 +131,7 @@ public class AutoClimb extends SequentialCommandGroup {
         // TODO: Slow down drive for this
         new ParallelDeadlineGroup(new PressToContinue(continueButton), new DefaultDrive()),
         new Print("[AutoClimb] Setting hooks"),
-        new ClimberRotatePastRotations(CLIMBER.SET_HOOKS_SPEED, CLIMBER.SET_HOOKS_ROTATIONS),
+        new ClimberRotateToRotations(CLIMBER.SET_HOOKS_SPEED, CLIMBER.SET_HOOKS_ROTATIONS),
         new Print("[AutoClimb] Ensure Hooks are set. Adjust if needed"),
 
         // Allow drive base to move now
@@ -139,7 +139,7 @@ public class AutoClimb extends SequentialCommandGroup {
         new ParallelDeadlineGroup(new PressToContinue(continueButton), new DefaultDrive()),
         new Print("[AutoClimb] Positioning to transfer note"),
         new ParallelCommandGroup(
-            new ClimberRotatePastRotations(
+            new ClimberRotateToRotations(
                 CLIMBER.ROTATE_PAST_EXTENSION_SPEED, CLIMBER.PAST_EXTENSION_ROTATIONS),
             new DriveAtSpeed(
                 -(SWERVE.DISTANCE_TO_ROTATE_PAST_EXTENSION
@@ -178,7 +178,7 @@ public class AutoClimb extends SequentialCommandGroup {
             "[AutoClimb] Co-driver adjust note now: right trigger is up, left trigger is down"),
         new ParallelDeadlineGroup(new PressToContinue(continueButton), new AdjustNote()),
         new ParallelCommandGroup(
-            new ClimberRotatePastRotations(
+            new ClimberRotateToRotations(
                 CLIMBER.ROTATE_PAST_READY_SPEED, CLIMBER.PAST_READY_ROTATIONS),
             new DriveAtSpeed(
                 SWERVE.DISTANCE_TO_READY / SWERVE.SECONDS_TO_READY, 0, SWERVE.SECONDS_TO_READY),

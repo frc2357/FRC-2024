@@ -102,13 +102,13 @@ public class ManualLineUpClimb extends SequentialCommandGroup {
         new ParallelDeadlineGroup(
             new PressToContinue(continueButton),
             new ShooterStop(),
-            new ClimberRotatePastRotations(
+            new ClimberRotateToRotations(
                 CLIMBER.ROTATE_PAST_PREPOSE_SPEED, CLIMBER.PREPOSE_ROTATIONS),
             new ExtensionArmMoveToRotations(EXTENSION_ARM.STAGE_LINE_UP_ROTATIONS),
             new DefaultDrive()),
         new Print("Lining up hooks on chain"),
         new ParallelCommandGroup(
-            new ClimberRotatePastRotations(
+            new ClimberRotateToRotations(
                 CLIMBER.ROTATE_PAST_TEN_DEGREES_SPEED, CLIMBER.TEN_DEGREES_ROTATIONS),
             new ExtensionArmMoveToRotations(EXTENSION_ARM.HOME_ROTATIONS),
             new DriveAtSpeed(
@@ -120,14 +120,14 @@ public class ManualLineUpClimb extends SequentialCommandGroup {
         // Allow drive base to move now
         // TODO: Slow down drive for this
         new Print("Setting hooks"),
-        new ClimberRotatePastRotations(CLIMBER.SET_HOOKS_SPEED, CLIMBER.SET_HOOKS_ROTATIONS),
+        new ClimberRotateToRotations(CLIMBER.SET_HOOKS_SPEED, CLIMBER.SET_HOOKS_ROTATIONS),
         new Print("Ensure Hooks are set. Adjust if needed"),
 
         // Allow drive base to move now
         // TODO: Slow down drive for this
         new Print("Positioning to transfer note"),
         new ParallelCommandGroup(
-            new ClimberRotatePastRotations(
+            new ClimberRotateToRotations(
                 CLIMBER.ROTATE_PAST_EXTENSION_SPEED, CLIMBER.PAST_EXTENSION_ROTATIONS),
             new DriveAtSpeed(
                 -(SWERVE.DISTANCE_TO_ROTATE_PAST_EXTENSION
@@ -165,7 +165,7 @@ public class ManualLineUpClimb extends SequentialCommandGroup {
         new Print("Co-driver adjust note: right trigger is up, left trigger is down"),
         new ParallelDeadlineGroup(new PressToContinue(continueButton), new AdjustNote()),
         new ParallelCommandGroup(
-            new ClimberRotatePastRotations(
+            new ClimberRotateToRotations(
                 CLIMBER.ROTATE_PAST_READY_SPEED, CLIMBER.PAST_READY_ROTATIONS),
             new DriveAtSpeed(
                 SWERVE.DISTANCE_TO_READY / SWERVE.SECONDS_TO_READY, 0, SWERVE.SECONDS_TO_READY),

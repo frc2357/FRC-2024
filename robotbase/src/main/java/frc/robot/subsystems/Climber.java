@@ -5,6 +5,8 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.CLIMBER;
+import frc.robot.util.Utility;
 
 public class Climber extends SubsystemBase {
   private CANSparkMax m_rightClimberMotor;
@@ -68,14 +70,9 @@ public class Climber extends SubsystemBase {
     m_leftClimberMotor.getEncoder().setPosition(0.0);
   }
 
-  public boolean isPastRotations(double rotations, int direction) {
-    switch (direction) {
-      case 1:
-        return getLeftRotations() >= rotations && getRightRotations() >= rotations;
-      case -1:
-        return getLeftRotations() <= rotations && getRightRotations() <= rotations;
-      default:
-        return true;
-    }
+  public boolean isAtRotations(double leftRotations, double rightRotations) {
+    return (Utility.isWithinTolerance(getLeftRotations(), leftRotations, CLIMBER.ROTATION_TOLERANCE)
+        && Utility.isWithinTolerance(
+            getRightRotations(), rightRotations, CLIMBER.ROTATION_TOLERANCE));
   }
 }

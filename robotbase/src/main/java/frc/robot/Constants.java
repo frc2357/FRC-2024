@@ -293,6 +293,8 @@ public final class Constants {
     public static final double ZERO_SPEED_STOP_TOLERANCE = 50.0;
     public static final double ZERO_SPEED_INITIAL_SECONDS = 0.1;
 
+    public static final double ROTATION_TOLERANCE = 0;
+
     // Auto Climb
     public static final PIDController LEVEL_CLIMB_PID_CONTROLLER = new PIDController(0.05, 0, 0);
     public static final PIDController LEVEL_CLIMB_PID_CONTROLLER_TWO =
