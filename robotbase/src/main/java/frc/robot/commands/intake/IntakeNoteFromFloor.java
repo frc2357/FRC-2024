@@ -13,7 +13,6 @@ import frc.robot.subsystems.LEDs;
 public class IntakeNoteFromFloor extends SequentialCommandGroup {
   public IntakeNoteFromFloor() {
     super(
-      
         new LEDsSetColor(LEDs.MELTDOWN_ORANGE),
 
         // Run until we pickup note
@@ -34,7 +33,5 @@ public class IntakeNoteFromFloor extends SequentialCommandGroup {
             .withTimeout(INTAKE.FLOOR_INTAKE_REVERSE_TIMEOUT),
         new IntakeStop(),
         new SetNoteState(NoteState.NOTE_STOWED));
-
-        
   }
 }
