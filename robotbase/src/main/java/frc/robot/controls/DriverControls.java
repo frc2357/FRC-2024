@@ -17,7 +17,7 @@ import frc.robot.commands.drive.TargetLockOnSpeaker;
 import frc.robot.commands.intake.IntakeFeedToShooter;
 import frc.robot.commands.intake.IntakeNoteFromFloor;
 import frc.robot.commands.scoring.AmpSequenceConditional;
-import frc.robot.commands.scoring.SubwooferShot;
+import frc.robot.commands.scoring.VisionlessShooting;
 import frc.robot.commands.scoring.VisionTargeting;
 import frc.robot.commands.source.SourceIntakeFromShooter;
 import frc.robot.controls.util.AxisInterface;
@@ -81,7 +81,7 @@ public class DriverControls implements RumbleInterface {
     m_backButton.onTrue(new InstantCommand(() -> Robot.swerve.zeroGyro(false)));
     m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.zeroGyro(true)));
 
-    m_aButton.whileTrue(new SubwooferShot());
+    m_aButton.whileTrue(new VisionlessShooting());
 
     m_leftTrigger.toggleOnTrue(
         new ParallelDeadlineGroup(new IntakeNoteFromFloor(), new TargetLockOnNote()));
