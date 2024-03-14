@@ -120,7 +120,7 @@ public class AutoClimb extends SequentialCommandGroup {
         new Print("[AutoClimb] Engaging hooks on chain"),
         new ParallelCommandGroup(
             new ClimberRotatePastRotations(
-                CLIMBER.ROTATE_PAST_TEN_DEGREES_SPEED, CLIMBER.TEN_DEGREES_ROTATIONS),
+                CLIMBER.ROTATE_PAST_VERTICAL_SPEED, CLIMBER.VERTICAL_ROTATIONS),
             new DriveAtSpeed(
                 SWERVE.DISTANCE_TO_TOUCH_CHAIN / SWERVE.SECONDS_TO_TOUCH_CHAIN,
                 0,
