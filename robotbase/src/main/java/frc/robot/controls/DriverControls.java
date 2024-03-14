@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import frc.robot.Constants.SCORING;
 import frc.robot.Robot;
 import frc.robot.commands.climber.ManualLineUpClimb;
 import frc.robot.commands.drive.RobotRelativeDrive;
@@ -17,8 +18,8 @@ import frc.robot.commands.drive.TargetLockOnSpeaker;
 import frc.robot.commands.intake.IntakeFeedToShooter;
 import frc.robot.commands.intake.IntakeNoteFromFloor;
 import frc.robot.commands.scoring.AmpSequenceConditional;
-import frc.robot.commands.scoring.VisionlessShooting;
 import frc.robot.commands.scoring.VisionTargeting;
+import frc.robot.commands.scoring.VisionlessShooting;
 import frc.robot.commands.source.SourceIntakeFromShooter;
 import frc.robot.controls.util.AxisInterface;
 import frc.robot.controls.util.AxisThresholdTrigger;
@@ -81,7 +82,11 @@ public class DriverControls implements RumbleInterface {
     m_backButton.onTrue(new InstantCommand(() -> Robot.swerve.zeroGyro(false)));
     m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.zeroGyro(true)));
 
-    m_aButton.whileTrue(new VisionlessShooting());
+    m_aButton.whileTrue(
+        new VisionlessShooting(
+            SCORING.SUBWOOFER_SHOT_SHOOTER_RPMS, SCORING.SUBWOOFER_SHOT_PIVOT_ANGLE));
+    m_bButton.whileTrue(
+        new VisionlessShooting(SCORING.PODIUM_SHOT_SHOOTER_RPMS, SCORING.PODIUM_SHOT_PIVOT_ANGLE));
 
     m_leftTrigger.toggleOnTrue(
         new ParallelDeadlineGroup(new IntakeNoteFromFloor(), new TargetLockOnNote()));
