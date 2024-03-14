@@ -306,8 +306,8 @@ public final class Constants {
     public static final double ROTATE_PAST_PREPOSE_SPEED = -1.0;
     public static final double PREPOSE_ROTATIONS = -75;
 
-    public static final double ROTATE_PAST_TEN_DEGREES_SPEED = -1.0;
-    public static final double TEN_DEGREES_ROTATIONS = -160;
+    public static final double ROTATE_PAST_VERTICAL_SPEED = -1.0;
+    public static final double VERTICAL_ROTATIONS = -160;
 
     public static final double SET_HOOKS_SPEED = 0.2;
     public static final double SET_HOOKS_ROTATIONS = -145;
@@ -377,6 +377,7 @@ public final class Constants {
     public static final double TRAP_PREPOSE_ROTATIONS = 4.0;
     public static final double TRAP_CLIMB_ROTATIONS = 7.0;
     public static final double POST_TRAP_SCORE_ROTATIONS = 6.0;
+    public static final double CLIMB_ONLY_ROTATIONS = 5;
   }
 
   public static final class LEDS {
