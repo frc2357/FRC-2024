@@ -5,24 +5,24 @@ import frc.robot.Constants.END_AFFECTOR;
 import frc.robot.Robot;
 
 public class EndAffectorRunToTop extends Command {
-   public EndAffectorRunToTop() {
-      addRequirements(Robot.endAffector);
-   }
+  public EndAffectorRunToTop() {
+    addRequirements(Robot.endAffector);
+  }
 
-   @Override
-   public void initialize() {
-      Robot.endAffector.setProximitySensorPower(true);
-      Robot.endAffector.setSpeed(END_AFFECTOR.INTAKE_SPEED);
-   }
+  @Override
+  public void initialize() {
+    Robot.endAffector.setProximitySensorPower(true);
+    Robot.endAffector.setSpeed(END_AFFECTOR.INTAKE_SPEED);
+  }
 
-   @Override
-   public boolean isFinished() {
-      return Robot.endAffector.getProximitySensor();
-   }
+  @Override
+  public boolean isFinished() {
+    return Robot.endAffector.getProximitySensor();
+  }
 
-   @Override
-   public void end(boolean interrupted) {
-      Robot.endAffector.setSpeed(0);
-      Robot.endAffector.setProximitySensorPower(false);
-   }
+  @Override
+  public void end(boolean interrupted) {
+    Robot.endAffector.setSpeed(0);
+    Robot.endAffector.setProximitySensorPower(false);
+  }
 }

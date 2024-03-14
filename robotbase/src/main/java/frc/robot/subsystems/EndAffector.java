@@ -20,7 +20,8 @@ public class EndAffector extends SubsystemBase {
     m_motor = new CANSparkMax(CAN_ID.END_AFFECTOR_MOTOR_ID, MotorType.kBrushed);
 
     m_proximitySensor = new DigitalInput(DIGITAL_INPUT.END_AFFECTOR_PROXIMITY_SENSOR_ID);
-    m_proximitySensorPower = new DigitalOutput(DIGITAL_INPUT.END_AFFECTOR_PROXIMITY_SENSOR_POWER_ID);
+    m_proximitySensorPower =
+        new DigitalOutput(DIGITAL_INPUT.END_AFFECTOR_PROXIMITY_SENSOR_POWER_ID);
 
     configure();
   }
