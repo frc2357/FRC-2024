@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CAN_ID;
 import frc.robot.Constants.DIGITAL_INPUT;
@@ -13,11 +14,14 @@ public class EndAffector extends SubsystemBase {
   private CANSparkMax m_motor;
 
   private DigitalInput m_proximitySensor;
+  private DigitalOutput m_proximitySensorPower;
 
   public EndAffector() {
     m_motor = new CANSparkMax(CAN_ID.END_AFFECTOR_MOTOR_ID, MotorType.kBrushed);
 
     m_proximitySensor = new DigitalInput(DIGITAL_INPUT.END_AFFECTOR_PROXIMITY_SENSOR_ID);
+    m_proximitySensorPower =
+        new DigitalOutput(DIGITAL_INPUT.END_AFFECTOR_PROXIMITY_SENSOR_POWER_ID);
 
     configure();
   }
@@ -43,8 +47,12 @@ public class EndAffector extends SubsystemBase {
     m_motor.setVoltage(outputVoltage);
   }
 
-  public boolean hasNote() {
+  public boolean getProximitySensor() {
     return m_proximitySensor.get();
+  }
+
+  public void setProximitySensorPower(boolean on) {
+    m_proximitySensorPower.set(on);
   }
 
   public void stop() {
