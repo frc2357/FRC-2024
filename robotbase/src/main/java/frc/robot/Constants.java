@@ -186,7 +186,7 @@ public final class Constants {
 
   public static final class SHOOTER {
     public static final double SOURCE_INTAKE_RPM = -1500;
-    public static final double FEED_END_AFFECTOR_RPM = 1500;
+    public static final double FEED_END_AFFECTOR_RPM = 1000;
     public static final double DEFAULT_STOWED_RPMS = 2000;
 
     public static final double SHOOTER_AXIS_STEP_INTERVAL = 0.1;
