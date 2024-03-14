@@ -91,7 +91,7 @@ public class DriverControls implements RumbleInterface {
     m_aButton.whileTrue(
         new VisionlessShooting(
             SCORING.SUBWOOFER_SHOT_SHOOTER_RPMS, SCORING.SUBWOOFER_SHOT_PIVOT_ANGLE));
-    m_xButton.whileTrue(
+    m_bButton.whileTrue(
         new VisionlessShooting(SCORING.PODIUM_SHOT_SHOOTER_RPMS, SCORING.PODIUM_SHOT_PIVOT_ANGLE));
 
     m_leftTrigger.toggleOnTrue(
@@ -99,8 +99,8 @@ public class DriverControls implements RumbleInterface {
 
     m_leftBumper.whileTrue(new SourceIntakeFromShooter());
 
-    m_rightDPad.onTrue(new ManualLineUpTrap(m_rightDPad, m_upDPad));
-    m_leftDPad.onTrue(new ManualLineUpClimb(m_leftDPad));
+    m_yButton.onTrue(new ManualLineUpTrap(m_yButton, m_yButton));
+    m_xButton.onTrue(new ManualLineUpClimb(m_xButton));
 
     // scoring
     m_rightBumper.onTrue(new AmpSequenceConditional());
