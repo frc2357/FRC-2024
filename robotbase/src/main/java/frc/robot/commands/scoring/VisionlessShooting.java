@@ -9,13 +9,13 @@ import frc.robot.commands.shooter.ShooterSetRPM;
 import frc.robot.commands.shooter.ShooterStop;
 import frc.robot.commands.shooter.ShooterWaitForRPM;
 
-public class SubwooferShot extends ParallelDeadlineGroup {
-  public SubwooferShot() {
+public class VisionlessShooting extends ParallelDeadlineGroup {
+  public VisionlessShooting(double shooterRPMs, double pivotAngle) {
     super(
         new SequentialCommandGroup(
-            new ShooterSetRPM(SCORING.SUBWOOFER_SHOT_SHOOTER_RPMS),
-            new ShooterWaitForRPM().withTimeout(SCORING.SUBWOOFER_SHOT_WAIT_TO_FIRE_SECONDS),
-            new IntakeFeedToShooter().withTimeout(0.25),
+            new ShooterSetRPM(shooterRPMs),
+            new ShooterWaitForRPM().withTimeout(SCORING.VISIONLESS_SHOT_WAIT_TO_FIRE_SECONDS),
+            new IntakeFeedToShooter().withTimeout(0.5),
             new ShooterStop()),
         new PivotHoldAngle(SCORING.SUBWOOFER_SHOT_PIVOT_ANGLE));
   }
