@@ -3,7 +3,6 @@ package frc.robot.commands.drive;
 import com.choreo.lib.Choreo;
 import com.choreo.lib.ChoreoTrajectory;
 import com.choreo.lib.ChoreoTrajectoryState;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.CHOREO;
@@ -13,7 +12,6 @@ public class DriveChoreoPath extends SequentialCommandGroup {
 
   private String m_pathName; // The name of the path file
   private ChoreoTrajectory m_traj; // The generated trajectory object
-  private Pose2d m_finalTargetPose; // The ending pose of the robot
   private ChoreoTrajectoryState m_startingState; // The starting state of the robot
 
   /**
@@ -24,7 +22,7 @@ public class DriveChoreoPath extends SequentialCommandGroup {
   public DriveChoreoPath(String trajectoryFileName) {
     // Overloaded constructor, sets the gyro yaw to zero and pose x, y to starting
     // position
-    this(trajectoryFileName, trajectoryFileName, false, false);
+    this(trajectoryFileName, trajectoryFileName, false);
   }
 
   /**
@@ -34,7 +32,7 @@ public class DriveChoreoPath extends SequentialCommandGroup {
   public DriveChoreoPath(String trajectoryFileName, String pathName) {
     // Overloaded constructor, sets the gyro yaw to zero and pose x, y to starting
     // position
-    this(trajectoryFileName, pathName, false, false);
+    this(trajectoryFileName, pathName, false);
   }
 
   /**
@@ -44,7 +42,7 @@ public class DriveChoreoPath extends SequentialCommandGroup {
   public DriveChoreoPath(String trajectoryFileName, boolean setPoseToStartTrajectory) {
     // Overloaded constructor, sets the gyro yaw to zero and pose x, y to starting
     // position
-    this(trajectoryFileName, trajectoryFileName, setPoseToStartTrajectory, false);
+    this(trajectoryFileName, trajectoryFileName, setPoseToStartTrajectory);
   }
 
   /**
@@ -56,12 +54,8 @@ public class DriveChoreoPath extends SequentialCommandGroup {
    *     trajectory.
    */
   public DriveChoreoPath(
-      String trajectoryFileName,
-      String pathName,
-      boolean setPoseToStartTrajectory,
-      boolean setStartRotation) {
+      String trajectoryFileName, String pathName, boolean setPoseToStartTrajectory) {
     m_traj = Choreo.getTrajectory(trajectoryFileName); // Loads choreo file into trajctory object
-    m_finalTargetPose = m_traj.getFinalPose(); // Gets the last pose out of the trajectory
     m_pathName =
         pathName; // Gets the path name to display on the smardashboard via the toString() method
     m_startingState = m_traj.getInitialState(); // Gets the starting pose out of the trajectory
@@ -81,22 +75,12 @@ public class DriveChoreoPath extends SequentialCommandGroup {
     // Set the gyro yaw to 0 and the pose x, y to the starting position of the path
     if (setPoseToStartTrajectory) {
       addCommands(
-          new InstantCommand(() -> Robot.swerve.zeroAll()), // Zero the gyro and reset odometry
           new InstantCommand(
               () ->
                   Robot.swerve.setPose(
                       m_startingState
                           .getPose()))); // Zero the gyro and set pose odomety to x, y of starting
       // path
-    }
-
-    // Set the gyro yaw, pose rotation, pose x, and pose y to the position of the
-    // starting path
-    if (setStartRotation) {
-      addCommands(
-          new InstantCommand(() -> Robot.swerve.zeroAll()), // Zero the gyro and reset the odometry
-          // Zero the gyro and set the pose rotation, x, y all off start pose
-          new InstantCommand(() -> Robot.swerve.setPoseAndRotation(m_startingState.getPose())));
     }
 
     addCommands(

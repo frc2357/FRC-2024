@@ -190,7 +190,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
   public void setPoseAndRotation(Pose2d location) {
     // Set the pigeon's yaw to be the pose's rotation
-    super.getPigeon2().setYaw(location.getRotation().getDegrees());
+    // super.getPigeon2().setYaw(location.getRotation().getDegrees());
     try {
       super.m_stateLock.writeLock().lock();
       // Set the robot pose location to the given pose location,
