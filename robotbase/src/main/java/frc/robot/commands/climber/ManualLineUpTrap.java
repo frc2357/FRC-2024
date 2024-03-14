@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.CLIMBER;
 import frc.robot.Constants.END_AFFECTOR;
 import frc.robot.Constants.EXTENSION_ARM;
@@ -46,10 +47,10 @@ public class ManualLineUpTrap extends SequentialCommandGroup {
   }
 
   private static class PressToContinue extends Command {
-    private JoystickButton m_button;
+    private Trigger m_button;
     private boolean m_wasReleased;
 
-    public PressToContinue(JoystickButton button) {
+    public PressToContinue(Trigger button) {
       m_button = button;
     }
 
@@ -96,7 +97,7 @@ public class ManualLineUpTrap extends SequentialCommandGroup {
     }
   }
 
-  public ManualLineUpTrap(JoystickButton continueButton, JoystickButton scoreButton) {
+  public ManualLineUpTrap(Trigger continueButton, Trigger scoreButton) {
     super(
         new Print("Extending Arm, line it up with the bottom of the stage."),
         new ParallelDeadlineGroup(

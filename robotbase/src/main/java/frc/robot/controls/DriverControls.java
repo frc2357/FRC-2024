@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.SCORING;
 import frc.robot.Robot;
 import frc.robot.commands.climber.ManualLineUpClimb;
+import frc.robot.commands.climber.ManualLineUpTrap;
 import frc.robot.commands.drive.RobotRelativeDrive;
 import frc.robot.commands.drive.TargetLockOnNote;
 import frc.robot.commands.drive.TargetLockOnSpeaker;
@@ -43,7 +44,10 @@ public class DriverControls implements RumbleInterface {
   private AxisThresholdTrigger m_rightTriggerShoot;
   private AxisThresholdTrigger m_leftTrigger;
 
+  private POVButton m_upDPad;
   private POVButton m_rightDPad;
+  private POVButton m_downDPad;
+  private POVButton m_leftDPad;
 
   public DriverControls(XboxController controller, double deadband) {
     m_controller = controller;
@@ -64,7 +68,10 @@ public class DriverControls implements RumbleInterface {
     m_rightTriggerShoot = new AxisThresholdTrigger(m_controller, Axis.kRightTrigger, .8);
     m_leftTrigger = new AxisThresholdTrigger(m_controller, Axis.kLeftTrigger, 0);
 
+    m_upDPad = new POVButton(m_controller, 0);
     m_rightDPad = new POVButton(m_controller, 90);
+    m_downDPad = new POVButton(m_controller, 180);
+    m_leftDPad = new POVButton(m_controller, 270);
 
     mapControls();
   }
@@ -93,7 +100,8 @@ public class DriverControls implements RumbleInterface {
 
     m_leftBumper.whileTrue(new SourceIntakeFromShooter());
 
-    m_yButton.onTrue(new ManualLineUpClimb(m_yButton, m_bButton));
+    m_rightDPad.onTrue(new ManualLineUpTrap(m_rightDPad, m_upDPad));
+    m_leftDPad.onTrue(new ManualLineUpClimb(m_leftDPad));
 
     // scoring
     m_rightBumper.onTrue(new AmpSequenceConditional());

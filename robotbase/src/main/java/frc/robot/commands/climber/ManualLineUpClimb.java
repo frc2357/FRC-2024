@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.CLIMBER;
 import frc.robot.Constants.EXTENSION_ARM;
 import frc.robot.Constants.SWERVE;
@@ -32,10 +33,10 @@ public class ManualLineUpClimb extends SequentialCommandGroup {
    }
 
    private static class PressToContinue extends Command {
-      private JoystickButton m_button;
+      private Trigger m_button;
       private boolean m_wasReleased;
 
-      public PressToContinue(JoystickButton button) {
+      public PressToContinue(Trigger button) {
          m_button = button;
       }
 
@@ -82,7 +83,7 @@ public class ManualLineUpClimb extends SequentialCommandGroup {
       }
    }
 
-   public ManualLineUpClimb(JoystickButton continueButton) {
+   public ManualLineUpClimb(Trigger continueButton) {
       super(
          new Print("Extending arm, line it up with the bottom of the stage."),
          new ParallelCommandGroup(
