@@ -71,7 +71,7 @@ public final class Constants {
   }
 
   public static final class SWERVE {
-    public static final double MAX_SPEED_METERS_PER_SECOND = 4.57;
+    public static final double MAX_SPEED_METERS_PER_SECOND = 5.21;
     public static final double MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND = Math.PI * 2;
 
     public static final double DRIVE_GEAR_RATIO = 6.74603175;
