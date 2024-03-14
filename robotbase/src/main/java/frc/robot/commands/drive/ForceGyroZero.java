@@ -11,7 +11,7 @@ public class ForceGyroZero extends Command {
   @Override
   public void execute() {
     Robot.swerve.zeroGyro(false);
-    System.out.println("TYRING TO ZERO GYRO");
+    System.out.println("[GYRO] TYRING TO ZERO GYRO");
   }
 
   @Override
@@ -22,5 +22,15 @@ public class ForceGyroZero extends Command {
   @Override
   public boolean runsWhenDisabled() {
     return true;
+  }
+
+  @Override
+  public void end(boolean interrupted) {
+    if(interrupted) {
+      System.out.println("[GYRO] GYRO ZERO INTERRUPTED\nGYRO ZERO BAD");
+    } else {
+      System.out.println("[GYRO] ZERO SET CORRECTL");
+    }
+
   }
 }
