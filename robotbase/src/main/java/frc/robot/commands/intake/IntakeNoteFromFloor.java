@@ -32,9 +32,6 @@ public class IntakeNoteFromFloor extends SequentialCommandGroup {
         new IntakeRun(INTAKE.REVERSE_FEED_SPEED_PERCENT_OUTPUT)
             .withTimeout(INTAKE.FLOOR_INTAKE_REVERSE_TIMEOUT),
         new IntakeStop(),
-        new SetNoteState(NoteState.NOTE_STOWED),
-        new LEDsSetColor(LEDs.MELTDOWN_ORANGE).handleInterrupt(null));
-        
+        new SetNoteState(NoteState.NOTE_STOWED));
   }
-
 }
