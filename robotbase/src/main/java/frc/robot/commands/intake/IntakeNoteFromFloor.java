@@ -13,7 +13,7 @@ import frc.robot.subsystems.LEDs;
 public class IntakeNoteFromFloor extends SequentialCommandGroup {
   public IntakeNoteFromFloor() {
     super(
-        new LEDsSetColor(LEDs.MELTDOWN_ORANGE),
+        new LEDsSetColor(Color.kWhite),
 
         // Run until we pickup note
         new IntakeRunUntilBeamState(INTAKE.PICKUP_SPEED_PERCENT_OUTPUT, true),
@@ -22,7 +22,7 @@ public class IntakeNoteFromFloor extends SequentialCommandGroup {
             () -> {
               new RumbleDriverController().schedule();
             }),
-        new LEDsSetColor(Color.kWhite),
+        new LEDsSetColor(LEDs.MELTDOWN_ORANGE),
 
         // Run slow until past beam break
         new IntakeRunUntilBeamState(INTAKE.SLOW_PICKUP_SPEED_PERCENT_OUTPUT, false),
@@ -32,6 +32,9 @@ public class IntakeNoteFromFloor extends SequentialCommandGroup {
         new IntakeRun(INTAKE.REVERSE_FEED_SPEED_PERCENT_OUTPUT)
             .withTimeout(INTAKE.FLOOR_INTAKE_REVERSE_TIMEOUT),
         new IntakeStop(),
-        new SetNoteState(NoteState.NOTE_STOWED));
+        new SetNoteState(NoteState.NOTE_STOWED),
+        new LEDsSetColor(LEDs.MELTDOWN_ORANGE).handleInterrupt(null));
+        
   }
+
 }
