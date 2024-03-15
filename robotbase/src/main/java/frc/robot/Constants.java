@@ -376,7 +376,7 @@ public final class Constants {
     public static final double HOME_ROTATIONS = 0.0;
     public static final double NOTE_STOW_ROTATIONS = 1.4;
     public static final double AMP_PREPOSE_ROTATIONS = 3.75;
-    public static final double AMP_SCORE_ROTATIONS = 6;
+    public static final double AMP_SCORE_ROTATIONS = 5.95;
     public static final double STAGE_LINE_UP_ROTATIONS = 1.83;
     public static final double TRAP_PREPOSE_ROTATIONS = 4.0;
     public static final double TRAP_CLIMB_ROTATIONS = 7.0;
