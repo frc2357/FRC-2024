@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.SCORING;
@@ -24,6 +25,7 @@ import frc.robot.commands.source.SourceIntakeFromShooter;
 import frc.robot.controls.util.AxisInterface;
 import frc.robot.controls.util.AxisThresholdTrigger;
 import frc.robot.controls.util.RumbleInterface;
+import frc.robot.subsystems.LEDs;
 
 public class DriverControls implements RumbleInterface {
   private XboxController m_controller;
@@ -80,27 +82,30 @@ public class DriverControls implements RumbleInterface {
   }
 
   public void mapControls() {
-    AxisInterface righStickYAxis =
-        () -> {
-          return getRightStickYAxis();
-        };
+    AxisInterface righStickYAxis = () -> {
+      return getRightStickYAxis();
+    };
 
     m_backButton.onTrue(new InstantCommand(() -> Robot.swerve.zeroGyro(false)));
     m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.zeroGyro(true)));
 
     m_aButton.whileTrue(
         new VisionlessShooting(
-            SCORING.SUBWOOFER_SHOT_SHOOTER_RPMS, SCORING.SUBWOOFER_SHOT_PIVOT_ANGLE));
-    m_xButton.whileTrue(
-        new VisionlessShooting(SCORING.PODIUM_SHOT_SHOOTER_RPMS, SCORING.PODIUM_SHOT_PIVOT_ANGLE));
+            Robot.shooterCurve[2][1], Robot.shooterCurve[2][2]));
+    m_bButton.whileTrue(
+        new VisionlessShooting(Robot.shooterCurve[4][1], Robot.shooterCurve[4][2]));
 
     m_leftTrigger.toggleOnTrue(
-        new ParallelDeadlineGroup(new IntakeNoteFromFloor(), new TargetLockOnNote()));
+        new ParallelDeadlineGroup(new IntakeNoteFromFloor().handleInterrupt(
+            () -> {
+              Robot.leds.setColor(LEDs.MELTDOWN_ORANGE);
+            }),
+            new TargetLockOnNote()));
 
     m_leftBumper.whileTrue(new SourceIntakeFromShooter());
 
-    m_rightDPad.onTrue(new ManualLineUpTrap(m_rightDPad, m_upDPad));
-    m_leftDPad.onTrue(new ManualLineUpClimb(m_leftDPad));
+    m_yButton.onTrue(new ManualLineUpTrap(m_yButton, m_yButton));
+    m_xButton.onTrue(new ManualLineUpClimb(m_xButton));
 
     // scoring
     m_rightBumper.onTrue(new AmpSequenceConditional());

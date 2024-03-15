@@ -29,9 +29,7 @@ public class Centerline2SpeakerNoteDetection extends SequentialCommandGroup {
         // get second note
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(
-                new DriveChoreoPath(
-                    "RefSideFar2NoteDetection.1", "RefSifeFar2NoteDetection.1", false, true),
-                new WaitCommand(1)),
+                new DriveChoreoPath("RefSideFar2NoteDetection.1", true), new WaitCommand(1)),
             new IntakeNoteFromFloor()),
 
         // Preset RPM and Angle to be close to targe

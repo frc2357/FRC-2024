@@ -168,7 +168,7 @@ public class ManualLineUpTrap extends SequentialCommandGroup {
             new ClimberRotatePastRotations(
                 CLIMBER.ROTATE_PAST_READY_SPEED, CLIMBER.PAST_READY_ROTATIONS),
             new DriveAtSpeed(
-                SWERVE.DISTANCE_TO_READY / SWERVE.SECONDS_TO_READY, 0, SWERVE.SECONDS_TO_READY),
+                SWERVE.DISTANCE_TO_READY_TRAP / SWERVE.SECONDS_TO_READY_TRAP, 0, SWERVE.SECONDS_TO_READY_TRAP),
             new ExtensionArmMoveToRotations(EXTENSION_ARM.TRAP_CLIMB_ROTATIONS)),
         // new ParallelDeadlineGroup(new PressToContinue(continueButton), new AdjustNote()),
         new Print("Ready to climb! Co-driver using right trigger, press Y when in position"),

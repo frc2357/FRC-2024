@@ -2,6 +2,7 @@ package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.CLIMBER;
@@ -85,7 +86,7 @@ public class ManualLineUpClimb extends SequentialCommandGroup {
   public ManualLineUpClimb(Trigger continueButton) {
     super(
         new Print("Extending arm, line it up with the bottom of the stage."),
-        new ParallelCommandGroup(
+        new ParallelDeadlineGroup(
             new PressToContinue(continueButton),
             new ShooterStop(),
             new ClimberRotatePastRotations(
@@ -117,6 +118,10 @@ public class ManualLineUpClimb extends SequentialCommandGroup {
         new Print("Check position before extending arm to climb"),
         new PressToContinue(continueButton),
         new Print("Extending arm to climb. Ready to climb!"),
+        new ParallelCommandGroup(
+        new DriveAtSpeed(SWERVE.DISTANCE_TO_READY_CLIMB / SWERVE.SECONDS_TO_READY_CLIMB, 0, SWERVE.SECONDS_TO_READY_CLIMB)
+        // new ClimberRotatePastRotations(, 0)
+        ),
         new ExtensionArmMoveToRotations(EXTENSION_ARM.CLIMB_ONLY_ROTATIONS),
         new ClimberLevelClimb());
   }
