@@ -14,6 +14,6 @@ public class VisionlessShooting extends ParallelDeadlineGroup {
         new SequentialCommandGroup(
             new ShooterWaitForRPM().withTimeout(SCORING.VISIONLESS_SHOT_WAIT_TO_FIRE_SECONDS),
             new IntakeFeedToShooter().withTimeout(0.5)),
-        new ShooterSetRPM(shooterRPMs), new PivotHoldAngle(pivotAngle));
+        new ShooterSetRPM(shooterRPMs), new PivotHoldAngle(pivotAngle, true, true));
   }
 }

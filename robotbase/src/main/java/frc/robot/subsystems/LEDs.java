@@ -12,6 +12,7 @@ public class LEDs extends SubsystemBase {
   private AddressableLEDBuffer m_LEDBuffer;
 
   public static final Color MELTDOWN_ORANGE = new Color(50, 255, 0);
+  public static final Color GREEN = new Color(255, 0, 0);
 
   public LEDs() {
     m_LED = new AddressableLED(LEDS.PORT_NUMBER);

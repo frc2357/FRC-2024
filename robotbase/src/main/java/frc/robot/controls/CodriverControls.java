@@ -15,6 +15,8 @@ import frc.robot.Robot;
 import frc.robot.commands.climber.ClimberAxis;
 import frc.robot.commands.climber.ClimberRunThenZero;
 import frc.robot.commands.endAffector.EndAffectorAxis;
+import frc.robot.commands.endAffector.EndAffectorPreloadNote;
+import frc.robot.commands.endAffector.EndAffectorRunToTop;
 import frc.robot.commands.extensionArm.ExtensionArmAxis;
 import frc.robot.commands.extensionArm.ExtensionArmZero;
 import frc.robot.commands.intake.IntakeAxis;
@@ -111,33 +113,27 @@ public class CodriverControls implements RumbleInterface {
 
   private void mapControls() {
 
-    AxisInterface axisRightStickX =
-        () -> {
-          return getRightXAxis();
-        };
-    AxisInterface axisRightStickY =
-        () -> {
-          return getRightYAxis();
-        };
+    AxisInterface axisRightStickX = () -> {
+      return getRightXAxis();
+    };
+    AxisInterface axisRightStickY = () -> {
+      return getRightYAxis();
+    };
 
-    AxisInterface subsystemRollerForwardAxis =
-        () -> {
-          return getRightTriggerAxis();
-        };
+    AxisInterface subsystemRollerForwardAxis = () -> {
+      return getRightTriggerAxis();
+    };
 
-    AxisInterface subsystemRollerReverseAxis =
-        () -> {
-          return -getLeftTriggerAxis();
-        };
+    AxisInterface subsystemRollerReverseAxis = () -> {
+      return -getLeftTriggerAxis();
+    };
 
-    Trigger noDPad =
-        new Trigger(
-                () ->
-                    m_upDPad.getAsBoolean()
-                        || m_rightDPad.getAsBoolean()
-                        || m_downDPad.getAsBoolean()
-                        || m_leftDPad.getAsBoolean())
-            .negate();
+    Trigger noDPad = new Trigger(
+        () -> m_upDPad.getAsBoolean()
+            || m_rightDPad.getAsBoolean()
+            || m_downDPad.getAsBoolean()
+            || m_leftDPad.getAsBoolean())
+        .negate();
 
     Trigger rightTriggerPreNoDPad = noDPad.and(m_rightTriggerPre);
     Trigger rightTriggerFullNoDPad = noDPad.and(m_rightTriggerFull);

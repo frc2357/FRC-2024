@@ -22,7 +22,7 @@ public class IntakeNoteFromFloor extends SequentialCommandGroup {
             () -> {
               new RumbleDriverController().schedule();
             }),
-        new LEDsSetColor(LEDs.MELTDOWN_ORANGE),
+        new LEDsSetColor(LEDs.GREEN),
 
         // Run slow until past beam break
         new IntakeRunUntilBeamState(INTAKE.SLOW_PICKUP_SPEED_PERCENT_OUTPUT, false),
