@@ -128,12 +128,12 @@ public class ManualLineUpTrap extends SequentialCommandGroup {
         new Print("Positioning to transfer note"),
         new ParallelCommandGroup(
             new ClimberRotatePastRotations(
-                CLIMBER.ROTATE_PAST_EXTENSION_SPEED, CLIMBER.PAST_EXTENSION_ROTATIONS),
-            new DriveAtSpeed(
-                -(SWERVE.DISTANCE_TO_ROTATE_PAST_EXTENSION
-                    / SWERVE.SECONDS_TO_ROTATE_PAST_EXTENSION),
-                0,
-                SWERVE.SECONDS_TO_ROTATE_PAST_EXTENSION)),
+                CLIMBER.ROTATE_PAST_EXTENSION_SPEED, CLIMBER.PAST_EXTENSION_ROTATIONS)),
+        // new DriveAtSpeed(
+        //     -(SWERVE.DISTANCE_TO_ROTATE_PAST_EXTENSION
+        //         / SWERVE.SECONDS_TO_ROTATE_PAST_EXTENSION),
+        //     0,
+        //     SWERVE.SECONDS_TO_ROTATE_PAST_EXTENSION)),
         new Print("Check position before transferring note"),
         new PressToContinue(continueButton),
         new Print("Transferring note"),
@@ -168,7 +168,9 @@ public class ManualLineUpTrap extends SequentialCommandGroup {
             new ClimberRotatePastRotations(
                 CLIMBER.ROTATE_PAST_READY_SPEED, CLIMBER.PAST_READY_ROTATIONS),
             new DriveAtSpeed(
-                SWERVE.DISTANCE_TO_READY_TRAP / SWERVE.SECONDS_TO_READY_TRAP, 0, SWERVE.SECONDS_TO_READY_TRAP),
+                SWERVE.DISTANCE_TO_READY_TRAP / SWERVE.SECONDS_TO_READY_TRAP,
+                0,
+                SWERVE.SECONDS_TO_READY_TRAP),
             new ExtensionArmMoveToRotations(EXTENSION_ARM.TRAP_CLIMB_ROTATIONS)),
         // new ParallelDeadlineGroup(new PressToContinue(continueButton), new AdjustNote()),
         new Print("Ready to climb! Co-driver using right trigger, press Y when in position"),

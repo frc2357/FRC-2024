@@ -11,6 +11,7 @@ import frc.robot.commands.auto.paths.LeftClose1Speaker;
 import frc.robot.commands.auto.paths.MiddleClose1Speaker;
 import frc.robot.commands.auto.paths.RightClose1Speaker;
 import frc.robot.commands.auto.paths.ShootAndNothing;
+import frc.robot.commands.drive.DriveChoreoPath;
 
 public class AutoCommandChooser {
   private Command[] m_autoCommands;
@@ -29,8 +30,7 @@ public class AutoCommandChooser {
           new MiddleClose1Speaker(),
           new RightClose1Speaker(),
           new ShootAndNothing(),
-          // new DriveChoreoPath("TestAuto.1", "TestAuto.1",
-          //  false, true)
+          new DriveChoreoPath("TestAuto.1", true)
         };
 
     m_chooser = new SendableChooser<>();

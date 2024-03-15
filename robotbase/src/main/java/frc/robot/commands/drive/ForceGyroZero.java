@@ -26,11 +26,14 @@ public class ForceGyroZero extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    if(interrupted) {
+    if (interrupted) {
       System.out.println("[GYRO] GYRO ZERO INTERRUPTED\nGYRO ZERO BAD");
     } else {
-      System.out.println("[GYRO] ZERO SET CORRECTL");
+      System.out.println("*********************************************************************");
+      System.out.println("*********************************************************************");
+      System.out.println("[GYRO] ZERO SET CORRECTLY");
+      System.out.println("*********************************************************************");
+      System.out.println("*********************************************************************");
     }
-
   }
 }

@@ -7,10 +7,8 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
-import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-import frc.robot.Constants.SCORING;
 import frc.robot.Robot;
 import frc.robot.commands.climber.ManualLineUpClimb;
 import frc.robot.commands.climber.ManualLineUpTrap;
@@ -82,24 +80,24 @@ public class DriverControls implements RumbleInterface {
   }
 
   public void mapControls() {
-    AxisInterface righStickYAxis = () -> {
-      return getRightStickYAxis();
-    };
+    AxisInterface righStickYAxis =
+        () -> {
+          return getRightStickYAxis();
+        };
 
     m_backButton.onTrue(new InstantCommand(() -> Robot.swerve.zeroGyro(false)));
     m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.zeroGyro(true)));
 
-    m_aButton.whileTrue(
-        new VisionlessShooting(
-            Robot.shooterCurve[2][1], Robot.shooterCurve[2][2]));
-    m_bButton.whileTrue(
-        new VisionlessShooting(Robot.shooterCurve[4][1], Robot.shooterCurve[4][2]));
+    m_aButton.whileTrue(new VisionlessShooting(Robot.shooterCurve[2][2], Robot.shooterCurve[2][1]));
+    m_bButton.whileTrue(new VisionlessShooting(Robot.shooterCurve[4][2], Robot.shooterCurve[4][1]));
 
     m_leftTrigger.toggleOnTrue(
-        new ParallelDeadlineGroup(new IntakeNoteFromFloor().handleInterrupt(
-            () -> {
-              Robot.leds.setColor(LEDs.MELTDOWN_ORANGE);
-            }),
+        new ParallelDeadlineGroup(
+            new IntakeNoteFromFloor()
+                .handleInterrupt(
+                    () -> {
+                      Robot.leds.setColor(LEDs.MELTDOWN_ORANGE);
+                    }),
             new TargetLockOnNote()));
 
     m_leftBumper.whileTrue(new SourceIntakeFromShooter());

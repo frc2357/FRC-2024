@@ -24,8 +24,9 @@ public class PivotHoldAngle extends Command {
 
   @Override
   public void initialize() {
-    m_pivotOffsetAngle = m_includeAngleOffset ? SmartDashboard.getNumber(PIVOT.PIVOT_OFFSET_KEY, 0.0) : 0;
-    Robot.pivot.setAngle(m_angle);
+    m_pivotOffsetAngle =
+        m_includeAngleOffset ? SmartDashboard.getNumber(PIVOT.PIVOT_OFFSET_KEY, 0.0) : 0;
+    Robot.pivot.setAngle(m_angle + m_pivotOffsetAngle);
   }
 
   @Override

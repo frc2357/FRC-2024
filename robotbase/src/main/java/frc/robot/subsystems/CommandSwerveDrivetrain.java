@@ -66,10 +66,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     return getPigeon2().getRoll().getValueAsDouble();
   }
 
-  public void setYaw(double yaw) {
-    getPigeon2().setYaw(yaw);
-  }
-
   public void driveTargetLock(
       double velocityXSpeedMetersPerSecond,
       double velocityYSpeedMetersPerSecond,
@@ -156,17 +152,13 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     return super.m_kinematics;
   }
 
-  public void zeroAll() {
-    zeroGyro(false);
-    resetPose();
-  }
-
   public void zeroGyro(boolean flip) {
     // Pigeon2Configuration config = new Pigeon2Configuration();
     // super.getPigeon2().getConfigurator().apply(config);
     StatusCode code = super.getPigeon2().setYaw(flip ? 180 : 0);
-    System.out.println(code.toString());
+    System.out.println("[GYRO] Zeroed to " + (flip ? 180 : 0) + ": " + code.toString());
   }
+
 
   public void resetPose() {
     setPose(new Pose2d(0, 0, new Rotation2d()));
@@ -190,7 +182,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
   public void setPoseAndRotation(Pose2d location) {
     // Set the pigeon's yaw to be the pose's rotation
-    // super.getPigeon2().setYaw(location.getRotation().getDegrees());
     try {
       super.m_stateLock.writeLock().lock();
       // Set the robot pose location to the given pose location,

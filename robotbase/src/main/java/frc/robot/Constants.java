@@ -17,15 +17,11 @@ import java.util.function.BooleanSupplier;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide
- * numerical or boolean
- * constants. This class should not be used for any other purpose. All constants
- * should be declared
+ * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
+ * constants. This class should not be used for any other purpose. All constants should be declared
  * globally (i.e. public static). Do not put anything functional in this class.
  *
- * <p>
- * It is advised to statically import this class (or one of its inner classes)
- * wherever the
+ * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
@@ -92,28 +88,34 @@ public final class Constants {
     public static final double PIECE_TRACKING_ROTATION_TOLERANCE = 0.1;
 
     public static final double PIECE_TRACKING_MAX_DISTANCE_METERS = 3.0; // In Meters
-    public static final double PIECE_TRACKING_SLOW_DOWN_METERS = 1.0; // Robot goes half speed once passed
+    public static final double PIECE_TRACKING_SLOW_DOWN_METERS =
+        1.0; // Robot goes half speed once passed
     public static final double PIECE_TRACKING_X_METERS_PER_SECOND = 2;
 
     // Target Lock
     public static final double TARGET_LOCK_ROTATION_KP = 0.1;
     public static final double TARGET_LOCK_ROTATION_KI = 0.0;
     public static final double TARGET_LOCK_ROTATION_KD = 0.0;
-    public static final PIDController TARGET_LOCK_ROTATION_PID_CONTROLLER = new PIDController(
-        TARGET_LOCK_ROTATION_KP, TARGET_LOCK_ROTATION_KI, TARGET_LOCK_ROTATION_KD);
+    public static final PIDController TARGET_LOCK_ROTATION_PID_CONTROLLER =
+        new PIDController(
+            TARGET_LOCK_ROTATION_KP, TARGET_LOCK_ROTATION_KI, TARGET_LOCK_ROTATION_KD);
 
     public static final double TARGET_LOCK_FEED_FORWARD = 0.0;
     public static final double TARGET_LOCK_TOLERANCE = 1.5;
-    public static final double TARGET_LOCK_YAW_SETPOINT = 4.1; // PhotonVision is consistently 2 degrees to the right of
-                                                               // our target
+    public static final double TARGET_LOCK_YAW_SETPOINT =
+        4.1; // PhotonVision is consistently 2 degrees to the right of
+    // our target
 
     public static final double AUTO_TARGET_LOCK_YAW_TOLERANCE = 3;
 
     // Translate to Apriltag
-    public static final PIDController APRILTAG_ROTATION_PID_CONTROLLER = new PIDController(12, 0, 0.0);
+    public static final PIDController APRILTAG_ROTATION_PID_CONTROLLER =
+        new PIDController(12, 0, 0.0);
     public static final double APRILTAG_ROTATION_FEEDFORWARD = 0.00001;
-    public static final PIDController APRILTAG_X_TRANSLATION_PID_CONTROLLER = new PIDController(0.15, 0, 0);
-    public static final PIDController APRILTAG_Y_TRANSLATION_PID_CONTROLLER = new PIDController(0.15, 0, 0);
+    public static final PIDController APRILTAG_X_TRANSLATION_PID_CONTROLLER =
+        new PIDController(0.15, 0, 0);
+    public static final PIDController APRILTAG_Y_TRANSLATION_PID_CONTROLLER =
+        new PIDController(0.15, 0, 0);
 
     public static final double APRILTAG_YAW_TOLERANCE = 1;
     public static final double APRILTAG_PITCH_TOLERANCE = 0.5;
@@ -155,7 +157,7 @@ public final class Constants {
 
     // Manual Line Up Climb
     public static final double DISTANCE_FROM_STAGE_TO_CHAIN = 0.8;
-    public static final double SECONDS_FROM_STAGE_TO_CHAIN = 2.1;
+    public static final double SECONDS_FROM_STAGE_TO_CHAIN = 2.5;
   }
 
   public static final class CHOREO {
@@ -163,12 +165,13 @@ public final class Constants {
     public static final PIDController Y_CONTROLLER = new PIDController(2, 0, 0);
     public static final PIDController ROTATION_CONTROLLER = new PIDController(0.6, 0, 0);
 
-    public static final BooleanSupplier CHOREO_AUTO_MIRROR_PATHS = new BooleanSupplier() {
-      @Override
-      public boolean getAsBoolean() {
-        return Robot.state.getAlliance() == Alliance.Red;
-      }
-    };
+    public static final BooleanSupplier CHOREO_AUTO_MIRROR_PATHS =
+        new BooleanSupplier() {
+          @Override
+          public boolean getAsBoolean() {
+            return Robot.state.getAlliance() == Alliance.Red;
+          }
+        };
   }
 
   public static final class CONTROLLER {
@@ -298,22 +301,23 @@ public final class Constants {
 
     // Auto Climb
     public static final PIDController LEVEL_CLIMB_PID_CONTROLLER = new PIDController(0.05, 0, 0);
-    public static final PIDController LEVEL_CLIMB_PID_CONTROLLER_TWO = new PIDController(0.005, 0, 0);
+    public static final PIDController LEVEL_CLIMB_PID_CONTROLLER_TWO =
+        new PIDController(0.005, 0, 0);
     public static final double LEVEL_CLIMB_MIN = 0.55;
     public static final double LEVEL_CLIMB_MAX = 0.65;
     public static final double LEVEL_CLIMB_TOLERANCE = 3;
 
     public static final double ROTATE_PAST_PREPOSE_SPEED = -1.0;
-    public static final double PREPOSE_ROTATIONS = -75;
+    public static final double PREPOSE_ROTATIONS = -90;
 
     public static final double ROTATE_PAST_VERTICAL_SPEED = -1.0;
-    public static final double VERTICAL_ROTATIONS = -135;
+    public static final double VERTICAL_ROTATIONS = -150;
 
     public static final double SET_HOOKS_SPEED = 0.2;
     public static final double SET_HOOKS_ROTATIONS = -125;
 
     public static final double ROTATE_PAST_EXTENSION_SPEED = 0.5;
-    public static final double PAST_EXTENSION_ROTATIONS = -95;
+    public static final double PAST_EXTENSION_ROTATIONS = -110;
 
     public static final double ROTATE_PAST_READY_SPEED = -0.2;
     public static final double PAST_READY_ROTATIONS = -100;
@@ -386,7 +390,7 @@ public final class Constants {
   }
 
   public static final class SCORING {
-    public static final double SECONDS_PRELOAD_NOTE = 0.85;
+    public static final double SECONDS_PRELOAD_NOTE = 1;
     public static final double SECONDS_PRELOAD_NOTE_FOR_TRAP = 0;
 
     public static final double SECONDS_AMP_SCORE = 1;
@@ -401,14 +405,16 @@ public final class Constants {
   }
 
   public static final class PHOTON_VISION {
-    public static final AprilTagFieldLayout APRIL_TAG_FIELD_LAYOUT = AprilTagFields.k2024Crescendo
-        .loadAprilTagLayoutField();
+    public static final AprilTagFieldLayout APRIL_TAG_FIELD_LAYOUT =
+        AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
     public static final PoseStrategy POSE_STRATEGY = PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
 
     public static final double MAX_ANGLE = 45;
 
-    public static final String LOST_CONNECTION_ERROR_MESSAGE = "----------\nPHOTON VISION HAS LOST CONNECTION!\nVISION RESULTS WILL NOT BE UPDATED!\n----------";
-    public static final String CONNECTION_REGAINED_NOFICATION_MESSAGE = "**********\nPhoton Vision has regained connection!\nVision results will now be updated.\n**********";
+    public static final String LOST_CONNECTION_ERROR_MESSAGE =
+        "----------\nPHOTON VISION HAS LOST CONNECTION!\nVISION RESULTS WILL NOT BE UPDATED!\n----------";
+    public static final String CONNECTION_REGAINED_NOFICATION_MESSAGE =
+        "**********\nPhoton Vision has regained connection!\nVision results will now be updated.\n**********";
   }
 
   public static final class SHOOTER_PHOTON_CAMERA {
@@ -426,12 +432,13 @@ public final class Constants {
     public static final double LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES = 0;
     public static final double LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES = 5.38192;
     public static final double LENS_ANGLE_TILTED_UP_DEGREES = 35;
-    public static final Transform3d ROBOT_TO_CAMERA_TRANSFORM = new Transform3d(
-        new Translation3d(
-            -Units.inchesToMeters(LENS_BEHIND_ROBOT_ORIGIN_INCHES),
-            -Units.inchesToMeters(LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES),
-            Units.inchesToMeters(LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES)),
-        new Rotation3d(0, LENS_ANGLE_TILTED_UP_DEGREES, 0));
+    public static final Transform3d ROBOT_TO_CAMERA_TRANSFORM =
+        new Transform3d(
+            new Translation3d(
+                -Units.inchesToMeters(LENS_BEHIND_ROBOT_ORIGIN_INCHES),
+                -Units.inchesToMeters(LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES),
+                Units.inchesToMeters(LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES)),
+            new Rotation3d(0, LENS_ANGLE_TILTED_UP_DEGREES, 0));
     public static final int SPEAKER_TARGET_TIMEOUT_MS = 60;
     public static final int AMP_TARGET_TIMEOUT_MS = 60;
     public static final int STAGE_TARGET_TIMEOUT_MS = 60;
@@ -452,12 +459,13 @@ public final class Constants {
     public static final double LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES = 0;
     public static final double LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES = 23.10292;
     public static final double LENS_ANGLE_TILTED_DOWN_DEGREES = 20;
-    public static final Transform3d ROBOT_TO_CAMERA_TRANSFORM = new Transform3d(
-        new Translation3d(
-            Units.inchesToMeters(LENS_IN_FRONT_OF_ROBOT_ORIGIN_INCHES),
-            -Units.inchesToMeters(LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES),
-            Units.inchesToMeters(LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES)),
-        new Rotation3d(0, -LENS_ANGLE_TILTED_DOWN_DEGREES, 0));
+    public static final Transform3d ROBOT_TO_CAMERA_TRANSFORM =
+        new Transform3d(
+            new Translation3d(
+                Units.inchesToMeters(LENS_IN_FRONT_OF_ROBOT_ORIGIN_INCHES),
+                -Units.inchesToMeters(LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES),
+                Units.inchesToMeters(LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES)),
+            new Rotation3d(0, -LENS_ANGLE_TILTED_DOWN_DEGREES, 0));
     public static final int NOTE_TARGET_TIMEOUT_MS = 80;
   }
 
@@ -487,22 +495,26 @@ public final class Constants {
     public static final int BLUE_STAGE_RIGHT = 15;
     public static final int BLUE_STAGE_LEFT = 16;
 
-    public static final int[] BLUE_STAGE_TAGS = new int[] { BLUE_STAGE_LEFT, BLUE_STAGE_MIDDLE, BLUE_STAGE_RIGHT };
-    public static final int[] RED_STAGE_TAGS = new int[] { RED_STAGE_LEFT, RED_STAGE_MIDDLE, RED_STAGE_RIGHT };
+    public static final int[] BLUE_STAGE_TAGS =
+        new int[] {BLUE_STAGE_LEFT, BLUE_STAGE_MIDDLE, BLUE_STAGE_RIGHT};
+    public static final int[] RED_STAGE_TAGS =
+        new int[] {RED_STAGE_LEFT, RED_STAGE_MIDDLE, RED_STAGE_RIGHT};
 
-    public static final int[] RIGHT_STAGE_TAGS = new int[] { 12, 16 };
-    public static final int[] LEFT_STAGE_TAGS = new int[] { 11, 15 };
-    public static final int[] CENTER_STAGE_TAGS = new int[] { 13, 14 };
+    public static final int[] RIGHT_STAGE_TAGS = new int[] {12, 16};
+    public static final int[] LEFT_STAGE_TAGS = new int[] {11, 15};
+    public static final int[] CENTER_STAGE_TAGS = new int[] {13, 14};
 
-    public static final int[] STAGE_TAGS = new int[] {
-        BLUE_STAGE_LEFT,
-        BLUE_STAGE_MIDDLE,
-        BLUE_STAGE_RIGHT,
-        RED_STAGE_LEFT,
-        RED_STAGE_MIDDLE,
-        RED_STAGE_RIGHT
-    };
-    public static final int[] SPEAKER_CENTER_TAGS = new int[] { BLUE_SPEAKER_CENTER, RED_SPEAKER_CENTER };
-    public static final int[] AMP_TAGS = new int[] { BLUE_AMP, RED_AMP };
+    public static final int[] STAGE_TAGS =
+        new int[] {
+          BLUE_STAGE_LEFT,
+          BLUE_STAGE_MIDDLE,
+          BLUE_STAGE_RIGHT,
+          RED_STAGE_LEFT,
+          RED_STAGE_MIDDLE,
+          RED_STAGE_RIGHT
+        };
+    public static final int[] SPEAKER_CENTER_TAGS =
+        new int[] {BLUE_SPEAKER_CENTER, RED_SPEAKER_CENTER};
+    public static final int[] AMP_TAGS = new int[] {BLUE_AMP, RED_AMP};
   }
 }

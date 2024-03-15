@@ -17,7 +17,7 @@ public class EndAffectorRunToTop extends Command {
 
   @Override
   public boolean isFinished() {
-    //return Robot.endAffector.getProximitySensor();
+    // return Robot.endAffector.getProximitySensor();
     return false;
   }
 

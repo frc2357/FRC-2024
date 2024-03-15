@@ -119,9 +119,12 @@ public class ManualLineUpClimb extends SequentialCommandGroup {
         new PressToContinue(continueButton),
         new Print("Extending arm to climb. Ready to climb!"),
         new ParallelCommandGroup(
-        new DriveAtSpeed(SWERVE.DISTANCE_TO_READY_CLIMB / SWERVE.SECONDS_TO_READY_CLIMB, 0, SWERVE.SECONDS_TO_READY_CLIMB)
-        // new ClimberRotatePastRotations(, 0)
-        ),
+            new DriveAtSpeed(
+                SWERVE.DISTANCE_TO_READY_CLIMB / SWERVE.SECONDS_TO_READY_CLIMB,
+                0,
+                SWERVE.SECONDS_TO_READY_CLIMB)
+            // new ClimberRotatePastRotations(, 0)
+            ),
         new ExtensionArmMoveToRotations(EXTENSION_ARM.CLIMB_ONLY_ROTATIONS),
         new ClimberLevelClimb());
   }
