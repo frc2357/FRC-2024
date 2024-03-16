@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.commands.auto.AutoShoot;
 import frc.robot.commands.climber.ClimberAxis;
 import frc.robot.commands.climber.ClimberRunThenZero;
 import frc.robot.commands.endAffector.EndAffectorAxis;
@@ -235,6 +236,8 @@ public class CodriverControls implements RumbleInterface {
 
     downDPadAndRightTrigger.whileTrue(new EndAffectorAxis(subsystemRollerForwardAxis));
     downDPadAndLeftTrigger.whileTrue(new EndAffectorAxis(subsystemRollerReverseAxis));
+
+    downDPadAndA.whileTrue(new AutoShoot());
 
     // Climber - up
     // Intake - left

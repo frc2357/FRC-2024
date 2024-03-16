@@ -395,7 +395,7 @@ public final class Constants {
 
     public static final double SECONDS_AMP_SCORE = 1;
 
-    public static final double VISIONLESS_SHOT_WAIT_TO_FIRE_SECONDS = 0.5;
+    public static final double VISIONLESS_SHOT_WAIT_TO_FIRE_SECONDS = 1.5;
 
     public static final double SUBWOOFER_SHOT_SHOOTER_RPMS = 3000;
     public static final double SUBWOOFER_SHOT_PIVOT_ANGLE = 60;

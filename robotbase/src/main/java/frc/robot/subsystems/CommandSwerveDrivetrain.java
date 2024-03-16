@@ -159,7 +159,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     System.out.println("[GYRO] Zeroed to " + (flip ? 180 : 0) + ": " + code.toString());
   }
 
-
   public void resetPose() {
     setPose(new Pose2d(0, 0, new Rotation2d()));
   }
