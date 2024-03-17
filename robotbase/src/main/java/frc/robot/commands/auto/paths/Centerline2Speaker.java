@@ -1,5 +1,6 @@
 package frc.robot.commands.auto.paths;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -41,6 +42,10 @@ public class Centerline2Speaker extends SequentialCommandGroup {
 
         // Shoot
         new AutoShoot(),
+        new InstantCommand(
+            () -> {
+              System.out.println("Past auto shoot");
+            }),
 
         // Go to next third note, and run intake
         new ParallelDeadlineGroup(
