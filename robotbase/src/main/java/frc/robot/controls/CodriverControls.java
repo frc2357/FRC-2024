@@ -112,33 +112,27 @@ public class CodriverControls implements RumbleInterface {
 
   private void mapControls() {
 
-    AxisInterface axisRightStickX =
-        () -> {
-          return getRightXAxis();
-        };
-    AxisInterface axisRightStickY =
-        () -> {
-          return getRightYAxis();
-        };
+    AxisInterface axisRightStickX = () -> {
+      return getRightXAxis();
+    };
+    AxisInterface axisRightStickY = () -> {
+      return getRightYAxis();
+    };
 
-    AxisInterface subsystemRollerForwardAxis =
-        () -> {
-          return getRightTriggerAxis();
-        };
+    AxisInterface subsystemRollerForwardAxis = () -> {
+      return getRightTriggerAxis();
+    };
 
-    AxisInterface subsystemRollerReverseAxis =
-        () -> {
-          return -getLeftTriggerAxis();
-        };
+    AxisInterface subsystemRollerReverseAxis = () -> {
+      return -getLeftTriggerAxis();
+    };
 
-    Trigger noDPad =
-        new Trigger(
-                () ->
-                    m_upDPad.getAsBoolean()
-                        || m_rightDPad.getAsBoolean()
-                        || m_downDPad.getAsBoolean()
-                        || m_leftDPad.getAsBoolean())
-            .negate();
+    Trigger noDPad = new Trigger(
+        () -> m_upDPad.getAsBoolean()
+            || m_rightDPad.getAsBoolean()
+            || m_downDPad.getAsBoolean()
+            || m_leftDPad.getAsBoolean())
+        .negate();
 
     Trigger rightTriggerPreNoDPad = noDPad.and(m_rightTriggerPre);
     Trigger rightTriggerFullNoDPad = noDPad.and(m_rightTriggerFull);
@@ -197,13 +191,6 @@ public class CodriverControls implements RumbleInterface {
     rightDPadAndLeftTrigger.whileTrue(
         new ShooterStepAxis(
             subsystemRollerReverseAxis, Constants.SHOOTER.SHOOTER_AXIS_STEP_INTERVAL));
-
-    rightDPadAndY.onTrue(
-        new InstantCommand(
-            () -> {
-              Robot.pivot.setZero();
-            }));
-    rightDPadAndB.whileTrue(new PivotZero());
 
     rightDPadOnly.whileTrue(new PivotAxis(axisRightStickY));
     rightDPadAndY.onTrue(
