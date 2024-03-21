@@ -134,13 +134,14 @@ public class Robot extends TimedRobot {
     m_setLEDsOrange = new LEDsSetColor(LEDs.MELTDOWN_ORANGE);
     m_setLEDsOrange.schedule();
 
-    DataLogManager.logNetworkTables(false); // enable/disable automatic NetworksTable Logging
+    DataLogManager.logNetworkTables(true); // enable/disable automatic NetworksTable Logging
     DataLogManager.start("", "", 1.0); // defaults, flush to flash every 0.25 seconds
     DriverStation.startDataLog(DataLogManager.getLog());
-    
+
     // enable logging defined in class Telemetry -- adding this to the CTRE log file
     SignalLogger.setPath("/media/sda1/logs");
     swerve.registerTelemetry(logger::telemeterize);
+    SignalLogger.start();
 
     m_forceGyroZero = new ForceGyroZero();
     m_forceGyroZero.schedule();
