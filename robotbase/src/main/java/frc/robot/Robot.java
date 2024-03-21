@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DataLogManager;
@@ -136,8 +137,9 @@ public class Robot extends TimedRobot {
     DataLogManager.logNetworkTables(false); // enable/disable automatic NetworksTable Logging
     DataLogManager.start("", "", 1.0); // defaults, flush to flash every 0.25 seconds
     DriverStation.startDataLog(DataLogManager.getLog());
-
-    // enable logging defined in class Telemetry
+    
+    // enable logging defined in class Telemetry -- adding this to the CTRE log file
+    SignalLogger.setPath("/media/sda1/logs");
     swerve.registerTelemetry(logger::telemeterize);
 
     m_forceGyroZero = new ForceGyroZero();
