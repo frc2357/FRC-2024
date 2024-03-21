@@ -6,6 +6,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.SparkPIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.EXTENSION_ARM;
@@ -80,5 +81,14 @@ public class ExtensionArm extends SubsystemBase {
   public boolean isAtTargetRotations() {
     return Utility.isWithinTolerance(
         getRotations(), m_targetRotations, EXTENSION_ARM.SMART_MOTION_ALLOWED_ERROR);
+  }
+
+  @Override
+  public void periodic() {
+    SmartDashboard.putNumber("Extension Arm Target Rotations", m_targetRotations);
+
+    if (!Double.isNaN(m_targetRotations)) {
+      System.out.println(m_motor.getEncoder().getVelocity());
+    }
   }
 }
