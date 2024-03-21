@@ -20,7 +20,6 @@ import frc.robot.commands.extensionArm.ExtensionArmAxis;
 import frc.robot.commands.extensionArm.ExtensionArmZero;
 import frc.robot.commands.intake.IntakeAxis;
 import frc.robot.commands.pivot.PivotAxis;
-import frc.robot.commands.pivot.PivotZero;
 import frc.robot.commands.shooter.ShooterStepAxis;
 import frc.robot.controls.util.AxisInterface;
 import frc.robot.controls.util.AxisThresholdTrigger;
@@ -112,27 +111,33 @@ public class CodriverControls implements RumbleInterface {
 
   private void mapControls() {
 
-    AxisInterface axisRightStickX = () -> {
-      return getRightXAxis();
-    };
-    AxisInterface axisRightStickY = () -> {
-      return getRightYAxis();
-    };
+    AxisInterface axisRightStickX =
+        () -> {
+          return getRightXAxis();
+        };
+    AxisInterface axisRightStickY =
+        () -> {
+          return getRightYAxis();
+        };
 
-    AxisInterface subsystemRollerForwardAxis = () -> {
-      return getRightTriggerAxis();
-    };
+    AxisInterface subsystemRollerForwardAxis =
+        () -> {
+          return getRightTriggerAxis();
+        };
 
-    AxisInterface subsystemRollerReverseAxis = () -> {
-      return -getLeftTriggerAxis();
-    };
+    AxisInterface subsystemRollerReverseAxis =
+        () -> {
+          return -getLeftTriggerAxis();
+        };
 
-    Trigger noDPad = new Trigger(
-        () -> m_upDPad.getAsBoolean()
-            || m_rightDPad.getAsBoolean()
-            || m_downDPad.getAsBoolean()
-            || m_leftDPad.getAsBoolean())
-        .negate();
+    Trigger noDPad =
+        new Trigger(
+                () ->
+                    m_upDPad.getAsBoolean()
+                        || m_rightDPad.getAsBoolean()
+                        || m_downDPad.getAsBoolean()
+                        || m_leftDPad.getAsBoolean())
+            .negate();
 
     Trigger rightTriggerPreNoDPad = noDPad.and(m_rightTriggerPre);
     Trigger rightTriggerFullNoDPad = noDPad.and(m_rightTriggerFull);

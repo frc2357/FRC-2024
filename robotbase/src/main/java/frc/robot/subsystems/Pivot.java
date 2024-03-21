@@ -6,7 +6,6 @@ import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkPIDController;
-import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -18,17 +17,17 @@ public class Pivot extends SubsystemBase {
   private SparkPIDController m_pivotPIDController;
   private SparkAbsoluteEncoder m_absoluteEncoder;
   private double m_targetAngle;
-  private double m_zeroOffset;
 
   public Pivot() {
     m_pivotMotor = new CANSparkMax(Constants.CAN_ID.PIVOT_MOTOR_ID, MotorType.kBrushless);
     m_targetAngle = Double.NaN;
     configure();
 
-    m_zeroOffset = Preferences.getDouble(Constants.PIVOT.PREFERENCES_ZERO_OFFSET_KEY, Double.NaN);
-    if (!Double.isNaN(m_zeroOffset)) {
-      setZeroOffset(m_zeroOffset);
-    }
+    // m_zeroOffset = Preferences.getDouble(Constants.PIVOT.PREFERENCES_ZERO_OFFSET_KEY,
+    // Double.NaN);
+    // if (!Double.isNaN(m_zeroOffset)) {
+    //   setZeroOffset(m_zeroOffset);
+    // }
 
     SmartDashboard.putNumber(PIVOT.PIVOT_OFFSET_KEY, 0.0);
   }
@@ -59,10 +58,6 @@ public class Pivot extends SubsystemBase {
     m_pivotPIDController.setFeedbackDevice(m_absoluteEncoder);
   }
 
-  public boolean isZeroed() {
-    return !Double.isNaN(m_zeroOffset);
-  }
-
   public boolean isSettingAngle() {
     return !Double.isNaN(m_targetAngle);
   }
@@ -70,10 +65,6 @@ public class Pivot extends SubsystemBase {
   public void setAngle(double angle) {
     if (Double.isNaN(angle)) {
       System.err.println("PIVOT: Cannot set angle to NaN!");
-      return;
-    }
-    if (!isZeroed()) {
-      System.err.println("PIVOT: Cannot set angle, Pivot not zeroed!");
       return;
     }
     if (angle < Constants.PIVOT.MIN_PIVOT_ANGLE) {
@@ -119,14 +110,8 @@ public class Pivot extends SubsystemBase {
     double currentOffset = m_absoluteEncoder.getZeroOffset();
     double newOffset = getCurrentAngle() + currentOffset - Constants.PIVOT.MIN_PIVOT_ANGLE;
     newOffset %= 360;
-    setZeroOffset(newOffset);
-    System.out.println("[Pivot] Zero Set");
-  }
-
-  private void setZeroOffset(double newOffset) {
-    m_absoluteEncoder.setZeroOffset(newOffset);
-    m_zeroOffset = newOffset;
-    Preferences.setDouble(Constants.PIVOT.PREFERENCES_ZERO_OFFSET_KEY, newOffset);
+    // setZeroOffset(newOffset);
+    System.out.println("[Pivot] Zero Not Set. Set the zero manually");
   }
 
   @Override
