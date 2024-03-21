@@ -6,12 +6,9 @@ package frc.robot;
 
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.util.datalog.DoubleArrayLogEntry;
-import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -48,7 +45,6 @@ public class Robot extends TimedRobot {
   private Command m_allianceGetter;
   private Command m_forceGyroZero;
   private RobotContainer m_robotContainer;
-
   public static RobotState state;
 
   public static CommandSwerveDrivetrain swerve;
@@ -68,6 +64,8 @@ public class Robot extends TimedRobot {
 
   public static ExtensionArm extensionArm;
 
+  private final Telemetry logger = new Telemetry();
+
   // {ty, pivotRotations, shooterRPM}
   public static final double[][] shooterCurve = {
     {50, 60, 3000}, // Lower bound
@@ -79,9 +77,10 @@ public class Robot extends TimedRobot {
     {-18.1, 24, 4250}, // Wing line
     {-19, 26, 4250} // Center line (Upper bound)
   };
-  public static PowerDistribution m_pdp;
-  public static DoubleArrayLogEntry m_PDH_log;
-  public static DoubleLogEntry m_pigeonLog;
+
+  // public static PowerDistribution m_pdp;
+  // public static DoubleArrayLogEntry m_PDH_log;
+  // public static DoubleLogEntry m_pigeonLog;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -134,13 +133,12 @@ public class Robot extends TimedRobot {
     m_setLEDsOrange = new LEDsSetColor(LEDs.MELTDOWN_ORANGE);
     m_setLEDsOrange.schedule();
 
-    // set up basic PDH data logging on RoboRIO
-    m_pdp = new PowerDistribution(); // this should automatically log b/c it implements Sendable!?
     DataLogManager.logNetworkTables(false); // enable/disable automatic NetworksTable Logging
     DataLogManager.start("", "", 1.0); // defaults, flush to flash every 0.25 seconds
     DriverStation.startDataLog(DataLogManager.getLog());
-    m_PDH_log = new DoubleArrayLogEntry(DataLogManager.getLog(), "PDH");
-    m_pigeonLog = new DoubleLogEntry(DataLogManager.getLog(), "Pigeon yaw");
+
+    // enable logging defined in class Telemetry
+    swerve.registerTelemetry(logger::telemeterize);
 
     m_forceGyroZero = new ForceGyroZero();
     m_forceGyroZero.schedule();
@@ -172,10 +170,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString(
         "Alliance", state.getAlliance() == null ? "None" : state.getAlliance().toString());
     SmartDashboard.putNumber("Robot yaw", swerve.getYaw());
-    m_PDH_log.append(
-        new double[] {m_pdp.getVoltage(), m_pdp.getTotalCurrent(), m_pdp.getTemperature()});
-
-    m_pigeonLog.append(Robot.swerve.getYaw());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
