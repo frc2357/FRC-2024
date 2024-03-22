@@ -88,7 +88,7 @@ public class DriverControls implements RumbleInterface {
     m_backButton.onTrue(new InstantCommand(() -> Robot.swerve.zeroGyro(false)));
     m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.zeroGyro(true)));
 
-    m_aButton.whileTrue(new VisionlessShooting(Robot.shooterCurve[2][2], Robot.shooterCurve[2][1]));
+    m_aButton.whileTrue(new VisionlessShooting(2500, 50));
     m_bButton.whileTrue(new VisionlessShooting(Robot.shooterCurve[4][2], Robot.shooterCurve[4][1]));
 
     m_leftTrigger.toggleOnTrue(
