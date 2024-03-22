@@ -217,7 +217,7 @@ public final class Constants {
     public static final double BOTTOM_MOTOR_P = 0.0;
     public static final double BOTTOM_MOTOR_I = 0.0;
     public static final double BOTTOM_MOTOR_D = 0.0;
-    public static final double BOTTOM_MOTOR_FF = 0.0002;
+    public static final double BOTTOM_MOTOR_FF = 0.00019;
 
     public static final double RPM_TOLERANCE = 100;
   }
@@ -362,12 +362,12 @@ public final class Constants {
     public static final double MOTOR_PID_D = 0;
     public static final double MOTOR_PID_FF = 0.000005;
 
-    public static final int SMART_MOTION_MAX_VEL_RPM = 6000;
+    public static final int SMART_MOTION_MAX_VEL_RPM = 5600;
     public static final int SMART_MOTION_MIN_VEL_RPM = 0;
-    public static final int SMART_MOTION_MAX_ACC_RPM = 48000;
+    public static final int SMART_MOTION_MAX_ACC_RPM = 50000;
     public static final double SMART_MOTION_ALLOWED_ERROR = 0.1;
 
-    public static final double AXIS_MAX_SPEED = 0.5;
+    public static final double AXIS_MAX_SPEED = 0.75;
 
     public static final double ZERO_SPEED = -0.1;
     public static final double ZERO_SPEED_STOP_TOLERANCE = 0.01;

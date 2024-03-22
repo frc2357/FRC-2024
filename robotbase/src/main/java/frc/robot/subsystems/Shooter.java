@@ -114,10 +114,6 @@ public class Shooter extends SubsystemBase {
     m_curveTuner.updateCurveValues();
     SmartDashboard.putNumber("Top RPM", getTopVelocity());
     SmartDashboard.putNumber("Bottom RPM", getBottomVelocity());
-
-    if (!Double.isNaN(m_targetRPM)) {
-      System.out.println("Top RPM: " + getTopVelocity() + " - Bottom RPM: " + getBottomVelocity());
-    }
   }
 
   public double[] getShooterCurveRow() {

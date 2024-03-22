@@ -28,7 +28,8 @@ public class ExtensionArm extends SubsystemBase {
     m_motor.setIdleMode(EXTENSION_ARM.MOTOR_IDLE_MODE);
     m_motor.setSmartCurrentLimit(
         EXTENSION_ARM.MOTOR_STALL_LIMIT_AMPS, EXTENSION_ARM.MOTOR_FREE_LIMIT_AMPS);
-    m_motor.enableVoltageCompensation(12);
+
+    // m_motor.enableVoltageCompensation(12);
 
     m_encoder = m_motor.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, 8192);
     m_encoder.setInverted(Constants.EXTENSION_ARM.ENCODER_INVERTED);
@@ -86,9 +87,5 @@ public class ExtensionArm extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Extension Arm Target Rotations", m_targetRotations);
-
-    if (!Double.isNaN(m_targetRotations)) {
-      System.out.println(m_motor.getEncoder().getVelocity());
-    }
   }
 }
