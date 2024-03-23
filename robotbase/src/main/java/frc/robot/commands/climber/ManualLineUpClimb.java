@@ -33,7 +33,6 @@ public class ManualLineUpClimb extends SequentialCommandGroup {
     }
   }
 
-
   private static class AdjustNote extends Command {
     public AdjustNote() {
       addRequirements(Robot.endAffector);

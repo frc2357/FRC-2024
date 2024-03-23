@@ -377,7 +377,7 @@ public final class Constants {
     public static final double READY_TO_ZERO_ROTATIONS = 0.2;
     public static final double NOTE_STOW_ROTATIONS = 1.4;
     public static final double AMP_PREPOSE_ROTATIONS = 3.75;
-    public static final double AMP_SHOT_PREPOSE_ROTATIONS = 4.25;
+    public static final double AMP_SHOT_PREPOSE_ROTATIONS = 4.35;
     public static final double AMP_SCORE_ROTATIONS = 5.95;
     public static final double STAGE_LINE_UP_ROTATIONS = 1.83;
     public static final double TRAP_PREPOSE_ROTATIONS = 4.0;

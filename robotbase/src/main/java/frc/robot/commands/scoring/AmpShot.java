@@ -15,16 +15,12 @@ import frc.robot.commands.util.PressToContinue;
 public class AmpShot extends ParallelDeadlineGroup {
   public AmpShot(Trigger continueButton) {
     super(
-      new SequentialCommandGroup(
-        new ExtensionArmMoveToRotations(EXTENSION_ARM.AMP_SHOT_PREPOSE_ROTATIONS),
-
-        new PressToContinue(continueButton),
-
-        new IntakeFeedToShooter().withTimeout(0.5),
-        new ExtensionArmReturnToZero()
-      ),
-      new ShooterSetRPM(SCORING.AMP_SHOT_SHOOTER_RPMS),
-      new PivotHoldAngle(SCORING.AMP_SHOT_PIVOT_ANGLE)
-    );
+        new SequentialCommandGroup(
+            new ExtensionArmMoveToRotations(EXTENSION_ARM.AMP_SHOT_PREPOSE_ROTATIONS),
+            new PressToContinue(continueButton),
+            new IntakeFeedToShooter().withTimeout(0.5),
+            new ExtensionArmReturnToZero()),
+        new ShooterSetRPM(SCORING.AMP_SHOT_SHOOTER_RPMS),
+        new PivotHoldAngle(SCORING.AMP_SHOT_PIVOT_ANGLE));
   }
 }
