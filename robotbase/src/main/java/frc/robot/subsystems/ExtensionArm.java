@@ -83,9 +83,4 @@ public class ExtensionArm extends SubsystemBase {
     return Utility.isWithinTolerance(
         getRotations(), m_targetRotations, EXTENSION_ARM.SMART_MOTION_ALLOWED_ERROR);
   }
-
-  @Override
-  public void periodic() {
-    SmartDashboard.putNumber("Extension Arm Target Rotations", m_targetRotations);
-  }
 }
