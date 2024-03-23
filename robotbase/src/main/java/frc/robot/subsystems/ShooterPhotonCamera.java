@@ -28,6 +28,10 @@ public class ShooterPhotonCamera extends PhotonVisionCamera {
     super.setPipeline(SHOOTER_PHOTON_CAMERA.DEFAULT_PIPELINE);
   }
 
+  public void setPoseEstimationPipeline() {
+    super.setPipeline(SHOOTER_PHOTON_CAMERA.POSE_ESTIMATION_PIPELINE);
+  }
+
   /**
    * @return The yaw of any seen speaker april tag. Will return NaN if it doesnt see one or doesnt
    *     have one cached.
