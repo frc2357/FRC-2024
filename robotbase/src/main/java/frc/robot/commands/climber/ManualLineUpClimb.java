@@ -13,6 +13,7 @@ import frc.robot.commands.drive.DefaultDrive;
 import frc.robot.commands.drive.DriveAtSpeed;
 import frc.robot.commands.extensionArm.ExtensionArmMoveToRotations;
 import frc.robot.commands.shooter.ShooterStop;
+import frc.robot.commands.util.PressToContinue;
 
 public class ManualLineUpClimb extends SequentialCommandGroup {
   private static class Print extends Command {
@@ -32,31 +33,6 @@ public class ManualLineUpClimb extends SequentialCommandGroup {
     }
   }
 
-  private static class PressToContinue extends Command {
-    private Trigger m_button;
-    private boolean m_wasReleased;
-
-    public PressToContinue(Trigger button) {
-      m_button = button;
-    }
-
-    @Override
-    public void initialize() {
-      m_wasReleased = false;
-    }
-
-    @Override
-    public boolean isFinished() {
-      if (m_button.getAsBoolean()) {
-        if (m_wasReleased) {
-          return true;
-        }
-      } else {
-        m_wasReleased = true;
-      }
-      return false;
-    }
-  }
 
   private static class AdjustNote extends Command {
     public AdjustNote() {

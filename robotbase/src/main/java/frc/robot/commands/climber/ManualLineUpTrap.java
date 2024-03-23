@@ -25,6 +25,7 @@ import frc.robot.commands.pivot.PivotHoldAngle;
 import frc.robot.commands.shooter.ShooterSetRPM;
 import frc.robot.commands.shooter.ShooterStop;
 import frc.robot.commands.state.SetNoteState;
+import frc.robot.commands.util.PressToContinue;
 import frc.robot.state.RobotState.NoteState;
 
 public class ManualLineUpTrap extends SequentialCommandGroup {
@@ -42,32 +43,6 @@ public class ManualLineUpTrap extends SequentialCommandGroup {
 
     public boolean isFinished() {
       return true;
-    }
-  }
-
-  private static class PressToContinue extends Command {
-    private Trigger m_button;
-    private boolean m_wasReleased;
-
-    public PressToContinue(Trigger button) {
-      m_button = button;
-    }
-
-    @Override
-    public void initialize() {
-      m_wasReleased = false;
-    }
-
-    @Override
-    public boolean isFinished() {
-      if (m_button.getAsBoolean()) {
-        if (m_wasReleased) {
-          return true;
-        }
-      } else {
-        m_wasReleased = true;
-      }
-      return false;
     }
   }
 
