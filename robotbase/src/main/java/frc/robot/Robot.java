@@ -141,6 +141,7 @@ public class Robot extends TimedRobot {
     // enable logging defined in class Telemetry -- adding this to the CTRE log file
     SignalLogger.setPath("/media/sda1/logs");
     swerve.registerTelemetry(logger::telemeterize);
+    SignalLogger.start();
 
     m_forceGyroZero = new ForceGyroZero();
     m_forceGyroZero.schedule();
