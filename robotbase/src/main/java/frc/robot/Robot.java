@@ -134,7 +134,7 @@ public class Robot extends TimedRobot {
     m_setLEDsOrange = new LEDsSetColor(LEDs.MELTDOWN_ORANGE);
     m_setLEDsOrange.schedule();
 
-    DataLogManager.logNetworkTables(false); // enable/disable automatic NetworksTable Logging
+    DataLogManager.logNetworkTables(true); // enable/disable automatic NetworksTable Logging
     DataLogManager.start("", "", 1.0); // defaults, flush to flash every 0.25 seconds
     DriverStation.startDataLog(DataLogManager.getLog());
 
