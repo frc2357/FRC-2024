@@ -7,6 +7,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -40,7 +41,14 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
       SwerveDrivetrainConstants driveTrainConstants,
       double OdometryUpdateFrequency,
       SwerveModuleConstants... modules) {
-    super(driveTrainConstants, OdometryUpdateFrequency, modules);
+    super(
+        driveTrainConstants,
+        OdometryUpdateFrequency,
+        VecBuilder.fill(0.1, 0.1, 0.1),
+        VecBuilder.fill(0.9, 0.9, Double.MAX_VALUE),
+        modules);
+
+    addVisionMeasurement(getPose(), OdometryUpdateFrequency);
   }
 
   public CommandSwerveDrivetrain(
@@ -185,7 +193,10 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
       super.m_stateLock.writeLock().lock();
       // Set the robot pose location to the given pose location,
       m_odometry.resetPosition(location.getRotation(), m_modulePositions, location);
-      /* We need to update our cached pose immediately so that race conditions don't happen */
+      /*
+       * We need to update our cached pose immediately so that race conditions don't
+       * happen
+       */
       m_cachedState.Pose = location;
     } finally {
       m_stateLock.writeLock().unlock();

@@ -458,6 +458,11 @@ public final class Constants {
     public static final int NOTE_TARGET_TIMEOUT_MS = 80;
   }
 
+  public static final class POSE_FILTER {
+    public static final double VISION_TOLERANCE_METERS = 0.1524;
+    public static final double VISION_TOLERANCE_DEGREES = 15;
+  }
+
   public static final class APRIL_TAG_IDS {
 
     public static final int BLUE_SOURCE_RIGHT = 1;
