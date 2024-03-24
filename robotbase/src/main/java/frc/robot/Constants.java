@@ -344,6 +344,8 @@ public final class Constants {
     public static final int MOTOR_STALL_LIMIT_AMPS = 20; // TODO: TUNE
 
     public static final double AXIS_MAX_SPEED = 1;
+
+    public static final double WAIT_FOR_PROXIMITY_SENSOR_SECONDS = 1;
   }
 
   public static final class EXTENSION_ARM {

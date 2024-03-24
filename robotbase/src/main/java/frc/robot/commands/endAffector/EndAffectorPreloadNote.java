@@ -15,7 +15,6 @@ public class EndAffectorPreloadNote extends Command {
 
   @Override
   public void initialize() {
-    Robot.endAffector.setProximitySensorPower(true);
     Robot.endAffector.setSpeed(END_AFFECTOR.INTAKE_SPEED);
   }
 
