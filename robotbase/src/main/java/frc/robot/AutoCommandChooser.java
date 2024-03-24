@@ -15,12 +15,14 @@ import frc.robot.commands.auto.paths.LeftClose1Speaker;
 import frc.robot.commands.auto.paths.MiddleClose1Speaker;
 import frc.robot.commands.auto.paths.RightClose1Speaker;
 import frc.robot.commands.auto.paths.ShootAndNothing;
+import frc.robot.commands.util.VariableWaitCommand;
 import java.util.HashMap;
 
 public class AutoCommandChooser {
   private String[] m_autoNames;
   private SendableChooser<String> m_chooser;
   private SelectCommand m_selectCommand;
+  private Command m_autoCommand;
 
   private String m_waitCommandKey = "wait";
 
@@ -58,20 +60,20 @@ public class AutoCommandChooser {
 
     SmartDashboard.putData("Auto chooser", m_chooser);
     SmartDashboard.putNumber((m_waitCommandKey), 0.0);
-  }
 
-  public Command getWaitCommand() {
-    double waitTime = SmartDashboard.getNumber(m_waitCommandKey, 0.0);
-    return new WaitCommand(waitTime);
+    m_autoCommand =
+        new SequentialCommandGroup(
+                new VariableWaitCommand(() -> SmartDashboard.getNumber(m_waitCommandKey, 0.0)),
+                m_selectCommand)
+            .finallyDo(
+                () ->
+                    Robot.swerve.setOperatorPerspectiveForward(
+                        Robot.state.getAlliance() == Alliance.Red
+                            ? Rotation2d.fromDegrees(180)
+                            : Rotation2d.fromDegrees(0)));
   }
 
   public Command getSelectedAutoCommand() {
-    return new SequentialCommandGroup(getWaitCommand(), m_selectCommand)
-        .finallyDo(
-            () ->
-                Robot.swerve.setOperatorPerspectiveForward(
-                    Robot.state.getAlliance() == Alliance.Red
-                        ? Rotation2d.fromDegrees(180)
-                        : Rotation2d.fromDegrees(0)));
+    return m_autoCommand;
   }
 }
