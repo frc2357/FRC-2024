@@ -5,7 +5,10 @@ import frc.robot.Constants.END_AFFECTOR;
 import frc.robot.Robot;
 
 public class EndAffectorPreloadNote extends Command {
-  private boolean m_hasPassed = false;
+  private boolean m_hasSeenTopEdge = false;
+  private boolean m_hasPassedTopEdge = false;
+  private boolean m_isAtTop = false;
+  private boolean m_isDone = false;
 
   public EndAffectorPreloadNote() {
     addRequirements(Robot.endAffector);
@@ -13,20 +16,27 @@ public class EndAffectorPreloadNote extends Command {
 
   @Override
   public void initialize() {
-    Robot.endAffector.setProximitySensorPower(true);
     Robot.endAffector.setSpeed(END_AFFECTOR.INTAKE_SPEED);
   }
 
   @Override
   public void execute() {
-    if (!m_hasPassed && Robot.endAffector.getProximitySensor()) {
-      m_hasPassed = true;
+    if (!m_hasSeenTopEdge && Robot.endAffector.getProximitySensor()) {
+      m_hasSeenTopEdge = true;
+    } else if (m_hasSeenTopEdge && !m_hasPassedTopEdge && !Robot.endAffector.getProximitySensor()) {
+      m_hasPassedTopEdge = true;
+      // Robot.endAffector.setSpeed(-0.5);
+    } else if (m_hasPassedTopEdge && !m_isAtTop && Robot.endAffector.getProximitySensor()) {
+      m_isAtTop = true;
+      Robot.endAffector.setSpeed(0.5);
+    } else if (m_isAtTop && !m_isDone && !Robot.endAffector.getProximitySensor()) {
+      m_isDone = true;
     }
   }
 
   @Override
   public boolean isFinished() {
-    return !Robot.endAffector.getProximitySensor() && m_hasPassed;
+    return m_isDone;
   }
 
   @Override

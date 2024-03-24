@@ -67,19 +67,9 @@ public final class Constants {
   }
 
   public static final class SWERVE {
-    public static final double MAX_SPEED_METERS_PER_SECOND = 5.21;
     public static final double MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND = Math.PI * 2;
 
-    public static final double DRIVE_GEAR_RATIO = 6.74603175;
-    public static final double STEER_GEAR_RATIO = 21.428571428571427;
-    public static final double WHEEL_RADIUS_INCHES = 2;
-
-    public static final boolean STEER_MOTOR_INVERSED = true;
-    public static final boolean INVERT_LEFT_SIDE = false;
-    public static final boolean INVERT_RIGHT_SIDE = true;
-
     public static final double STATIC_FEEDFORWARD_METERS_PER_SECOND = 0.094545;
-    public static final double TRANSLATION_RAMP_EXPONENT = 2;
 
     // Gamepiece tracking
     public static final double AUTO_TRANSLATE_DEBOUNCE_SECONDS = 0.1;
@@ -344,6 +334,8 @@ public final class Constants {
     public static final int MOTOR_STALL_LIMIT_AMPS = 20; // TODO: TUNE
 
     public static final double AXIS_MAX_SPEED = 1;
+
+    public static final double WAIT_FOR_PROXIMITY_SENSOR_SECONDS = 0.5;
   }
 
   public static final class EXTENSION_ARM {
@@ -395,7 +387,7 @@ public final class Constants {
     public static final double SECONDS_PRELOAD_NOTE = 1;
     public static final double SECONDS_PRELOAD_NOTE_FOR_TRAP = 0;
 
-    public static final double SECONDS_AMP_SCORE = 1;
+    public static final double SECONDS_AMP_SCORE = 1.5;
     public static final double AMP_SHOT_SHOOTER_RPMS = 2000;
     public static final double AMP_SHOT_PIVOT_ANGLE = 50;
 

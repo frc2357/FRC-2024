@@ -27,6 +27,7 @@ import frc.robot.commands.shooter.ShooterStop;
 import frc.robot.commands.state.SetNoteState;
 import frc.robot.commands.util.PressToContinue;
 import frc.robot.state.RobotState.NoteState;
+import frc.robot.util.TurnOnProximitySensor;
 
 public class ManualLineUpTrap extends SequentialCommandGroup {
   private static class Print extends Command {
@@ -73,6 +74,8 @@ public class ManualLineUpTrap extends SequentialCommandGroup {
 
   public ManualLineUpTrap(Trigger continueButton, Trigger scoreButton) {
     super(
+        new Print("Turning on proximity sensor. Try not to blind anybody."),
+        new TurnOnProximitySensor(),
         new Print("Extending Arm, line it up with the bottom of the stage."),
         new ParallelDeadlineGroup(
             new PressToContinue(continueButton),
