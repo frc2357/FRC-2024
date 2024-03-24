@@ -6,10 +6,8 @@ package frc.robot;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -205,16 +203,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     m_forceGyroZero.cancel();
-
-    // if (Robot.state.getAlliance() == Alliance.Red) {
-    // Robot.swerve.setPose(new Pose2d(new Translation2d(),
-    // Rotation2d.fromDegrees(180)));
-    // }
-
-    Robot.swerve.setOperatorPerspectiveForward(
-        Robot.state.getAlliance() == Alliance.Red
-            ? Rotation2d.fromDegrees(180)
-            : Rotation2d.fromDegrees(0));
 
     // Robot.swerve.setGyroOffset();
     // This makes sure that the autonomous stops running when
