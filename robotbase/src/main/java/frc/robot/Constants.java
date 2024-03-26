@@ -138,6 +138,7 @@ public final class Constants {
      *
      * Desmos Graph: https://www.desmos.com/calculator/8kbyasfnkv
      */
+    public static final double TRANSLATE_TO_GAMEPIECE_Y_SPEED_MPS = 2;
     public static final double TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS = 0.8;
     public static final double TRANSLATE_TO_GAMEPIECE_YAW_SETPOINT = 0;
     public static final double TRANSLATE_TO_GAMEPIECE_YAW_TOLERANCE = 2.5;
