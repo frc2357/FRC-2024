@@ -71,31 +71,61 @@ public class PhotonVisionCamera extends SubsystemBase {
    * outside of it.
    */
   public void updateResult() {
-    if (m_camera.isConnected()) {
-      m_result = m_camera.getLatestResult();
-      if (m_result.hasTargets()) {
-        long now = System.currentTimeMillis();
-        List<PhotonTrackedTarget> targetList = m_result.targets;
-        m_bestTargetFiducialId = m_result.getBestTarget().getFiducialId();
-        for (PhotonTrackedTarget targetSeen : targetList) {
-          int id = targetSeen.getFiducialId();
-          id = id == -1 ? 0 : id;
-          TargetInfo targetInfo = m_targetInfo[id];
-          // System.out.println(targetSeen.getFiducialId());
-          targetInfo.yaw = targetSeen.getYaw();
-          targetInfo.pitch = targetSeen.getPitch();
-          targetInfo.timestamp = now;
-        }
-      }
-
-      if (m_connectionLost) {
-        m_connectionLost = false;
-        DriverStation.reportWarning(PHOTON_VISION.CONNECTION_REGAINED_NOFICATION_MESSAGE, false);
-      }
-    } else if (!m_connectionLost) {
+    if (!m_camera.isConnected()  && !m_connectionLost) {
       m_connectionLost = true;
       DriverStation.reportError(PHOTON_VISION.LOST_CONNECTION_ERROR_MESSAGE, false);
+      return;
     }
+    if (!m_result.hasTargets()) {
+      return;
+    }
+    m_result = m_camera.getLatestResult();
+    m_bestTargetFiducialId = m_result.getBestTarget().getFiducialId();
+    if (m_bestTargetFiducialId == -1) {
+      // this means that were doing object detection, so a different method is used.
+      cacheForGamepeices(m_result.targets);
+    } else {
+      cacheForAprilTags(m_result.targets);
+    }
+    if (m_connectionLost) {
+      m_connectionLost = false;
+      DriverStation.reportWarning(PHOTON_VISION.CONNECTION_REGAINED_NOFICATION_MESSAGE, false);
+    }
+  }
+
+  private void cacheForGamepeices(List<PhotonTrackedTarget> targetList) {
+    long now = System.currentTimeMillis();
+    PhotonTrackedTarget bestTarget = calculateBestGamepeiceTarget(targetList);
+    TargetInfo targetInfo = m_targetInfo[0];
+    targetInfo.yaw = bestTarget.getYaw();
+    targetInfo.pitch = bestTarget.getPitch();
+    targetInfo.timestamp = now;
+  }
+
+  private void cacheForAprilTags(List<PhotonTrackedTarget> targetList) {
+    long now = System.currentTimeMillis();
+    for (PhotonTrackedTarget targetSeen : targetList) {
+      int id = targetSeen.getFiducialId();
+      TargetInfo targetInfo = m_targetInfo[id];
+      // System.out.println(targetSeen.getFiducialId());
+      targetInfo.yaw = targetSeen.getYaw();
+      targetInfo.pitch = targetSeen.getPitch();
+      targetInfo.timestamp = now;
+    }
+  }
+
+  public PhotonTrackedTarget calculateBestGamepeiceTarget(List<PhotonTrackedTarget> targetList){
+    double highestPitch =
+        targetList.get(0).getPitch() + PHOTON_VISION.BEST_TARGET_PITCH_TOLERANCE_DEGREES;
+    PhotonTrackedTarget bestTarget = targetList.get(0);
+    for (PhotonTrackedTarget targetSeen : targetList) {
+      if (targetSeen.getPitch() < highestPitch
+          && Math.abs(targetSeen.getYaw()) < Math.abs(bestTarget.getYaw())) {
+        bestTarget = targetSeen;
+      }
+      // System.out.println(targetSeen.getFiducialId());
+    }
+    return bestTarget;
   }
 
   /**
