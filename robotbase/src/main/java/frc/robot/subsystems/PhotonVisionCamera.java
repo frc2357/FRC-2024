@@ -71,7 +71,7 @@ public class PhotonVisionCamera extends SubsystemBase {
    * outside of it.
    */
   public void updateResult() {
-    if (!m_camera.isConnected()  && !m_connectionLost) {
+    if (!m_camera.isConnected() && !m_connectionLost) {
       m_connectionLost = true;
       DriverStation.reportError(PHOTON_VISION.LOST_CONNECTION_ERROR_MESSAGE, false);
       return;
@@ -114,7 +114,15 @@ public class PhotonVisionCamera extends SubsystemBase {
     }
   }
 
-  public PhotonTrackedTarget calculateBestGamepeiceTarget(List<PhotonTrackedTarget> targetList){
+  /**
+   * Calculates the best target in a list of PhotonTrackedTargets.
+   *
+   * <p>This is made to sort through gamepeices if they are next to eachother.
+   *
+   * @param targetList List of the targets to sort through.
+   * @return The target that is in a acceptable pitch range, and is the most centered.
+   */
+  public PhotonTrackedTarget calculateBestGamepeiceTarget(List<PhotonTrackedTarget> targetList) {
     double highestPitch =
         targetList.get(0).getPitch() + PHOTON_VISION.BEST_TARGET_PITCH_TOLERANCE_DEGREES;
     PhotonTrackedTarget bestTarget = targetList.get(0);
