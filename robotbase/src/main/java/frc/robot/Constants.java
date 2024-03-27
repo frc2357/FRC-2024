@@ -412,7 +412,7 @@ public final class Constants {
     public static final String CONNECTION_REGAINED_NOFICATION_MESSAGE =
         "**********\nPhoton Vision has regained connection!\nVision results will now be updated.\n**********";
 
-    public static final double BEST_TARGET_PITCH_TOLERANCE_DEGREES = 10;
+    public static final double BEST_TARGET_PITCH_TOLERANCE_DEGREES = 5;
   }
 
   public static final class SHOOTER_PHOTON_CAMERA {

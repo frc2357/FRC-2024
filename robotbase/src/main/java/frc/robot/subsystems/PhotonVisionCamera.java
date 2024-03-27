@@ -76,10 +76,10 @@ public class PhotonVisionCamera extends SubsystemBase {
       DriverStation.reportError(PHOTON_VISION.LOST_CONNECTION_ERROR_MESSAGE, false);
       return;
     }
-    if (!m_result.hasTargets()) {
+    m_result = m_camera.getLatestResult();
+    if (m_result == null || !m_result.hasTargets()) {
       return;
     }
-    m_result = m_camera.getLatestResult();
     m_bestTargetFiducialId = m_result.getBestTarget().getFiducialId();
     if (m_bestTargetFiducialId == -1) {
       // this means that were doing object detection, so a different method is used.
