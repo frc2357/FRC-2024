@@ -73,7 +73,8 @@ public class PhotonVisionCamera extends SubsystemBase {
   public void updateResult() {
     if (!m_camera.isConnected() && !m_connectionLost) {
       m_connectionLost = true;
-      DriverStation.reportError("[" + m_camera.getName() + "]\n" +PHOTON_VISION.LOST_CONNECTION_ERROR_MESSAGE, false);
+      DriverStation.reportError(
+          "[" + m_camera.getName() + "]\n" + PHOTON_VISION.LOST_CONNECTION_ERROR_MESSAGE, false);
       return;
     }
     m_result = m_camera.getLatestResult();
@@ -89,7 +90,9 @@ public class PhotonVisionCamera extends SubsystemBase {
     }
     if (m_connectionLost) {
       m_connectionLost = false;
-      DriverStation.reportWarning("[" + m_camera.getName() + "]\n" +PHOTON_VISION.CONNECTION_REGAINED_NOFICATION_MESSAGE, false);
+      DriverStation.reportWarning(
+          "[" + m_camera.getName() + "]\n" + PHOTON_VISION.CONNECTION_REGAINED_NOFICATION_MESSAGE,
+          false);
     }
   }
 
