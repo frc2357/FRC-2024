@@ -13,8 +13,12 @@ public class TranslateToGamepiece extends Command {
   private PIDController m_yawController;
   private PIDController m_rotationController;
   private Timer m_timer;
+  private long m_startTime;
+  private double m_startingSpeed;
+  private boolean m_targetBad = false;
 
-  public TranslateToGamepiece() {
+  public TranslateToGamepiece(double startingSpeed) {
+    m_startingSpeed = startingSpeed;
     m_yawController = SWERVE.VISION_X_TRANSLATION_PID_CONTROLLER;
     m_rotationController = SWERVE.PIGEON_ROTATION_PID_CONTROLLER;
     m_timer = new Timer();
@@ -27,6 +31,7 @@ public class TranslateToGamepiece extends Command {
 
     m_timer.reset();
     m_timer.start();
+    m_startTime = System.currentTimeMillis();
 
     m_yawController.setTolerance(SWERVE.VISION_YAW_TOLERANCE);
     m_yawController.setSetpoint(SWERVE.TRANSLATE_TO_GAMEPIECE_YAW_SETPOINT);
@@ -40,36 +45,33 @@ public class TranslateToGamepiece extends Command {
 
   @Override
   public void execute() {
-    double rotationRadiansPerSecond = 0;
-    double rotationError =
-        DriveUtility.calculateRotationError(
-            Robot.swerve.getYaw(), m_rotationController.getSetpoint());
-    if (rotationError != m_rotationController.getSetpoint()) {
-      rotationRadiansPerSecond = m_rotationController.calculate(rotationError);
-      double rotationFeedforward =
-          Math.copySign(SWERVE.PIGEON_ROTATION_FEEDFORWARD, rotationRadiansPerSecond);
-      rotationRadiansPerSecond += rotationFeedforward;
-    }
+    // Linear deceleration y direction
+    double secondsElapsed = (double)(System.currentTimeMillis() - m_startTime) / 1000.0;
+
+    double percentSpeed = 1 - ((double)secondsElapsed / (double)SWERVE.TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS);
+    double yMetersPerSecond = percentSpeed * m_startingSpeed;
 
     double yaw = Robot.intakeCam.getNoteTargetYaw();
+    double pitch = Robot.intakeCam.getNoteTargetPitch();
 
-    if (Double.isNaN(yaw)) {
+    if (Double.isNaN(yaw) || m_targetBad) {
       System.out.println("[TranslateToGamepiece] No gamepiece detected");
       // Continue driving forward and rotating even if we don't see a gamepiece
-      Robot.swerve.driveFieldRelative(
-          SWERVE.TRANSLATE_TO_GAMEPIECE_Y_SPEED_MPS, 0, rotationRadiansPerSecond);
+      Robot.swerve.driveRobotRelative(yMetersPerSecond, 0, 0);
     }
 
-    yaw -= Rotation2d.fromRadians(rotationError).getDegrees();
     if (Utility.isWithinTolerance(
         yaw, m_yawController.getSetpoint(), SWERVE.TRANSLATE_TO_GAMEPIECE_YAW_TOLERANCE)) {
       yaw = m_yawController.getSetpoint();
     }
 
     double xMetersPerSecond = m_yawController.calculate(yaw);
+    if (pitch < -16 || pitch > 5) {
+      m_targetBad = true;
+      xMetersPerSecond = 0;
+    }
 
-    Robot.swerve.driveFieldRelative(
-        SWERVE.TRANSLATE_TO_GAMEPIECE_Y_SPEED_MPS, xMetersPerSecond, rotationRadiansPerSecond);
+    Robot.swerve.driveRobotRelative(yMetersPerSecond, xMetersPerSecond, 0);
   }
 
   @Override

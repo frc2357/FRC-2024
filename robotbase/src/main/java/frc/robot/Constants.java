@@ -122,7 +122,8 @@ public final class Constants {
     public static final double STAGE_YAW_SETPOINT = 0.0;
     public static final double STAGE_PITCH_SETPOINT = 12.2;
 
-    public static final double TRANSLATE_TO_GAMEPIECE_Y_SPEED_MPS = 2;
+    // Total y distance traveled = speed * time / 2 due to linear deceleration
+    public static final double TRANSLATE_TO_GAMEPIECE_Y_SPEED_MPS = 2.5;
     public static final double TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS = 1;
     public static final double TRANSLATE_TO_GAMEPIECE_YAW_SETPOINT = 0;
     public static final double TRANSLATE_TO_GAMEPIECE_YAW_TOLERANCE = 2.5;
@@ -154,6 +155,9 @@ public final class Constants {
     // Manual Line Up Climb
     public static final double DISTANCE_FROM_STAGE_TO_CHAIN = 0.8;
     public static final double SECONDS_FROM_STAGE_TO_CHAIN = 2.5;
+
+    // Auto
+    public static final double AUTO_TARGET_LOCK_TIMEOUT_SECONDS = 0.5;
   }
 
   public static final class CHOREO {
