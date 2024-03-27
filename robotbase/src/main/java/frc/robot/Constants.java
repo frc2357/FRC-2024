@@ -126,20 +126,9 @@ public final class Constants {
     public static final double STAGE_YAW_SETPOINT = 0.0;
     public static final double STAGE_PITCH_SETPOINT = 12.2;
 
-    /*
-     * s = TranslateToGamepiece.m_startingSpeed
-     * d = TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS
-     * t = TRANSLATE_TO_GAMEPIECE_START_DECEL_THRESHOLD
-     * m = TRANSLATE_TO_GAMEPIECE_MIN_SPEED_METERS_PER_SECOND
-     * Distance traveled calculation:
-     * s * (d - (d * t)) +
-     * d * t * m +
-     * ((s - m) * (d * t)) / 2
-     *
-     * Desmos Graph: https://www.desmos.com/calculator/8kbyasfnkv
-     */
-    public static final double TRANSLATE_TO_GAMEPIECE_Y_SPEED_MPS = 2;
-    public static final double TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS = 0.8;
+    // Total y distance traveled = speed * time / 2 due to linear deceleration
+    public static final double TRANSLATE_TO_GAMEPIECE_Y_SPEED_MPS = 2.5;
+    public static final double TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS = 1;
     public static final double TRANSLATE_TO_GAMEPIECE_YAW_SETPOINT = 0;
     public static final double TRANSLATE_TO_GAMEPIECE_YAW_TOLERANCE = 2.5;
     public static final double TRANSLATE_TO_GAMEPIECE_ROTATION_SETPOINT = 0;
@@ -172,6 +161,9 @@ public final class Constants {
     // Manual Line Up Climb
     public static final double DISTANCE_FROM_STAGE_TO_CHAIN = 0.8;
     public static final double SECONDS_FROM_STAGE_TO_CHAIN = 2.5;
+
+    // Auto
+    public static final double AUTO_TARGET_LOCK_TIMEOUT_SECONDS = 0.5;
   }
 
   public static final class CHOREO {

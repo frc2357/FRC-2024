@@ -71,6 +71,6 @@ public class Centerline2Speaker extends SequentialCommandGroup {
 
   @Override
   public String toString() {
-    return getClass().getName();
+    return "Centerline2Speaker";
   }
 }

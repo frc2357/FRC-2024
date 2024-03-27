@@ -12,6 +12,7 @@ import frc.robot.Robot;
 import frc.robot.commands.climber.ManualLineUpClimb;
 import frc.robot.commands.climber.ManualLineUpTrap;
 import frc.robot.commands.drive.TargetLockOnSpeaker;
+import frc.robot.commands.drive.TranslateToGamepiece;
 import frc.robot.commands.extensionArm.ExtensionArmReturnToZero;
 import frc.robot.commands.intake.CancelIntakeOnEnd;
 import frc.robot.commands.intake.IntakeFeedToShooter;
@@ -100,9 +101,10 @@ public class DriverControls implements RumbleInterface {
 
     // scoring
     // m_rightBumper.onTrue(new AmpSequenceConditional());
-    m_rightBumper.onTrue(
-        new AmpShot(m_rightBumper)
-            .handleInterrupt(() -> new ExtensionArmReturnToZero().schedule()));
+    // m_rightBumper.onTrue(
+    //     new AmpShot(m_rightBumper)
+    //         .handleInterrupt(() -> new ExtensionArmReturnToZero().schedule()));
+    m_rightBumper.whileTrue(new TranslateToGamepiece(2));
 
     m_rightTriggerPrime.whileTrue(
         new ParallelCommandGroup(new VisionTargeting(), new TargetLockOnSpeaker()));
