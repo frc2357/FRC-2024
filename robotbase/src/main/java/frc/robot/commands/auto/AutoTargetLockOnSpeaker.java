@@ -2,6 +2,7 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
+import frc.robot.util.RobotMath;
 
 // The target lock command but ensures no stick input is possible
 public class AutoTargetLockOnSpeaker extends Command {
@@ -19,9 +20,16 @@ public class AutoTargetLockOnSpeaker extends Command {
 
   @Override
   public void execute() {
+    int curveIndex =
+        RobotMath.getCurveSegmentIndex(
+            Robot.shooterCurve, Robot.shooterCam.getSpeakerTargetPitch());
+    if (curveIndex == -1) {
+      Robot.swerve.driveTargetLock(0, 0, 0, 0, false);
+      return;
+    }
     var targetYaw = Robot.shooterCam.getSpeakerTargetYaw();
-
-    Robot.swerve.driveTargetLock(0, 0, !Double.isNaN(targetYaw) ? targetYaw : 0, true);
+    var yawSetpoint = Robot.shooterCurve[curveIndex][3];
+    Robot.swerve.driveTargetLock(0, 0, !Double.isNaN(targetYaw) ? targetYaw : 0, yawSetpoint, true);
   }
 
   @Override

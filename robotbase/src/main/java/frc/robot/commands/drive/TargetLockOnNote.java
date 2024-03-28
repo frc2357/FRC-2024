@@ -25,6 +25,7 @@ public class TargetLockOnNote extends Command {
         Robot.driverControls.getY() * CompSwerveTunerConstants.kSpeedAt12VoltsMps,
         Robot.driverControls.getX() * CompSwerveTunerConstants.kSpeedAt12VoltsMps,
         !Double.isNaN(targetYaw) ? targetYaw : 0,
+        0,
         !Double.isNaN(targetYaw));
   }
 
