@@ -25,11 +25,11 @@ public class TargetLockOnSpeaker extends Command {
             Robot.shooterCurve, Robot.shooterCam.getSpeakerTargetPitch());
     if (curveIndex == -1) {
       Robot.swerve.driveTargetLock(
-        Robot.driverControls.getY() * CompSwerveTunerConstants.kSpeedAt12VoltsMps,
-        Robot.driverControls.getX() * CompSwerveTunerConstants.kSpeedAt12VoltsMps,
-        0,
-        0,
-        false);
+          Robot.driverControls.getY() * CompSwerveTunerConstants.kSpeedAt12VoltsMps,
+          Robot.driverControls.getX() * CompSwerveTunerConstants.kSpeedAt12VoltsMps,
+          0,
+          0,
+          false);
       return;
     }
     var targetYaw = Robot.shooterCam.getSpeakerTargetYaw();
