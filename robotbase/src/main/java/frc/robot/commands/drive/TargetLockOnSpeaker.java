@@ -20,9 +20,19 @@ public class TargetLockOnSpeaker extends Command {
 
   @Override
   public void execute() {
+    var pitch = Robot.shooterCam.getSpeakerTargetPitch();
+    if(Double.isNaN(pitch)){
+      Robot.swerve.driveTargetLock(
+          Robot.driverControls.getY() * CompSwerveTunerConstants.kSpeedAt12VoltsMps,
+          Robot.driverControls.getX() * CompSwerveTunerConstants.kSpeedAt12VoltsMps,
+          0,
+          0,
+          false);
+      return;
+    }
     int curveIndex =
         RobotMath.getCurveSegmentIndex(
-            Robot.shooterCurve, Robot.shooterCam.getSpeakerTargetPitch());
+            Robot.shooterCurve, pitch);
     if (curveIndex == -1) {
       Robot.swerve.driveTargetLock(
           Robot.driverControls.getY() * CompSwerveTunerConstants.kSpeedAt12VoltsMps,

@@ -13,9 +13,13 @@ public class AutoWaitForTargeting extends Command {
   // do not want to modify activley working code at comp
   @Override
   public boolean isFinished() {
+    var pitch = Robot.shooterCam.getSpeakerTargetPitch();
+    if(Double.isNaN(pitch)){
+      return true;
+    }
     int curveIndex =
         RobotMath.getCurveSegmentIndex(
-            Robot.shooterCurve, Robot.shooterCam.getSpeakerTargetPitch());
+            Robot.shooterCurve, pitch);
     if (curveIndex == -1) {
       curveIndex = 0;
     }
