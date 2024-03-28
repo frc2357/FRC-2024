@@ -65,7 +65,7 @@ public class Robot extends TimedRobot {
 
   private final Telemetry logger = new Telemetry();
 
-  // {ty, pivotRotations, shooterRPM}
+  // {ty, pivotRotations, shooterRPM, yawSetpoint}
   public static final double[][] shooterCurve = {
     {50, 60, 3000, -1.1}, // Lower bound
     {10.52, 60, 3000, -1.1}, // side Subwoofer
