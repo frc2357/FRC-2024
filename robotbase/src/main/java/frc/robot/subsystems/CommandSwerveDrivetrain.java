@@ -69,7 +69,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   public void driveTargetLock(
       double velocityXSpeedMetersPerSecond,
       double velocityYSpeedMetersPerSecond,
-      double tx,
+      double yaw,
+      double yawSetpoint,
       boolean hasTarget) {
     double vy = getChassisSpeeds().vyMetersPerSecond; // Horizontal velocity
     double kp = Constants.SWERVE.TARGET_LOCK_ROTATION_KP;
@@ -77,8 +78,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     Constants.SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.setP(kp);
 
     double rotation =
-        Constants.SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.calculate(
-            tx, SWERVE.TARGET_LOCK_YAW_SETPOINT);
+        Constants.SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.calculate(yaw, yawSetpoint);
     double rotationOutput =
         !hasTarget
             ? Robot.driverControls.getRotation() * SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND
