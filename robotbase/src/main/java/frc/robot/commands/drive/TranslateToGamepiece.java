@@ -1,7 +1,6 @@
 package frc.robot.commands.drive;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.INTAKE_PHOTON_CAMERA;
@@ -46,9 +45,10 @@ public class TranslateToGamepiece extends Command {
   @Override
   public void execute() {
     // Linear deceleration y direction
-    double secondsElapsed = (double)(System.currentTimeMillis() - m_startTime) / 1000.0;
+    double secondsElapsed = (double) (System.currentTimeMillis() - m_startTime) / 1000.0;
 
-    double percentSpeed = 1 - ((double)secondsElapsed / (double)SWERVE.TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS);
+    double percentSpeed =
+        1 - ((double) secondsElapsed / (double) SWERVE.TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS);
     double yMetersPerSecond = percentSpeed * m_startingSpeed;
 
     double yaw = Robot.intakeCam.getNoteTargetYaw();
