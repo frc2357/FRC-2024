@@ -92,9 +92,6 @@ public final class Constants {
 
     public static final double TARGET_LOCK_FEED_FORWARD = 0.0;
     public static final double TARGET_LOCK_TOLERANCE = 1.5;
-    public static final double TARGET_LOCK_YAW_SETPOINT =
-        4.1; // PhotonVision is consistently 2 degrees to the right of
-    // our target
 
     public static final double AUTO_TARGET_LOCK_YAW_TOLERANCE = 3;
 
