@@ -25,6 +25,8 @@ public class ShooterCurveTuner {
     double[] newRow = Robot.shooterCurve[index];
     SmartDashboard.putNumber("Pivot Angle Setpoint", newRow[1]);
     SmartDashboard.putNumber("Top Roller Setpoint", newRow[2]);
+    SmartDashboard.putNumber("Yaw Setpoint", newRow[3]);
+
   }
 
   public void updateCurveValues() {
@@ -33,9 +35,13 @@ public class ShooterCurveTuner {
 
     double pivotSetpoint = SmartDashboard.getNumber("Pivot Angle Setpoint", row[1]);
     double topShooterSetpoint = SmartDashboard.getNumber("Top Roller Setpoint", row[2]);
+    double yawSetpoint = SmartDashboard.getNumber("Yaw Setpoint", row[3]);
+
 
     Robot.shooterCurve[index][1] = pivotSetpoint;
     Robot.shooterCurve[index][2] = topShooterSetpoint;
+    Robot.shooterCurve[index][3] = yawSetpoint;
+
   }
 
   public double[] getSelectedRow() {

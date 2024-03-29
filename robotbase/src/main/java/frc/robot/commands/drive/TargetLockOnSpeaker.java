@@ -7,6 +7,7 @@ import frc.robot.util.RobotMath;
 
 public class TargetLockOnSpeaker extends Command {
   public int m_startingPipeline;
+  public double m_yawOffset;
 
   public TargetLockOnSpeaker() {
     m_startingPipeline = Robot.intakeCam.getPipeline();
@@ -41,12 +42,12 @@ public class TargetLockOnSpeaker extends Command {
       return;
     }
     var targetYaw = Robot.shooterCam.getSpeakerTargetYaw();
-    double yawOffset = Robot.shooterCurve[curveIndex][3];
+    updateVisionTargeting(pitch);
     Robot.swerve.driveTargetLock(
         Robot.driverControls.getY() * CompSwerveTunerConstants.kSpeedAt12VoltsMps,
         Robot.driverControls.getX() * CompSwerveTunerConstants.kSpeedAt12VoltsMps,
         !Double.isNaN(targetYaw) ? targetYaw : 0,
-        yawOffset,
+        m_yawOffset,
         !Double.isNaN(targetYaw));
   }
 
@@ -54,5 +55,24 @@ public class TargetLockOnSpeaker extends Command {
   public void end(boolean interupted) {
     Robot.swerve.stopMotors();
     Robot.intakeCam.setPipeline(m_startingPipeline);
+  }
+
+  private void updateVisionTargeting(double pitch) {
+    int curveIndex = RobotMath.getCurveSegmentIndex(Robot.shooterCurve, pitch);
+    if (curveIndex == -1) {
+      return;
+    }
+
+    double[] high = Robot.shooterCurve[curveIndex];
+    double[] low = Robot.shooterCurve[curveIndex + 1];
+
+    double highPitch = high[0];
+    double lowPitch = low[0];
+    double highYawSetopint = high[3];
+    double lowYawSetpoint = low[3];
+
+    m_yawOffset =
+        RobotMath.linearlyInterpolate(
+                highYawSetopint, lowYawSetpoint, highPitch, lowPitch, pitch);
   }
 }
