@@ -104,7 +104,7 @@ public class DriverControls implements RumbleInterface {
     // m_rightBumper.onTrue(
     //     new AmpShot(m_rightBumper)
     //         .handleInterrupt(() -> new ExtensionArmReturnToZero().schedule()));
-    m_rightBumper.whileTrue(new TranslateToGamepiece(2));
+    m_rightBumper.whileTrue(new ParallelDeadlineGroup(new TranslateToGamepiece(2), new IntakeNoteFromFloor()));
 
     m_rightTriggerPrime.whileTrue(
         new ParallelCommandGroup(new VisionTargeting(), new TargetLockOnSpeaker()));
