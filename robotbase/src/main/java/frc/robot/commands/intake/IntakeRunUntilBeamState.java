@@ -25,6 +25,7 @@ public class IntakeRunUntilBeamState extends Command {
 
   @Override
   public void end(boolean interrupted) {
+    System.out.println("Stopping");
     Robot.intake.stop();
   }
 }

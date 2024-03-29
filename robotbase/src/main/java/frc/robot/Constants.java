@@ -366,7 +366,7 @@ public final class Constants {
     public static final double READY_TO_ZERO_ROTATIONS = 0.2;
     public static final double NOTE_STOW_ROTATIONS = 1.4;
     public static final double AMP_PREPOSE_ROTATIONS = 3.75;
-    public static final double AMP_SHOT_PREPOSE_ROTATIONS = 4.35;
+    public static final double AMP_SHOT_PREPOSE_ROTATIONS = 4.25;
     public static final double AMP_SCORE_ROTATIONS = 5.95;
     public static final double STAGE_LINE_UP_ROTATIONS = 1.83;
     public static final double TRAP_PREPOSE_ROTATIONS = 4.0;
@@ -385,8 +385,8 @@ public final class Constants {
     public static final double SECONDS_PRELOAD_NOTE_FOR_TRAP = 0;
 
     public static final double SECONDS_AMP_SCORE = 1.5;
-    public static final double AMP_SHOT_SHOOTER_RPMS = 2000;
-    public static final double AMP_SHOT_PIVOT_ANGLE = 50;
+    public static final double AMP_SHOT_SHOOTER_RPMS = 1250;
+    public static final double AMP_SHOT_PIVOT_ANGLE = 52;
 
     public static final double VISIONLESS_SHOT_WAIT_TO_FIRE_SECONDS = 1.5;
 

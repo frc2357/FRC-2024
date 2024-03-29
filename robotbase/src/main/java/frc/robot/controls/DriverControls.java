@@ -6,20 +6,20 @@ import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Robot;
 import frc.robot.commands.climber.ManualLineUpClimb;
 import frc.robot.commands.climber.ManualLineUpTrap;
-import frc.robot.commands.drive.TargetLockOnNote;
 import frc.robot.commands.drive.TargetLockOnSpeaker;
 import frc.robot.commands.extensionArm.ExtensionArmReturnToZero;
 import frc.robot.commands.intake.IntakeFeedToShooter;
-import frc.robot.commands.intake.IntakeNoteFromFloor;
+import frc.robot.commands.intake.VisionIntakeNoteFromFloor;
 import frc.robot.commands.scoring.AmpShot;
+import frc.robot.commands.scoring.VisionShot;
 import frc.robot.commands.scoring.VisionTargeting;
 import frc.robot.commands.scoring.VisionlessShooting;
+import frc.robot.commands.shooter.ShooterWaitForRPM;
 import frc.robot.commands.source.SourceIntakeFromShooter;
 import frc.robot.controls.util.AxisInterface;
 import frc.robot.controls.util.AxisThresholdTrigger;
@@ -93,13 +93,11 @@ public class DriverControls implements RumbleInterface {
     m_bButton.whileTrue(new VisionlessShooting(Robot.shooterCurve[4][2], Robot.shooterCurve[4][1]));
 
     m_leftTrigger.toggleOnTrue(
-        new ParallelDeadlineGroup(
-            new IntakeNoteFromFloor()
+            new VisionIntakeNoteFromFloor()
                 .handleInterrupt(
                     () -> {
                       Robot.leds.setColor(LEDs.MELTDOWN_ORANGE);
-                    }),
-            new TargetLockOnNote()));
+                    }));
 
     m_leftBumper.whileTrue(new SourceIntakeFromShooter());
 
@@ -112,9 +110,10 @@ public class DriverControls implements RumbleInterface {
         new AmpShot(m_rightBumper)
             .handleInterrupt(() -> new ExtensionArmReturnToZero().schedule()));
 
-    m_rightTriggerPrime.whileTrue(
-        new ParallelCommandGroup(new VisionTargeting(), new TargetLockOnSpeaker()));
-    m_rightTriggerShoot.whileTrue(new IntakeFeedToShooter());
+    // m_rightTriggerPrime.whileTrue(
+    //     new ParallelCommandGroup(new VisionTargeting(), new TargetLockOnSpeaker()));
+    // m_rightTriggerShoot.whileTrue(new ShooterWaitForRPM().andThen(new IntakeFeedToShooter()));
+    m_rightTriggerPrime.whileTrue(new VisionShot(m_rightTriggerShoot));
   }
 
   public double getX() {
