@@ -204,7 +204,7 @@ public final class Constants {
     public static final double BOTTOM_MOTOR_P = 0.0;
     public static final double BOTTOM_MOTOR_I = 0.0;
     public static final double BOTTOM_MOTOR_D = 0.0;
-    public static final double BOTTOM_MOTOR_FF = 0.00019;
+    public static final double BOTTOM_MOTOR_FF = 0.00018;
 
     public static final double RPM_TOLERANCE = 100;
   }
@@ -248,7 +248,7 @@ public final class Constants {
     public static final int MOTOR_STALL_LIMIT_AMPS = 40;
     public static final int MOTOR_FREE_LIMIT_AMPS = 40;
 
-    public static final double POSITION_ALLOWED_ERROR = 5;
+    public static final double POSITION_ALLOWED_ERROR = 0.5;
     public static final boolean POSITION_PID_WRAPPING_ENABLED = false;
 
     public static final double AXIS_MAX_SPEED = 0.25;
@@ -366,7 +366,7 @@ public final class Constants {
     public static final double READY_TO_ZERO_ROTATIONS = 0.2;
     public static final double NOTE_STOW_ROTATIONS = 1.4;
     public static final double AMP_PREPOSE_ROTATIONS = 3.75;
-    public static final double AMP_SHOT_PREPOSE_ROTATIONS = 4.35;
+    public static final double AMP_SHOT_PREPOSE_ROTATIONS = 4.25;
     public static final double AMP_SCORE_ROTATIONS = 5.95;
     public static final double STAGE_LINE_UP_ROTATIONS = 1.83;
     public static final double TRAP_PREPOSE_ROTATIONS = 4.0;
@@ -385,16 +385,10 @@ public final class Constants {
     public static final double SECONDS_PRELOAD_NOTE_FOR_TRAP = 0;
 
     public static final double SECONDS_AMP_SCORE = 1.5;
-    public static final double AMP_SHOT_SHOOTER_RPMS = 2000;
-    public static final double AMP_SHOT_PIVOT_ANGLE = 50;
+    public static final double AMP_SHOT_SHOOTER_RPMS = 1250;
+    public static final double AMP_SHOT_PIVOT_ANGLE = 52;
 
     public static final double VISIONLESS_SHOT_WAIT_TO_FIRE_SECONDS = 1.5;
-
-    public static final double SUBWOOFER_SHOT_SHOOTER_RPMS = 3000;
-    public static final double SUBWOOFER_SHOT_PIVOT_ANGLE = 60;
-
-    public static final double PODIUM_SHOT_SHOOTER_RPMS = 4000;
-    public static final double PODIUM_SHOT_PIVOT_ANGLE = 35;
   }
 
   public static final class PHOTON_VISION {

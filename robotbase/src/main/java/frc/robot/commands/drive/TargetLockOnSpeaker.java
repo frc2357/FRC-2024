@@ -72,7 +72,6 @@ public class TargetLockOnSpeaker extends Command {
     double lowYawSetpoint = low[3];
 
     m_yawOffset =
-        RobotMath.linearlyInterpolate(
-                highYawSetopint, lowYawSetpoint, highPitch, lowPitch, pitch);
+        RobotMath.linearlyInterpolate(highYawSetopint, lowYawSetpoint, highPitch, lowPitch, pitch);
   }
 }
