@@ -67,14 +67,14 @@ public class Robot extends TimedRobot {
 
   // {ty, pivotRotations, shooterRPM, yawSetpoint}
   public static final double[][] shooterCurve = {
-    {50, 60, 3000, -1.1}, // Lower bound
-    {10.52, 60, 3000, -1.1}, // side Subwoofer
-    {10.11, 60, 3000, -1.1}, // center Subwoofer
-    {2.15, 46, 3000, -2.6}, // Between Subwoofer and Podium
-    {-8.4, 36, 4000, -3.1}, // Podium
-    {-14.55, 32, 5000, -1}, // Stage Apriltag
-    {-18.02, 32, 5200, -5.1}, // Wing line
-    {-19, 32, 5200, -5.1}, // Wing line
+    {50, 60, 4000, -1.1}, // Lower bound
+    {13.05, 60, 4000, -1.1}, // center Subwoofer
+    {6, 52, 4000, -1.1}, // center Subwoofer
+    {-1, 44.5, 4000, -2.6}, // Between Subwoofer and Podium
+    {-8.4, 38, 4000, -3.1}, // Podium
+    {-14.55, 32.5, 4900, -1}, // Stage Apriltag
+    {-18.02, 32, 5200, 0}, // Wing line
+    {-19, 32, 5200, 0}, // Wing line
   };
 
   // public static PowerDistribution m_pdp;

@@ -9,12 +9,12 @@ import frc.robot.commands.shooter.ShooterSetRPM;
 import frc.robot.commands.shooter.ShooterWaitForRPM;
 
 public class VisionlessShooting extends ParallelDeadlineGroup {
-  public VisionlessShooting(double shooterRPMs, double pivotAngle) {
+  public VisionlessShooting(double shooterRPM, double pivotAngle) {
     super(
         new SequentialCommandGroup(
             new ShooterWaitForRPM().withTimeout(SCORING.VISIONLESS_SHOT_WAIT_TO_FIRE_SECONDS),
             new IntakeFeedToShooter().withTimeout(0.75)),
-        new ShooterSetRPM(shooterRPMs),
+        new ShooterSetRPM(shooterRPM),
         new PivotHoldAngle(pivotAngle, true, true));
   }
 }

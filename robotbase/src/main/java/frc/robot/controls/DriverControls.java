@@ -6,14 +6,17 @@ import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Robot;
 import frc.robot.commands.climber.ManualLineUpClimb;
 import frc.robot.commands.climber.ManualLineUpTrap;
+import frc.robot.commands.drive.TargetLockOnNote;
 import frc.robot.commands.drive.TargetLockOnSpeaker;
 import frc.robot.commands.extensionArm.ExtensionArmReturnToZero;
 import frc.robot.commands.intake.IntakeFeedToShooter;
+import frc.robot.commands.intake.IntakeNoteFromFloor;
 import frc.robot.commands.intake.VisionIntakeNoteFromFloor;
 import frc.robot.commands.scoring.AmpShot;
 import frc.robot.commands.scoring.VisionShot;
@@ -81,23 +84,28 @@ public class DriverControls implements RumbleInterface {
   }
 
   public void mapControls() {
-    AxisInterface righStickYAxis =
-        () -> {
-          return getRightStickYAxis();
-        };
+    AxisInterface righStickYAxis = () -> {
+      return getRightStickYAxis();
+    };
 
     m_backButton.onTrue(new InstantCommand(() -> Robot.swerve.zeroGyro(false)));
     m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.zeroGyro(true)));
 
-    m_aButton.whileTrue(new VisionlessShooting(Robot.shooterCurve[2][2], Robot.shooterCurve[2][1]));
+    m_aButton.whileTrue(new VisionlessShooting(Robot.shooterCurve[1][2], Robot.shooterCurve[1][1]));
     m_bButton.whileTrue(new VisionlessShooting(Robot.shooterCurve[4][2], Robot.shooterCurve[4][1]));
 
+    // m_leftTrigger.toggleOnTrue(
+    // new VisionIntakeNoteFromFloor()
+    // .handleInterrupt(
+    // () -> {
+    // Robot.leds.setColor(LEDs.MELTDOWN_ORANGE);
+    // }));
     m_leftTrigger.toggleOnTrue(
-            new VisionIntakeNoteFromFloor()
-                .handleInterrupt(
-                    () -> {
-                      Robot.leds.setColor(LEDs.MELTDOWN_ORANGE);
-                    }));
+        new ParallelDeadlineGroup(
+            new IntakeNoteFromFloor().handleInterrupt(() -> {
+              Robot.leds.setColor(LEDs.MELTDOWN_ORANGE);
+            }),
+            new TargetLockOnNote()));
 
     m_leftBumper.whileTrue(new SourceIntakeFromShooter());
 
@@ -110,10 +118,10 @@ public class DriverControls implements RumbleInterface {
         new AmpShot(m_rightBumper)
             .handleInterrupt(() -> new ExtensionArmReturnToZero().schedule()));
 
-    // m_rightTriggerPrime.whileTrue(
-    //     new ParallelCommandGroup(new VisionTargeting(), new TargetLockOnSpeaker()));
-    // m_rightTriggerShoot.whileTrue(new ShooterWaitForRPM().andThen(new IntakeFeedToShooter()));
-    m_rightTriggerPrime.whileTrue(new VisionShot(m_rightTriggerShoot));
+    m_rightTriggerPrime.whileTrue(
+        new ParallelCommandGroup(new VisionTargeting(), new TargetLockOnSpeaker()));
+    m_rightTriggerShoot.whileTrue((new IntakeFeedToShooter()));
+    // m_rightTriggerPrime.whileTrue(new VisionShot(m_rightTriggerShoot));
   }
 
   public double getX() {

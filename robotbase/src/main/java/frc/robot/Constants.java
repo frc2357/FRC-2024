@@ -204,7 +204,7 @@ public final class Constants {
     public static final double BOTTOM_MOTOR_P = 0.0;
     public static final double BOTTOM_MOTOR_I = 0.0;
     public static final double BOTTOM_MOTOR_D = 0.0;
-    public static final double BOTTOM_MOTOR_FF = 0.00019;
+    public static final double BOTTOM_MOTOR_FF = 0.00018;
 
     public static final double RPM_TOLERANCE = 100;
   }
@@ -248,7 +248,7 @@ public final class Constants {
     public static final int MOTOR_STALL_LIMIT_AMPS = 40;
     public static final int MOTOR_FREE_LIMIT_AMPS = 40;
 
-    public static final double POSITION_ALLOWED_ERROR = 5;
+    public static final double POSITION_ALLOWED_ERROR = 0.5;
     public static final boolean POSITION_PID_WRAPPING_ENABLED = false;
 
     public static final double AXIS_MAX_SPEED = 0.25;
@@ -389,12 +389,6 @@ public final class Constants {
     public static final double AMP_SHOT_PIVOT_ANGLE = 52;
 
     public static final double VISIONLESS_SHOT_WAIT_TO_FIRE_SECONDS = 1.5;
-
-    public static final double SUBWOOFER_SHOT_SHOOTER_RPMS = 3000;
-    public static final double SUBWOOFER_SHOT_PIVOT_ANGLE = 60;
-
-    public static final double PODIUM_SHOT_SHOOTER_RPMS = 4000;
-    public static final double PODIUM_SHOT_PIVOT_ANGLE = 35;
   }
 
   public static final class PHOTON_VISION {
