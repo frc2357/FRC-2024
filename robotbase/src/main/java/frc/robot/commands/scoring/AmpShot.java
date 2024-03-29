@@ -24,12 +24,9 @@ public class AmpShot extends ParallelDeadlineGroup {
             new ExtensionArmMoveToRotations(EXTENSION_ARM.AMP_SHOT_PREPOSE_ROTATIONS),
             new PressToContinue(continueButton),
             new ParallelCommandGroup(
-              new SequentialCommandGroup(
-                new WaitCommand(0.1),
-                new ExtensionArmMoveToRotations(5.1)
-              ),
-              new IntakeFeedToShooter().withTimeout(0.5)
-            ),
+                new SequentialCommandGroup(
+                    new WaitCommand(0.1), new ExtensionArmMoveToRotations(5.1)),
+                new IntakeFeedToShooter().withTimeout(0.5)),
             new EndAffectorStop(),
             new ExtensionArmReturnToZero()),
         new ShooterSetRPM(SCORING.AMP_SHOT_SHOOTER_RPMS),

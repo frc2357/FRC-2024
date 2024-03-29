@@ -9,15 +9,11 @@ import frc.robot.commands.shooter.ShooterWaitForRPM;
 import frc.robot.commands.util.PressToContinue;
 
 public class VisionShot extends SequentialCommandGroup {
-   public VisionShot(Trigger fireTrigger) {
-      super(
-         new ParallelDeadlineGroup(
-            new PressToContinue(fireTrigger),
-            new VisionTargeting(),
-            new TargetLockOnSpeaker()
-         ),
-         new ShooterWaitForRPM(),
-         new IntakeFeedToShooter()
-      );
-   }
+  public VisionShot(Trigger fireTrigger) {
+    super(
+        new ParallelDeadlineGroup(
+            new PressToContinue(fireTrigger), new VisionTargeting(), new TargetLockOnSpeaker()),
+        new ShooterWaitForRPM(),
+        new IntakeFeedToShooter());
+  }
 }

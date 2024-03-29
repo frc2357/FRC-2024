@@ -17,12 +17,9 @@ import frc.robot.commands.drive.TargetLockOnSpeaker;
 import frc.robot.commands.extensionArm.ExtensionArmReturnToZero;
 import frc.robot.commands.intake.IntakeFeedToShooter;
 import frc.robot.commands.intake.IntakeNoteFromFloor;
-import frc.robot.commands.intake.VisionIntakeNoteFromFloor;
 import frc.robot.commands.scoring.AmpShot;
-import frc.robot.commands.scoring.VisionShot;
 import frc.robot.commands.scoring.VisionTargeting;
 import frc.robot.commands.scoring.VisionlessShooting;
-import frc.robot.commands.shooter.ShooterWaitForRPM;
 import frc.robot.commands.source.SourceIntakeFromShooter;
 import frc.robot.controls.util.AxisInterface;
 import frc.robot.controls.util.AxisThresholdTrigger;
@@ -84,9 +81,10 @@ public class DriverControls implements RumbleInterface {
   }
 
   public void mapControls() {
-    AxisInterface righStickYAxis = () -> {
-      return getRightStickYAxis();
-    };
+    AxisInterface righStickYAxis =
+        () -> {
+          return getRightStickYAxis();
+        };
 
     m_backButton.onTrue(new InstantCommand(() -> Robot.swerve.zeroGyro(false)));
     m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.zeroGyro(true)));
@@ -94,17 +92,13 @@ public class DriverControls implements RumbleInterface {
     m_aButton.whileTrue(new VisionlessShooting(Robot.shooterCurve[1][2], Robot.shooterCurve[1][1]));
     m_bButton.whileTrue(new VisionlessShooting(Robot.shooterCurve[4][2], Robot.shooterCurve[4][1]));
 
-    // m_leftTrigger.toggleOnTrue(
-    // new VisionIntakeNoteFromFloor()
-    // .handleInterrupt(
-    // () -> {
-    // Robot.leds.setColor(LEDs.MELTDOWN_ORANGE);
-    // }));
     m_leftTrigger.toggleOnTrue(
         new ParallelDeadlineGroup(
-            new IntakeNoteFromFloor().handleInterrupt(() -> {
-              Robot.leds.setColor(LEDs.MELTDOWN_ORANGE);
-            }),
+            new IntakeNoteFromFloor()
+                .handleInterrupt(
+                    () -> {
+                      Robot.leds.setColor(LEDs.MELTDOWN_ORANGE);
+                    }),
             new TargetLockOnNote()));
 
     m_leftBumper.whileTrue(new SourceIntakeFromShooter());
@@ -120,7 +114,7 @@ public class DriverControls implements RumbleInterface {
 
     m_rightTriggerPrime.whileTrue(
         new ParallelCommandGroup(new VisionTargeting(), new TargetLockOnSpeaker()));
-    m_rightTriggerShoot.whileTrue((new IntakeFeedToShooter()));
+    m_rightTriggerShoot.whileTrue(new IntakeFeedToShooter());
     // m_rightTriggerPrime.whileTrue(new VisionShot(m_rightTriggerShoot));
   }
 
