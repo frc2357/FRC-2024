@@ -80,10 +80,9 @@ public class DriverControls implements RumbleInterface {
   }
 
   public void mapControls() {
-    AxisInterface righStickYAxis =
-        () -> {
-          return getRightStickYAxis();
-        };
+    AxisInterface righStickYAxis = () -> {
+      return getRightStickYAxis();
+    };
 
     m_backButton.onTrue(new InstantCommand(() -> Robot.swerve.zeroGyro(false)));
     m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.zeroGyro(true)));
@@ -97,15 +96,13 @@ public class DriverControls implements RumbleInterface {
     m_leftBumper.whileTrue(new SourceIntakeFromShooter());
 
     m_yButton.onTrue(new ManualLineUpTrap(m_yButton, m_yButton));
-    // m_xButton.onTrue(new ManualLineUpClimb(m_xButton));
-    m_xButton.onTrue(new RobotRelativeDrive());
+    m_xButton.onTrue(new ManualLineUpClimb(m_xButton));
 
     // scoring
     // m_rightBumper.onTrue(new AmpSequenceConditional());
-    // m_rightBumper.onTrue(
-    //     new AmpShot(m_rightBumper)
-    //         .handleInterrupt(() -> new ExtensionArmReturnToZero().schedule()));
-    m_rightBumper.whileTrue(new ParallelDeadlineGroup(new TranslateToGamepiece(2), new IntakeNoteFromFloor()));
+    m_rightBumper.onTrue(
+        new AmpShot(m_rightBumper)
+            .handleInterrupt(() -> new ExtensionArmReturnToZero().schedule()));
 
     m_rightTriggerPrime.whileTrue(
         new ParallelCommandGroup(new VisionTargeting(), new TargetLockOnSpeaker()));
