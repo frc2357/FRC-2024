@@ -42,14 +42,14 @@ public class DriveUtility {
     // Increase yaw tolerance when close to target since yaw is more sensitive at
     // shorter distances
     if (Utility.isWithinTolerance(pitch, pitchOffset, closePitchThreshold)) {
-      return Math.copySign(yawTolerance * SWERVE.APRILTAG_CLOSE_YAW_FACTOR, yawTolerance);
+      return Math.copySign(yawTolerance * SWERVE.VISION_CLOSE_YAW_FACTOR, yawTolerance);
     }
     return yawTolerance;
   }
 
   public static double calculateRotationError(double rotationError, double rotationSetpoint) {
     if (Utility.isWithinTolerance(
-        rotationError, rotationSetpoint, SWERVE.APRILTAG_ROTATION_TOLERANCE_RADIANS)) {
+        rotationError, rotationSetpoint, SWERVE.VISION_ROTATION_TOLERANCE_RADIANS)) {
       return rotationSetpoint;
     }
     return rotationError;

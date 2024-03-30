@@ -82,6 +82,8 @@ public final class Constants {
         1.0; // Robot goes half speed once passed
     public static final double PIECE_TRACKING_X_METERS_PER_SECOND = 2;
 
+    public static final double TELEOP_TRANSLATE_TO_GAMEPIECE_Y_METERS_PER_SECOND = 1;
+
     // Target Lock
     public static final double TARGET_LOCK_ROTATION_KP = 0.1;
     public static final double TARGET_LOCK_ROTATION_KI = 0.0;
@@ -96,20 +98,20 @@ public final class Constants {
     public static final double AUTO_TARGET_LOCK_YAW_TOLERANCE = 3;
 
     // Translate to Apriltag
-    public static final PIDController APRILTAG_ROTATION_PID_CONTROLLER =
+    public static final PIDController PIGEON_ROTATION_PID_CONTROLLER =
         new PIDController(12, 0, 0.0);
-    public static final double APRILTAG_ROTATION_FEEDFORWARD = 0.00001;
-    public static final PIDController APRILTAG_X_TRANSLATION_PID_CONTROLLER =
+    public static final double PIGEON_ROTATION_FEEDFORWARD = 0.00001;
+    public static final PIDController VISION_X_TRANSLATION_PID_CONTROLLER =
         new PIDController(0.15, 0, 0);
-    public static final PIDController APRILTAG_Y_TRANSLATION_PID_CONTROLLER =
+    public static final PIDController VISION_Y_TRANSLATION_PID_CONTROLLER =
         new PIDController(0.15, 0, 0);
 
-    public static final double APRILTAG_YAW_TOLERANCE = 1;
-    public static final double APRILTAG_PITCH_TOLERANCE = 0.5;
-    public static final double APRILTAG_ROTATION_TOLERANCE_RADIANS = 0.02;
-    public static final double APRILTAG_PITCH_MAGIC_OFFSET = 12.5;
-    public static final double APRILTAG_CLOSE_PITCH = 4.0;
-    public static final double APRILTAG_CLOSE_YAW_FACTOR = 2.0;
+    public static final double VISION_YAW_TOLERANCE = 1;
+    public static final double VISION_PITCH_TOLERANCE = 0.5;
+    public static final double VISION_ROTATION_TOLERANCE_RADIANS = 0.02;
+    public static final double VISION_PITCH_MAGIC_OFFSET = 12.5;
+    public static final double VISION_CLOSE_PITCH = 4.0;
+    public static final double VISION_CLOSE_YAW_FACTOR = 2.0;
 
     public static final double AMP_YAW_SETPOINT = 0;
     public static final double AMP_PITCH_SETPOINT = 5;
@@ -118,6 +120,25 @@ public final class Constants {
 
     public static final double STAGE_YAW_SETPOINT = 0.0;
     public static final double STAGE_PITCH_SETPOINT = 12.2;
+
+    /*
+     * s = TranslateToGamepiece.m_startingSpeed
+     * d = TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS
+     * t = TRANSLATE_TO_GAMEPIECE_START_DECEL_THRESHOLD
+     * m = TRANSLATE_TO_GAMEPIECE_MIN_SPEED_METERS_PER_SECOND
+     * Distance traveled calculation:
+     * s * (d - (d * t)) +
+     * d * t * m +
+     * ((s - m) * (d * t)) / 2
+     *
+     * Desmos Graph: https://www.desmos.com/calculator/8kbyasfnkv
+     */
+    public static final double TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS = 0.8;
+    public static final double TRANSLATE_TO_GAMEPIECE_YAW_SETPOINT = 0;
+    public static final double TRANSLATE_TO_GAMEPIECE_YAW_TOLERANCE = 2.5;
+    public static final double TRANSLATE_TO_GAMEPIECE_ROTATION_SETPOINT = 0;
+    public static final double TRANSLATE_TO_GAMEPIECE_START_DECEL_THRESHOLD = 0.7;
+    public static final double TRANSLATE_TO_GAMEPIECE_MIN_SPEED_METERS_PER_SECOND = 0.0;
 
     // Tune this during field calibration
     public static final double BLUE_LEFT_STAGE_ROTATION_SETPOINT_RADIANS = 0;
@@ -172,6 +193,8 @@ public final class Constants {
     public static final double CODRIVE_RUMBLE_INTENSITY = .5;
     public static final double DRIVE_RUMBLE_SECONDS = 2;
     public static final double CODRIVE_RUMBLE_SECONDS = 2;
+
+    public static final double DRIVE_TRANSLATE_INTAKE_THRESHOLD = 0.9;
   }
 
   public static final class SHOOTER {

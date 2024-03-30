@@ -15,9 +15,9 @@ public class DriveToStage extends Command {
   private PIDController m_rotationController;
 
   public DriveToStage() {
-    m_yawController = SWERVE.APRILTAG_X_TRANSLATION_PID_CONTROLLER;
-    m_pitchController = SWERVE.APRILTAG_Y_TRANSLATION_PID_CONTROLLER;
-    m_rotationController = SWERVE.APRILTAG_ROTATION_PID_CONTROLLER;
+    m_yawController = SWERVE.VISION_X_TRANSLATION_PID_CONTROLLER;
+    m_pitchController = SWERVE.VISION_Y_TRANSLATION_PID_CONTROLLER;
+    m_rotationController = SWERVE.PIGEON_ROTATION_PID_CONTROLLER;
     addRequirements(Robot.swerve);
   }
 
@@ -26,14 +26,14 @@ public class DriveToStage extends Command {
     Robot.shooterCam.setAprilTagPipelineActive();
 
     // reset pids
-    m_pitchController.setTolerance(SWERVE.APRILTAG_PITCH_TOLERANCE);
+    m_pitchController.setTolerance(SWERVE.VISION_PITCH_TOLERANCE);
     m_pitchController.setSetpoint(SWERVE.STAGE_PITCH_SETPOINT);
     m_pitchController.reset();
-    m_yawController.setTolerance(SWERVE.APRILTAG_YAW_TOLERANCE);
+    m_yawController.setTolerance(SWERVE.VISION_YAW_TOLERANCE);
     m_yawController.setSetpoint(SWERVE.STAGE_YAW_SETPOINT);
     m_yawController.reset();
 
-    m_rotationController.setTolerance(SWERVE.APRILTAG_ROTATION_TOLERANCE_RADIANS);
+    m_rotationController.setTolerance(SWERVE.VISION_ROTATION_TOLERANCE_RADIANS);
     m_rotationController.setSetpoint(DriveUtility.getStageRotationGoal());
     m_rotationController.enableContinuousInput(-Math.PI, Math.PI);
     m_rotationController.reset();
@@ -47,7 +47,7 @@ public class DriveToStage extends Command {
             Robot.swerve.getPose().getRotation().getRadians(), m_rotationController.getSetpoint());
     double rotationRadiansPerSecond = m_rotationController.calculate(rotation);
     double rotationFeedforward =
-        Math.copySign(SWERVE.APRILTAG_ROTATION_FEEDFORWARD, rotationRadiansPerSecond);
+        Math.copySign(SWERVE.PIGEON_ROTATION_FEEDFORWARD, rotationRadiansPerSecond);
 
     rotationRadiansPerSecond += rotationFeedforward;
     if (rotation == m_rotationController.getSetpoint()) {
@@ -75,11 +75,11 @@ public class DriveToStage extends Command {
             pitch,
             rotation - m_rotationController.getSetpoint(),
             SWERVE.STAGE_PITCH_SETPOINT,
-            SWERVE.APRILTAG_CLOSE_PITCH,
-            SWERVE.APRILTAG_YAW_TOLERANCE);
+            SWERVE.VISION_CLOSE_PITCH,
+            SWERVE.VISION_YAW_TOLERANCE);
     pitch =
         DriveUtility.adjustPitchForApriltag(
-            pitch, SWERVE.STAGE_PITCH_SETPOINT, SWERVE.APRILTAG_PITCH_TOLERANCE);
+            pitch, SWERVE.STAGE_PITCH_SETPOINT, SWERVE.VISION_PITCH_TOLERANCE);
 
     double xMetersPerSecond = m_yawController.calculate(yaw);
     double yMetersPerSecond = m_pitchController.calculate(pitch);
