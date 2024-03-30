@@ -6,8 +6,8 @@ import frc.robot.commands.state.SetNoteState;
 import frc.robot.state.RobotState.NoteState;
 
 public class IntakeRepositionNote extends SequentialCommandGroup {
-   public IntakeRepositionNote() {
-      super(
+  public IntakeRepositionNote() {
+    super(
         // Run slow until past beam break
         new IntakeRunUntilBeamState(INTAKE.SLOW_PICKUP_SPEED_PERCENT_OUTPUT, false),
         new SetNoteState(NoteState.NOTE_PAST_BEAM_BREAK),
@@ -16,7 +16,6 @@ public class IntakeRepositionNote extends SequentialCommandGroup {
         new IntakeRun(INTAKE.REVERSE_FEED_SPEED_PERCENT_OUTPUT)
             .withTimeout(INTAKE.FLOOR_INTAKE_REVERSE_TIMEOUT),
         new IntakeStop(),
-        new SetNoteState(NoteState.NOTE_STOWED)
-      );
-   }
+        new SetNoteState(NoteState.NOTE_STOWED));
+  }
 }
