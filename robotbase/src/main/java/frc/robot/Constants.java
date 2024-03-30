@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.util.ReplanningConfig;
 import com.revrobotics.CANSparkBase.IdleMode;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
@@ -159,6 +160,18 @@ public final class Constants {
             return Robot.state.getAlliance() == Alliance.Red;
           }
         };
+  }
+
+  public static final class PATHPLANNER {
+    public static final boolean ENABLE_INITIAL_REPLANNING = false;
+    public static final boolean ENABLE_DYNAMIC_REPLANNING = false;
+    public static final double DYNAMIC_REPLANNING_ERROR_THRESHOLD = 0;
+    public static final double DYNAMIC_REPLANNING_ERROR_SPIKE_THRESHOLD = 0;    
+
+    public static final ReplanningConfig REPLANNING_CONFIG= new ReplanningConfig(
+      ENABLE_INITIAL_REPLANNING, 
+      ENABLE_DYNAMIC_REPLANNING, 
+      DYNAMIC_REPLANNING_ERROR_THRESHOLD, DYNAMIC_REPLANNING_ERROR_SPIKE_THRESHOLD);
   }
 
   public static final class CONTROLLER {
