@@ -18,14 +18,14 @@ public class SourceSide4Note extends SequentialCommandGroup {
   public SourceSide4Note() {
     super(
         // Preload on the move (future Tyson problem) + Drive to note 2
-        // new ParallelDeadlineGroup(
+        new ParallelDeadlineGroup(
+        new DriveChoreoPath("SourceSide4Note1.1", true).handleInterrupt(() -> System.out.println("Interrupted")),
+            new SequentialCommandGroup(
+                new WaitCommand(0.75),
+                new IntakeFeedToShooter().withTimeout(0.25)),
+            new PivotHoldAngle(30),
+            new ShooterSetRPM(4000)),
         // new DriveChoreoPath("SourceSide4Note1.1", true),
-        //     new SequentialCommandGroup(
-        //         new WaitCommand(0.75),
-        //         new IntakeFeedToShooter().withTimeout(0.25)),
-        //     new PivotHoldAngle(30),
-        //     new ShooterSetRPM(4000)),
-        new DriveChoreoPath("SourceSide4Note1.1", true),
 
         // Pickup second note
         new ParallelDeadlineGroup(
