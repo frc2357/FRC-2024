@@ -1,5 +1,7 @@
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -27,7 +29,19 @@ public class AutoCommandChooser {
   private String m_waitCommandKey = "wait";
 
   public AutoCommandChooser() {
-
+    AutoBuilder.configureHolonomic(
+        Robot.swerve::getPose, // Robot pose supplier
+        Robot.swerve
+            ::setPose, // Method to reset odometry (will be called if your auto has a starting pose)
+        Robot.swerve
+            ::getRobotRelativChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+        Robot.swerve
+            .getChassisSpeedsConsumer(), // Method that will drive the robot given ROBOT RELATIVE
+        // ChassisSpeeds
+        Constants.PATHPLANNER.PATH_FOLLOWER_CONFIG,
+        Constants.CHOREO
+            .CHOREO_AUTO_MIRROR_PATHS, // boolean supplier to see if we need to mirror the paths
+        Robot.swerve);
     Command[] autoCommands = {
       new Close3Speaker(),
       new Close3Speaker(),
@@ -36,7 +50,8 @@ public class AutoCommandChooser {
       new MiddleClose1Speaker(),
       new RightClose1Speaker(),
       new ShootAndNothing(),
-      new Close3AndRUN()
+      new Close3AndRUN(),
+      new PathPlannerAuto("3MeterAuto")
     };
 
     HashMap<String, Command> commandMap = new HashMap<String, Command>(autoCommands.length + 1);
