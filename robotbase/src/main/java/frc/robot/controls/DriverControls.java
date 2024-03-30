@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Robot;
@@ -94,7 +96,9 @@ public class DriverControls implements RumbleInterface {
     m_bButton.whileTrue(new VisionlessShooting(Robot.shooterCurve[4][2], Robot.shooterCurve[4][1]));
 
     m_leftTrigger.whileTrue(
-        new ParallelDeadlineGroup(new IntakeNoteFromFloor(), new TargetLockOnNote())
+        new ParallelDeadlineGroup(
+                new IntakeNoteFromFloor(),
+                new SequentialCommandGroup(new WaitCommand(0.25), new TargetLockOnNote()))
             .andThen(
                 new IntakeRepositionNote()
                     .handleInterrupt(() -> Robot.leds.setColor(LEDs.MELTDOWN_ORANGE))));
