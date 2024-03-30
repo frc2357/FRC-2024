@@ -13,8 +13,8 @@ import frc.robot.commands.climber.ManualLineUpClimb;
 import frc.robot.commands.climber.ManualLineUpTrap;
 import frc.robot.commands.drive.TargetLockOnSpeaker;
 import frc.robot.commands.extensionArm.ExtensionArmReturnToZero;
+import frc.robot.commands.intake.CancelIntakeOnEnd;
 import frc.robot.commands.intake.IntakeFeedToShooter;
-import frc.robot.commands.pickup.Pickup;
 import frc.robot.commands.pickup.VisionPickup;
 import frc.robot.commands.scoring.AmpShot;
 import frc.robot.commands.scoring.VisionTargeting;
@@ -90,9 +90,8 @@ public class DriverControls implements RumbleInterface {
     m_aButton.whileTrue(new VisionlessShooting(Robot.shooterCurve[1][2], Robot.shooterCurve[1][1]));
     m_bButton.whileTrue(new VisionlessShooting(Robot.shooterCurve[4][2], Robot.shooterCurve[4][1]));
 
-    m_leftTrigger.whileTrue(new VisionPickup());
-
-    m_leftTrigger.toggleOnFalse(new Pickup());
+    m_leftTrigger.onTrue(new VisionPickup());
+    m_leftTrigger.toggleOnFalse(new CancelIntakeOnEnd());
 
     m_leftBumper.whileTrue(new SourceIntakeFromShooter());
 
@@ -121,6 +120,10 @@ public class DriverControls implements RumbleInterface {
 
   public double getLeftTrigger() {
     return m_controller.getLeftTriggerAxis();
+  }
+
+  public boolean isLeftTriggerPressed() {
+    return m_leftTrigger.getAsBoolean();
   }
 
   public double getRotation() {

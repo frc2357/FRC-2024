@@ -15,7 +15,6 @@ public class IntakeRepositionNote extends SequentialCommandGroup {
         // Run backwards to keep out of shooter
         new IntakeRun(INTAKE.REVERSE_FEED_SPEED_PERCENT_OUTPUT)
             .withTimeout(INTAKE.FLOOR_INTAKE_REVERSE_TIMEOUT),
-        new IntakeStop(),
         new SetNoteState(NoteState.NOTE_STOWED));
   }
 }
