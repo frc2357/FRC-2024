@@ -11,7 +11,6 @@ import com.pathplanner.lib.util.ReplanningConfig;
 import com.revrobotics.CANSparkBase.IdleMode;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -172,26 +171,30 @@ public final class Constants {
     public static final double DYNAMIC_REPLANNING_ERROR_THRESHOLD = 0;
     public static final double DYNAMIC_REPLANNING_ERROR_SPIKE_THRESHOLD = 0;
 
-    public static final ReplanningConfig REPLANNING_CONFIG= new ReplanningConfig(
-      ENABLE_INITIAL_REPLANNING, 
-      ENABLE_DYNAMIC_REPLANNING, 
-      DYNAMIC_REPLANNING_ERROR_THRESHOLD, DYNAMIC_REPLANNING_ERROR_SPIKE_THRESHOLD);
-    
+    public static final ReplanningConfig REPLANNING_CONFIG =
+        new ReplanningConfig(
+            ENABLE_INITIAL_REPLANNING,
+            ENABLE_DYNAMIC_REPLANNING,
+            DYNAMIC_REPLANNING_ERROR_THRESHOLD,
+            DYNAMIC_REPLANNING_ERROR_SPIKE_THRESHOLD);
+
     public static final double DRIVEBASE_RADIUS_METERS = 0.4356354;
     public static final PIDConstants TRANSLATION_PID_CONSTANTS = new PIDConstants(0.1, 0, 0);
     public static final PIDConstants ROTATIONAL_PID_CONSTANTS = new PIDConstants(0.1, 0, 0);
     public static final double MAX_MODULE_SPEED_METERS_PER_SECOND = 5.2;
-    public static final PPHolonomicDriveController HOLONOMIC_DRIVE_CONTROLLER = new PPHolonomicDriveController(
-      TRANSLATION_PID_CONSTANTS, ROTATIONAL_PID_CONSTANTS, 
-      MAX_MODULE_SPEED_METERS_PER_SECOND, DRIVEBASE_RADIUS_METERS);
+    public static final PPHolonomicDriveController HOLONOMIC_DRIVE_CONTROLLER =
+        new PPHolonomicDriveController(
+            TRANSLATION_PID_CONSTANTS, ROTATIONAL_PID_CONSTANTS,
+            MAX_MODULE_SPEED_METERS_PER_SECOND, DRIVEBASE_RADIUS_METERS);
 
-    public static final HolonomicPathFollowerConfig PATH_FOLLOWER_CONFIG = new HolonomicPathFollowerConfig(
-    TRANSLATION_PID_CONSTANTS, // Translation PID constants
-    ROTATIONAL_PID_CONSTANTS, // Rotation PID constants
-    MAX_MODULE_SPEED_METERS_PER_SECOND, // Max module speed, in m/s
-    DRIVEBASE_RADIUS_METERS, // Drive base radius in meters. Distance from robot center to furthest module.
-    REPLANNING_CONFIG
-    );
+    public static final HolonomicPathFollowerConfig PATH_FOLLOWER_CONFIG =
+        new HolonomicPathFollowerConfig(
+            TRANSLATION_PID_CONSTANTS, // Translation PID constants
+            ROTATIONAL_PID_CONSTANTS, // Rotation PID constants
+            MAX_MODULE_SPEED_METERS_PER_SECOND, // Max module speed, in m/s
+            DRIVEBASE_RADIUS_METERS, // Drive base radius in meters. Distance from robot center to
+            // furthest module.
+            REPLANNING_CONFIG);
   }
 
   public static final class CONTROLLER {

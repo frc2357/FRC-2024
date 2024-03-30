@@ -210,8 +210,10 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     return chassisSpeeds;
   }
 
-  public ChassisSpeeds getRobotRelativChassisSpeeds(){
-    var chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(getFieldRelativeChassisSpeeds(), getRotation3d().toRotation2d());
+  public ChassisSpeeds getRobotRelativChassisSpeeds() {
+    var chassisSpeeds =
+        ChassisSpeeds.fromFieldRelativeSpeeds(
+            getFieldRelativeChassisSpeeds(), getRotation3d().toRotation2d());
     return chassisSpeeds;
   }
 }
