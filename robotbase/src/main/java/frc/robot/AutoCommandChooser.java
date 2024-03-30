@@ -1,6 +1,7 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
@@ -47,7 +48,8 @@ public class AutoCommandChooser {
       new MiddleClose1Speaker(),
       new RightClose1Speaker(),
       new ShootAndNothing(),
-      new Close3AndRUN()
+      new Close3AndRUN(),
+      new PathPlannerAuto("3Meter")
     };
 
     HashMap<String, Command> commandMap = new HashMap<String, Command>(autoCommands.length + 1);
