@@ -11,6 +11,7 @@ import org.photonvision.EstimatedRobotPose;
 public class UpdatePoseWithVision extends Command {
   private int m_startingPipeline;
   private boolean m_gotPose;
+  private Pose2d m_initialPose;
 
   public UpdatePoseWithVision() {}
 
@@ -19,6 +20,10 @@ public class UpdatePoseWithVision extends Command {
     m_startingPipeline = Robot.shooterCam.getPipeline();
     Robot.shooterCam.setPoseEstimationPipeline();
     m_gotPose = false;
+
+    m_initialPose = Robot.swerve.getState().Pose;
+    System.out.println("INITIAL POSE");
+    System.out.println(m_initialPose);
   }
 
   @Override
@@ -29,9 +34,11 @@ public class UpdatePoseWithVision extends Command {
 
     Pose2d visionPose = estimatedPose.get().estimatedPose.toPose2d();
     Pose2d robotPose = Robot.swerve.getState().Pose;
+    System.out.println("GOT POSE: " + visionPose);
     if (isPoseValid(visionPose, robotPose, robotPose.getRotation().getDegrees())) {
 
       Robot.swerve.addVisionMeasurement(visionPose, estimatedPose.get().timestampSeconds);
+      System.out.println("VALID POSE: " + visionPose);
       m_gotPose = true;
     }
   }
@@ -44,6 +51,18 @@ public class UpdatePoseWithVision extends Command {
   @Override
   public void end(boolean interrupted) {
     Robot.intakeCam.setPipeline(m_startingPipeline);
+
+    Pose2d result = Robot.swerve.getState().Pose;
+    System.out.println("RESULT POSE");
+    System.out.println(result);
+
+    System.out.println(
+        "DIFFERENCE:\nX: "
+            + (m_initialPose.getX() - result.getX())
+            + "\nY: "
+            + (m_initialPose.getY() - result.getY())
+            + "\nRot: "
+            + (m_initialPose.getRotation().getDegrees() - result.getRotation().getDegrees()));
   }
 
   @Override
