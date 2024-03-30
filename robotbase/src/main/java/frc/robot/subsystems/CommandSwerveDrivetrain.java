@@ -216,4 +216,14 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
             getFieldRelativeChassisSpeeds(), getRotation3d().toRotation2d());
     return chassisSpeeds;
   }
+
+  public double[] getWheelRadiusCharacterizationPosition() {
+    double[] positions = new double[4];
+    
+    for (int i = 0;i < positions.length;i++) {
+      positions[i] = getModulePositions()[i].angle.getDegrees();
+    }
+
+    return positions;
+  }
 }

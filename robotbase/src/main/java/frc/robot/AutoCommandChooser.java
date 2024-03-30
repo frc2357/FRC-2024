@@ -18,6 +18,7 @@ import frc.robot.commands.auto.paths.MiddleClose1Speaker;
 import frc.robot.commands.auto.paths.RightClose1Speaker;
 import frc.robot.commands.auto.paths.ShootAndNothing;
 import frc.robot.commands.auto.paths.SourceSide4Note;
+import frc.robot.commands.drive.DriveChoreoPath;
 import frc.robot.commands.util.VariableWaitCommand;
 import java.util.HashMap;
 

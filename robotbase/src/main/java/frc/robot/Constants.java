@@ -98,7 +98,7 @@ public final class Constants {
             TARGET_LOCK_ROTATION_KP, TARGET_LOCK_ROTATION_KI, TARGET_LOCK_ROTATION_KD);
 
     public static final double TARGET_LOCK_FEED_FORWARD = 0.0;
-    public static final double TARGET_LOCK_TOLERANCE = 1.5;
+    public static final double TARGET_LOCK_TOLERANCE = 1;
 
     public static final double AUTO_TARGET_LOCK_YAW_TOLERANCE = 3;
 
@@ -128,7 +128,7 @@ public final class Constants {
 
     // Total y distance traveled = speed * time / 2 due to linear deceleration
     public static final double TRANSLATE_TO_GAMEPIECE_Y_SPEED_MPS = 2.5;
-    public static final double TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS = 1;
+    public static final double TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS = 1.25;
     public static final double TRANSLATE_TO_GAMEPIECE_YAW_SETPOINT = 0;
     public static final double TRANSLATE_TO_GAMEPIECE_YAW_TOLERANCE = 2.5;
     public static final double TRANSLATE_TO_GAMEPIECE_ROTATION_SETPOINT = 0;
@@ -163,12 +163,12 @@ public final class Constants {
     public static final double SECONDS_FROM_STAGE_TO_CHAIN = 2.5;
 
     // Auto
-    public static final double AUTO_TARGET_LOCK_TIMEOUT_SECONDS = 0.5;
+    public static final double AUTO_TARGET_LOCK_TIMEOUT_SECONDS = 0.75;
   }
 
   public static final class CHOREO {
-    public static final PIDController X_CONTROLLER = new PIDController(2, 0, 0);
-    public static final PIDController Y_CONTROLLER = new PIDController(2, 0, 0);
+    public static final PIDController X_CONTROLLER = new PIDController(1, 0, 0);
+    public static final PIDController Y_CONTROLLER = new PIDController(1, 0, 0);
     public static final PIDController ROTATION_CONTROLLER = new PIDController(0.6, 0, 0);
 
     public static final BooleanSupplier CHOREO_AUTO_MIRROR_PATHS =

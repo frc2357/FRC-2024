@@ -97,7 +97,8 @@ public class DriverControls implements RumbleInterface {
     m_leftBumper.whileTrue(new SourceIntakeFromShooter());
 
     m_yButton.onTrue(new ManualLineUpTrap(m_yButton, m_yButton));
-    m_xButton.onTrue(new ManualLineUpClimb(m_xButton));
+    // m_xButton.onTrue(new ManualLineUpClimb(m_xButton));
+    m_xButton.onTrue(new RobotRelativeDrive());
 
     // scoring
     // m_rightBumper.onTrue(new AmpSequenceConditional());

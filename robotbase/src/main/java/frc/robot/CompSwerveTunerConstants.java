@@ -49,7 +49,7 @@ public class CompSwerveTunerConstants {
 
   private static final double kDriveGearRatio = 6.12;
   private static final double kSteerGearRatio = 21.428571428571427;
-  private static final double kWheelRadiusInches = 2;
+  private static final double kWheelRadiusInches = 1.9;
 
   private static final boolean kSteerMotorReversed = true;
   private static final boolean kInvertLeftSide = false;

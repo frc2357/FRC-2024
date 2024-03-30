@@ -3,13 +3,20 @@ package frc.robot.commands.drive;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.CompSwerveTunerConstants;
 import frc.robot.Robot;
+import frc.robot.Constants.SWERVE;
 import frc.robot.util.RobotMath;
+import frc.robot.util.Utility;
 
 public class TargetLockOnSpeaker extends Command {
   public int m_startingPipeline;
   public double m_yawOffset;
+  public boolean m_stopOnEnd = false;
 
   public TargetLockOnSpeaker() {
+    this(false);
+  }
+
+  public TargetLockOnSpeaker(boolean stopOnEnd) {
     m_startingPipeline = Robot.intakeCam.getPipeline();
     addRequirements(Robot.swerve, Robot.shooterCam);
   }
@@ -49,6 +56,15 @@ public class TargetLockOnSpeaker extends Command {
         !Double.isNaN(targetYaw) ? targetYaw : 0,
         m_yawOffset,
         !Double.isNaN(targetYaw));
+  }
+
+  @Override
+  public boolean isFinished() {
+    double yaw = Robot.shooterCam.getSpeakerTargetYaw();
+    if (Double.isNaN(yaw) || m_stopOnEnd) {
+      return false;
+    }
+    return Utility.isWithinTolerance(yaw, m_yawOffset, SWERVE.TARGET_LOCK_TOLERANCE);
   }
 
   @Override
