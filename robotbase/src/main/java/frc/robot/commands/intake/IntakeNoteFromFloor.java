@@ -1,8 +1,10 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WrapperCommand;
 import frc.robot.Constants.INTAKE;
 import frc.robot.commands.LEDs.LEDsSetColor;
 import frc.robot.commands.rumble.RumbleDriverController;
@@ -22,16 +24,6 @@ public class IntakeNoteFromFloor extends SequentialCommandGroup {
             () -> {
               new RumbleDriverController().schedule();
             }),
-        new LEDsSetColor(LEDs.GREEN),
-
-        // Run slow until past beam break
-        new IntakeRunUntilBeamState(INTAKE.SLOW_PICKUP_SPEED_PERCENT_OUTPUT, false),
-        new SetNoteState(NoteState.NOTE_PAST_BEAM_BREAK),
-
-        // Run backwards to keep out of shooter
-        new IntakeRun(INTAKE.REVERSE_FEED_SPEED_PERCENT_OUTPUT)
-            .withTimeout(INTAKE.FLOOR_INTAKE_REVERSE_TIMEOUT),
-        new IntakeStop(),
-        new SetNoteState(NoteState.NOTE_STOWED));
+        new LEDsSetColor(LEDs.GREEN));
   }
 }

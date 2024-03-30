@@ -7,9 +7,11 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Robot;
+import frc.robot.Constants.LEDS;
 import frc.robot.commands.climber.ManualLineUpClimb;
 import frc.robot.commands.climber.ManualLineUpTrap;
 import frc.robot.commands.drive.TargetLockOnNote;
@@ -17,6 +19,7 @@ import frc.robot.commands.drive.TargetLockOnSpeaker;
 import frc.robot.commands.extensionArm.ExtensionArmReturnToZero;
 import frc.robot.commands.intake.IntakeFeedToShooter;
 import frc.robot.commands.intake.IntakeNoteFromFloor;
+import frc.robot.commands.intake.IntakeRepositionNote;
 import frc.robot.commands.scoring.AmpShot;
 import frc.robot.commands.scoring.VisionTargeting;
 import frc.robot.commands.scoring.VisionlessShooting;
@@ -24,7 +27,6 @@ import frc.robot.commands.source.SourceIntakeFromShooter;
 import frc.robot.controls.util.AxisInterface;
 import frc.robot.controls.util.AxisThresholdTrigger;
 import frc.robot.controls.util.RumbleInterface;
-import frc.robot.subsystems.LEDs;
 
 public class DriverControls implements RumbleInterface {
   private XboxController m_controller;
@@ -81,10 +83,9 @@ public class DriverControls implements RumbleInterface {
   }
 
   public void mapControls() {
-    AxisInterface righStickYAxis =
-        () -> {
-          return getRightStickYAxis();
-        };
+    AxisInterface righStickYAxis = () -> {
+      return getRightStickYAxis();
+    };
 
     m_backButton.onTrue(new InstantCommand(() -> Robot.swerve.zeroGyro(false)));
     m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.zeroGyro(true)));
@@ -94,12 +95,10 @@ public class DriverControls implements RumbleInterface {
 
     m_leftTrigger.toggleOnTrue(
         new ParallelDeadlineGroup(
-            new IntakeNoteFromFloor()
-                .handleInterrupt(
-                    () -> {
-                      Robot.leds.setColor(LEDs.MELTDOWN_ORANGE);
-                    }),
-            new TargetLockOnNote()));
+            new IntakeNoteFromFloor(),
+            new TargetLockOnNote()
+        ).andThen(new IntakeRepositionNote().handleInterrupt(() -> Robot.leds.setColor();))
+    );
 
     m_leftBumper.whileTrue(new SourceIntakeFromShooter());
 
