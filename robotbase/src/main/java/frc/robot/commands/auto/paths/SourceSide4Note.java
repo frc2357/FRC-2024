@@ -44,7 +44,7 @@ public class SourceSide4Note extends SequentialCommandGroup {
         // Drive to and pickup third note
         new DriveChoreoPath("SourceSide4Note2.2"),
         new ParallelDeadlineGroup(
-            new TranslateToGamepiece(3),
+            new TranslateToGamepiece(3.25),
             new IntakeNoteFromFloor()),
 
         // Drive back with note 3 and shoot
