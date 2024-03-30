@@ -72,7 +72,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
       double yaw,
       double yawSetpoint,
       boolean hasTarget) {
-    double vy = getChassisSpeeds().vyMetersPerSecond; // Horizontal velocity
+    double vy = getFieldRelativeChassisSpeeds().vyMetersPerSecond; // Horizontal velocity
     double kp = Constants.SWERVE.TARGET_LOCK_ROTATION_KP;
     kp *= Math.max(1, vy * 1);
     Constants.SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.setP(kp);
@@ -205,8 +205,13 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     };
   }
 
-  public ChassisSpeeds getChassisSpeeds() {
+  public ChassisSpeeds getFieldRelativeChassisSpeeds() {
     ChassisSpeeds chassisSpeeds = getKinematics().toChassisSpeeds(getModuleStates());
+    return chassisSpeeds;
+  }
+
+  public ChassisSpeeds getRobotRelativChassisSpeeds(){
+    var chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(getFieldRelativeChassisSpeeds(), getRotation3d().toRotation2d());
     return chassisSpeeds;
   }
 }
