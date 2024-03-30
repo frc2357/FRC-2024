@@ -242,6 +242,9 @@ public class CodriverControls implements RumbleInterface {
             () -> {
               CommandScheduler.getInstance().cancelAll();
             }));
+
+    // Uncomment for tuning wheel diameter
+    // m_startButton.onTrue(new CalculateWheelDiameter());
   }
 
   @Override
