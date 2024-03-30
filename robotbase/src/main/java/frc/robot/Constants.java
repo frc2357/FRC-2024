@@ -103,9 +103,9 @@ public final class Constants {
         TARGET_LOCK_ROTATION_KP, TARGET_LOCK_ROTATION_KI, TARGET_LOCK_ROTATION_KD);
 
     public static final double TARGET_LOCK_FEED_FORWARD = 0.0;
-    public static final double TARGET_LOCK_TOLERANCE = 1;
+    public static final double TARGET_LOCK_TOLERANCE = 0.5;
 
-    public static final double AUTO_TARGET_LOCK_YAW_TOLERANCE = 3;
+    public static final double AUTO_TARGET_LOCK_YAW_TOLERANCE = 2;
 
     // Translate to Apriltag
     public static final PIDController PIGEON_ROTATION_PID_CONTROLLER =
@@ -184,7 +184,7 @@ public final class Constants {
   public static final class CHOREO {
     public static final PIDController X_CONTROLLER = new PIDController(1, 0, 0);
     public static final PIDController Y_CONTROLLER = new PIDController(1, 0, 0);
-    public static final PIDController ROTATION_CONTROLLER = new PIDController(0.6, 0, 0);
+    public static final PIDController ROTATION_CONTROLLER = new PIDController(0.006, 0, 0);
 
     public static final BooleanSupplier CHOREO_AUTO_MIRROR_PATHS = new BooleanSupplier() {
       @Override
@@ -491,7 +491,7 @@ public final class Constants {
             -Units.inchesToMeters(LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES),
             Units.inchesToMeters(LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES)),
         new Rotation3d(0, LENS_ANGLE_TILTED_UP_DEGREES, 0));
-    public static final int SPEAKER_TARGET_TIMEOUT_MS = 60;
+    public static final int SPEAKER_TARGET_TIMEOUT_MS = 120;
     public static final int AMP_TARGET_TIMEOUT_MS = 60;
     public static final int STAGE_TARGET_TIMEOUT_MS = 60;
   }
