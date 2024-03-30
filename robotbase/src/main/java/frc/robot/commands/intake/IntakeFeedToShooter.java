@@ -2,8 +2,8 @@ package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.*;
-import frc.robot.state.RobotState.NoteState;
 import frc.robot.Robot;
+import frc.robot.state.RobotState.NoteState;
 
 public class IntakeFeedToShooter extends Command {
 

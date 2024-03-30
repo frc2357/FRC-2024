@@ -31,10 +31,16 @@ public class TranslateToGamepiece extends Command {
     Robot.intakeCam.setPipeline(INTAKE_PHOTON_CAMERA.NEURAL_NETWORK_PIPELINE);
 
     // Initialize decel variables
-    m_decelSlope = (SWERVE.TRANSLATE_TO_GAMEPIECE_MIN_SPEED_METERS_PER_SECOND - m_startingSpeed)
-        / (SWERVE.TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS * SWERVE.TRANSLATE_TO_GAMEPIECE_START_DECEL_THRESHOLD);
-    m_decelIntercept = m_startingSpeed - m_decelSlope * (SWERVE.TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS
-        - SWERVE.TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS * SWERVE.TRANSLATE_TO_GAMEPIECE_START_DECEL_THRESHOLD);
+    m_decelSlope =
+        (SWERVE.TRANSLATE_TO_GAMEPIECE_MIN_SPEED_METERS_PER_SECOND - m_startingSpeed)
+            / (SWERVE.TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS
+                * SWERVE.TRANSLATE_TO_GAMEPIECE_START_DECEL_THRESHOLD);
+    m_decelIntercept =
+        m_startingSpeed
+            - m_decelSlope
+                * (SWERVE.TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS
+                    - SWERVE.TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS
+                        * SWERVE.TRANSLATE_TO_GAMEPIECE_START_DECEL_THRESHOLD);
 
     m_timer.reset();
     m_timer.start();

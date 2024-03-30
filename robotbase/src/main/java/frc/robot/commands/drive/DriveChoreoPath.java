@@ -104,10 +104,10 @@ public class DriveChoreoPath extends SequentialCommandGroup {
             CHOREO.CHOREO_AUTO_MIRROR_PATHS,
             Robot.swerve));
     addCommands(
-      new InstantCommand(() -> {
-        System.out.println(Robot.swerve.getPose());
-      })
-    );
+        new InstantCommand(
+            () -> {
+              System.out.println(Robot.swerve.getPose());
+            }));
   }
 
   @Override
