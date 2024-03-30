@@ -4,11 +4,16 @@
 
 package frc.robot;
 
+import java.util.function.BooleanSupplier;
+
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 import com.revrobotics.CANSparkBase.IdleMode;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
@@ -17,15 +22,17 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import java.util.function.BooleanSupplier;
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants. This class should not be used for any other purpose. All constants should be declared
+ * The Constants class provides a convenient place for teams to hold robot-wide
+ * numerical or boolean
+ * constants. This class should not be used for any other purpose. All constants
+ * should be declared
  * globally (i.e. public static). Do not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
+ * <p>
+ * It is advised to statically import this class (or one of its inner classes)
+ * wherever the
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
@@ -82,8 +89,7 @@ public final class Constants {
     public static final double PIECE_TRACKING_ROTATION_TOLERANCE = 0.1;
 
     public static final double PIECE_TRACKING_MAX_DISTANCE_METERS = 3.0; // In Meters
-    public static final double PIECE_TRACKING_SLOW_DOWN_METERS =
-        1.0; // Robot goes half speed once passed
+    public static final double PIECE_TRACKING_SLOW_DOWN_METERS = 1.0; // Robot goes half speed once passed
     public static final double PIECE_TRACKING_X_METERS_PER_SECOND = 2;
 
     public static final double TELEOP_DRIVE_TO_GAMEPIECE_Y_METERS_PER_SECOND = 2.0;
@@ -93,9 +99,8 @@ public final class Constants {
     public static final double TARGET_LOCK_ROTATION_KP = 0.1;
     public static final double TARGET_LOCK_ROTATION_KI = 0.0;
     public static final double TARGET_LOCK_ROTATION_KD = 0.0;
-    public static final PIDController TARGET_LOCK_ROTATION_PID_CONTROLLER =
-        new PIDController(
-            TARGET_LOCK_ROTATION_KP, TARGET_LOCK_ROTATION_KI, TARGET_LOCK_ROTATION_KD);
+    public static final PIDController TARGET_LOCK_ROTATION_PID_CONTROLLER = new PIDController(
+        TARGET_LOCK_ROTATION_KP, TARGET_LOCK_ROTATION_KI, TARGET_LOCK_ROTATION_KD);
 
     public static final double TARGET_LOCK_FEED_FORWARD = 0.0;
     public static final double TARGET_LOCK_TOLERANCE = 1;
@@ -126,9 +131,19 @@ public final class Constants {
     public static final double STAGE_YAW_SETPOINT = 0.0;
     public static final double STAGE_PITCH_SETPOINT = 12.2;
 
-    // Total y distance traveled = speed * time / 2 due to linear deceleration
-    public static final double TRANSLATE_TO_GAMEPIECE_Y_SPEED_MPS = 2.5;
-    public static final double TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS = 1.25;
+    /*
+     * s = TranslateToGamepiece.m_startingSpeed
+     * d = TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS
+     * t = TRANSLATE_TO_GAMEPIECE_START_DECEL_THRESHOLD
+     * m = TRANSLATE_TO_GAMEPIECE_MIN_SPEED_METERS_PER_SECOND
+     * Distance traveled calculation:
+     * s * (d - (d * t)) +
+     * d * t * m +
+     * ((s - m) * (d * t)) / 2
+     * 
+     * Desmos Graph: https://www.desmos.com/calculator/8kbyasfnkv
+     */
+    public static final double TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS = 1.0;
     public static final double TRANSLATE_TO_GAMEPIECE_YAW_SETPOINT = 0;
     public static final double TRANSLATE_TO_GAMEPIECE_YAW_TOLERANCE = 2.5;
     public static final double TRANSLATE_TO_GAMEPIECE_ROTATION_SETPOINT = 0;
@@ -171,13 +186,12 @@ public final class Constants {
     public static final PIDController Y_CONTROLLER = new PIDController(1, 0, 0);
     public static final PIDController ROTATION_CONTROLLER = new PIDController(0.6, 0, 0);
 
-    public static final BooleanSupplier CHOREO_AUTO_MIRROR_PATHS =
-        new BooleanSupplier() {
-          @Override
-          public boolean getAsBoolean() {
-            return Robot.state.getAlliance() == Alliance.Red;
-          }
-        };
+    public static final BooleanSupplier CHOREO_AUTO_MIRROR_PATHS = new BooleanSupplier() {
+      @Override
+      public boolean getAsBoolean() {
+        return Robot.state.getAlliance() == Alliance.Red;
+      }
+    };
   }
 
   public static final class PATHPLANNER {
@@ -341,8 +355,7 @@ public final class Constants {
 
     // Auto Climb
     public static final PIDController LEVEL_CLIMB_PID_CONTROLLER = new PIDController(0.05, 0, 0);
-    public static final PIDController LEVEL_CLIMB_PID_CONTROLLER_TWO =
-        new PIDController(0.005, 0, 0);
+    public static final PIDController LEVEL_CLIMB_PID_CONTROLLER_TWO = new PIDController(0.005, 0, 0);
     public static final double LEVEL_CLIMB_MIN = 0.55;
     public static final double LEVEL_CLIMB_MAX = 0.65;
     public static final double LEVEL_CLIMB_TOLERANCE = 3;
@@ -445,16 +458,14 @@ public final class Constants {
   }
 
   public static final class PHOTON_VISION {
-    public static final AprilTagFieldLayout APRIL_TAG_FIELD_LAYOUT =
-        AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+    public static final AprilTagFieldLayout APRIL_TAG_FIELD_LAYOUT = AprilTagFields.k2024Crescendo
+        .loadAprilTagLayoutField();
     public static final PoseStrategy POSE_STRATEGY = PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
 
     public static final double MAX_ANGLE = 45;
 
-    public static final String LOST_CONNECTION_ERROR_MESSAGE =
-        "----------\nPHOTON VISION HAS LOST CONNECTION!\nVISION RESULTS WILL NOT BE UPDATED!\n----------";
-    public static final String CONNECTION_REGAINED_NOFICATION_MESSAGE =
-        "**********\nPhoton Vision has regained connection!\nVision results will now be updated.\n**********";
+    public static final String LOST_CONNECTION_ERROR_MESSAGE = "----------\nPHOTON VISION HAS LOST CONNECTION!\nVISION RESULTS WILL NOT BE UPDATED!\n----------";
+    public static final String CONNECTION_REGAINED_NOFICATION_MESSAGE = "**********\nPhoton Vision has regained connection!\nVision results will now be updated.\n**********";
 
     public static final double BEST_TARGET_PITCH_TOLERANCE_DEGREES = 5;
   }
@@ -474,13 +485,12 @@ public final class Constants {
     public static final double LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES = 0;
     public static final double LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES = 5.38192;
     public static final double LENS_ANGLE_TILTED_UP_DEGREES = 35;
-    public static final Transform3d ROBOT_TO_CAMERA_TRANSFORM =
-        new Transform3d(
-            new Translation3d(
-                -Units.inchesToMeters(LENS_BEHIND_ROBOT_ORIGIN_INCHES),
-                -Units.inchesToMeters(LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES),
-                Units.inchesToMeters(LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES)),
-            new Rotation3d(0, LENS_ANGLE_TILTED_UP_DEGREES, 0));
+    public static final Transform3d ROBOT_TO_CAMERA_TRANSFORM = new Transform3d(
+        new Translation3d(
+            -Units.inchesToMeters(LENS_BEHIND_ROBOT_ORIGIN_INCHES),
+            -Units.inchesToMeters(LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES),
+            Units.inchesToMeters(LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES)),
+        new Rotation3d(0, LENS_ANGLE_TILTED_UP_DEGREES, 0));
     public static final int SPEAKER_TARGET_TIMEOUT_MS = 60;
     public static final int AMP_TARGET_TIMEOUT_MS = 60;
     public static final int STAGE_TARGET_TIMEOUT_MS = 60;
@@ -501,13 +511,12 @@ public final class Constants {
     public static final double LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES = 0;
     public static final double LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES = 23.10292;
     public static final double LENS_ANGLE_TILTED_DOWN_DEGREES = 20;
-    public static final Transform3d ROBOT_TO_CAMERA_TRANSFORM =
-        new Transform3d(
-            new Translation3d(
-                Units.inchesToMeters(LENS_IN_FRONT_OF_ROBOT_ORIGIN_INCHES),
-                -Units.inchesToMeters(LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES),
-                Units.inchesToMeters(LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES)),
-            new Rotation3d(0, -LENS_ANGLE_TILTED_DOWN_DEGREES, 0));
+    public static final Transform3d ROBOT_TO_CAMERA_TRANSFORM = new Transform3d(
+        new Translation3d(
+            Units.inchesToMeters(LENS_IN_FRONT_OF_ROBOT_ORIGIN_INCHES),
+            -Units.inchesToMeters(LENS_TO_RIGHT_OF_ROBOT_ORIGIN_INCHES),
+            Units.inchesToMeters(LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES)),
+        new Rotation3d(0, -LENS_ANGLE_TILTED_DOWN_DEGREES, 0));
     public static final int NOTE_TARGET_TIMEOUT_MS = 80;
   }
 
@@ -537,26 +546,22 @@ public final class Constants {
     public static final int BLUE_STAGE_RIGHT = 15;
     public static final int BLUE_STAGE_LEFT = 16;
 
-    public static final int[] BLUE_STAGE_TAGS =
-        new int[] {BLUE_STAGE_LEFT, BLUE_STAGE_MIDDLE, BLUE_STAGE_RIGHT};
-    public static final int[] RED_STAGE_TAGS =
-        new int[] {RED_STAGE_LEFT, RED_STAGE_MIDDLE, RED_STAGE_RIGHT};
+    public static final int[] BLUE_STAGE_TAGS = new int[] { BLUE_STAGE_LEFT, BLUE_STAGE_MIDDLE, BLUE_STAGE_RIGHT };
+    public static final int[] RED_STAGE_TAGS = new int[] { RED_STAGE_LEFT, RED_STAGE_MIDDLE, RED_STAGE_RIGHT };
 
-    public static final int[] RIGHT_STAGE_TAGS = new int[] {12, 16};
-    public static final int[] LEFT_STAGE_TAGS = new int[] {11, 15};
-    public static final int[] CENTER_STAGE_TAGS = new int[] {13, 14};
+    public static final int[] RIGHT_STAGE_TAGS = new int[] { 12, 16 };
+    public static final int[] LEFT_STAGE_TAGS = new int[] { 11, 15 };
+    public static final int[] CENTER_STAGE_TAGS = new int[] { 13, 14 };
 
-    public static final int[] STAGE_TAGS =
-        new int[] {
-          BLUE_STAGE_LEFT,
-          BLUE_STAGE_MIDDLE,
-          BLUE_STAGE_RIGHT,
-          RED_STAGE_LEFT,
-          RED_STAGE_MIDDLE,
-          RED_STAGE_RIGHT
-        };
-    public static final int[] SPEAKER_CENTER_TAGS =
-        new int[] {BLUE_SPEAKER_CENTER, RED_SPEAKER_CENTER};
-    public static final int[] AMP_TAGS = new int[] {BLUE_AMP, RED_AMP};
+    public static final int[] STAGE_TAGS = new int[] {
+        BLUE_STAGE_LEFT,
+        BLUE_STAGE_MIDDLE,
+        BLUE_STAGE_RIGHT,
+        RED_STAGE_LEFT,
+        RED_STAGE_MIDDLE,
+        RED_STAGE_RIGHT
+    };
+    public static final int[] SPEAKER_CENTER_TAGS = new int[] { BLUE_SPEAKER_CENTER, RED_SPEAKER_CENTER };
+    public static final int[] AMP_TAGS = new int[] { BLUE_AMP, RED_AMP };
   }
 }

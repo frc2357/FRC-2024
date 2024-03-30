@@ -14,6 +14,8 @@ public class TranslateToGamepiece extends Command {
   private Timer m_timer;
   private long m_startTime;
   private double m_startingSpeed;
+  private double m_decelSlope;
+  private double m_decelIntercept;
   private boolean m_targetBad = false;
 
   public TranslateToGamepiece(double startingSpeed) {
@@ -27,6 +29,12 @@ public class TranslateToGamepiece extends Command {
   @Override
   public void initialize() {
     Robot.intakeCam.setPipeline(INTAKE_PHOTON_CAMERA.NEURAL_NETWORK_PIPELINE);
+
+    // Initialize decel variables
+    m_decelSlope = (SWERVE.TRANSLATE_TO_GAMEPIECE_MIN_SPEED_METERS_PER_SECOND - m_startingSpeed)
+        / (SWERVE.TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS * SWERVE.TRANSLATE_TO_GAMEPIECE_START_DECEL_THRESHOLD);
+    m_decelIntercept = m_startingSpeed - m_decelSlope * (SWERVE.TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS
+        - SWERVE.TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS * SWERVE.TRANSLATE_TO_GAMEPIECE_START_DECEL_THRESHOLD);
 
     m_timer.reset();
     m_timer.start();
@@ -44,12 +52,8 @@ public class TranslateToGamepiece extends Command {
 
   @Override
   public void execute() {
-    // Linear deceleration y direction
-    double secondsElapsed = (double) (System.currentTimeMillis() - m_startTime) / 1000.0;
-
-    double percentSpeed =
-        1 - ((double) secondsElapsed / (double) SWERVE.TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS);
-    double yMetersPerSecond = percentSpeed * m_startingSpeed;
+    // deceleration y direction
+    double yMetersPerSecond = calculateYSpeed();
 
     double yaw = Robot.intakeCam.getNoteTargetYaw();
     double pitch = Robot.intakeCam.getNoteTargetPitch();
@@ -82,5 +86,16 @@ public class TranslateToGamepiece extends Command {
   @Override
   public void end(boolean interrupted) {
     Robot.swerve.stopMotors();
+  }
+
+  private double calculateYSpeed() {
+    double secondsElapsed = (System.currentTimeMillis() - m_startTime) / 1000.0;
+    double percentDone = secondsElapsed / SWERVE.TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS;
+    if (1 - percentDone >= SWERVE.TRANSLATE_TO_GAMEPIECE_START_DECEL_THRESHOLD) {
+      return m_startingSpeed;
+    }
+
+    double decelledSpeed = m_decelSlope * percentDone + m_decelIntercept;
+    return decelledSpeed;
   }
 }
