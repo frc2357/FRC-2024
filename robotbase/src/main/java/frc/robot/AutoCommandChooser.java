@@ -22,6 +22,7 @@ import frc.robot.commands.auto.paths.MiddleClose1Speaker;
 import frc.robot.commands.auto.paths.RightClose1Speaker;
 import frc.robot.commands.auto.paths.ShootAndNothing;
 import frc.robot.commands.auto.paths.SourceSide4Note;
+import frc.robot.commands.auto.paths.SourceSide4NotePathplanner;
 import frc.robot.commands.drive.DriveChoreoPath;
 import frc.robot.commands.util.VariableWaitCommand;
 
@@ -48,7 +49,7 @@ public class AutoCommandChooser {
         new Close3Speaker(),
         new Close3AndRUN(),
         new Centerline2Speaker(),
-        new SourceSide4Note(),
+        new SourceSide4NotePathplanner(),
         new LeftClose1Speaker(),
         new MiddleClose1Speaker(),
         new RightClose1Speaker(),
