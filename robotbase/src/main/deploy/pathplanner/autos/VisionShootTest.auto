@@ -1,0 +1,38 @@
+{
+  "version": 1.0,
+  "startingPose": null,
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "TargetLockOnSpeaker"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "WaitThenShoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "VisionTargeting"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

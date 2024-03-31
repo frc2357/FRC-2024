@@ -81,6 +81,7 @@ public class TranslateToGamepiece extends Command {
       xMetersPerSecond = 0;
     }
 
+    System.out.println("y: " + yMetersPerSecond + ", x: " + xMetersPerSecond);
     Robot.swerve.driveRobotRelative(yMetersPerSecond, xMetersPerSecond, 0);
   }
 
