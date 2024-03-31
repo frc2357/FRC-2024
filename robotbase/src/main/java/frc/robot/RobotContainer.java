@@ -5,7 +5,6 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.NamedCommands;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -33,19 +32,22 @@ public class RobotContainer {
   }
 
   public void registerNamedAutoCommands() {
-    NamedCommands.registerCommand("ShooterPreloadPreset", new ParallelCommandGroup(
-        new ShooterSetRPM(4000),
-        new PivotHoldAngle(38)));
+    NamedCommands.registerCommand(
+        "ShooterPreloadPreset",
+        new ParallelCommandGroup(new ShooterSetRPM(4000), new PivotHoldAngle(38)));
     NamedCommands.registerCommand("TranslateToGamepiece", new TranslateToGamepiece(3));
     NamedCommands.registerCommand("IntakeNoteFromFloor", new IntakeNoteFromFloor());
     NamedCommands.registerCommand("TargetLockOnSpeaker", new TargetLockOnSpeaker(true));
     NamedCommands.registerCommand("ShooterWaitForRPM", new ShooterWaitForRPM());
     NamedCommands.registerCommand("VisionTargeting", new VisionTargeting());
-    NamedCommands.registerCommand("IntakeFeedToShooter", new IntakeFeedToShooter().withTimeout(0.2));
-    NamedCommands.registerCommand("AutoShoot", new SequentialCommandGroup(
-      new ParallelCommandGroup(new TargetLockOnSpeaker(true), new ShooterWaitForRPM()).withTimeout(SWERVE.AUTO_TARGET_LOCK_TIMEOUT_SECONDS),
-      new IntakeFeedToShooter().withTimeout(0.25)
-    ));
+    NamedCommands.registerCommand(
+        "IntakeFeedToShooter", new IntakeFeedToShooter().withTimeout(0.2));
+    NamedCommands.registerCommand(
+        "AutoShoot",
+        new SequentialCommandGroup(
+            new ParallelCommandGroup(new TargetLockOnSpeaker(true), new ShooterWaitForRPM())
+                .withTimeout(SWERVE.AUTO_TARGET_LOCK_TIMEOUT_SECONDS),
+            new IntakeFeedToShooter().withTimeout(0.25)));
   }
 
   public Command getAutonomousCommand() {

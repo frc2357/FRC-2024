@@ -25,7 +25,7 @@ import java.util.function.Supplier;
  * in command-based projects easily.
  */
 public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsystem {
-  
+
   private final SwerveRequest.ApplyChassisSpeeds chassisSpeedRequest =
       new SwerveRequest.ApplyChassisSpeeds();
 
@@ -84,10 +84,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
             ? Robot.driverControls.getRotation() * SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND
             : rotation + Math.copySign(Constants.SWERVE.TARGET_LOCK_FEED_FORWARD, rotation);
     driveFieldRelative(
-      velocityXSpeedMetersPerSecond,
-      velocityYSpeedMetersPerSecond,
-      rotationOutput
-    );
+        velocityXSpeedMetersPerSecond, velocityYSpeedMetersPerSecond, rotationOutput);
   }
 
   public void driveRobotRelative(
@@ -192,7 +189,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     return new Consumer<ChassisSpeeds>() {
       @Override
       public void accept(ChassisSpeeds speeds) {
-                SwerveModuleState[] moduleStates = getKinematics().toSwerveModuleStates(speeds);
+        SwerveModuleState[] moduleStates = getKinematics().toSwerveModuleStates(speeds);
         for (SwerveModuleState state : moduleStates) {
           state.speedMetersPerSecond += Constants.SWERVE.STATIC_FEEDFORWARD_METERS_PER_SECOND;
         }

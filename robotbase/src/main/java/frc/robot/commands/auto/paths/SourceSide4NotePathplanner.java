@@ -1,13 +1,11 @@
 package frc.robot.commands.auto.paths;
 
 import com.pathplanner.lib.commands.PathPlannerAuto;
-
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.SWERVE;
-import frc.robot.commands.drive.DriveChoreoPath;
 import frc.robot.commands.drive.TargetLockOnSpeaker;
 import frc.robot.commands.drive.TranslateToGamepiece;
 import frc.robot.commands.intake.IntakeFeedToShooter;
@@ -71,6 +69,6 @@ public class SourceSide4NotePathplanner extends SequentialCommandGroup {
 
   @Override
   public String toString() {
-    return "SourceSide4Note";
+    return "SourceSide4NotePathplanner";
   }
 }
