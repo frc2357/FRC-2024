@@ -6,17 +6,16 @@ import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Robot;
 import frc.robot.commands.climber.ManualLineUpClimb;
 import frc.robot.commands.climber.ManualLineUpTrap;
-import frc.robot.commands.drive.TargetLockOnNote;
 import frc.robot.commands.drive.TargetLockOnSpeaker;
 import frc.robot.commands.extensionArm.ExtensionArmReturnToZero;
+import frc.robot.commands.intake.CancelIntakeOnEnd;
 import frc.robot.commands.intake.IntakeFeedToShooter;
-import frc.robot.commands.intake.IntakeNoteFromFloor;
+import frc.robot.commands.pickup.VisionPickup;
 import frc.robot.commands.scoring.AmpShot;
 import frc.robot.commands.scoring.VisionTargeting;
 import frc.robot.commands.scoring.VisionlessShooting;
@@ -24,7 +23,6 @@ import frc.robot.commands.source.SourceIntakeFromShooter;
 import frc.robot.controls.util.AxisInterface;
 import frc.robot.controls.util.AxisThresholdTrigger;
 import frc.robot.controls.util.RumbleInterface;
-import frc.robot.subsystems.LEDs;
 
 public class DriverControls implements RumbleInterface {
   private XboxController m_controller;
@@ -92,14 +90,8 @@ public class DriverControls implements RumbleInterface {
     m_aButton.whileTrue(new VisionlessShooting(Robot.shooterCurve[1][2], Robot.shooterCurve[1][1]));
     m_bButton.whileTrue(new VisionlessShooting(Robot.shooterCurve[4][2], Robot.shooterCurve[4][1]));
 
-    m_leftTrigger.toggleOnTrue(
-        new ParallelDeadlineGroup(
-            new IntakeNoteFromFloor()
-                .handleInterrupt(
-                    () -> {
-                      Robot.leds.setColor(LEDs.MELTDOWN_ORANGE);
-                    }),
-            new TargetLockOnNote()));
+    m_leftTrigger.onTrue(new VisionPickup());
+    m_leftTrigger.toggleOnFalse(new CancelIntakeOnEnd());
 
     m_leftBumper.whileTrue(new SourceIntakeFromShooter());
 
@@ -124,6 +116,14 @@ public class DriverControls implements RumbleInterface {
 
   public double getY() {
     return -modifyAxis(m_controller.getLeftY());
+  }
+
+  public double getLeftTrigger() {
+    return m_controller.getLeftTriggerAxis();
+  }
+
+  public boolean isLeftTriggerPressed() {
+    return m_leftTrigger.getAsBoolean();
   }
 
   public double getRotation() {
