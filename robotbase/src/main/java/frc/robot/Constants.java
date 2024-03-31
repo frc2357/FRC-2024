@@ -82,7 +82,8 @@ public final class Constants {
         1.0; // Robot goes half speed once passed
     public static final double PIECE_TRACKING_X_METERS_PER_SECOND = 2;
 
-    public static final double TELEOP_TRANSLATE_TO_GAMEPIECE_Y_METERS_PER_SECOND = 1;
+    public static final double TELEOP_DRIVE_TO_GAMEPIECE_Y_METERS_PER_SECOND = 2.0;
+    public static final double TELEOP_CREEP_TO_GAMEPIECE_Y_METERS_PER_SECOND = 1.0;
 
     // Target Lock
     public static final double TARGET_LOCK_ROTATION_KP = 0.1;
@@ -102,7 +103,7 @@ public final class Constants {
         new PIDController(12, 0, 0.0);
     public static final double PIGEON_ROTATION_FEEDFORWARD = 0.00001;
     public static final PIDController VISION_X_TRANSLATION_PID_CONTROLLER =
-        new PIDController(0.15, 0, 0);
+        new PIDController(0.10, 0, 0);
     public static final PIDController VISION_Y_TRANSLATION_PID_CONTROLLER =
         new PIDController(0.15, 0, 0);
 

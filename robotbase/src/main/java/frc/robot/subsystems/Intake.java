@@ -60,6 +60,14 @@ public class Intake extends SubsystemBase {
     m_bottomIntakeMotor.set(0);
   }
 
+  public double getTopCurrent() {
+    return m_topIntakeMotor.getOutputCurrent();
+  }
+
+  public double getBottomCurrent() {
+    return m_bottomIntakeMotor.getOutputCurrent();
+  }
+
   @Override
   public void periodic() {
     if (Robot.state.isNote(NoteState.NOTE_STOWED) && !isBeamBroken()) {

@@ -12,6 +12,8 @@ import frc.robot.util.Utility;
 public class DrivePickup extends Command {
   private int m_startingPipeline;
   private PIDController m_yawController;
+  private double m_lastPitch;
+  private boolean m_gotIt;
 
   public DrivePickup() {
     m_startingPipeline = Robot.intakeCam.getPipeline();
@@ -21,11 +23,11 @@ public class DrivePickup extends Command {
 
   @Override
   public void initialize() {
-    Robot.intakeCam.setNeuralNetworkPipelineActive();
-
     m_yawController.setTolerance(SWERVE.VISION_YAW_TOLERANCE);
     m_yawController.setSetpoint(SWERVE.TRANSLATE_TO_GAMEPIECE_YAW_SETPOINT);
     m_yawController.reset();
+    m_lastPitch = Double.NaN;
+    m_gotIt = false;
   }
 
   @Override
@@ -45,17 +47,30 @@ public class DrivePickup extends Command {
     } else {
       executeDriveNormal(stickX, stickY, stickRotation);
     }
+
+    if (!Double.isNaN(targetPitch)) {
+      m_lastPitch = targetPitch;
+    }
+  }
+
+  private void executeCreepForward() {
+    Robot.swerve.driveRobotRelative(
+        SWERVE.TELEOP_CREEP_TO_GAMEPIECE_Y_METERS_PER_SECOND, 0, 0);
   }
 
   private void executeAutoPickup(double targetPitch, double targetYaw) {
     boolean pitchInRange = targetPitch >= -16.0 && targetPitch <= 5.0;
     boolean yawInRange = targetYaw >= -23.0 && targetYaw <= 23.0;
+    if (targetPitch < m_lastPitch && m_lastPitch < -16.0) {
+      m_gotIt = true;
+    }
 
-    if (!pitchInRange || !yawInRange || Robot.intake.isBeamBroken()) {
-      System.out.println("[TranslateToGamepiece] Drive forward");
-      // Continue driving forward if we don't see a gamepiece
-      Robot.swerve.driveRobotRelative(
-          SWERVE.TELEOP_TRANSLATE_TO_GAMEPIECE_Y_METERS_PER_SECOND, 0, 0);
+    if (m_gotIt) {
+      executeCreepForward();;
+    }
+
+    if (!pitchInRange || !yawInRange) {
+      Robot.swerve.stopMotors();
       return;
     }
 
@@ -67,13 +82,13 @@ public class DrivePickup extends Command {
     double xMetersPerSecond = m_yawController.calculate(targetYaw);
 
     Robot.swerve.driveRobotRelative(
-        SWERVE.TELEOP_TRANSLATE_TO_GAMEPIECE_Y_METERS_PER_SECOND, xMetersPerSecond, 0);
+        SWERVE.TELEOP_DRIVE_TO_GAMEPIECE_Y_METERS_PER_SECOND, xMetersPerSecond, 0);
   }
 
   private void executeTargetLock(
       double targetPitch, double targetYaw, double stickX, double stickY) {
     boolean pitchInRange = targetPitch >= -16.0 && targetPitch <= 5.0;
-    boolean yawInRange = targetYaw >= -23.0 && targetYaw <= 23.0;
+    boolean yawInRange = targetYaw >= -26.0 && targetYaw <= 26.0;
 
     if (pitchInRange) {
       Robot.swerve.driveFieldRelative(stickY, stickX, 0);
