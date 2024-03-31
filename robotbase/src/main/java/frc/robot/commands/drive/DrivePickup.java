@@ -54,8 +54,7 @@ public class DrivePickup extends Command {
   }
 
   private void executeCreepForward() {
-    Robot.swerve.driveRobotRelative(
-        SWERVE.TELEOP_CREEP_TO_GAMEPIECE_Y_METERS_PER_SECOND, 0, 0);
+    Robot.swerve.driveRobotRelative(SWERVE.TELEOP_CREEP_TO_GAMEPIECE_Y_METERS_PER_SECOND, 0, 0);
   }
 
   private void executeAutoPickup(double targetPitch, double targetYaw) {
@@ -66,7 +65,8 @@ public class DrivePickup extends Command {
     }
 
     if (m_gotIt) {
-      executeCreepForward();;
+      executeCreepForward();
+      ;
     }
 
     if (!pitchInRange || !yawInRange) {
