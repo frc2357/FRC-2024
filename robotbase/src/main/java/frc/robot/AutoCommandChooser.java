@@ -63,7 +63,8 @@ public class AutoCommandChooser {
                     System.out.println(Robot.swerve.getPose());
                   })),
       new PathPlannerAuto("VisionShootTest"),
-      new PathPlannerAuto("SourceSide4NoteAuto")
+      new PathPlannerAuto("SourceSide4NoteAuto"),
+      new DriveChoreoPath("RefSideFar2.1", "RUN THIS ONE", true)
     };
 
     HashMap<String, Command> commandMap = new HashMap<String, Command>(autoCommands.length + 1);
