@@ -23,7 +23,7 @@ public class SourceSide4Note extends SequentialCommandGroup {
             new DriveChoreoPath("SourceSide4Note1.1", true),
             new SequentialCommandGroup(
                 new WaitCommand(0.75), new IntakeFeedToShooter().withTimeout(0.25)),
-            new PivotHoldAngle(38),
+            new PivotHoldAngle(39),
             new ShooterSetRPM(4000)),
         // new DriveChoreoPath("SourceSide4Note1.1", true),
 
