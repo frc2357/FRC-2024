@@ -13,7 +13,7 @@ import frc.robot.commands.drive.DefaultDrive;
 import frc.robot.commands.drive.TargetLockOnSpeaker;
 import frc.robot.commands.drive.TranslateToGamepiece;
 import frc.robot.commands.intake.IntakeFeedToShooter;
-import frc.robot.commands.intake.IntakeNoteFromFloor;
+import frc.robot.commands.intake.Pickup;
 import frc.robot.commands.pivot.PivotHoldAngle;
 import frc.robot.commands.scoring.VisionTargeting;
 import frc.robot.commands.shooter.DefaultShooter;
@@ -36,7 +36,7 @@ public class RobotContainer {
         "ShooterPreloadPreset",
         new ParallelCommandGroup(new ShooterSetRPM(4000), new PivotHoldAngle(38)));
     NamedCommands.registerCommand("TranslateToGamepiece", new TranslateToGamepiece(3));
-    NamedCommands.registerCommand("IntakeNoteFromFloor", new IntakeNoteFromFloor());
+    NamedCommands.registerCommand("IntakeNoteFromFloor", new Pickup());
     NamedCommands.registerCommand("TargetLockOnSpeaker", new TargetLockOnSpeaker(true));
     NamedCommands.registerCommand("ShooterWaitForRPM", new ShooterWaitForRPM());
     NamedCommands.registerCommand("VisionTargeting", new VisionTargeting());

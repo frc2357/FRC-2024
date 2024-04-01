@@ -10,8 +10,8 @@ import frc.robot.commands.auto.AutoShoot;
 import frc.robot.commands.auto.AutoShooterSetRPMAndFinish;
 import frc.robot.commands.auto.AutoShooterStopRPM;
 import frc.robot.commands.drive.DriveChoreoPath;
-import frc.robot.commands.intake.IntakeNoteFromFloor;
 import frc.robot.commands.intake.IntakeRun;
+import frc.robot.commands.intake.Pickup;
 import frc.robot.commands.shooter.ShooterWaitForRPM;
 
 public class Centerline2Speaker extends SequentialCommandGroup {
@@ -31,7 +31,7 @@ public class Centerline2Speaker extends SequentialCommandGroup {
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(
                 new DriveChoreoPath("RefSideFar2.1", true), new WaitCommand(1)),
-            new IntakeNoteFromFloor()),
+            new Pickup()),
 
         // Preset RPM and Angle to be close to targe
         new AutoPivotSetAngle(50),
@@ -52,7 +52,7 @@ public class Centerline2Speaker extends SequentialCommandGroup {
             new SequentialCommandGroup(
                 // get the third note
                 new DriveChoreoPath("RefSideFar2.3"), new WaitCommand(1)),
-            new IntakeNoteFromFloor()),
+            new Pickup()),
 
         // Preset RPM and Angle to be close to target
         new AutoShooterSetRPMAndFinish(4500),

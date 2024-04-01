@@ -10,8 +10,8 @@ import frc.robot.commands.state.SetNoteState;
 import frc.robot.state.RobotState.NoteState;
 import frc.robot.subsystems.LEDs;
 
-public class IntakeNoteFromFloor extends SequentialCommandGroup {
-  public IntakeNoteFromFloor() {
+public class Pickup extends SequentialCommandGroup {
+  public Pickup() {
     super(
         new LEDsSetColor(Color.kWhite),
 

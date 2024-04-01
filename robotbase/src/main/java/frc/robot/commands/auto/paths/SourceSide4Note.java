@@ -9,7 +9,7 @@ import frc.robot.commands.drive.DriveChoreoPath;
 import frc.robot.commands.drive.TargetLockOnSpeaker;
 import frc.robot.commands.drive.TranslateToGamepiece;
 import frc.robot.commands.intake.IntakeFeedToShooter;
-import frc.robot.commands.intake.IntakeNoteFromFloor;
+import frc.robot.commands.intake.Pickup;
 import frc.robot.commands.pivot.PivotHoldAngle;
 import frc.robot.commands.scoring.VisionTargeting;
 import frc.robot.commands.shooter.ShooterSetRPM;
@@ -28,7 +28,7 @@ public class SourceSide4Note extends SequentialCommandGroup {
         // new DriveChoreoPath("SourceSide4Note1.1", true),
 
         // Pickup second note
-        new ParallelDeadlineGroup(new TranslateToGamepiece(3), new IntakeNoteFromFloor()),
+        new ParallelDeadlineGroup(new TranslateToGamepiece(3), new Pickup()),
 
         // Drive back with note 2 and shoot
         new ParallelDeadlineGroup(
@@ -41,7 +41,7 @@ public class SourceSide4Note extends SequentialCommandGroup {
 
         // Drive to and pickup third note
         new DriveChoreoPath("SourceSide4Note2.2"),
-        new ParallelDeadlineGroup(new TranslateToGamepiece(3), new IntakeNoteFromFloor()),
+        new ParallelDeadlineGroup(new TranslateToGamepiece(3), new Pickup()),
 
         // Drive back with note 3 and shoot
         new ParallelDeadlineGroup(
@@ -54,7 +54,7 @@ public class SourceSide4Note extends SequentialCommandGroup {
 
         // Drive to and pickup fourth note
         new DriveChoreoPath("SourceSide4Note3.2"),
-        new ParallelDeadlineGroup(new TranslateToGamepiece(3), new IntakeNoteFromFloor()),
+        new ParallelDeadlineGroup(new TranslateToGamepiece(3), new Pickup()),
         new DriveChoreoPath("SourceSide4Note4.1"));
     // Drive back with note 4 and shoot
     // new ParallelDeadlineGroup(

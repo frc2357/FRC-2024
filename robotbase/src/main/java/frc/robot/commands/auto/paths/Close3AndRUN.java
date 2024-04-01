@@ -8,8 +8,8 @@ import frc.robot.commands.auto.AutoPivotStop;
 import frc.robot.commands.auto.AutoShooterSetRPMAndFinish;
 import frc.robot.commands.auto.AutoShooterStopRPM;
 import frc.robot.commands.drive.DriveChoreoPath;
-import frc.robot.commands.intake.IntakeNoteFromFloor;
 import frc.robot.commands.intake.IntakeRun;
+import frc.robot.commands.intake.Pickup;
 import frc.robot.commands.shooter.ShooterSetRPM;
 import frc.robot.commands.shooter.ShooterWaitForRPM;
 
@@ -44,7 +44,7 @@ public class Close3AndRUN extends SequentialCommandGroup {
             new SequentialCommandGroup(
                 // get the third note
                 new DriveChoreoPath("RunOut.1"), new WaitCommand(1)),
-            new IntakeNoteFromFloor()));
+            new Pickup()));
   }
 
   @Override
