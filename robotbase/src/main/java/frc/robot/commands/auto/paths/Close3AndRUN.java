@@ -49,6 +49,6 @@ public class Close3AndRUN extends SequentialCommandGroup {
 
   @Override
   public String toString() {
-    return "Close3AndRUN";
+    return "Close 3 And RUN";
   }
 }

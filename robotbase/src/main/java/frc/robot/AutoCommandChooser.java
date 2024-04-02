@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SelectCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.auto.paths.AmpSide4Note;
 import frc.robot.commands.auto.paths.Centerline2Speaker;
 import frc.robot.commands.auto.paths.Centerline2SpeakerNoteDetection;
 import frc.robot.commands.auto.paths.Close3AndRUN;
@@ -33,15 +34,14 @@ public class AutoCommandChooser {
     Command[] autoCommands = {
       new Close3Speaker(),
       new Close3AndRUN(),
-      new Centerline2Speaker(),
-      new Centerline2SpeakerNoteDetection(),
       new SourceSide4Note(),
+      new AmpSide4Note(),
       new LeftClose1Speaker(),
       new MiddleClose1Speaker(),
       new RightClose1Speaker(),
       new ShootAndNothing(),
       new Close3AndRUN(),
-      new DriveChoreoPath("PIDTuningPath", "WALTUH", true),
+      new DriveChoreoPath("PIDTuningPath", "PID Tuning Path", true),
     };
 
     HashMap<String, Command> commandMap = new HashMap<String, Command>(autoCommands.length + 1);
