@@ -1,6 +1,7 @@
 package frc.robot.commands.drive;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.INTAKE_PHOTON_CAMERA;
@@ -17,6 +18,7 @@ public class TranslateToGamepiece extends Command {
   private double m_decelSlope;
   private double m_decelIntercept;
   private boolean m_targetBad = false;
+  private double m_startRotation;
 
   public TranslateToGamepiece(double startingSpeed) {
     m_startingSpeed = startingSpeed;
@@ -29,6 +31,8 @@ public class TranslateToGamepiece extends Command {
   @Override
   public void initialize() {
     Robot.intakeCam.setPipeline(INTAKE_PHOTON_CAMERA.NEURAL_NETWORK_PIPELINE);
+
+    m_startRotation = Robot.swerve.getYaw();
 
     // Initialize decel variables
     m_decelSlope =
@@ -61,13 +65,21 @@ public class TranslateToGamepiece extends Command {
     // deceleration y direction
     double yMetersPerSecond = calculateYSpeed();
 
+    double currentRotation = Robot.swerve.getYaw();
+    double rotationError = currentRotation - m_startRotation;
+    double rotationOutput = m_rotationController.calculate(Rotation2d.fromDegrees(rotationError).getRadians());
+    if (Utility.isWithinTolerance(currentRotation, m_startRotation, SWERVE.TRANSLATE_TO_GAMEPIECE_YAW_TOLERANCE)) {
+      rotationOutput = 0;
+    }
+    
+
     double yaw = Robot.intakeCam.getNoteTargetYaw();
     double pitch = Robot.intakeCam.getNoteTargetPitch();
 
     if (Double.isNaN(yaw) || m_targetBad) {
       System.out.println("[TranslateToGamepiece] No gamepiece detected");
       // Continue driving forward and rotating even if we don't see a gamepiece
-      Robot.swerve.driveRobotRelative(yMetersPerSecond, 0, 0);
+      Robot.swerve.driveRobotRelative(yMetersPerSecond, 0, rotationOutput);
     }
 
     if (Utility.isWithinTolerance(
@@ -82,7 +94,7 @@ public class TranslateToGamepiece extends Command {
     }
 
     System.out.println("y: " + yMetersPerSecond + ", x: " + xMetersPerSecond);
-    Robot.swerve.driveRobotRelative(yMetersPerSecond, xMetersPerSecond, 0);
+    Robot.swerve.driveRobotRelative(yMetersPerSecond, xMetersPerSecond, rotationOutput);
   }
 
   @Override

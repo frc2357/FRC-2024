@@ -77,7 +77,7 @@ public class DriveChoreoPath extends SequentialCommandGroup {
       addCommands(
           new InstantCommand(
               () ->
-                  Robot.swerve.setPose(
+                  Robot.swerve.setPoseAndRotation(
                       m_startingState
                           .getPose()))); // Zero the gyro and set pose odomety to x, y of starting
       // path
@@ -97,7 +97,7 @@ public class DriveChoreoPath extends SequentialCommandGroup {
         // Runs the actual path
         Choreo.choreoSwerveCommand(
             m_traj,
-            Robot.swerve.getPoseSupplier(),
+            Robot.swerve::getPoseWithPigeonRotation,
             Choreo.choreoSwerveController(
                 CHOREO.X_CONTROLLER, CHOREO.Y_CONTROLLER, CHOREO.ROTATION_CONTROLLER),
             Robot.swerve.getChassisSpeedsConsumer(),
