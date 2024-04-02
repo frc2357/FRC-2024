@@ -23,14 +23,20 @@ public class EndAffectorPreloadNote extends Command {
   public void execute() {
     if (!m_hasSeenTopEdge && Robot.endAffector.getProximitySensor()) {
       m_hasSeenTopEdge = true;
+      System.out.println("hasSeenTopEdge");
     } else if (m_hasSeenTopEdge && !m_hasPassedTopEdge && !Robot.endAffector.getProximitySensor()) {
       m_hasPassedTopEdge = true;
+      System.out.println("hasPassedTopEdge");
       // Robot.endAffector.setSpeed(-0.5);
     } else if (m_hasPassedTopEdge && !m_isAtTop && Robot.endAffector.getProximitySensor()) {
       m_isAtTop = true;
+      System.out.println("isAtTop");
       Robot.endAffector.setSpeed(0.5);
     } else if (m_isAtTop && !m_isDone && !Robot.endAffector.getProximitySensor()) {
+      System.out.println("isDone");
       m_isDone = true;
+    } else {
+      System.out.println("Nothing");
     }
   }
 

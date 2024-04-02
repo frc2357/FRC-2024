@@ -16,6 +16,7 @@ import frc.robot.Constants.SWERVE;
 import frc.robot.Robot;
 import frc.robot.commands.drive.DefaultDrive;
 import frc.robot.commands.drive.DriveAtSpeed;
+import frc.robot.commands.endAffector.EndAffectorPreloadNote;
 import frc.robot.commands.endAffector.EndAffectorSetSpeed;
 import frc.robot.commands.endAffector.EndAffectorStop;
 import frc.robot.commands.extensionArm.ExtensionArmMoveToRotations;
@@ -108,40 +109,34 @@ public class ManualLineUpTrap extends SequentialCommandGroup {
             new ClimberRotatePastRotations(
                 CLIMBER.ROTATE_PAST_EXTENSION_SPEED, CLIMBER.PAST_EXTENSION_ROTATIONS)),
         // new DriveAtSpeed(
-        //     -(SWERVE.DISTANCE_TO_ROTATE_PAST_EXTENSION
-        //         / SWERVE.SECONDS_TO_ROTATE_PAST_EXTENSION),
-        //     0,
-        //     SWERVE.SECONDS_TO_ROTATE_PAST_EXTENSION)),
+        // -(SWERVE.DISTANCE_TO_ROTATE_PAST_EXTENSION
+        // / SWERVE.SECONDS_TO_ROTATE_PAST_EXTENSION),
+        // 0,
+        // SWERVE.SECONDS_TO_ROTATE_PAST_EXTENSION)),
         new Print("Check position before transferring note"),
         new PressToContinue(continueButton),
         new Print("Transferring note"),
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(
                 // Note Preload
-                new ExtensionArmMoveToRotations(EXTENSION_ARM.NOTE_STOW_ROTATIONS),
+                new ParallelCommandGroup(
+                    new TurnOnProximitySensor(),
+                    new ExtensionArmMoveToRotations(EXTENSION_ARM.NOTE_STOW_ROTATIONS)),
 
-                // Run end affector, shooter, and intake to load note
                 new ParallelDeadlineGroup(
-                    new WaitCommand(SCORING.SECONDS_PRELOAD_NOTE),
-                    new SequentialCommandGroup(new WaitCommand(0.25), new IntakeFeedToShooter()),
-                    new EndAffectorSetSpeed(END_AFFECTOR.PRELOAD_SPEED),
-                    new ShooterSetRPM(SHOOTER.FEED_END_AFFECTOR_RPM)),
-
-                // Stop motors
-                new ParallelCommandGroup(new IntakeStop(), new EndAffectorStop()),
+                  new EndAffectorPreloadNote(),
+                  new IntakeFeedToShooter().beforeStarting(new WaitCommand(0.2)),
+                  new ShooterSetRPM(SHOOTER.FEED_END_AFFECTOR_RPM),
+                  new PivotHoldAngle(PIVOT.END_AFFECTOR_PRELOAD_ANGLE)
+                ),
 
                 // Arm Prepose
                 new ExtensionArmMoveToRotations(EXTENSION_ARM.TRAP_PREPOSE_ROTATIONS),
-                new ParallelDeadlineGroup(
-                    new WaitCommand(SCORING.SECONDS_PRELOAD_NOTE_FOR_TRAP),
-                    new EndAffectorSetSpeed(END_AFFECTOR.PRELOAD_SPEED)),
-                new EndAffectorStop(),
-                new SetNoteState(NoteState.END_AFFECTOR_PRELOAD)),
+                new SetNoteState(NoteState.END_AFFECTOR_PRELOAD))),
 
             // Hold until end of above command
-            new PivotHoldAngle(PIVOT.END_AFFECTOR_PRELOAD_ANGLE)),
         new Print("Co-driver adjust note: right trigger is up, left trigger is down"),
-        new ParallelDeadlineGroup(new PressToContinue(continueButton), new AdjustNote()),
+        new PressToContinue(continueButton),
         new ParallelCommandGroup(
             new ClimberRotatePastRotations(
                 CLIMBER.ROTATE_PAST_READY_SPEED, CLIMBER.PAST_READY_ROTATIONS),
@@ -150,7 +145,8 @@ public class ManualLineUpTrap extends SequentialCommandGroup {
                 0,
                 SWERVE.SECONDS_TO_READY_TRAP),
             new ExtensionArmMoveToRotations(EXTENSION_ARM.TRAP_CLIMB_ROTATIONS)),
-        // new ParallelDeadlineGroup(new PressToContinue(continueButton), new AdjustNote()),
+        // new ParallelDeadlineGroup(new PressToContinue(continueButton), new
+        // AdjustNote()),
         new Print("Ready to climb! Co-driver using right trigger, press Y when in position"),
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(

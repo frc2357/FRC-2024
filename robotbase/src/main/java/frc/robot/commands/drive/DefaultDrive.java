@@ -23,8 +23,6 @@ public class DefaultDrive extends Command {
           y * CompSwerveTunerConstants.kSpeedAt12VoltsMps,
           x * CompSwerveTunerConstants.kSpeedAt12VoltsMps,
           rotation * Constants.SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND);
-
-      // Robot.swerve.driveFieldRelative(0, 0, 0);
     }
   }
 
