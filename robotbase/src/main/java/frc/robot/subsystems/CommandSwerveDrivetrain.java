@@ -131,9 +131,10 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     return super.m_odometry.getEstimatedPosition();
   }
 
-  public Pose2d getPoseWithPigeonRotation(){
+  public Pose2d getPoseWithPigeonRotation() {
     return new Pose2d(getPose().getTranslation(), super.m_pigeon2.getRotation2d());
   }
+
   private SwerveDriveKinematics getKinematics() {
     return super.m_kinematics;
   }
@@ -165,7 +166,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     super.seedFieldRelative(poseToSet);
     // var statusCode = super.m_pigeon2.setYaw(poseToSet.getRotation().getDegrees());
     // if(!statusCode.isOK()){
-    //   System.err.println("[CommandSwerveDrivetrain] SET POSE - PIGEON DID NOT SET YAW CORRECTLY. \n\tSTATUS CODE DESCRIP: " + statusCode.getDescription());
+    //   System.err.println("[CommandSwerveDrivetrain] SET POSE - PIGEON DID NOT SET YAW CORRECTLY.
+    // \n\tSTATUS CODE DESCRIP: " + statusCode.getDescription());
     // }
   }
 

@@ -67,11 +67,12 @@ public class TranslateToGamepiece extends Command {
 
     double currentRotation = Robot.swerve.getYaw();
     double rotationError = currentRotation - m_startRotation;
-    double rotationOutput = m_rotationController.calculate(Rotation2d.fromDegrees(rotationError).getRadians());
-    if (Utility.isWithinTolerance(currentRotation, m_startRotation, SWERVE.TRANSLATE_TO_GAMEPIECE_YAW_TOLERANCE)) {
+    double rotationOutput =
+        m_rotationController.calculate(Rotation2d.fromDegrees(rotationError).getRadians());
+    if (Utility.isWithinTolerance(
+        currentRotation, m_startRotation, SWERVE.TRANSLATE_TO_GAMEPIECE_YAW_TOLERANCE)) {
       rotationOutput = 0;
     }
-    
 
     double yaw = Robot.intakeCam.getNoteTargetYaw();
     double pitch = Robot.intakeCam.getNoteTargetPitch();
