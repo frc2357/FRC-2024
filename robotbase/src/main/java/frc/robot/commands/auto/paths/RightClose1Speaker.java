@@ -21,6 +21,6 @@ public class RightClose1Speaker extends SequentialCommandGroup {
 
   @Override
   public String toString() {
-    return "RightClose1Speaker";
+    return "Right Close 1 Speaker";
   }
 }

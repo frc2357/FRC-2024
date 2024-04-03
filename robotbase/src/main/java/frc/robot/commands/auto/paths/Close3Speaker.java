@@ -43,6 +43,6 @@ public class Close3Speaker extends SequentialCommandGroup {
 
   @Override
   public String toString() {
-    return "Close3Speaker";
+    return "Close 3 Speaker";
   }
 }

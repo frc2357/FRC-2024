@@ -71,10 +71,10 @@ public class Robot extends TimedRobot {
     {13.05, 60, 4000, -1.1}, // center Subwoofer
     {6, 52, 4000, -1.1}, // center Subwoofer
     {-1, 44.5, 4000, -2.6}, // Between Subwoofer and Podium
-    {-8.4, 35, 4000, -3.1}, // Podium
-    {-14.55, 30.5, 4900, -1}, // Stage Apriltag
-    {-18.02, 28.5, 5500, 0}, // Wing line
-    {-19, 28.5, 5500, 0}, // Wing line
+    {-8.4, 35, 4000, -2.1}, // Podium
+    {-14.55, 30, 4900, -1}, // Stage Apriltag
+    {-18.02, 28.25, 5500, 0}, // Wing line
+    {-19, 28.25, 5500, 0}, // Wing line
   };
 
   // public static PowerDistribution m_pdp;

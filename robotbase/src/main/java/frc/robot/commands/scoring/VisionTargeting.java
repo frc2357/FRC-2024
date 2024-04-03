@@ -10,9 +10,15 @@ public class VisionTargeting extends Command {
   private double m_currentAngle;
   private double m_currentRpms;
   private double m_pivotOffsetAngle;
+  private double m_defaultRPMs;
+
+  public VisionTargeting(double defaultRPMs) {
+    m_defaultRPMs = defaultRPMs;
+    addRequirements(Robot.pivot, Robot.shooter);
+  }
 
   public VisionTargeting() {
-    addRequirements(Robot.pivot, Robot.shooter);
+    this(0);
   }
 
   @Override
@@ -25,6 +31,7 @@ public class VisionTargeting extends Command {
     double yaw = Robot.shooterCam.getSpeakerTargetYaw();
 
     if (Double.isNaN(yaw)) {
+      Robot.shooter.setRPM(m_defaultRPMs);
       return;
     }
 

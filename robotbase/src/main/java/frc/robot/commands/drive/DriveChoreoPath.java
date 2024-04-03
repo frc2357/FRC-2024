@@ -22,17 +22,7 @@ public class DriveChoreoPath extends SequentialCommandGroup {
   public DriveChoreoPath(String trajectoryFileName) {
     // Overloaded constructor, sets the gyro yaw to zero and pose x, y to starting
     // position
-    this(trajectoryFileName, trajectoryFileName, false);
-  }
-
-  /**
-   * @param trajectoryFileName The name of the path file with '.traj' excluded.
-   * @param pathName The name of the path, is returned in the toString for the auto command chooser.
-   */
-  public DriveChoreoPath(String trajectoryFileName, String pathName) {
-    // Overloaded constructor, sets the gyro yaw to zero and pose x, y to starting
-    // position
-    this(trajectoryFileName, pathName, false);
+    this(trajectoryFileName, false);
   }
 
   /**
@@ -42,22 +32,22 @@ public class DriveChoreoPath extends SequentialCommandGroup {
   public DriveChoreoPath(String trajectoryFileName, boolean setPoseToStartTrajectory) {
     // Overloaded constructor, sets the gyro yaw to zero and pose x, y to starting
     // position
-    this(trajectoryFileName, trajectoryFileName, setPoseToStartTrajectory);
+    this(trajectoryFileName, setPoseToStartTrajectory, false);
   }
 
   /**
    * A utility command to run a Choreo path correctly.
    *
    * @param trajectoryFileName The name of the path file with '.traj' excluded.
-   * @param pathName The name of the path, is returned in the toString for the auto command chooser.
    * @param setPoseToStartTrajectory Whether or not to set the robot pose to the paths starting
    *     trajectory.
    */
   public DriveChoreoPath(
-      String trajectoryFileName, String pathName, boolean setPoseToStartTrajectory) {
+      String trajectoryFileName, boolean setPoseToStartTrajectory, boolean targetLock) {
     m_traj = Choreo.getTrajectory(trajectoryFileName); // Loads choreo file into trajctory object
     m_pathName =
-        pathName; // Gets the path name to display on the smardashboard via the toString() method
+        trajectoryFileName; // Gets the path name to display on the smardashboard via the toString()
+    // method
     m_startingState = m_traj.getInitialState(); // Gets the starting pose out of the trajectory
     // A sequential command group to run a single choreo path
 
@@ -77,10 +67,18 @@ public class DriveChoreoPath extends SequentialCommandGroup {
       addCommands(
           new InstantCommand(
               () ->
+                  System.out.println(
+                      "[DriveChoreoPath] Before pose set: " + Robot.swerve.getPose())),
+          new InstantCommand(
+              () ->
                   Robot.swerve.setPose(
                       m_startingState
-                          .getPose()))); // Zero the gyro and set pose odomety to x, y of starting
-      // path
+                          .getPose())), // Zero the gyro and set pose odomety to x, y of starting
+          // path
+          new InstantCommand(
+              () ->
+                  System.out.println(
+                      "[DriveChoreoPath] After pose set: " + Robot.swerve.getPose())));
     }
 
     addCommands(
@@ -95,14 +93,24 @@ public class DriveChoreoPath extends SequentialCommandGroup {
                     m_startingState.angularVelocity)),
         // The library provided choreo command
         // Runs the actual path
+        new InstantCommand(
+            () -> System.out.println("[DriveChoreoPath] RUNNING PATH: " + m_pathName)),
         Choreo.choreoSwerveCommand(
             m_traj,
-            Robot.swerve.getPoseSupplier(),
+            Robot.swerve::getPose,
             Choreo.choreoSwerveController(
                 CHOREO.X_CONTROLLER, CHOREO.Y_CONTROLLER, CHOREO.ROTATION_CONTROLLER),
-            Robot.swerve.getChassisSpeedsConsumer(),
+            targetLock
+                ? Robot.swerve.getSpeakerLockChassisSpeedsConsumer()
+                : Robot.swerve.getChassisSpeedsConsumer(),
             CHOREO.CHOREO_AUTO_MIRROR_PATHS,
             Robot.swerve));
+    addCommands(
+        new InstantCommand(
+            () -> {
+              System.out.println(
+                  "[DriveChoreoPath] POSE AT END OF PATH: " + Robot.swerve.getPose());
+            }));
   }
 
   @Override

@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.Constants.SWERVE;
 import frc.robot.Robot;
+import frc.robot.util.RobotMath;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -83,15 +84,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         !hasTarget
             ? Robot.driverControls.getRotation() * SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND
             : rotation + Math.copySign(Constants.SWERVE.TARGET_LOCK_FEED_FORWARD, rotation);
-    // System.out.println("Rotation: " + rotation);
-    // System.out.println("Rotation output: " + rotationOutput);
-    // System.out.println("Yaw: " + tx);
-    applyRequest(
-        () ->
-            fieldRelative
-                .withVelocityX(velocityXSpeedMetersPerSecond)
-                .withVelocityY(velocityYSpeedMetersPerSecond)
-                .withRotationalRate(rotationOutput));
+    driveFieldRelative(
+        velocityXSpeedMetersPerSecond, velocityYSpeedMetersPerSecond, rotationOutput);
   }
 
   public void driveRobotRelative(
@@ -135,17 +129,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   }
 
   public Pose2d getPose() {
-    return super.m_odometry.getEstimatedPosition();
-  }
-
-  public Supplier<Pose2d> getPoseSupplier() {
-    return new Supplier<Pose2d>() {
-
-      @Override
-      public Pose2d get() {
-        return getPose();
-      }
-    };
+    return super.getState().Pose;
   }
 
   private SwerveDriveKinematics getKinematics() {
@@ -153,8 +137,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   }
 
   public void zeroGyro(boolean flip) {
-    // Pigeon2Configuration config = new Pigeon2Configuration();
-    // super.getPigeon2().getConfigurator().apply(config);
     StatusCode code = super.getPigeon2().setYaw(flip ? 180 : 0);
     System.out.println("[GYRO] Zeroed to " + (flip ? 180 : 0) + ": " + code.toString());
   }
@@ -179,19 +161,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     super.seedFieldRelative(poseToSet);
   }
 
-  public void setPoseAndRotation(Pose2d location) {
-    // Set the pigeon's yaw to be the pose's rotation
-    try {
-      super.m_stateLock.writeLock().lock();
-      // Set the robot pose location to the given pose location,
-      m_odometry.resetPosition(location.getRotation(), m_modulePositions, location);
-      /* We need to update our cached pose immediately so that race conditions don't happen */
-      m_cachedState.Pose = location;
-    } finally {
-      m_stateLock.writeLock().unlock();
-    }
-  }
-
   public Consumer<ChassisSpeeds> getChassisSpeedsConsumer() {
     return new Consumer<ChassisSpeeds>() {
       @Override
@@ -205,6 +174,64 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     };
   }
 
+  public Consumer<ChassisSpeeds> getSpeakerLockChassisSpeedsConsumer() {
+    return new Consumer<ChassisSpeeds>() {
+      @Override
+      public void accept(ChassisSpeeds speeds) {
+
+        double rotation = getAutonSpeakerLockRadiansPerSecond();
+        if (Double.isNaN(rotation)) {
+          speeds.omegaRadiansPerSecond = rotation;
+        }
+
+        SwerveModuleState[] moduleStates = getKinematics().toSwerveModuleStates(speeds);
+        for (SwerveModuleState state : moduleStates) {
+          state.speedMetersPerSecond += Constants.SWERVE.STATIC_FEEDFORWARD_METERS_PER_SECOND;
+        }
+        setControl(chassisSpeedRequest.withSpeeds(getKinematics().toChassisSpeeds(moduleStates)));
+      }
+    };
+  }
+
+  public double getAutonSpeakerLockRadiansPerSecond() {
+    double targetPitch = Robot.shooterCam.getSpeakerTargetPitch();
+    double targetYaw = Robot.shooterCam.getSpeakerTargetYaw();
+
+    if (Double.isNaN(targetPitch) || Double.isNaN(targetYaw)) return Double.NaN;
+
+    double yawOffset = Robot.swerve.updateVisionTargeting(targetPitch, 0);
+
+    double vy = getFieldRelativeChassisSpeeds().vyMetersPerSecond; // Horizontal velocity
+    double kp = Constants.SWERVE.TARGET_LOCK_ROTATION_KP;
+    kp *= Math.max(1, vy * 1);
+    Constants.SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.setP(kp);
+
+    double rotation =
+        Constants.SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.calculate(targetYaw, yawOffset);
+
+    double radiansPerSecond =
+        rotation + Math.copySign(Constants.SWERVE.TARGET_LOCK_FEED_FORWARD, rotation);
+    return radiansPerSecond;
+  }
+
+  public double updateVisionTargeting(double pitch, double defaultOffset) {
+    int curveIndex = RobotMath.getCurveSegmentIndex(Robot.shooterCurve, pitch);
+    if (curveIndex == -1) {
+      return defaultOffset;
+    }
+
+    double[] high = Robot.shooterCurve[curveIndex];
+    double[] low = Robot.shooterCurve[curveIndex + 1];
+
+    double highPitch = high[0];
+    double lowPitch = low[0];
+    double highYawSetopint = high[3];
+    double lowYawSetpoint = low[3];
+
+    return RobotMath.linearlyInterpolate(
+        highYawSetopint, lowYawSetpoint, highPitch, lowPitch, pitch);
+  }
+
   public ChassisSpeeds getFieldRelativeChassisSpeeds() {
     ChassisSpeeds chassisSpeeds = getKinematics().toChassisSpeeds(getModuleStates());
     return chassisSpeeds;
@@ -215,5 +242,15 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         ChassisSpeeds.fromFieldRelativeSpeeds(
             getFieldRelativeChassisSpeeds(), getRotation3d().toRotation2d());
     return chassisSpeeds;
+  }
+
+  public double[] getWheelRadiusCharacterizationPosition() {
+    double[] positions = new double[4];
+
+    for (int i = 0; i < positions.length; i++) {
+      positions[i] = getModulePositions()[i].angle.getDegrees();
+    }
+
+    return positions;
   }
 }
