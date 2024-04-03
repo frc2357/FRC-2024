@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.auto.paths.AmpSide4Note;
 import frc.robot.commands.auto.paths.Close3AndRUN;
-import frc.robot.commands.auto.paths.Close3Speaker;
 import frc.robot.commands.auto.paths.LeftClose1Speaker;
 import frc.robot.commands.auto.paths.MiddleClose1Speaker;
 import frc.robot.commands.auto.paths.RightClose1Speaker;
@@ -30,8 +29,6 @@ public class AutoCommandChooser {
 
   public AutoCommandChooser() {
     Command[] autoCommands = {
-      new Close3Speaker(),
-      new Close3AndRUN(),
       new SourceSide4Note(),
       new AmpSide4Note(),
       new LeftClose1Speaker(),
