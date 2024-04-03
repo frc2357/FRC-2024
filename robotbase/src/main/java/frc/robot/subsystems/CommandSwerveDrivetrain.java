@@ -128,11 +128,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   }
 
   public Pose2d getPose() {
-    return super.m_odometry.getEstimatedPosition();
-  }
-
-  public Pose2d getPoseWithPigeonRotation() {
-    return new Pose2d(getPose().getTranslation(), super.m_pigeon2.getRotation2d());
+    return super.getState().Pose;
   }
 
   private SwerveDriveKinematics getKinematics() {
@@ -169,19 +165,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     //   System.err.println("[CommandSwerveDrivetrain] SET POSE - PIGEON DID NOT SET YAW CORRECTLY.
     // \n\tSTATUS CODE DESCRIP: " + statusCode.getDescription());
     // }
-  }
-
-  public void setPoseAndRotation(Pose2d location) {
-    // Set the pigeon's yaw to be the pose's rotation
-    try {
-      super.m_stateLock.writeLock().lock();
-      // Set the robot pose location to the given pose location,
-      m_odometry.resetPosition(location.getRotation(), m_modulePositions, location);
-      /* We need to update our cached pose immediately so that race conditions don't happen */
-      m_cachedState.Pose = location;
-    } finally {
-      m_stateLock.writeLock().unlock();
-    }
   }
 
   public Consumer<ChassisSpeeds> getChassisSpeedsConsumer() {

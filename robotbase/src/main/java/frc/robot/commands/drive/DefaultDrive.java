@@ -30,6 +30,6 @@ public class DefaultDrive extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    Robot.swerve.stopMotors();
+    // Robot.swerve.stopMotors();
   }
 }

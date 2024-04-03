@@ -1,5 +1,7 @@
 package frc.robot.commands.drive;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.CompSwerveTunerConstants;
 import frc.robot.Constants.SWERVE;
@@ -65,7 +67,9 @@ public class TargetLockOnSpeaker extends Command {
     if (Double.isNaN(yaw) || m_stopOnEnd) {
       return false;
     }
-    return Utility.isWithinTolerance(yaw, m_yawOffset, SWERVE.TARGET_LOCK_TOLERANCE);
+    var isInTolerance = Utility.isWithinTolerance(yaw, m_yawOffset, SWERVE.TARGET_LOCK_TOLERANCE);
+        System.out.println("[TargetLockOnSpeaker] SHOOTER CAM HAS TARGET: " + !Double.isNaN(yaw) + "\n[TargetLockOnSpeaker] In Tolerance: " + isInTolerance);
+    return isInTolerance;
   }
 
   @Override

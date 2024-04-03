@@ -75,12 +75,14 @@ public class DriveChoreoPath extends SequentialCommandGroup {
     // Set the gyro yaw to 0 and the pose x, y to the starting position of the path
     if (setPoseToStartTrajectory) {
       addCommands(
+        new InstantCommand(() -> System.out.println("[DriveChoreoPath] Before pose set: " + Robot.swerve.getPose())),
           new InstantCommand(
               () ->
-                  Robot.swerve.setPoseAndRotation(
+                  Robot.swerve.setPose(
                       m_startingState
-                          .getPose()))); // Zero the gyro and set pose odomety to x, y of starting
+                          .getPose())), // Zero the gyro and set pose odomety to x, y of starting
       // path
+        new InstantCommand(() -> System.out.println("[DriveChoreoPath] After pose set: " + Robot.swerve.getPose())));
     }
 
     addCommands(
@@ -95,9 +97,10 @@ public class DriveChoreoPath extends SequentialCommandGroup {
                     m_startingState.angularVelocity)),
         // The library provided choreo command
         // Runs the actual path
+        new InstantCommand(() -> System.out.println("[DriveChoreoPath] RUNNING PATH: " + m_pathName)),
         Choreo.choreoSwerveCommand(
             m_traj,
-            Robot.swerve::getPoseWithPigeonRotation,
+            Robot.swerve::getPose,
             Choreo.choreoSwerveController(
                 CHOREO.X_CONTROLLER, CHOREO.Y_CONTROLLER, CHOREO.ROTATION_CONTROLLER),
             Robot.swerve.getChassisSpeedsConsumer(),
@@ -106,7 +109,7 @@ public class DriveChoreoPath extends SequentialCommandGroup {
     addCommands(
         new InstantCommand(
             () -> {
-              System.out.println(Robot.swerve.getPose());
+              System.out.println("[DriveChoreoPath] POSE AT END OF PATH: " + Robot.swerve.getPose());
             }));
   }
 

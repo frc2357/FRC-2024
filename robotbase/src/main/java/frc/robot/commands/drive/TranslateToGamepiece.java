@@ -62,6 +62,7 @@ public class TranslateToGamepiece extends Command {
 
   @Override
   public void execute() {
+    System.out.println("MADE IT");
     // deceleration y direction
     double yMetersPerSecond = calculateYSpeed();
 
