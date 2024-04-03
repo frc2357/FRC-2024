@@ -34,7 +34,7 @@ public class SourceSide4Note extends SequentialCommandGroup {
             new SequentialCommandGroup(
                 new DriveChoreoPath("SourceSide4Note2.1", false),
                 new ParallelCommandGroup(new TargetLockOnSpeaker(true), new ShooterWaitForRPM())
-                    .withTimeout(SWERVE.AUTO_TARGET_LOCK_TIMEOUT_SECONDS ),
+                    .withTimeout(SWERVE.AUTO_TARGET_LOCK_TIMEOUT_SECONDS),
                 new IntakeFeedToShooter().withTimeout(0.2)),
             new VisionTargeting(4800)),
 

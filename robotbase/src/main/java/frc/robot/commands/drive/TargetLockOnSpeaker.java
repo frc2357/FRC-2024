@@ -1,7 +1,5 @@
 package frc.robot.commands.drive;
 
-import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.CompSwerveTunerConstants;
 import frc.robot.Constants.SWERVE;
@@ -51,7 +49,7 @@ public class TargetLockOnSpeaker extends Command {
       return;
     }
     var targetYaw = Robot.shooterCam.getSpeakerTargetYaw();
-    updateVisionTargeting(pitch);
+    m_yawOffset = Robot.swerve.updateVisionTargeting(pitch, m_yawOffset);
     Robot.swerve.driveTargetLock(
         Robot.driverControls.getY() * CompSwerveTunerConstants.kSpeedAt12VoltsMps,
         Robot.driverControls.getX() * CompSwerveTunerConstants.kSpeedAt12VoltsMps,
@@ -68,7 +66,11 @@ public class TargetLockOnSpeaker extends Command {
       return false;
     }
     var isInTolerance = Utility.isWithinTolerance(yaw, m_yawOffset, SWERVE.TARGET_LOCK_TOLERANCE);
-        System.out.println("[TargetLockOnSpeaker] SHOOTER CAM HAS TARGET: " + !Double.isNaN(yaw) + "\n[TargetLockOnSpeaker] In Tolerance: " + isInTolerance);
+    System.out.println(
+        "[TargetLockOnSpeaker] SHOOTER CAM HAS TARGET: "
+            + !Double.isNaN(yaw)
+            + "\n[TargetLockOnSpeaker] In Tolerance: "
+            + isInTolerance);
     return isInTolerance;
   }
 
@@ -77,23 +79,5 @@ public class TargetLockOnSpeaker extends Command {
     System.out.println("[TargetLockOnSpeaker] WAS INTERRUPTED: " + interupted);
     Robot.swerve.stopMotors();
     Robot.intakeCam.setPipeline(m_startingPipeline);
-  }
-
-  private void updateVisionTargeting(double pitch) {
-    int curveIndex = RobotMath.getCurveSegmentIndex(Robot.shooterCurve, pitch);
-    if (curveIndex == -1) {
-      return;
-    }
-
-    double[] high = Robot.shooterCurve[curveIndex];
-    double[] low = Robot.shooterCurve[curveIndex + 1];
-
-    double highPitch = high[0];
-    double lowPitch = low[0];
-    double highYawSetopint = high[3];
-    double lowYawSetpoint = low[3];
-
-    m_yawOffset =
-        RobotMath.linearlyInterpolate(highYawSetopint, lowYawSetpoint, highPitch, lowPitch, pitch);
   }
 }

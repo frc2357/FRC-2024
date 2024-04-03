@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.Constants.SWERVE;
 import frc.robot.Robot;
+import frc.robot.util.RobotMath;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -160,9 +161,11 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
   public void setPose(Pose2d poseToSet) {
     super.seedFieldRelative(poseToSet);
-    // var statusCode = super.m_pigeon2.setYaw(poseToSet.getRotation().getDegrees());
+    // var statusCode =
+    // super.m_pigeon2.setYaw(poseToSet.getRotation().getDegrees());
     // if(!statusCode.isOK()){
-    //   System.err.println("[CommandSwerveDrivetrain] SET POSE - PIGEON DID NOT SET YAW CORRECTLY.
+    // System.err.println("[CommandSwerveDrivetrain] SET POSE - PIGEON DID NOT SET
+    // YAW CORRECTLY.
     // \n\tSTATUS CODE DESCRIP: " + statusCode.getDescription());
     // }
   }
@@ -178,6 +181,64 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         setControl(chassisSpeedRequest.withSpeeds(getKinematics().toChassisSpeeds(moduleStates)));
       }
     };
+  }
+
+  public Consumer<ChassisSpeeds> getSpeakerLockChassisSpeedsConsumer() {
+    return new Consumer<ChassisSpeeds>() {
+      @Override
+      public void accept(ChassisSpeeds speeds) {
+
+        double rotation = getAutonSpeakerLockRadiansPerSecond();
+        if (Double.isNaN(rotation)) {
+          speeds.omegaRadiansPerSecond = rotation;
+        }
+
+        SwerveModuleState[] moduleStates = getKinematics().toSwerveModuleStates(speeds);
+        for (SwerveModuleState state : moduleStates) {
+          state.speedMetersPerSecond += Constants.SWERVE.STATIC_FEEDFORWARD_METERS_PER_SECOND;
+        }
+        setControl(chassisSpeedRequest.withSpeeds(getKinematics().toChassisSpeeds(moduleStates)));
+      }
+    };
+  }
+
+  public double getAutonSpeakerLockRadiansPerSecond() {
+    double targetPitch = Robot.shooterCam.getSpeakerTargetPitch();
+    double targetYaw = Robot.shooterCam.getSpeakerTargetYaw();
+
+    if (Double.isNaN(targetPitch) || Double.isNaN(targetYaw)) return Double.NaN;
+
+    double yawOffset = Robot.swerve.updateVisionTargeting(targetPitch, 0);
+
+    double vy = getFieldRelativeChassisSpeeds().vyMetersPerSecond; // Horizontal velocity
+    double kp = Constants.SWERVE.TARGET_LOCK_ROTATION_KP;
+    kp *= Math.max(1, vy * 1);
+    Constants.SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.setP(kp);
+
+    double rotation =
+        Constants.SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.calculate(targetYaw, yawOffset);
+
+    double radiansPerSecond =
+        rotation + Math.copySign(Constants.SWERVE.TARGET_LOCK_FEED_FORWARD, rotation);
+    return radiansPerSecond;
+  }
+
+  public double updateVisionTargeting(double pitch, double defaultOffset) {
+    int curveIndex = RobotMath.getCurveSegmentIndex(Robot.shooterCurve, pitch);
+    if (curveIndex == -1) {
+      return defaultOffset;
+    }
+
+    double[] high = Robot.shooterCurve[curveIndex];
+    double[] low = Robot.shooterCurve[curveIndex + 1];
+
+    double highPitch = high[0];
+    double lowPitch = low[0];
+    double highYawSetopint = high[3];
+    double lowYawSetpoint = low[3];
+
+    return RobotMath.linearlyInterpolate(
+        highYawSetopint, lowYawSetpoint, highPitch, lowPitch, pitch);
   }
 
   public ChassisSpeeds getFieldRelativeChassisSpeeds() {
