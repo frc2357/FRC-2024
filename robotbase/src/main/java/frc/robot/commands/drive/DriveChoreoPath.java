@@ -29,16 +29,6 @@ public class DriveChoreoPath extends SequentialCommandGroup {
    * @param trajectoryFileName The name of the path file with '.traj' excluded.
    * @param pathName The name of the path, is returned in the toString for the auto command chooser.
    */
-  public DriveChoreoPath(String trajectoryFileName, String pathName) {
-    // Overloaded constructor, sets the gyro yaw to zero and pose x, y to starting
-    // position
-    this(trajectoryFileName, false, false);
-  }
-
-  /**
-   * @param trajectoryFileName The name of the path file with '.traj' excluded.
-   * @param pathName The name of the path, is returned in the toString for the auto command chooser.
-   */
   public DriveChoreoPath(String trajectoryFileName, boolean setPoseToStartTrajectory) {
     // Overloaded constructor, sets the gyro yaw to zero and pose x, y to starting
     // position

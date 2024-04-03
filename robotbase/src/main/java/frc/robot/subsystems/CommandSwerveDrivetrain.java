@@ -137,8 +137,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   }
 
   public void zeroGyro(boolean flip) {
-    // Pigeon2Configuration config = new Pigeon2Configuration();
-    // super.getPigeon2().getConfigurator().apply(config);
     StatusCode code = super.getPigeon2().setYaw(flip ? 180 : 0);
     System.out.println("[GYRO] Zeroed to " + (flip ? 180 : 0) + ": " + code.toString());
   }
@@ -161,13 +159,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
   public void setPose(Pose2d poseToSet) {
     super.seedFieldRelative(poseToSet);
-    // var statusCode =
-    // super.m_pigeon2.setYaw(poseToSet.getRotation().getDegrees());
-    // if(!statusCode.isOK()){
-    // System.err.println("[CommandSwerveDrivetrain] SET POSE - PIGEON DID NOT SET
-    // YAW CORRECTLY.
-    // \n\tSTATUS CODE DESCRIP: " + statusCode.getDescription());
-    // }
   }
 
   public Consumer<ChassisSpeeds> getChassisSpeedsConsumer() {
