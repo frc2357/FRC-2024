@@ -120,19 +120,17 @@ public class ManualLineUpTrap extends SequentialCommandGroup {
                 new ParallelCommandGroup(
                     new TurnOnProximitySensor(),
                     new ExtensionArmMoveToRotations(EXTENSION_ARM.NOTE_STOW_ROTATIONS)),
-
                 new ParallelDeadlineGroup(
-                  new EndAffectorPreloadNote(),
-                  new IntakeFeedToShooter().beforeStarting(new WaitCommand(0.2)),
-                  new ShooterSetRPM(SHOOTER.FEED_END_AFFECTOR_RPM),
-                  new PivotHoldAngle(PIVOT.END_AFFECTOR_PRELOAD_ANGLE)
-                ),
+                    new EndAffectorPreloadNote(),
+                    new IntakeFeedToShooter().beforeStarting(new WaitCommand(0.2)),
+                    new ShooterSetRPM(SHOOTER.FEED_END_AFFECTOR_RPM),
+                    new PivotHoldAngle(PIVOT.END_AFFECTOR_PRELOAD_ANGLE)),
 
                 // Arm Prepose
                 new ExtensionArmMoveToRotations(EXTENSION_ARM.TRAP_PREPOSE_ROTATIONS),
                 new SetNoteState(NoteState.END_AFFECTOR_PRELOAD))),
 
-            // Hold until end of above command
+        // Hold until end of above command
         new Print("Co-driver adjust note: right trigger is up, left trigger is down"),
         new PressToContinue(continueButton),
         new ParallelCommandGroup(

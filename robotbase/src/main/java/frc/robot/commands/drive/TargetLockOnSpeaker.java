@@ -61,16 +61,10 @@ public class TargetLockOnSpeaker extends Command {
   @Override
   public boolean isFinished() {
     double yaw = Robot.shooterCam.getSpeakerTargetYaw();
-    System.out.println("[TargetLockOnSpeaker] SHOOTER CAM HAS TARGET: " + !Double.isNaN(yaw));
     if (Double.isNaN(yaw) || m_stopOnEnd) {
       return false;
     }
     var isInTolerance = Utility.isWithinTolerance(yaw, m_yawOffset, SWERVE.TARGET_LOCK_TOLERANCE);
-    System.out.println(
-        "[TargetLockOnSpeaker] SHOOTER CAM HAS TARGET: "
-            + !Double.isNaN(yaw)
-            + "\n[TargetLockOnSpeaker] In Tolerance: "
-            + isInTolerance);
     return isInTolerance;
   }
 

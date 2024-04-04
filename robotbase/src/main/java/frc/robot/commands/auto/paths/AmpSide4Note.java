@@ -1,6 +1,5 @@
 package frc.robot.commands.auto.paths;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -24,7 +23,6 @@ public class AmpSide4Note extends SequentialCommandGroup {
                     .withTimeout(SWERVE.AUTO_TARGET_LOCK_TIMEOUT_SECONDS),
                 new IntakeFeedToShooter().withTimeout(0.2)),
             new VisionTargeting(4800)),
-        new InstantCommand(() -> System.out.println("MAED IT TO THE FIRST TRANSLATE")),
         // drive to and pickup second note
         new DriveChoreoPath("AmpSide4Note1.2", false),
         new ParallelDeadlineGroup(new TranslateToGamepiece(3), new Pickup()),
