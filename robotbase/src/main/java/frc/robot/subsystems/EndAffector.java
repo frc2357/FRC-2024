@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CAN_ID;
 import frc.robot.Constants.DIGITAL_INPUT;
@@ -48,7 +49,7 @@ public class EndAffector extends SubsystemBase {
   }
 
   public boolean getProximitySensor() {
-    return m_proximitySensor.get();
+    return !m_proximitySensor.get();
   }
 
   public void setProximitySensorPower(boolean on) {
@@ -65,5 +66,10 @@ public class EndAffector extends SubsystemBase {
 
   public double getMotorAmperage() {
     return m_motor.getOutputCurrent();
+  }
+
+  @Override
+  public void periodic() {
+    SmartDashboard.putBoolean("Prox", getProximitySensor());
   }
 }

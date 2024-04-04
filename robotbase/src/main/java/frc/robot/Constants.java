@@ -62,8 +62,8 @@ public final class Constants {
 
   public static final class DIGITAL_INPUT {
     public static final int INTAKE_BEAM_BREAK_ID = 5;
-    public static final int END_AFFECTOR_PROXIMITY_SENSOR_ID = 2;
-    public static final int END_AFFECTOR_PROXIMITY_SENSOR_POWER_ID = 3;
+    public static final int END_AFFECTOR_PROXIMITY_SENSOR_ID = 6;
+    public static final int END_AFFECTOR_PROXIMITY_SENSOR_POWER_ID = 8;
   }
 
   public static final class SWERVE {
@@ -166,7 +166,7 @@ public final class Constants {
 
     // Manual Line Up Climb
     public static final double DISTANCE_FROM_STAGE_TO_CHAIN = 0.8;
-    public static final double SECONDS_FROM_STAGE_TO_CHAIN = 2.5;
+    public static final double SECONDS_FROM_STAGE_TO_CHAIN = 1;
 
     // Auto
     public static final double AUTO_TARGET_LOCK_TIMEOUT_SECONDS = 0.6;
@@ -327,7 +327,7 @@ public final class Constants {
     public static final double ROTATE_PAST_VERTICAL_SPEED = -1.0;
     public static final double VERTICAL_ROTATIONS = -150;
 
-    public static final double SET_HOOKS_SPEED = 0.2;
+    public static final double SET_HOOKS_SPEED = 0.5;
     public static final double SET_HOOKS_ROTATIONS = -125;
 
     public static final double ROTATE_PAST_EXTENSION_SPEED = 0.5;
