@@ -27,9 +27,11 @@ public class EndAffectorRunToTop extends Command {
     if (!m_isAtTop && Robot.endAffector.getProximitySensor()) {
       m_isAtTop = true;
       Robot.endAffector.setSpeed(0.5);
+      System.out.println("isAtTop");
     } else if (!m_isDone && m_isAtTop && !Robot.endAffector.getProximitySensor()) {
       m_isDone = true;
       m_timer.start();
+      System.out.println("isDone");
     }
   }
 
@@ -40,6 +42,7 @@ public class EndAffectorRunToTop extends Command {
 
   @Override
   public void end(boolean interrupted) {
+    System.out.println("end: " + interrupted);
     Robot.endAffector.stop();
     Robot.endAffector.setProximitySensorPower(false);
   }
