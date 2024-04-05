@@ -41,6 +41,7 @@ public class DrivePickup extends Command {
         Robot.driverControls.getRotation() * Constants.SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND;
 
     if (Robot.driverControls.getLeftTrigger() >= CONTROLLER.DRIVE_TRANSLATE_INTAKE_THRESHOLD) {
+
       executeAutoPickup(targetPitch, targetYaw);
     } else if (Robot.driverControls.isLeftTriggerPressed()) {
       executeTargetLock(targetPitch, targetYaw, stickX, stickY);
@@ -58,6 +59,11 @@ public class DrivePickup extends Command {
   }
 
   private void executeAutoPickup(double targetPitch, double targetYaw) {
+    if (Double.isNaN(targetYaw)) {
+      executeCreepForward();
+      return;
+    }
+
     boolean pitchInRange = targetPitch >= -16.0 && targetPitch <= 5.0;
     boolean yawInRange = targetYaw >= -23.0 && targetYaw <= 23.0;
     if (targetPitch < m_lastPitch && m_lastPitch < -16.0) {
@@ -66,7 +72,7 @@ public class DrivePickup extends Command {
 
     if (m_gotIt) {
       executeCreepForward();
-      ;
+      return;
     }
 
     if (!pitchInRange || !yawInRange) {

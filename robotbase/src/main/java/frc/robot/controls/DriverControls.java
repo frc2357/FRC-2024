@@ -11,10 +11,10 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Robot;
 import frc.robot.commands.climber.ManualLineUpTrap;
 import frc.robot.commands.drive.TargetLockOnSpeaker;
-import frc.robot.commands.endAffector.EndAffectorPreloadNote;
 import frc.robot.commands.intake.CancelIntakeOnEnd;
 import frc.robot.commands.intake.IntakeFeedToShooter;
 import frc.robot.commands.pickup.VisionPickup;
+import frc.robot.commands.scoring.AmpSequenceConditional;
 import frc.robot.commands.scoring.VisionTargeting;
 import frc.robot.commands.scoring.VisionlessShooting;
 import frc.robot.commands.source.SourceIntakeFromShooter;
@@ -27,7 +27,7 @@ public class DriverControls implements RumbleInterface {
   private XboxController m_controller;
   private double m_deadband;
 
-  private JoystickButton m_aButton;
+  public JoystickButton m_aButton;
   private JoystickButton m_bButton;
   private JoystickButton m_xButton;
   private JoystickButton m_yButton;
@@ -94,13 +94,12 @@ public class DriverControls implements RumbleInterface {
 
     m_leftBumper.whileTrue(new SourceIntakeFromShooter());
 
-    m_yButton.onTrue(new ManualLineUpTrap(m_yButton, m_yButton));
-    // m_xButton.onTrue(new ManualLineUpClimb(m_xButton));
+    m_yButton.onTrue(new ManualLineUpTrap(m_yButton, Robot.codriverControls.m_aButton));
+    m_xButton.whileTrue(new VisionlessShooting(4000, 38));
+
 
     // scoring
-    // m_rightBumper.onTrue(new AmpSequenceConditional());
-    m_xButton.onTrue(new TurnOnProximitySensor());
-    m_rightBumper.onTrue(new EndAffectorPreloadNote());
+    m_rightBumper.onTrue(new AmpSequenceConditional());
     // m_rightBumper.onTrue(
     //     new AmpShot(m_rightBumper)
     //         .handleInterrupt(() -> new ExtensionArmReturnToZero().schedule()));

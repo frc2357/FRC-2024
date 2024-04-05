@@ -1,5 +1,6 @@
 package frc.robot.commands.drive;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.util.Utility;
@@ -7,6 +8,11 @@ import frc.robot.util.Utility;
 public class ForceGyroZero extends Command {
 
   public ForceGyroZero() {}
+
+  @Override
+  public void initialize() {
+    SmartDashboard.putBoolean("Robot Zeroed", false);
+  }
 
   @Override
   public void execute() {
@@ -34,6 +40,7 @@ public class ForceGyroZero extends Command {
       System.out.println("[GYRO] ZERO SET CORRECTLY");
       System.out.println("*********************************************************************");
       System.out.println("*********************************************************************");
+      SmartDashboard.putBoolean("======================ROBOT ZEROED INDICATOR======================", true);
     }
   }
 }

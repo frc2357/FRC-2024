@@ -18,7 +18,7 @@ public class AmpSide4Note extends SequentialCommandGroup {
         // Preload on the move (future Tyson problem) + Drive to note 2
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(
-                new DriveChoreoPath("AmpSide4Note1.1", true).alongWith(new Pickup()),
+                new DriveChoreoPath("AmpSide4Note1.1", true),
                 new ParallelCommandGroup(new TargetLockOnSpeaker(true), new ShooterWaitForRPM())
                     .withTimeout(SWERVE.AUTO_TARGET_LOCK_TIMEOUT_SECONDS),
                 new IntakeFeedToShooter().withTimeout(0.2)),
@@ -30,7 +30,7 @@ public class AmpSide4Note extends SequentialCommandGroup {
         // Drive back with note 2 and shoot
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(
-                new DriveChoreoPath("AmpSide4Note2.1", false).alongWith(new Pickup()),
+                new DriveChoreoPath("AmpSide4Note2.1", false).deadlineWith(new Pickup()),
                 new ParallelCommandGroup(new TargetLockOnSpeaker(true), new ShooterWaitForRPM())
                     .withTimeout(SWERVE.AUTO_TARGET_LOCK_TIMEOUT_SECONDS),
                 new IntakeFeedToShooter().withTimeout(0.2)),
@@ -43,7 +43,7 @@ public class AmpSide4Note extends SequentialCommandGroup {
         // Drive back with note 3 and shoot
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(
-                new DriveChoreoPath("AmpSide4Note3.1", false),
+                new DriveChoreoPath("AmpSide4Note3.1", false).deadlineWith(new Pickup()),
                 new ParallelCommandGroup(new TargetLockOnSpeaker(true), new ShooterWaitForRPM())
                     .withTimeout(SWERVE.AUTO_TARGET_LOCK_TIMEOUT_SECONDS),
                 new IntakeFeedToShooter().withTimeout(0.2)),

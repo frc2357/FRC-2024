@@ -7,7 +7,8 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.EXTENSION_ARM;
 import frc.robot.Constants.PIVOT;
 import frc.robot.Constants.SHOOTER;
-import frc.robot.commands.endAffector.EndAffectorPreloadNote;
+import frc.robot.commands.endAffector.EndAffectorRunPastTopEdge;
+import frc.robot.commands.endAffector.EndAffectorStop;
 import frc.robot.commands.extensionArm.ExtensionArmMoveToRotations;
 import frc.robot.commands.intake.IntakeFeedToShooter;
 import frc.robot.commands.pivot.PivotHoldAngle;
@@ -24,13 +25,19 @@ public class AmpPrepose extends SequentialCommandGroup {
             new ExtensionArmMoveToRotations(EXTENSION_ARM.NOTE_STOW_ROTATIONS)),
         // Run end affector, shooter, and intake to load note
         new ParallelDeadlineGroup(
-            new EndAffectorPreloadNote(),
+            new EndAffectorRunPastTopEdge(true),
             new IntakeFeedToShooter().beforeStarting(new WaitCommand(0.2)),
             new ShooterSetRPM(SHOOTER.FEED_END_AFFECTOR_RPM),
             new PivotHoldAngle(PIVOT.END_AFFECTOR_PRELOAD_ANGLE)),
 
         // Arm Prepose
-        new ExtensionArmMoveToRotations(EXTENSION_ARM.AMP_PREPOSE_ROTATIONS),
+        new ParallelCommandGroup(
+          new ExtensionArmMoveToRotations(EXTENSION_ARM.AMP_PREPOSE_ROTATIONS),
+          new SequentialCommandGroup(
+            new WaitCommand(0.25),
+            new EndAffectorStop()
+          )
+        ),
         new SetNoteState(NoteState.END_AFFECTOR_PRELOAD));
   }
 }
