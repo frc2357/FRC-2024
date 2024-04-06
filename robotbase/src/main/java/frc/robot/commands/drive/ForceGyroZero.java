@@ -40,7 +40,8 @@ public class ForceGyroZero extends Command {
       System.out.println("[GYRO] ZERO SET CORRECTLY");
       System.out.println("*********************************************************************");
       System.out.println("*********************************************************************");
-      SmartDashboard.putBoolean("======================ROBOT ZEROED INDICATOR======================", true);
+      SmartDashboard.putBoolean(
+          "======================ROBOT ZEROED INDICATOR======================", true);
     }
   }
 }

@@ -21,7 +21,6 @@ import frc.robot.commands.source.SourceIntakeFromShooter;
 import frc.robot.controls.util.AxisInterface;
 import frc.robot.controls.util.AxisThresholdTrigger;
 import frc.robot.controls.util.RumbleInterface;
-import frc.robot.util.TurnOnProximitySensor;
 
 public class DriverControls implements RumbleInterface {
   private XboxController m_controller;
@@ -97,12 +96,12 @@ public class DriverControls implements RumbleInterface {
     m_yButton.onTrue(new ManualLineUpTrap(m_yButton, Robot.codriverControls.m_aButton));
     m_xButton.whileTrue(new VisionlessShooting(4000, 38));
 
-
     // scoring
     m_rightBumper.onTrue(new AmpSequenceConditional());
     // m_rightBumper.onTrue(
     //     new AmpShot(m_rightBumper)
     //         .handleInterrupt(() -> new ExtensionArmReturnToZero().schedule()));
+    
 
     m_rightTriggerPrime.whileTrue(
         new ParallelCommandGroup(new VisionTargeting(), new TargetLockOnSpeaker()));

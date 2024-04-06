@@ -1,5 +1,7 @@
 package frc.robot;
 
+import java.util.HashMap;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -9,15 +11,14 @@ import edu.wpi.first.wpilibj2.command.SelectCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.auto.paths.AmpSide4Note;
+import frc.robot.commands.auto.paths.AmpSide4NoteWallFirst;
 import frc.robot.commands.auto.paths.Close3AndRUN;
 import frc.robot.commands.auto.paths.LeftClose1Speaker;
 import frc.robot.commands.auto.paths.MiddleClose1Speaker;
 import frc.robot.commands.auto.paths.RightClose1Speaker;
 import frc.robot.commands.auto.paths.ShootAndNothing;
 import frc.robot.commands.auto.paths.SourceSide4Note;
-import frc.robot.commands.drive.DriveChoreoPath;
 import frc.robot.commands.util.VariableWaitCommand;
-import java.util.HashMap;
 
 public class AutoCommandChooser {
   private String[] m_autoNames;
@@ -31,13 +32,12 @@ public class AutoCommandChooser {
     Command[] autoCommands = {
       new SourceSide4Note(),
       new AmpSide4Note(),
+      new AmpSide4NoteWallFirst(),
       new LeftClose1Speaker(),
       new MiddleClose1Speaker(),
       new RightClose1Speaker(),
       new ShootAndNothing(),
       new Close3AndRUN(),
-      new DriveChoreoPath("PIDTuningPath", true),
-      new DriveChoreoPath("SpeakerLock", true, true)
     };
 
     HashMap<String, Command> commandMap = new HashMap<String, Command>(autoCommands.length + 1);

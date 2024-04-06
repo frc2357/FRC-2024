@@ -11,10 +11,12 @@ public class AmpSequenceConditional extends ConditionalCommand {
   public AmpSequenceConditional() {
     super(
         new AmpPrepose(),
-        new AmpScore().handleInterrupt(() -> {new ParallelCommandGroup(
-          new ExtensionArmReturnToZero(),
-          new EndAffectorStop()
-        ).schedule();}),
+        new AmpScore()
+            .handleInterrupt(
+                () -> {
+                  new ParallelCommandGroup(new ExtensionArmReturnToZero(), new EndAffectorStop())
+                      .schedule();
+                }),
         () -> !Robot.state.isNote(NoteState.END_AFFECTOR_PRELOAD));
   }
 }
