@@ -11,6 +11,8 @@ public class LEDs extends SubsystemBase {
   private AddressableLED m_LED;
   private AddressableLEDBuffer m_LEDBuffer;
 
+  private Color m_lastColor = Color.kBlack;
+
   public static final Color MELTDOWN_ORANGE = new Color(50, 255, 0);
   public static final Color GREEN = new Color(255, 0, 0);
 
@@ -24,16 +26,28 @@ public class LEDs extends SubsystemBase {
     m_LED.start();
   }
 
-  public void setColor(Color color) {
+  private void setColor(Color color) {
+    if(color ==m_lastColor){
+      return;
+    }
 
     for (int i = 0; i < m_LEDBuffer.getLength(); i++) {
       m_LEDBuffer.setLED(i, color);
     }
 
     m_LED.setData(m_LEDBuffer);
+    m_lastColor = color;
   }
 
-  public void stop() {
-    setColor(new Color());
+  public void setIntaking(){
+    setColor(Color.kWhite);
+  }
+
+  public void setHasNote(){
+    setColor(GREEN);
+  }
+
+  public void setIdle() {
+    setColor(MELTDOWN_ORANGE);
   }
 }

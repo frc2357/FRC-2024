@@ -8,7 +8,6 @@ import frc.robot.Constants.CAN_ID;
 import frc.robot.Constants.DIGITAL_INPUT;
 import frc.robot.Constants.INTAKE;
 import frc.robot.Robot;
-import frc.robot.commands.LEDs.LEDsSetColor;
 import frc.robot.state.RobotState.NoteState;
 
 public class Intake extends SubsystemBase {
@@ -71,7 +70,7 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
     if (Robot.state.isNote(NoteState.NOTE_STOWED) && !isBeamBroken()) {
-      new LEDsSetColor(LEDs.MELTDOWN_ORANGE).schedule();
+      Robot.leds.setIdle();
       Robot.state.setNoteState(NoteState.EMPTY);
     }
   }

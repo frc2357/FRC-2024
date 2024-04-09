@@ -9,7 +9,6 @@ import frc.robot.commands.drive.DefaultDrive;
 import frc.robot.commands.drive.DrivePickup;
 import frc.robot.commands.intake.IntakeRepositionNote;
 import frc.robot.commands.intake.Pickup;
-import frc.robot.subsystems.LEDs;
 
 public class VisionPickup extends SequentialCommandGroup {
   public VisionPickup() {
@@ -19,6 +18,6 @@ public class VisionPickup extends SequentialCommandGroup {
         new ParallelCommandGroup(
             new DefaultDrive(),
             new IntakeRepositionNote()
-                .handleInterrupt(() -> Robot.leds.setColor(LEDs.MELTDOWN_ORANGE))));
+                .handleInterrupt(() -> Robot.leds.setIdle())));
   }
 }
