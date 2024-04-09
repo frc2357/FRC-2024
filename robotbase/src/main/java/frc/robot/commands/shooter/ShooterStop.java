@@ -16,5 +16,6 @@ public class ShooterStop extends Command {
   @Override
   public void end(boolean interrupted) {
     Robot.shooter.stop();
+    Robot.leds.setIdle();
   }
 }

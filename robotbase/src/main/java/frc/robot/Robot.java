@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.LEDs.LEDsSetColor;
+import frc.robot.commands.LEDs.LEDsSetIdle;
 import frc.robot.commands.drive.ForceGyroZero;
 import frc.robot.commands.drive.SetCoastOnDisable;
 import frc.robot.commands.state.GetAlliance;
@@ -129,7 +129,7 @@ public class Robot extends TimedRobot {
     m_setCoastOnDisable.schedule();
     m_allianceGetter = new GetAlliance();
     m_allianceGetter.schedule();
-    m_setLEDsOrange = new LEDsSetColor(LEDs.MELTDOWN_ORANGE);
+    m_setLEDsOrange = new LEDsSetIdle();
     m_setLEDsOrange.schedule();
 
     DataLogManager.logNetworkTables(true); // enable/disable automatic NetworksTable Logging
