@@ -27,7 +27,7 @@ public class LEDs extends SubsystemBase {
   }
 
   private void setColor(Color color) {
-    if(color ==m_lastColor){
+    if (color == m_lastColor) {
       return;
     }
 
@@ -39,11 +39,11 @@ public class LEDs extends SubsystemBase {
     m_lastColor = color;
   }
 
-  public void setIntaking(){
+  public void setIntaking() {
     setColor(Color.kWhite);
   }
 
-  public void setHasNote(){
+  public void setHasNote() {
     setColor(GREEN);
   }
 

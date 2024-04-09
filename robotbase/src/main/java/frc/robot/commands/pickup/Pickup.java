@@ -6,9 +6,6 @@ import frc.robot.commands.intake.IntakeRepositionNote;
 
 public class Pickup extends SequentialCommandGroup {
   public Pickup() {
-    super(
-        new Pickup(),
-        new IntakeRepositionNote()
-            .handleInterrupt(() -> Robot.leds.setIdle()));
+    super(new Pickup(), new IntakeRepositionNote().handleInterrupt(() -> Robot.leds.setIdle()));
   }
 }

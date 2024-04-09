@@ -17,7 +17,6 @@ public class VisionPickup extends SequentialCommandGroup {
             new Pickup(), new SequentialCommandGroup(new WaitCommand(0.25), new DrivePickup())),
         new ParallelCommandGroup(
             new DefaultDrive(),
-            new IntakeRepositionNote()
-                .handleInterrupt(() -> Robot.leds.setIdle())));
+            new IntakeRepositionNote().handleInterrupt(() -> Robot.leds.setIdle())));
   }
 }

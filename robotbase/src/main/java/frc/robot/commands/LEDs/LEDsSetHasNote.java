@@ -5,7 +5,6 @@ import frc.robot.Robot;
 
 public class LEDsSetHasNote extends Command {
 
-
   @Override
   public void end(boolean interrupted) {
     Robot.leds.setHasNote();
