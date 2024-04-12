@@ -55,7 +55,7 @@ public class Intake extends SubsystemBase {
   }
 
   public boolean isBeamBroken() {
-    return m_debouncer.calculate(m_beamBreakSensor.get());
+    return m_debouncer.calculate(!m_beamBreakSensor.get());
   }
 
   public void stop() {
