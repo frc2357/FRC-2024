@@ -25,7 +25,6 @@ import frc.robot.commands.shooter.ShooterStepAxis;
 import frc.robot.controls.util.AxisInterface;
 import frc.robot.controls.util.AxisThresholdTrigger;
 import frc.robot.controls.util.RumbleInterface;
-import frc.robot.state.RobotState.NoteState;
 import frc.robot.util.Utility;
 
 public class CodriverControls implements RumbleInterface {
@@ -247,7 +246,6 @@ public class CodriverControls implements RumbleInterface {
         new InstantCommand(
             () -> {
               CommandScheduler.getInstance().cancelAll();
-              Robot.state.setNoteState(NoteState.EMPTY);
             }));
 
     // Uncomment for tuning wheel diameter
