@@ -111,6 +111,10 @@ public class CodriverControls implements RumbleInterface {
     return m_controller.getLeftTriggerAxis();
   }
 
+  public double getLeftStickY() {
+    return m_controller.getLeftY();
+  }
+
   private void mapControls() {
 
     AxisInterface axisRightStickX =

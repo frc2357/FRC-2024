@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Robot;
@@ -17,6 +18,7 @@ import frc.robot.commands.pickup.VisionPickup;
 import frc.robot.commands.scoring.AmpSequenceConditional;
 import frc.robot.commands.scoring.VisionTargeting;
 import frc.robot.commands.scoring.VisionlessShooting;
+import frc.robot.commands.shooter.ShooterWaitForRPM;
 import frc.robot.commands.source.SourceIntakeFromShooter;
 import frc.robot.controls.util.AxisInterface;
 import frc.robot.controls.util.AxisThresholdTrigger;
@@ -98,14 +100,10 @@ public class DriverControls implements RumbleInterface {
 
     // scoring
     m_rightBumper.onTrue(new AmpSequenceConditional());
-    // m_rightBumper.onTrue(
-    //     new AmpShot(m_rightBumper)
-    //         .handleInterrupt(() -> new ExtensionArmReturnToZero().schedule()));
 
     m_rightTriggerPrime.whileTrue(
         new ParallelCommandGroup(new VisionTargeting(), new TargetLockOnSpeaker()));
-    m_rightTriggerShoot.whileTrue(new IntakeFeedToShooter());
-    // m_rightTriggerPrime.whileTrue(new VisionShot(m_rightTriggerShoot));
+    m_rightTriggerShoot.whileTrue(new SequentialCommandGroup(new ShooterWaitForRPM(), new IntakeFeedToShooter()));
   }
 
   public double getX() {
