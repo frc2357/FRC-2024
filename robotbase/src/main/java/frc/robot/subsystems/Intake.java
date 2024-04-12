@@ -24,7 +24,7 @@ public class Intake extends SubsystemBase {
 
     m_beamBreakSensor = new DigitalInput(DIGITAL_INPUT.INTAKE_BEAM_BREAK_ID);
 
-    m_debouncer = new Debouncer(.05, DebounceType.kBoth);
+    m_debouncer = new Debouncer(.1, DebounceType.kBoth);
 
     configure();
   }
