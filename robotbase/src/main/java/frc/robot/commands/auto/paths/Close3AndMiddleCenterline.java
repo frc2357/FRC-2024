@@ -22,13 +22,12 @@ public class Close3AndMiddleCenterline extends SequentialCommandGroup {
         new AutoPivotSetAngle(60),
         new AutoShooterSetRPMAndFinish(3000),
         new ShooterWaitForRPM().withTimeout(0.5),
-        new IntakeRun(0.75, false).withTimeout(1),
+        new IntakeRun(0.75, false).withTimeout(0.5),
 
         // Shoot first note on the move and drive to centerline
-        new AutoShooterSetRPMAndFinish(4000).alongWith(new AutoPivotSetAngle(25)),
-        new ParallelDeadlineGroup(
-            new DriveChoreoPath("CenterSub5Note1.1", true),
-            new IntakeRun(0.75, true).withTimeout(1.3)),
+        new AutoShooterSetRPMAndFinish(4000).alongWith(new AutoPivotSetAngle(33)),
+        new IntakeRun(0.75, false).withTimeout(0.1),
+        new DriveChoreoPath("CenterSub5Note1.1", true, false),
         // Grab the note from the centerline
         new ParallelDeadlineGroup(new TranslateToGamepiece(3), new Pickup()),
 
@@ -38,7 +37,7 @@ public class Close3AndMiddleCenterline extends SequentialCommandGroup {
                 new DriveChoreoPath("CenterSub5Note2.1", false, false),
                 new ParallelCommandGroup(new TargetLockOnSpeaker(true), new ShooterWaitForRPM())
                     .withTimeout(SWERVE.AUTO_TARGET_LOCK_TIMEOUT_SECONDS),
-                new IntakeFeedToShooter().withTimeout(0.2)),
+                new IntakeFeedToShooter().withTimeout(0.4)),
             new VisionTargeting(4250)),
 
         // Grab note 3 and shoot it
@@ -47,8 +46,8 @@ public class Close3AndMiddleCenterline extends SequentialCommandGroup {
                 new DriveChoreoPath("CenterSub5Note2.2", false, false).deadlineWith(new Pickup()),
                 new ParallelCommandGroup(new TargetLockOnSpeaker(true), new ShooterWaitForRPM())
                     .withTimeout(SWERVE.AUTO_TARGET_LOCK_TIMEOUT_SECONDS),
-                new IntakeFeedToShooter().withTimeout(0.2)),
-            new VisionTargeting(4250)),
+                new IntakeFeedToShooter().withTimeout(0.4)),
+            new VisionTargeting(4450)),
 
         // Grab note 4 and shoot it
         new ParallelDeadlineGroup(
@@ -56,12 +55,12 @@ public class Close3AndMiddleCenterline extends SequentialCommandGroup {
                 new DriveChoreoPath("CenterSub5Note2.3", false, false).deadlineWith(new Pickup()),
                 new ParallelCommandGroup(new TargetLockOnSpeaker(true), new ShooterWaitForRPM())
                     .withTimeout(SWERVE.AUTO_TARGET_LOCK_TIMEOUT_SECONDS),
-                new IntakeFeedToShooter().withTimeout(0.2)),
+                new IntakeFeedToShooter().withTimeout(0.4)),
             new VisionTargeting(4250)));
   }
 
   @Override
   public String toString() {
-    return "Close 3 And Middle Centerline - 5 Total Notes";
+    return "Close 3 And Middle Centerline";
   }
 }
