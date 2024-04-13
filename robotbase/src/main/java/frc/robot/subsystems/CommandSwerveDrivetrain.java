@@ -180,7 +180,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
       public void accept(ChassisSpeeds speeds) {
 
         double rotation = getAutonSpeakerLockRadiansPerSecond();
-        if (Double.isNaN(rotation)) {
+        if (!Double.isNaN(rotation)) {
           speeds.omegaRadiansPerSecond = rotation;
         }
 

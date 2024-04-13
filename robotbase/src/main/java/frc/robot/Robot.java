@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.LEDs.LEDsSetColor;
 import frc.robot.commands.drive.ForceGyroZero;
 import frc.robot.commands.drive.SetCoastOnDisable;
 import frc.robot.commands.state.GetAlliance;
@@ -40,7 +39,6 @@ import frc.robot.subsystems.ShooterPhotonCamera;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private Command m_setCoastOnDisable;
-  private Command m_setLEDsOrange;
   private Command m_allianceGetter;
   private Command m_forceGyroZero;
   private RobotContainer m_robotContainer;
@@ -129,8 +127,7 @@ public class Robot extends TimedRobot {
     m_setCoastOnDisable.schedule();
     m_allianceGetter = new GetAlliance();
     m_allianceGetter.schedule();
-    m_setLEDsOrange = new LEDsSetColor(LEDs.MELTDOWN_ORANGE);
-    m_setLEDsOrange.schedule();
+    leds.setIdle();
 
     DataLogManager.logNetworkTables(true); // enable/disable automatic NetworksTable Logging
     DataLogManager.start("", "", 1.0); // defaults, flush to flash every 0.25 seconds
