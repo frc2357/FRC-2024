@@ -17,7 +17,7 @@ public class TargetLockOnSpeaker extends Command {
   }
 
   public TargetLockOnSpeaker(boolean stopOnEnd) {
-    m_startingPipeline = Robot.intakeCam.getPipeline();
+    m_startingPipeline = Robot.shooterCam.getPipeline();
     addRequirements(Robot.swerve, Robot.shooterCam);
   }
 
@@ -72,6 +72,6 @@ public class TargetLockOnSpeaker extends Command {
   public void end(boolean interupted) {
     System.out.println("[TargetLockOnSpeaker] WAS INTERRUPTED: " + interupted);
     Robot.swerve.stopMotors();
-    Robot.intakeCam.setPipeline(m_startingPipeline);
+    Robot.shooterCam.setPipeline(m_startingPipeline);
   }
 }

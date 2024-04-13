@@ -2,13 +2,13 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CAN_ID;
 import frc.robot.Constants.DIGITAL_INPUT;
 import frc.robot.Constants.INTAKE;
-import frc.robot.Robot;
-import frc.robot.state.RobotState.NoteState;
 
 public class Intake extends SubsystemBase {
   private CANSparkMax m_topIntakeMotor;
@@ -16,11 +16,15 @@ public class Intake extends SubsystemBase {
 
   private DigitalInput m_beamBreakSensor;
 
+  private Debouncer m_debouncer;
+
   public Intake() {
     m_topIntakeMotor = new CANSparkMax(CAN_ID.TOP_INTAKE_MOTOR_ID, MotorType.kBrushless);
     m_bottomIntakeMotor = new CANSparkMax(CAN_ID.BOTTOM_INTAKE_MOTOR_ID, MotorType.kBrushless);
 
     m_beamBreakSensor = new DigitalInput(DIGITAL_INPUT.INTAKE_BEAM_BREAK_ID);
+
+    m_debouncer = new Debouncer(INTAKE.DEBOUNCE_TIME_SECONDS, DebounceType.kBoth);
 
     configure();
   }
@@ -51,7 +55,7 @@ public class Intake extends SubsystemBase {
   }
 
   public boolean isBeamBroken() {
-    return !m_beamBreakSensor.get();
+    return m_debouncer.calculate(!m_beamBreakSensor.get());
   }
 
   public void stop() {
@@ -65,13 +69,5 @@ public class Intake extends SubsystemBase {
 
   public double getBottomCurrent() {
     return m_bottomIntakeMotor.getOutputCurrent();
-  }
-
-  @Override
-  public void periodic() {
-    if (Robot.state.isNote(NoteState.NOTE_STOWED) && !isBeamBroken()) {
-      Robot.leds.setIdle();
-      Robot.state.setNoteState(NoteState.EMPTY);
-    }
   }
 }

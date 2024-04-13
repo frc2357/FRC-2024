@@ -25,8 +25,6 @@ import frc.robot.commands.intake.IntakeStop;
 import frc.robot.commands.pivot.PivotHoldAngle;
 import frc.robot.commands.shooter.ShooterSetRPM;
 import frc.robot.commands.shooter.ShooterStop;
-import frc.robot.commands.state.SetNoteState;
-import frc.robot.state.RobotState.NoteState;
 
 public class AutoClimb extends SequentialCommandGroup {
   private static class Print extends Command {
@@ -169,8 +167,7 @@ public class AutoClimb extends SequentialCommandGroup {
                 new ParallelDeadlineGroup(
                     new WaitCommand(SCORING.SECONDS_PRELOAD_NOTE_FOR_TRAP),
                     new EndAffectorSetSpeed(END_AFFECTOR.PRELOAD_SPEED)),
-                new EndAffectorStop(),
-                new SetNoteState(NoteState.END_AFFECTOR_PRELOAD)),
+                new EndAffectorStop()),
 
             // Hold until end of above command
             new PivotHoldAngle(PIVOT.END_AFFECTOR_PRELOAD_ANGLE)),
