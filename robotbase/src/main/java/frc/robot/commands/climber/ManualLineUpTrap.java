@@ -143,15 +143,12 @@ public class ManualLineUpTrap extends SequentialCommandGroup {
         new Print("Ready to climb! Co-driver using right trigger, press Y when in position"),
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(
-                new ParallelDeadlineGroup(
-                    new PressToContinue(scoreButton),
-                    new AdjustNote()),
+                new ParallelDeadlineGroup(new PressToContinue(scoreButton), new AdjustNote()),
                 new Print("Scoring note!"),
                 new EndAffectorSetSpeed(END_AFFECTOR.SCORE_SPEED_TRAP),
                 new PressToContinue(scoreButton),
                 new EndAffectorStop()),
-            new ClimberLevelClimb()
-        ),
+            new ClimberLevelClimb()),
         new SequentialCommandGroup(
             new ClimberSpeed(-0.25, -0.25).withTimeout(1),
             new ExtensionArmMoveToRotations(EXTENSION_ARM.POST_TRAP_SCORE_ROTATIONS),

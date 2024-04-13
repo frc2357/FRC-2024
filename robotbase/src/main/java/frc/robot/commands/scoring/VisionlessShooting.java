@@ -6,9 +6,6 @@ import frc.robot.commands.shooter.ShooterSetRPM;
 
 public class VisionlessShooting extends ParallelDeadlineGroup {
   public VisionlessShooting(double shooterRPM, double pivotAngle) {
-    super(
-      new ShooterSetRPM(shooterRPM), 
-      new PivotHoldAngle(pivotAngle, true, true)
-    );
+    super(new ShooterSetRPM(shooterRPM), new PivotHoldAngle(pivotAngle, true, true));
   }
 }
