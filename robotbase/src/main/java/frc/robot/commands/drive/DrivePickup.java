@@ -65,7 +65,7 @@ public class DrivePickup extends Command {
     }
 
     boolean pitchInRange = targetPitch >= -16.0 && targetPitch <= 5.0;
-    boolean yawInRange = targetYaw >= -23.0 && targetYaw <= 23.0;
+    boolean yawInRange = Math.abs(targetYaw) <= Constants.SWERVE.AUTO_INTAKE_YAW_TOLERANCE;
     if (targetPitch < m_lastPitch && m_lastPitch < -16.0) {
       m_gotIt = true;
     }

@@ -72,6 +72,7 @@ public final class Constants {
     public static final double STATIC_FEEDFORWARD_METERS_PER_SECOND = 0.094545;
 
     // Gamepiece tracking
+    public static final double AUTO_INTAKE_YAW_TOLERANCE = 18;
     public static final double AUTO_TRANSLATE_DEBOUNCE_SECONDS = 0.1;
     public static final double PIECE_TRACKING_TRANSLATION_SPEED = 0;
     public static final double PIECE_DEBOUNCE_SECONDS = 0.1;
@@ -121,6 +122,8 @@ public final class Constants {
 
     public static final double STAGE_YAW_SETPOINT = 0.0;
     public static final double STAGE_PITCH_SETPOINT = 12.2;
+
+    public static final double FEEDING_TARGET_LOCK_YAW_SETPOINT = 5;
 
     /*
      * s = TranslateToGamepiece.m_startingSpeed
@@ -233,7 +236,7 @@ public final class Constants {
     public static final double BOTTOM_MOTOR_D = 0.0;
     public static final double BOTTOM_MOTOR_FF = 0.00018;
 
-    public static final double RPM_TOLERANCE = 100;
+    public static final double RPM_TOLERANCE = 250;
   }
 
   public static final class INTAKE {
@@ -411,7 +414,7 @@ public final class Constants {
     public static final double SECONDS_PRELOAD_NOTE = 1;
     public static final double SECONDS_PRELOAD_NOTE_FOR_TRAP = 0;
 
-    public static final double SECONDS_AMP_SCORE = 1;
+    public static final double SECONDS_AMP_SCORE = 0.5;
     public static final double AMP_SHOT_SHOOTER_RPMS = 1250;
     public static final double AMP_SHOT_PIVOT_ANGLE = 52;
 

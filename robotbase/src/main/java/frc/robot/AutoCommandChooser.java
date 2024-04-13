@@ -1,7 +1,5 @@
 package frc.robot;
 
-import java.util.HashMap;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -19,6 +17,7 @@ import frc.robot.commands.auto.paths.RightClose1Speaker;
 import frc.robot.commands.auto.paths.ShootAndNothing;
 import frc.robot.commands.auto.paths.SourceSide4Note;
 import frc.robot.commands.util.VariableWaitCommand;
+import java.util.HashMap;
 
 public class AutoCommandChooser {
   private String[] m_autoNames;

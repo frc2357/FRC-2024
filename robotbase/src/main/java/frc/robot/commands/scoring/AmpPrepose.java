@@ -8,7 +8,6 @@ import frc.robot.Constants.END_AFFECTOR;
 import frc.robot.Constants.EXTENSION_ARM;
 import frc.robot.Constants.PIVOT;
 import frc.robot.Constants.SHOOTER;
-import frc.robot.commands.endAffector.EndAffectorRunPastTopEdge;
 import frc.robot.commands.endAffector.EndAffectorSetSpeed;
 import frc.robot.commands.endAffector.EndAffectorStop;
 import frc.robot.commands.extensionArm.ExtensionArmMoveToRotations;
@@ -17,7 +16,6 @@ import frc.robot.commands.pivot.PivotHoldAngle;
 import frc.robot.commands.shooter.ShooterSetRPM;
 import frc.robot.commands.state.SetNoteState;
 import frc.robot.state.RobotState.NoteState;
-import frc.robot.util.TurnOnProximitySensor;
 
 public class AmpPrepose extends SequentialCommandGroup {
   public AmpPrepose() {

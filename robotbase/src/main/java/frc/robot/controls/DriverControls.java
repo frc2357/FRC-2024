@@ -9,8 +9,10 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Robot;
 import frc.robot.commands.climber.ManualLineUpTrap;
+import frc.robot.commands.drive.TargetLockForFeeding;
 import frc.robot.commands.drive.TargetLockOnSpeaker;
 import frc.robot.commands.intake.CancelIntakeOnEnd;
 import frc.robot.commands.intake.IntakeFeedToShooter;
@@ -18,6 +20,7 @@ import frc.robot.commands.pickup.VisionPickup;
 import frc.robot.commands.scoring.AmpSequenceConditional;
 import frc.robot.commands.scoring.VisionTargeting;
 import frc.robot.commands.scoring.VisionlessShooting;
+import frc.robot.commands.scoring.VisionlessShootingWithFeeding;
 import frc.robot.commands.shooter.ShooterWaitForRPM;
 import frc.robot.commands.source.SourceIntakeFromShooter;
 import frc.robot.controls.util.AxisInterface;
@@ -84,26 +87,41 @@ public class DriverControls implements RumbleInterface {
           return getRightStickYAxis();
         };
 
+    Trigger noLeftBumper = m_leftBumper.negate();
+
     m_backButton.onTrue(new InstantCommand(() -> Robot.swerve.zeroGyro(false)));
     m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.zeroGyro(true)));
 
-    m_aButton.whileTrue(new VisionlessShooting(Robot.shooterCurve[1][2], Robot.shooterCurve[1][1]));
-    m_bButton.whileTrue(new VisionlessShooting(Robot.shooterCurve[4][2], Robot.shooterCurve[4][1]));
+    m_aButton.whileTrue(
+        new VisionlessShootingWithFeeding(Robot.shooterCurve[1][2], Robot.shooterCurve[1][1]));
+    m_bButton.whileTrue(
+        new VisionlessShootingWithFeeding(Robot.shooterCurve[4][2], Robot.shooterCurve[4][1]));
 
     m_leftTrigger.onTrue(new VisionPickup());
     m_leftTrigger.toggleOnFalse(new CancelIntakeOnEnd());
 
-    m_leftBumper.whileTrue(new SourceIntakeFromShooter());
+    m_leftBumper.whileTrue(
+        new ParallelCommandGroup(new TargetLockForFeeding(), new VisionlessShooting(3750, 38)));
+    m_leftBumper
+        .and(m_rightTriggerShoot)
+        .whileTrue(
+            new SequentialCommandGroup(
+                new ShooterWaitForRPM(), new IntakeFeedToShooter().withTimeout(0.25)));
 
     m_yButton.onTrue(new ManualLineUpTrap(m_yButton, Robot.codriverControls.m_aButton));
-    m_xButton.whileTrue(new VisionlessShooting(4000, 38));
+    m_xButton.whileTrue(new SourceIntakeFromShooter());
 
     // scoring
     m_rightBumper.onTrue(new AmpSequenceConditional());
 
-    m_rightTriggerPrime.whileTrue(
-        new ParallelCommandGroup(new VisionTargeting(), new TargetLockOnSpeaker()));
-    m_rightTriggerShoot.whileTrue(new SequentialCommandGroup(new ShooterWaitForRPM(), new IntakeFeedToShooter()));
+    m_rightTriggerPrime
+        .and(noLeftBumper)
+        .whileTrue(new ParallelCommandGroup(new VisionTargeting(), new TargetLockOnSpeaker()));
+    m_rightTriggerShoot
+        .and(noLeftBumper)
+        .whileTrue(
+            new SequentialCommandGroup(
+                new ShooterWaitForRPM().withTimeout(0.75), new IntakeFeedToShooter()));
   }
 
   public double getX() {
