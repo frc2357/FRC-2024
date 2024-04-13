@@ -11,13 +11,14 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Robot;
+import frc.robot.commands.LEDs.LEDsSetIdle;
 import frc.robot.commands.climber.ManualLineUpTrap;
 import frc.robot.commands.drive.TargetLockForFeeding;
 import frc.robot.commands.drive.TargetLockOnSpeaker;
 import frc.robot.commands.intake.CancelIntakeOnEnd;
 import frc.robot.commands.intake.IntakeFeedToShooter;
 import frc.robot.commands.pickup.VisionPickup;
-import frc.robot.commands.scoring.AmpSequenceConditional;
+import frc.robot.commands.scoring.AmpSequence;
 import frc.robot.commands.scoring.VisionTargeting;
 import frc.robot.commands.scoring.VisionlessShooting;
 import frc.robot.commands.scoring.VisionlessShootingWithFeeding;
@@ -112,7 +113,7 @@ public class DriverControls implements RumbleInterface {
     m_xButton.whileTrue(new SourceIntakeFromShooter());
 
     // scoring
-    m_rightBumper.onTrue(new AmpSequenceConditional());
+    m_rightBumper.onTrue(new AmpSequence(m_rightBumper));
 
     m_rightTriggerPrime
         .and(noLeftBumper)
@@ -121,7 +122,9 @@ public class DriverControls implements RumbleInterface {
         .and(noLeftBumper)
         .whileTrue(
             new SequentialCommandGroup(
-                new ShooterWaitForRPM().withTimeout(0.75), new IntakeFeedToShooter()));
+                new ShooterWaitForRPM().withTimeout(0.75),
+                new IntakeFeedToShooter(),
+                new LEDsSetIdle()));
   }
 
   public double getX() {

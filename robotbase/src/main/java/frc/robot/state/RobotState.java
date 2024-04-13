@@ -10,46 +10,22 @@ public class RobotState {
     DISABLED, // Robot is in disabled mode and no alliance is selected
   }
 
-  public static enum NoteState {
-    EMPTY, // Robot has nothing in it
-    NOTE_IN_INTAKE,
-    NOTE_PAST_BEAM_BREAK,
-    NOTE_STOWED,
-    END_AFFECTOR_PRELOAD
-  };
-
   public static enum DriveControlState {
     FIELD_RELATIVE, // Manual control of the robot is field relative
     ROBOT_RELATIVE, // Manual control of the robot is robot centric
     TARGET_LOCK
   }
 
-  public static enum AutoClimbState {
-    NONE
-  }
-
   private Alliance m_alliance;
   private State m_currentState;
-  private NoteState m_currentNoteState;
-  private AutoClimbState m_currentClimbState;
   private DriveControlState m_currentDriveControlState;
   private PhotonVisionCamera m_targetLockCamera;
 
   public RobotState() {
     m_alliance = null;
     m_currentState = State.INIT;
-    m_currentNoteState = NoteState.EMPTY;
-    m_currentClimbState = AutoClimbState.NONE;
     m_currentDriveControlState = DriveControlState.FIELD_RELATIVE;
     m_targetLockCamera = Robot.shooterCam;
-  }
-
-  public void setNoteState(NoteState state) {
-    m_currentNoteState = state;
-  }
-
-  public boolean isNote(NoteState state) {
-    return m_currentNoteState == state;
   }
 
   public boolean isRobot(State state) {
