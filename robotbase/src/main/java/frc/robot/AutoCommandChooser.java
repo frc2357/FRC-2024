@@ -16,6 +16,7 @@ import frc.robot.commands.auto.paths.MiddleClose1Speaker;
 import frc.robot.commands.auto.paths.RightClose1Speaker;
 import frc.robot.commands.auto.paths.ShootAndNothing;
 import frc.robot.commands.auto.paths.SourceSide4Note;
+import frc.robot.commands.drive.DriveChoreoPath;
 import frc.robot.commands.util.VariableWaitCommand;
 import java.util.HashMap;
 
@@ -37,6 +38,7 @@ public class AutoCommandChooser {
       new RightClose1Speaker(),
       new ShootAndNothing(),
       new Close3AndRUN(),
+      new DriveChoreoPath("SourceSide4Note1.1", true, false)
     };
 
     HashMap<String, Command> commandMap = new HashMap<String, Command>(autoCommands.length + 1);
