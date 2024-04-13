@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -17,12 +19,16 @@ public class EndAffector extends SubsystemBase {
   private DigitalInput m_proximitySensor;
   private DigitalOutput m_proximitySensorPower;
 
+  private Debouncer m_debouncer;
+
   public EndAffector() {
     m_motor = new CANSparkMax(CAN_ID.END_AFFECTOR_MOTOR_ID, MotorType.kBrushed);
 
     m_proximitySensor = new DigitalInput(DIGITAL_INPUT.END_AFFECTOR_PROXIMITY_SENSOR_ID);
     m_proximitySensorPower =
         new DigitalOutput(DIGITAL_INPUT.END_AFFECTOR_PROXIMITY_SENSOR_POWER_ID);
+
+    m_debouncer = new Debouncer(END_AFFECTOR.DEBOUNCE_TIME_SECONDS, DebounceType.kBoth);
 
     configure();
   }
@@ -49,7 +55,7 @@ public class EndAffector extends SubsystemBase {
   }
 
   public boolean getProximitySensor() {
-    return !m_proximitySensor.get();
+    return m_debouncer.calculate(!m_proximitySensor.get());
   }
 
   public void setProximitySensorPower(boolean on) {
