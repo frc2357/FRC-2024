@@ -56,7 +56,7 @@ public class ManualLineUpTrap extends SequentialCommandGroup {
       double axisSpeed = 0.0;
 
       if (Robot.codriverControls.getLeftStickY() != 0) {
-        axisSpeed = Robot.codriverControls.getLeftStickY();
+        axisSpeed = -Robot.codriverControls.getLeftStickY();
       }
 
       Robot.endAffector.setAxisSpeed(axisSpeed);
@@ -143,17 +143,20 @@ public class ManualLineUpTrap extends SequentialCommandGroup {
         new Print("Ready to climb! Co-driver using right trigger, press Y when in position"),
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(
-                new PressToContinue(scoreButton),
+                new ParallelDeadlineGroup(
+                    new PressToContinue(scoreButton),
+                    new AdjustNote()),
                 new Print("Scoring note!"),
                 new EndAffectorSetSpeed(END_AFFECTOR.SCORE_SPEED_TRAP),
                 new PressToContinue(scoreButton),
                 new EndAffectorStop()),
-            new ClimberLevelClimb()),
+            new ClimberLevelClimb()
+        ),
         new SequentialCommandGroup(
             new ClimberSpeed(-0.25, -0.25).withTimeout(1),
             new ExtensionArmMoveToRotations(EXTENSION_ARM.POST_TRAP_SCORE_ROTATIONS),
             new Print("Retracted extension arm.")),
         new Print("Continue to adjust climb as needed."),
-        new ParallelCommandGroup(new ClimberLevelClimb(), new AdjustNote()));
+        new ParallelCommandGroup(new ClimberLevelClimb()));
   }
 }
