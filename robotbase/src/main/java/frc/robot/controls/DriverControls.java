@@ -124,7 +124,8 @@ public class DriverControls implements RumbleInterface {
             new SequentialCommandGroup(
                 new ShooterWaitForRPM().withTimeout(0.75),
                 new IntakeFeedToShooter(),
-                new LEDsSetIdle()));  }
+                new LEDsSetIdle()));
+  }
 
   public double getX() {
     return -modifyAxis(m_controller.getLeftX());
