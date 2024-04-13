@@ -123,7 +123,15 @@ public final class Constants {
     public static final double STAGE_YAW_SETPOINT = 0.0;
     public static final double STAGE_PITCH_SETPOINT = 12.2;
 
+    // Passing
     public static final double FEEDING_TARGET_LOCK_YAW_SETPOINT = 5;
+    public static final double PASSING_MID_FIELD_ROBOT_YAW_TOLERANCE = 30;
+    public static final double PASSING_WALL_SIDE_ROBOT_YAW_TOLERANCE = 40;
+    public static final double RED_PASSING_MID_FIELD_YAW_SETPOINT = 5;
+    public static final double RED_PASSING_WALL_SIDE_YAW_SETPOINT = 0;
+
+    public static final double BLUE_PASSING_MID_FIELD_YAW_SETPOINT = -20;
+    public static final double BLUE_PASSING_WALL_SIDE_YAW_SETPOINT = -10;
 
     /*
      * s = TranslateToGamepiece.m_startingSpeed
@@ -242,6 +250,8 @@ public final class Constants {
   public static final class INTAKE {
     public static final double AXIS_MAX_SPEED = 0.8;
 
+    public static final double DEBOUNCE_TIME_SECONDS = 0.04;
+
     public static final double FEED_TO_SHOOTER_TIMEOUT = 0;
     public static final double FLOOR_INTAKE_REVERSE_TIMEOUT = 0.1;
 
@@ -346,6 +356,8 @@ public final class Constants {
   public static final class END_AFFECTOR {
     public static final boolean IS_INVERTED = false;
 
+    public static final double DEBOUNCE_TIME_SECONDS = 0.04;
+
     public static final IdleMode IDLE_MODE = IdleMode.kBrake;
 
     public static final double INTAKE_SPEED = -1;
@@ -397,7 +409,7 @@ public final class Constants {
     public static final double NOTE_STOW_ROTATIONS = 2;
     public static final double AMP_PREPOSE_ROTATIONS = 3.75;
     public static final double AMP_SHOT_PREPOSE_ROTATIONS = 4.25;
-    public static final double AMP_SCORE_ROTATIONS = 5.95;
+    public static final double AMP_SCORE_ROTATIONS = 5.9;
     public static final double STAGE_LINE_UP_ROTATIONS = 1.83;
     public static final double TRAP_PREPOSE_ROTATIONS = 4.0;
     public static final double TRAP_CLIMB_ROTATIONS = 7.0;
