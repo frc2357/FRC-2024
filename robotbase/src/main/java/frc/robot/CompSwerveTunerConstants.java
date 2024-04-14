@@ -56,7 +56,7 @@ public class CompSwerveTunerConstants {
   private static final boolean kInvertRightSide = true;
 
   private static final String kCANbusName = "CANivore";
-  private static final int kPigeonId = 5; 
+  private static final int kPigeonId = 5;
 
   // These are only used for simulation
   private static final double kSteerInertia = 0.00001;

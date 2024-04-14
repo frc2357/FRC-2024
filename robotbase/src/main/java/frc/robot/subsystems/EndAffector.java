@@ -55,7 +55,8 @@ public class EndAffector extends SubsystemBase {
   }
 
   public boolean getProximitySensor() {
-    return m_debouncer.calculate(!m_proximitySensor.get());
+    // return m_debouncer.calculate(!m_proximitySensor.get());
+    return !m_proximitySensor.get();
   }
 
   public void setProximitySensorPower(boolean on) {

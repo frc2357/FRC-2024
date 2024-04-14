@@ -1,14 +1,13 @@
 package frc.robot.commands.auto.paths;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Robot;
 import frc.robot.Constants.SWERVE;
+import frc.robot.Robot;
 import frc.robot.commands.drive.DriveChoreoPath;
 import frc.robot.commands.drive.TargetLockOnSpeaker;
 import frc.robot.commands.drive.TranslateToGamepiece;
@@ -25,7 +24,10 @@ public class SourceSide4Note extends SequentialCommandGroup {
     super(
         // Preload on the move (future Tyson problem) + Drive to note 2
         new ParallelDeadlineGroup(
-            new ConditionalCommand(new DriveChoreoPath("SourceSide4Note1Blue.1", true), new DriveChoreoPath("SourceSide4Note1Red.1", true), () -> Robot.state.getAlliance() == Alliance.Blue),
+            new ConditionalCommand(
+                new DriveChoreoPath("SourceSide4Note1Blue.1", true),
+                new DriveChoreoPath("SourceSide4Note1Red.1", true),
+                () -> Robot.state.getAlliance() == Alliance.Blue),
             new SequentialCommandGroup(
                 new WaitCommand(0.75), new IntakeFeedToShooter().withTimeout(0.25)),
             new PivotHoldAngle(35.5),

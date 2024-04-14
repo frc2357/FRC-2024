@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.INTAKE_PHOTON_CAMERA;
 import frc.robot.Constants.SWERVE;
-import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.util.Utility;
 
@@ -22,9 +21,10 @@ public class TranslateToGamepiece extends Command {
   private double m_startRotation;
   private double m_timeToRunSeconds;
 
-  public TranslateToGamepiece(double startingSpeed){
+  public TranslateToGamepiece(double startingSpeed) {
     this(startingSpeed, SWERVE.TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS);
   }
+
   public TranslateToGamepiece(double startingSpeed, double timeToRunSeconds) {
     m_startingSpeed = startingSpeed;
     m_yawController = SWERVE.VISION_X_TRANSLATION_PID_CONTROLLER;
@@ -43,8 +43,7 @@ public class TranslateToGamepiece extends Command {
     // Initialize decel variables
     m_decelSlope =
         (SWERVE.TRANSLATE_TO_GAMEPIECE_MIN_SPEED_METERS_PER_SECOND - m_startingSpeed)
-            / (m_timeToRunSeconds
-                * SWERVE.TRANSLATE_TO_GAMEPIECE_START_DECEL_THRESHOLD);
+            / (m_timeToRunSeconds * SWERVE.TRANSLATE_TO_GAMEPIECE_START_DECEL_THRESHOLD);
     m_decelIntercept =
         m_startingSpeed
             - m_decelSlope
