@@ -1,10 +1,13 @@
 package frc.robot.commands.auto.paths;
 
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.SWERVE;
+import frc.robot.Robot;
 import frc.robot.commands.drive.DriveChoreoPath;
 import frc.robot.commands.drive.TargetLockOnSpeaker;
 import frc.robot.commands.drive.TranslateToGamepiece;
@@ -21,10 +24,13 @@ public class SourceSide4Note extends SequentialCommandGroup {
     super(
         // Preload on the move (future Tyson problem) + Drive to note 2
         new ParallelDeadlineGroup(
-            new DriveChoreoPath("SourceSide4Note1.1", true),
+            new ConditionalCommand(
+                new DriveChoreoPath("SourceSide4Note1Blue.1", true),
+                new DriveChoreoPath("SourceSide4Note1Red.1", true),
+                () -> Robot.state.getAlliance() == Alliance.Blue),
             new SequentialCommandGroup(
                 new WaitCommand(0.75), new IntakeFeedToShooter().withTimeout(0.25)),
-            new PivotHoldAngle(37),
+            new PivotHoldAngle(35.5),
             new ShooterSetRPM(4200)),
         new ShooterStop(),
 
@@ -43,7 +49,7 @@ public class SourceSide4Note extends SequentialCommandGroup {
 
         // Drive to and pickup third note
         new DriveChoreoPath("SourceSide4Note2.2", false),
-        new ParallelDeadlineGroup(new TranslateToGamepiece(3), new Pickup()),
+        new ParallelDeadlineGroup(new TranslateToGamepiece(3, 0.9), new Pickup()),
 
         // Drive back with note 3 and shoot
         new ParallelDeadlineGroup(
@@ -55,12 +61,12 @@ public class SourceSide4Note extends SequentialCommandGroup {
             new VisionTargeting(4800)),
         new ShooterStop(),
         new DriveChoreoPath("SourceSide4Note3.2", false),
-        new ParallelDeadlineGroup(new TranslateToGamepiece(3), new Pickup()),
+        new ParallelDeadlineGroup(new TranslateToGamepiece(3, 0.9), new Pickup()),
 
         // Drive back with note 4 and shoot
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(
-                new DriveChoreoPath("SourceSide4Note4.1", false).deadlineWith(new Pickup()),
+                new DriveChoreoPath("SourceSide4Note4.1", false, true).deadlineWith(new Pickup()),
                 new ParallelCommandGroup(new TargetLockOnSpeaker(true), new ShooterWaitForRPM())
                     .withTimeout(SWERVE.AUTO_TARGET_LOCK_TIMEOUT_SECONDS),
                 new IntakeFeedToShooter().withTimeout(0.2)),

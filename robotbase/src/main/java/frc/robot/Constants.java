@@ -250,7 +250,7 @@ public final class Constants {
   public static final class INTAKE {
     public static final double AXIS_MAX_SPEED = 0.8;
 
-    public static final double DEBOUNCE_TIME_SECONDS = 0.04;
+    public static final double DEBOUNCE_TIME_SECONDS = 0.02;
 
     public static final double FEED_TO_SHOOTER_TIMEOUT = 0;
     public static final double FLOOR_INTAKE_REVERSE_TIMEOUT = 0.1;
@@ -356,7 +356,7 @@ public final class Constants {
   public static final class END_AFFECTOR {
     public static final boolean IS_INVERTED = false;
 
-    public static final double DEBOUNCE_TIME_SECONDS = 0.04;
+    public static final double DEBOUNCE_TIME_SECONDS = 0.02;
 
     public static final IdleMode IDLE_MODE = IdleMode.kBrake;
 

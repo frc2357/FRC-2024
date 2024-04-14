@@ -19,12 +19,18 @@ public class TranslateToGamepiece extends Command {
   private double m_decelIntercept;
   private boolean m_targetBad = false;
   private double m_startRotation;
+  private double m_timeToRunSeconds;
 
   public TranslateToGamepiece(double startingSpeed) {
+    this(startingSpeed, SWERVE.TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS);
+  }
+
+  public TranslateToGamepiece(double startingSpeed, double timeToRunSeconds) {
     m_startingSpeed = startingSpeed;
     m_yawController = SWERVE.VISION_X_TRANSLATION_PID_CONTROLLER;
     m_rotationController = SWERVE.PIGEON_ROTATION_PID_CONTROLLER;
     m_timer = new Timer();
+    m_timeToRunSeconds = timeToRunSeconds;
     addRequirements(Robot.swerve, Robot.intakeCam);
   }
 
@@ -37,12 +43,11 @@ public class TranslateToGamepiece extends Command {
     // Initialize decel variables
     m_decelSlope =
         (SWERVE.TRANSLATE_TO_GAMEPIECE_MIN_SPEED_METERS_PER_SECOND - m_startingSpeed)
-            / (SWERVE.TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS
-                * SWERVE.TRANSLATE_TO_GAMEPIECE_START_DECEL_THRESHOLD);
+            / (m_timeToRunSeconds * SWERVE.TRANSLATE_TO_GAMEPIECE_START_DECEL_THRESHOLD);
     m_decelIntercept =
         m_startingSpeed
             - m_decelSlope
-                * (SWERVE.TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS
+                * (m_timeToRunSeconds
                     - SWERVE.TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS
                         * SWERVE.TRANSLATE_TO_GAMEPIECE_START_DECEL_THRESHOLD);
 
@@ -100,7 +105,7 @@ public class TranslateToGamepiece extends Command {
 
   @Override
   public boolean isFinished() {
-    return m_timer.hasElapsed(SWERVE.TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS);
+    return m_timer.hasElapsed(m_timeToRunSeconds);
   }
 
   @Override
@@ -110,7 +115,7 @@ public class TranslateToGamepiece extends Command {
 
   private double calculateYSpeed() {
     double secondsElapsed = (System.currentTimeMillis() - m_startTime) / 1000.0;
-    double percentDone = secondsElapsed / SWERVE.TRANSLATE_TO_GAMEPIECE_Y_DURATION_SECONDS;
+    double percentDone = secondsElapsed / m_timeToRunSeconds;
     if (1 - percentDone >= SWERVE.TRANSLATE_TO_GAMEPIECE_START_DECEL_THRESHOLD) {
       return m_startingSpeed;
     }
