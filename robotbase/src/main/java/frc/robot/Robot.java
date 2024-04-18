@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.drive.CrossWheels;
 import frc.robot.commands.drive.ForceGyroZero;
 import frc.robot.commands.drive.SetCoastOnDisable;
 import frc.robot.commands.state.GetAlliance;
@@ -69,7 +70,7 @@ public class Robot extends TimedRobot {
     {11.15, 60, 4000, -1.1}, // center Subwoofer
     {5, 52, 4000, -1.1}, // center Subwoofer
     {-1, 44.5, 4000, -2.6}, // Between Subwoofer and Podium
-    {-7.4, 35, 4000, -2.1}, // Podium
+    {-7.0, 35, 4000, -2.1}, // Podium
     {-13.6, 28, 4900, -1}, // Stage Apriltag
     {-16, 26.75, 5500, 0}, // Wing line
     {-17.75, 26.75, 5500, 0}, // Wing line
@@ -104,6 +105,7 @@ public class Robot extends TimedRobot {
 
     // CHANGE TO FALSE TO USE CUBE BOT. DO THIS
     swerve = true ? CompSwerveTunerConstants.DriveTrain : CubeBotTunerConstants.DriveTrain;
+    SmartDashboard.putData("Cross Wheels Into X", new CrossWheels());
     shooter = new Shooter();
     pivot = new Pivot();
     intake = new Intake();

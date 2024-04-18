@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMax;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CAN_ID;
 import frc.robot.Constants.DIGITAL_INPUT;
@@ -69,5 +70,11 @@ public class Intake extends SubsystemBase {
 
   public double getBottomCurrent() {
     return m_bottomIntakeMotor.getOutputCurrent();
+  }
+
+  @Override
+  public void periodic() {
+    SmartDashboard.putBoolean("Top Intake Running", m_topIntakeMotor.getEncoder().getVelocity() >= 100);
+    SmartDashboard.putBoolean("Bottom Intake Running", m_bottomIntakeMotor.getEncoder().getVelocity() >= 100);
   }
 }

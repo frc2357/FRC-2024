@@ -154,6 +154,9 @@ public class ManualLineUpTrap extends SequentialCommandGroup {
             new ExtensionArmMoveToRotations(EXTENSION_ARM.POST_TRAP_SCORE_ROTATIONS),
             new Print("Retracted extension arm.")),
         new Print("Continue to adjust climb as needed."),
-        new ParallelCommandGroup(new ClimberLevelClimb()));
+        new ParallelCommandGroup(
+          new ClimberLevelClimb(),
+          new AdjustNote()
+        ));
   }
 }

@@ -67,16 +67,12 @@ public class EndAffector extends SubsystemBase {
     m_motor.stopMotor();
   }
 
-  public void getMotorSpeed() {
-    m_motor.get();
-  }
-
   public double getMotorAmperage() {
     return m_motor.getOutputCurrent();
   }
 
   @Override
   public void periodic() {
-    SmartDashboard.putBoolean("Prox", getProximitySensor());
+    SmartDashboard.putBoolean("End Affector Running", m_motor.get() >= 0.1);
   }
 }

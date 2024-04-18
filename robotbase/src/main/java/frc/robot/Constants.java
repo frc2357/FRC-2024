@@ -242,7 +242,7 @@ public final class Constants {
     public static final double BOTTOM_MOTOR_P = 0.0;
     public static final double BOTTOM_MOTOR_I = 0.0;
     public static final double BOTTOM_MOTOR_D = 0.0;
-    public static final double BOTTOM_MOTOR_FF = 0.00018;
+    public static final double BOTTOM_MOTOR_FF = 0.00019;
 
     public static final double RPM_TOLERANCE = 250;
   }
