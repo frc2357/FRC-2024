@@ -102,7 +102,7 @@ public class DriverControls implements RumbleInterface {
     m_leftTrigger.toggleOnFalse(new CancelIntakeOnEnd());
 
     m_leftBumper.whileTrue(
-        new ParallelCommandGroup(new TargetLockForFeeding(), new VisionlessShooting(3750, 38)));
+        new ParallelCommandGroup(new TargetLockForFeeding(), new VisionlessShooting(3650, 38)));
     m_leftBumper
         .and(m_rightTriggerShoot)
         .whileTrue(
