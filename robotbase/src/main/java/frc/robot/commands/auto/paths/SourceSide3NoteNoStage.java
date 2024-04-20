@@ -19,8 +19,8 @@ import frc.robot.commands.shooter.ShooterSetRPM;
 import frc.robot.commands.shooter.ShooterStop;
 import frc.robot.commands.shooter.ShooterWaitForRPM;
 
-public class SourceSide4Note extends SequentialCommandGroup {
-  public SourceSide4Note() {
+public class SourceSide3NoteNoStage extends SequentialCommandGroup {
+  public SourceSide3NoteNoStage() {
     super(
         // Preload on the move (future Tyson problem) + Drive to note 2
         new ParallelDeadlineGroup(
@@ -40,7 +40,8 @@ public class SourceSide4Note extends SequentialCommandGroup {
         // Drive back with note 2 and shoot
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(
-                new DriveChoreoPath("SourceSide4Note2.1", false).deadlineWith(new AutoPickup()),
+                new DriveChoreoPath("SourceSide4Note2NoStage.1", false)
+                    .deadlineWith(new AutoPickup()),
                 new ParallelCommandGroup(new TargetLockOnSpeaker(true), new ShooterWaitForRPM())
                     .withTimeout(SWERVE.AUTO_TARGET_LOCK_TIMEOUT_SECONDS),
                 new IntakeFeedToShooter().withTimeout(0.2)),
@@ -48,34 +49,23 @@ public class SourceSide4Note extends SequentialCommandGroup {
         new ShooterStop(),
 
         // Drive to and pickup third note
-        new DriveChoreoPath("SourceSide4Note2.2", false),
+        new DriveChoreoPath("SourceSide4Note2NoStage.2", false),
         new ParallelDeadlineGroup(new TranslateToGamepiece(3, 0.9), new AutoPickup()),
 
         // Drive back with note 3 and shoot
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(
-                new DriveChoreoPath("SourceSide4Note3.1", false).deadlineWith(new AutoPickup()),
+                new DriveChoreoPath("SourceSide4Note3NoStage.1", false)
+                    .deadlineWith(new AutoPickup()),
                 new TargetLockOnSpeaker(true).withTimeout(SWERVE.AUTO_TARGET_LOCK_TIMEOUT_SECONDS),
                 new ShooterWaitForRPM(),
                 new IntakeFeedToShooter().withTimeout(0.2)),
             new VisionTargeting(4800)),
-        new ShooterStop(),
-        new DriveChoreoPath("SourceSide4Note3.2", false),
-        new ParallelDeadlineGroup(new TranslateToGamepiece(3, 0.9), new AutoPickup()),
-
-        // Drive back with note 4 and shoot
-        new ParallelDeadlineGroup(
-            new SequentialCommandGroup(
-                new DriveChoreoPath("SourceSide4Note4.1", false, true)
-                    .deadlineWith(new AutoPickup()),
-                new ParallelCommandGroup(new TargetLockOnSpeaker(true), new ShooterWaitForRPM())
-                    .withTimeout(SWERVE.AUTO_TARGET_LOCK_TIMEOUT_SECONDS),
-                new IntakeFeedToShooter().withTimeout(0.2)),
-            new VisionTargeting(4800)));
+        new ShooterStop());
   }
 
   @Override
   public String toString() {
-    return "Source Side 4 Note";
+    return "Source Side 3 Note No Stage";
   }
 }

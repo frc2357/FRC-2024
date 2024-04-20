@@ -16,6 +16,7 @@ import frc.robot.commands.auto.paths.LeftClose1Speaker;
 import frc.robot.commands.auto.paths.MiddleClose1Speaker;
 import frc.robot.commands.auto.paths.RightClose1Speaker;
 import frc.robot.commands.auto.paths.ShootAndNothing;
+import frc.robot.commands.auto.paths.SourceSide3NoteNoStage;
 import frc.robot.commands.auto.paths.SourceSide4Note;
 import frc.robot.commands.util.VariableWaitCommand;
 import java.util.HashMap;
@@ -31,6 +32,7 @@ public class AutoCommandChooser {
   public AutoCommandChooser() {
     Command[] autoCommands = {
       new SourceSide4Note(),
+      new SourceSide3NoteNoStage(),
       new AmpSide4Note(),
       new AmpSide4NoteWallFirst(),
       new LeftClose1Speaker(),

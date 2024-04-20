@@ -9,7 +9,6 @@ import frc.robot.commands.drive.DriveChoreoPath;
 import frc.robot.commands.drive.TargetLockOnSpeaker;
 import frc.robot.commands.drive.TranslateToGamepiece;
 import frc.robot.commands.intake.IntakeFeedToShooter;
-import frc.robot.commands.intake.IntakeRepositionNote;
 import frc.robot.commands.scoring.VisionTargeting;
 import frc.robot.commands.shooter.ShooterWaitForRPM;
 

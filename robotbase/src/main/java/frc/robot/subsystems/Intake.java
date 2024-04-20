@@ -74,7 +74,9 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putBoolean("Top Intake Running", m_topIntakeMotor.getEncoder().getVelocity() >= 100);
-    SmartDashboard.putBoolean("Bottom Intake Running", m_bottomIntakeMotor.getEncoder().getVelocity() >= 100);
+    SmartDashboard.putBoolean(
+        "Top Intake Running", Math.abs(m_topIntakeMotor.getEncoder().getVelocity()) >= 50);
+    SmartDashboard.putBoolean(
+        "Bottom Intake Running", Math.abs(m_bottomIntakeMotor.getEncoder().getVelocity()) >= 50);
   }
 }

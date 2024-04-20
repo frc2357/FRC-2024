@@ -226,11 +226,11 @@ public final class Constants {
     public static final boolean TOP_MOTOR_INVERTED = false;
     public static final boolean BOTTOM_MOTOR_INVERTED = true;
 
-    public static final int TOP_MOTOR_STALL_LIMIT_AMPS = 40;
-    public static final int TOP_MOTOR_FREE_LIMIT_AMPS = 40;
+    public static final int TOP_MOTOR_STALL_LIMIT_AMPS = 50;
+    public static final int TOP_MOTOR_FREE_LIMIT_AMPS = 50;
 
-    public static final int BOTTOM_MOTOR_STALL_LIMIT_AMPS = 40;
-    public static final int BOTTOM_MOTOR_FREE_LIMIT_AMPS = 40;
+    public static final int BOTTOM_MOTOR_STALL_LIMIT_AMPS = 50;
+    public static final int BOTTOM_MOTOR_FREE_LIMIT_AMPS = 50;
 
     public static final double RAMP_RATE = .25;
 
@@ -244,7 +244,7 @@ public final class Constants {
     public static final double BOTTOM_MOTOR_D = 0.0;
     public static final double BOTTOM_MOTOR_FF = 0.00018;
 
-    public static final double RPM_TOLERANCE = 250;
+    public static final double RPM_TOLERANCE = 100;
   }
 
   public static final class INTAKE {

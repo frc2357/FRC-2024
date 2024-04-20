@@ -117,12 +117,13 @@ public class DriverControls implements RumbleInterface {
 
     m_rightTriggerPrime
         .and(noLeftBumper)
-        .whileTrue(new ParallelCommandGroup(new VisionTargeting(), new TargetLockOnSpeaker()));
+        .whileTrue(
+            new ParallelCommandGroup(new VisionTargeting(4000, true), new TargetLockOnSpeaker()));
     m_rightTriggerShoot
         .and(noLeftBumper)
         .whileTrue(
             new SequentialCommandGroup(
-                new ShooterWaitForRPM().withTimeout(0.75),
+                new ShooterWaitForRPM().withTimeout(1.5),
                 new IntakeFeedToShooter(),
                 new LEDsSetIdle()));
   }

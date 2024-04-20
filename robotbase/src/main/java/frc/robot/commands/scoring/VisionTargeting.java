@@ -11,9 +11,15 @@ public class VisionTargeting extends Command {
   private double m_currentRpms;
   private double m_pivotOffsetAngle;
   private double m_defaultRPMs;
+  private boolean m_rumble;
 
   public VisionTargeting(double defaultRPMs) {
+    this(defaultRPMs, false);
+  }
+
+  public VisionTargeting(double defaultRPMs, boolean rumble) {
     m_defaultRPMs = defaultRPMs;
+    m_rumble = rumble;
     addRequirements(Robot.pivot, Robot.shooter);
   }
 
@@ -32,7 +38,15 @@ public class VisionTargeting extends Command {
 
     if (Double.isNaN(yaw)) {
       Robot.shooter.setRPM(m_defaultRPMs);
+      Robot.leds.setNoSpeakerTarget();
+      if (m_rumble) {
+        Robot.driverControls.setRumble(0.3);
+      }
       return;
+    }
+    Robot.leds.setHasSpeakerTarget();
+    if (m_rumble) {
+      Robot.driverControls.setRumble(0);
     }
 
     double pitch = Robot.shooterCam.getSpeakerTargetPitch();
@@ -54,6 +68,8 @@ public class VisionTargeting extends Command {
   public void end(boolean interrupted) {
     Robot.pivot.stop();
     Robot.shooter.stop();
+    Robot.driverControls.setRumble(0);
+    Robot.leds.setIdle();
   }
 
   private void updateVisionTargeting(double pitch) {
