@@ -13,6 +13,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.Constants.SWERVE;
@@ -37,12 +38,21 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   private final SwerveRequest.RobotCentric robotRelative =
       new SwerveRequest.RobotCentric().withDriveRequestType(DriveRequestType.Velocity);
 
+
+  private double m_translationSpeedPercentage = 100;
+
+  private double m_rotationSpeedPercentage = 100;
+
+
+
   public CommandSwerveDrivetrain(
       SwerveDrivetrainConstants driveTrainConstants,
       double OdometryUpdateFrequency,
       SwerveModuleConstants... modules) {
     super(driveTrainConstants, OdometryUpdateFrequency, modules);
-  }
+        SmartDashboard.putNumber("Translation Speed Percentage", m_translationSpeedPercentage);
+        SmartDashboard.putNumber("Rotation Speed Percentage", m_rotationSpeedPercentage);
+      }
 
   public CommandSwerveDrivetrain(
       SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
@@ -85,7 +95,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
             ? Robot.driverControls.getRotation() * SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND
             : rotation + Math.copySign(Constants.SWERVE.TARGET_LOCK_FEED_FORWARD, rotation);
     driveFieldRelative(
-        velocityXSpeedMetersPerSecond, velocityYSpeedMetersPerSecond, rotationOutput);
+        velocityXSpeedMetersPerSecond, velocityYSpeedMetersPerSecond , rotationOutput);
   }
 
   public void driveRobotRelative(
@@ -95,9 +105,9 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     applyRequest(
         () ->
             robotRelative
-                .withVelocityX(velocityXMetersPerSecond)
-                .withVelocityY(velocityYMetersPerSecond)
-                .withRotationalRate(rotationRateRadiansPerSecond));
+                .withVelocityX(velocityXMetersPerSecond * m_translationSpeedPercentage)
+                .withVelocityY(velocityYMetersPerSecond * m_translationSpeedPercentage)
+                .withRotationalRate(rotationRateRadiansPerSecond * m_rotationSpeedPercentage));
   }
 
   public void driveFieldRelative(
@@ -107,9 +117,9 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     applyRequest(
         () ->
             fieldRelative
-                .withVelocityX(velocityXMetersPerSecond)
-                .withVelocityY(velocityYMetersPerSecond)
-                .withRotationalRate(rotationRateRadiansPerSecond));
+                .withVelocityX(velocityXMetersPerSecond * m_translationSpeedPercentage)
+                .withVelocityY(velocityYMetersPerSecond * m_translationSpeedPercentage)
+                .withRotationalRate(rotationRateRadiansPerSecond * m_rotationSpeedPercentage));
   }
 
   /**
@@ -252,5 +262,13 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     }
 
     return positions;
+  }
+
+  @Override
+  public void periodic() {
+    m_translationSpeedPercentage = SmartDashboard.getNumber("Translation Speed Percentage", 0.0)/100;
+    m_rotationSpeedPercentage = SmartDashboard.getNumber("Rotation Speed Percentage", 0.0)/100;
+
+    
   }
 }
