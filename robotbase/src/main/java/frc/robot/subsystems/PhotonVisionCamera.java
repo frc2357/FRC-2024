@@ -46,8 +46,8 @@ public class PhotonVisionCamera extends SubsystemBase {
   protected final TargetInfo[] m_targetInfo;
 
   /**
-   * The pose estimator for the subsystem TODO: see if we want to change this, and do whatever makes
-   * ISAM work.
+   * The pose estimator for the subsystem 
+   * TODO: see if we want to change this, and do whatever makes ISAM work.
    */
   protected PhotonPoseEstimator m_poseEstimator;
 
