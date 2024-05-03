@@ -18,6 +18,9 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 /** Controls the photon vision camera options. */
 public class PhotonVisionCamera extends SubsystemBase {
 
+  /*
+   * The class for the object we use to cache our target data
+   */
   private static class TargetInfo {
     public double yaw = Double.NaN;
     public double pitch = Double.NaN;
@@ -26,16 +29,45 @@ public class PhotonVisionCamera extends SubsystemBase {
 
   // all of these are protected so we can use them in the extended classes
   // which are only extended so we can control which pipelines we are using.
+
+  /** The actual camera object that we get everything from. */
   protected PhotonCamera m_camera;
+
+  /** The result we fecth from PhotonLib each loop. */
   protected PhotonPipelineResult m_result;
+
+  /**
+   * The list of TargetInfo objects where we cache all of the target data.
+   *
+   * <p>Index 0 is the best gamepeice that we detect.
+   *
+   * <p>Index 1-16 are the AprilTags that are on the field.
+   */
   protected final TargetInfo[] m_targetInfo;
+
+  /**
+   * The pose estimator for the subsystem TODO: see if we want to change this, and do whatever makes
+   * ISAM work.
+   */
   protected PhotonPoseEstimator m_poseEstimator;
+
+  /** The robot origin to camera lens transform 3D that we use to make the pose estimator. */
   protected final Transform3d ROBOT_TO_CAMERA_TRANSFORM; // if this changes, we have bigger issues.
+
+  /** Whether or not we have connection with the camera still */
   protected boolean m_connectionLost;
+
+  /**
+   * The fiducial ID of the best target we have.
+   *
+   * <p>Used for methods that dont take in a fid ID but do some april tag stuff.
+   */
   protected int m_bestTargetFiducialId;
 
   /**
-   * Sets the camera stream.
+   * Represents a camera from PhotonVision.<p>
+   * 
+   * Handles connection, caching, calculating stuff, filtering, mostly everything.
    *
    * @param cameraName Name of the cameras Photon Vision network table. MUST match the net tables
    *     name, or it wont work.
@@ -47,15 +79,15 @@ public class PhotonVisionCamera extends SubsystemBase {
     m_camera = new PhotonCamera(cameraName);
     ROBOT_TO_CAMERA_TRANSFORM = robotToCameraTransform;
 
-    // 0 is for note detection, 1-16 correspond to apriltag fiducial IDs
+    // index 0 is for note detection, 1-16 correspond to apriltag fiducial IDs
     m_targetInfo = new TargetInfo[17];
     for (int i = 0; i < m_targetInfo.length; i++) {
       m_targetInfo[i] = new TargetInfo();
     }
   }
 
+  /** Sets up everything about the class that is not done in the constructor. */
   public void configure() {
-    setDriverModeActive();
     m_poseEstimator =
         new PhotonPoseEstimator(
             PHOTON_VISION.APRIL_TAG_FIELD_LAYOUT,
@@ -65,10 +97,10 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * Fetches the latest pipeline result.
-   *
-   * <p>YOU SHOULD NEVER CALL THIS! This is for the Robot periodic ONLY. NEVER call this method
-   * outside of it.
+   * Fetches the latest pipeline result.<p>
+   * <h1>
+   * YOU SHOULD NEVER CALL THIS! This is for the Robot periodic ONLY. NEVER call this method
+   * outside of it. </h1>
    */
   public void updateResult() {
     if (!m_camera.isConnected() && !m_connectionLost) {
@@ -83,7 +115,8 @@ public class PhotonVisionCamera extends SubsystemBase {
     }
     m_bestTargetFiducialId = m_result.getBestTarget().getFiducialId();
     if (m_bestTargetFiducialId == -1) {
-      // this means that were doing object detection, so a different method is used.
+      // the fact that the best tarets ID is -1 means its a gamepeice
+      // so we cache them differently.
       cacheForGamepeices(m_result.targets);
     } else {
       cacheForAprilTags(m_result.targets);
@@ -96,6 +129,11 @@ public class PhotonVisionCamera extends SubsystemBase {
     }
   }
 
+  /**
+   * The method to cache target data for gamepeices.
+   *
+   * @param targetList The list of targets that it pulls data from to cache.
+   */
   private void cacheForGamepeices(List<PhotonTrackedTarget> targetList) {
     long now = System.currentTimeMillis();
     PhotonTrackedTarget bestTarget = calculateBestGamepeiceTarget(targetList);
@@ -105,6 +143,11 @@ public class PhotonVisionCamera extends SubsystemBase {
     targetInfo.timestamp = now;
   }
 
+  /**
+   * The method to cache target data for AprilTags.
+   *
+   * @param targetList The list of targets that it pulls data from to cache.
+   */
   private void cacheForAprilTags(List<PhotonTrackedTarget> targetList) {
     long now = System.currentTimeMillis();
     for (PhotonTrackedTarget targetSeen : targetList) {
@@ -118,7 +161,7 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * Calculates the best target in a list of PhotonTrackedTargets.
+   * Calculates the best gamepeice in a list of PhotonTrackedTargets.
    *
    * <p>This is made to sort through gamepeices if they are next to eachother.
    *
@@ -163,8 +206,8 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * Compares the current system time to the last cached timestamp and sees if it is older than is
-   * acceptable.
+   * Compares the current system time to the last cached timestamp, and sees if it is older than the
+   * passsed in timeout.
    *
    * @param fiducialId Fiducial ID of the desired target to valid the data of. Notes have a
    *     fiducialId of 0
@@ -183,31 +226,21 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * @return Whether or not the driver mode on the camera is active. Returns null if the camera is
-   *     not connected.
+   * Sets the pipeline index to make the camera go to.
+   *
+   * @param index The index to make it be set to.
    */
-  public boolean isDriverModeActive() {
-    return isConnected() ? m_camera.getDriverMode() : null;
-  }
-
-  public void setDriverModeActive() {
-    m_camera.setDriverMode(true);
-  }
-
-  public void toggleDriverMode() {
-    m_camera.setDriverMode(!m_camera.getDriverMode());
-  }
-
-  public void setDriverModeDisabled() {
-    m_camera.setDriverMode(false);
-  }
-
   public void setPipeline(int index) {
     if (m_camera.getPipelineIndex() != index) {
       m_camera.setPipelineIndex(index);
     }
   }
 
+  /**
+   * Gets the pipeline index that an NT subscriber returns.
+   *
+   * @return The returned pipeline index number.
+   */
   public int getPipeline() {
     return m_camera.getPipelineIndex();
   }
@@ -224,7 +257,7 @@ public class PhotonVisionCamera extends SubsystemBase {
   /**
    * @param fiducialId The fiducial ID of the target to get the yaw of.
    * @param timeoutMs The amount of milliseconds past which target info is deemed expired
-   * @return Returns the desired targets yaw, will be NaN if the cached data was invalid.
+   * @return Returns the desired targets yaw. <strong>Will be NaN if the cached data was invalid.
    */
   public double getTargetYaw(int fiducialId, long timeoutMs) {
     if (isValidTarget(fiducialId, timeoutMs)) {
@@ -236,7 +269,7 @@ public class PhotonVisionCamera extends SubsystemBase {
   /**
    * @param fiducialIds The list of fiducial IDs to check.
    * @param timeoutMs The amount of milliseconds past which target info is deemed expired
-   * @return Returns the yaw of the first id in the list, or NaN if none are valid.
+   * @return Returns the yaw of the first id in the list, <strong>or NaN if none are valid.
    */
   public double getTargetYaw(int[] fiducialIds, long timeoutMs) {
     for (int id : fiducialIds) {
@@ -251,7 +284,7 @@ public class PhotonVisionCamera extends SubsystemBase {
   /**
    * @param id The ID of the target to get the pitch of.
    * @param timeoutMs The amount of milliseconds past which target info is deemed expired
-   * @return Returns the desired targets pitch, will be NaN if the cached data was invalid.
+   * @return Returns the desired targets pitch, <strong>will be NaN if the cached data was invalid.
    */
   public double getTargetPitch(int fiducialId, long timeoutMs) {
     if (isValidTarget(fiducialId, timeoutMs)) {
@@ -263,7 +296,7 @@ public class PhotonVisionCamera extends SubsystemBase {
   /**
    * @param fiducialIds The list of fiducial IDs to check.
    * @param timeoutMs The amount of milliseconds past which target info is deemed expired
-   * @return Returns the pitch of the first id in the list, or NaN if none are valid.
+   * @return Returns the pitch of the first id in the list, <strong>or NaN if none are valid.
    */
   public double getTargetPitch(int[] fiducialIds, long timeoutMs) {
     for (int id : fiducialIds) {
@@ -276,12 +309,13 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * Gets an estimated pose from the subsystems pose estimator. Should only be used if the camera
-   * does not see more than 1 april tag, if it does, use getPNPResult instead, as it is more
-   * accurate.
+   * Gets an estimated pose from the subsystems pose estimator.
    *
-   * @return The robots estimated pose, if it has any april tag targets. Returns null if there are
-   *     no targets.
+   * <p>Should only be used if the camera does not see more than 1 april tag, if it does, use
+   * getPNPResult instead, as it is more accurate.
+   *
+   * @return The robots estimated pose, if it has any april tag targets. <strong>Returns null if
+   *     there are no targets.
    */
   public EstimatedRobotPose getEstimatedPose() {
     Optional<EstimatedRobotPose> estimatedPose = m_poseEstimator.update(m_result);
@@ -289,8 +323,9 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * Gets the information of the multiple tag pose estimate if it exists. If the camera does not see
-   * more than 1 april tag, this will return null.
+   * Gets the information of the multiple tag pose estimate if it exists.
+   *
+   * <p>If the camera does not see more than 1 april tag, <strong> this will return null. </strong>
    *
    * @return The PNPResult for you to get information from.
    */
@@ -314,5 +349,14 @@ public class PhotonVisionCamera extends SubsystemBase {
   public Pose2d pose2dFromPNPResult(PNPResult result) {
     return new Pose2d(
         result.best.getTranslation().toTranslation2d(), result.best.getRotation().toRotation2d());
+  }
+
+  /**
+   * Gets the current number of targets seen.
+   *
+   * @return The number of targets seen.
+   */
+  public int numberOfTargetsSeen() {
+    return m_result.targets.size();
   }
 }
