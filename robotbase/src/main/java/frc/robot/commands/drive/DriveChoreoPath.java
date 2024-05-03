@@ -3,6 +3,7 @@ package frc.robot.commands.drive;
 import com.choreo.lib.Choreo;
 import com.choreo.lib.ChoreoTrajectory;
 import com.choreo.lib.ChoreoTrajectoryState;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.CHOREO;
@@ -64,7 +65,7 @@ public class DriveChoreoPath extends SequentialCommandGroup {
 
     // Set the gyro yaw to 0 and the pose x, y to the starting position of the path
     if (setPoseToStartTrajectory) {
-      addCommands(new InstantCommand(() -> Robot.swerve.setPose(m_startingState.getPose())));
+      addCommands(new InstantCommand(() -> setPoseForFirstAuto(m_startingState.getPose())));
     }
 
     addCommands(
@@ -91,6 +92,15 @@ public class DriveChoreoPath extends SequentialCommandGroup {
                 : Robot.swerve.getChassisSpeedsConsumer(),
             CHOREO.CHOREO_AUTO_MIRROR_PATHS,
             Robot.swerve));
+  }
+
+  /**
+   * The method to set the pose for the current years robot.
+   *
+   * <p>This should set the pose correctly, without breaking anything. (I.E. pose est stuff)
+   */
+  private void setPoseForFirstAuto(Pose2d poseToSet) {
+    Robot.swerve.setPose(poseToSet);
   }
 
   @Override

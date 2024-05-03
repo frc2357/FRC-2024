@@ -46,8 +46,8 @@ public class PhotonVisionCamera extends SubsystemBase {
   protected final TargetInfo[] m_targetInfo;
 
   /**
-   * The pose estimator for the subsystem 
-   * TODO: see if we want to change this, and do whatever makes ISAM work.
+   * The pose estimator for the subsystem TODO: see if we want to change this, and do whatever makes
+   * ISAM work.
    */
   protected PhotonPoseEstimator m_poseEstimator;
 
@@ -65,9 +65,9 @@ public class PhotonVisionCamera extends SubsystemBase {
   protected int m_bestTargetFiducialId;
 
   /**
-   * Represents a camera from PhotonVision.<p>
-   * 
-   * Handles connection, caching, calculating stuff, filtering, mostly everything.
+   * Represents a camera from PhotonVision.
+   *
+   * <p>Handles connection, caching, calculating stuff, filtering, mostly everything.
    *
    * @param cameraName Name of the cameras Photon Vision network table. MUST match the net tables
    *     name, or it wont work.
@@ -97,9 +97,11 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * Fetches the latest pipeline result.<p>
-   * <h1>
-   * YOU SHOULD NEVER CALL THIS! This is for the Robot periodic ONLY. NEVER call this method
+   * Fetches the latest pipeline result.
+   *
+   * <p>
+   *
+   * <h1>YOU SHOULD NEVER CALL THIS! This is for the Robot periodic ONLY. NEVER call this method
    * outside of it. </h1>
    */
   public void updateResult() {
