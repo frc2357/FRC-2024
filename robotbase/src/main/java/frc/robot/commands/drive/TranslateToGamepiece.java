@@ -74,6 +74,7 @@ public class TranslateToGamepiece extends Command {
     double rotationError = currentRotation - m_startRotation;
     double rotationOutput =
         m_rotationController.calculate(Rotation2d.fromDegrees(rotationError).getRadians());
+    // checks if rotation is in tolerance and outputs nothing if it is.
     if (Utility.isWithinTolerance(
         currentRotation, m_startRotation, SWERVE.TRANSLATE_TO_GAMEPIECE_YAW_TOLERANCE)) {
       rotationOutput = 0;
@@ -82,30 +83,35 @@ public class TranslateToGamepiece extends Command {
     double yaw = Robot.intakeCam.getNoteTargetYaw();
     double pitch = Robot.intakeCam.getNoteTargetPitch();
 
+    // checks for NaN, remember that the vision returns NaN or Null if it has no / invalid data for
+    // the desired target.
     if (Double.isNaN(yaw) || m_targetBad) {
       System.out.println("[TranslateToGamepiece] No gamepiece detected");
       // Continue driving forward and rotating even if we don't see a gamepiece
       Robot.swerve.driveRobotRelative(yMetersPerSecond, 0, rotationOutput);
     }
 
+    // checks if were in the tolerance for yaw, sets it to the setpoint if we do, so we dont move.
     if (Utility.isWithinTolerance(
         yaw, m_yawController.getSetpoint(), SWERVE.TRANSLATE_TO_GAMEPIECE_YAW_TOLERANCE)) {
       yaw = m_yawController.getSetpoint();
     }
 
     double xMetersPerSecond = m_yawController.calculate(yaw);
-    if (pitch < -16 || pitch > 5) {
+    // filtering notes based on where the note can be seen in the camera
+    if (pitch < INTAKE_PHOTON_CAMERA.NOTE_TARGET_VALID_PITCH_LOW
+        || pitch > INTAKE_PHOTON_CAMERA.NOTE_TARGET_VALID_PITCH_HIGH) {
       m_targetBad = true;
       xMetersPerSecond = 0;
     }
 
-    System.out.println("y: " + yMetersPerSecond + ", x: " + xMetersPerSecond);
+    // System.out.println("y: " + yMetersPerSecond + ", x: " + xMetersPerSecond);
     Robot.swerve.driveRobotRelative(yMetersPerSecond, xMetersPerSecond, rotationOutput);
   }
 
   @Override
   public boolean isFinished() {
-    return m_timer.hasElapsed(m_timeToRunSeconds);
+    return m_timer.hasElapsed(m_timeToRunSeconds); // checks if weve hit the time limit
   }
 
   @Override
@@ -113,6 +119,11 @@ public class TranslateToGamepiece extends Command {
     Robot.swerve.stopMotors();
   }
 
+  /**
+   * Calculates the Y speed based on how much time we have left to translate to the gamepeice.
+   *
+   * @return The calculated appropriate Y speed.
+   */
   private double calculateYSpeed() {
     double secondsElapsed = (System.currentTimeMillis() - m_startTime) / 1000.0;
     double percentDone = secondsElapsed / m_timeToRunSeconds;

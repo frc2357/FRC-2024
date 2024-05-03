@@ -498,6 +498,9 @@ public final class Constants {
                 Units.inchesToMeters(LENS_HEIGHT_FROM_ROBOT_ORIGIN_INCHES)),
             new Rotation3d(0, -LENS_ANGLE_TILTED_DOWN_DEGREES, 0));
     public static final int NOTE_TARGET_TIMEOUT_MS = 80;
+
+    public static final double NOTE_TARGET_VALID_PITCH_LOW = -16;
+    public static final double NOTE_TARGET_VALID_PITCH_HIGH = 5;
   }
 
   public static final class APRIL_TAG_IDS {

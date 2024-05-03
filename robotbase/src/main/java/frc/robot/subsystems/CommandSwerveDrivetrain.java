@@ -30,7 +30,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   private final SwerveRequest.ApplyChassisSpeeds chassisSpeedRequest =
       new SwerveRequest.ApplyChassisSpeeds();
 
-  // Comment out below requests for CUBE_BOT
   private final SwerveRequest.FieldCentric fieldRelative =
       new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.Velocity);
 
@@ -67,6 +66,15 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     return getPigeon2().getRoll().getValueAsDouble();
   }
 
+  /**
+   * The method to use to drive while targetlocking.
+   *
+   * @param velocityXSpeedMetersPerSecond The desired speed on the X axis in meters per second.
+   * @param velocityYSpeedMetersPerSecond The desired speed on the X axis in meters per second.
+   * @param yaw The current yaw of the robot, if in tolerance, pass in the setpoint instead.
+   * @param yawSetpoint The setpoint to use for the yaw PID controller.
+   * @param hasTarget Whether or not there is a target.
+   */
   public void driveTargetLock(
       double velocityXSpeedMetersPerSecond,
       double velocityYSpeedMetersPerSecond,
@@ -80,6 +88,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
     double rotation =
         Constants.SWERVE.TARGET_LOCK_ROTATION_PID_CONTROLLER.calculate(yaw, yawSetpoint);
+    // if we have a target, add feedforward to the controls, if we dont, let the driver rotate the
+    // robot manually.
     double rotationOutput =
         !hasTarget
             ? Robot.driverControls.getRotation() * SWERVE.MAX_ANGULAR_RATE_ROTATIONS_PER_SECOND
@@ -88,6 +98,13 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         velocityXSpeedMetersPerSecond, velocityYSpeedMetersPerSecond, rotationOutput);
   }
 
+  /**
+   * The method to use for robot relative driving.
+   *
+   * @param velocityXSpeedMetersPerSecond The desired speed on the X axis in meters per second.
+   * @param velocityYSpeedMetersPerSecond The desired speed on the X axis in meters per second.
+   * @param rotationRateRadiansPerSecond The desired rotation rate in radians per second.
+   */
   public void driveRobotRelative(
       double velocityXMetersPerSecond,
       double velocityYMetersPerSecond,
@@ -100,6 +117,13 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
                 .withRotationalRate(rotationRateRadiansPerSecond));
   }
 
+  /**
+   * The method to use for field relative driving.
+   *
+   * @param velocityXSpeedMetersPerSecond The desired speed on the X axis in meters per second.
+   * @param velocityYSpeedMetersPerSecond The desired speed on the X axis in meters per second.
+   * @param rotationRateRadiansPerSecond The desired rotation rate in radians per second.
+   */
   public void driveFieldRelative(
       double velocityXMetersPerSecond,
       double velocityYMetersPerSecond,
@@ -113,17 +137,22 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   }
 
   /**
-   * @return A list of the module positions in the order Front Left, Front Right, Back Left, Back
-   *     Right
+   * @return A list of module positions in the order Front Left, Front Right, Back Left, Back Right
    */
   public SwerveModulePosition[] getModulePositions() {
     return super.m_modulePositions;
   }
 
+  /**
+   * @return A list of module states in the order Front Left, Front Right, Back Left, Back Right
+   */
   public SwerveModuleState[] getModuleStates() {
     return super.getState().ModuleStates;
   }
 
+  /**
+   * @return A list of module targets in the order Front Left, Front Right, Back Left, Back Right
+   */
   public SwerveModuleState[] getModuleTargets() {
     return super.getState().ModuleTargets;
   }
@@ -149,11 +178,12 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     applyRequest(() -> new SwerveRequest.SwerveDriveBrake());
   }
 
+  /** Stops the motors in a way that should make them not jingle. */
   public void stopMotors() {
     driveFieldRelative(0, 0, 0);
     for (SwerveModule module : super.Modules) {
-      module.getDriveMotor().stopMotor();
-      module.getSteerMotor().stopMotor();
+      module.getDriveMotor().stopMotor(); // anti-jingle
+      module.getSteerMotor().stopMotor(); // remove to bring back the bells (dont do it)
     }
   }
 
@@ -161,6 +191,10 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     super.seedFieldRelative(poseToSet);
   }
 
+  /**
+   * @return A ChassisSpeeds Consumer which applies a feedforward to its inputs and drives with
+   *     them.
+   */
   public Consumer<ChassisSpeeds> getChassisSpeedsConsumer() {
     return new Consumer<ChassisSpeeds>() {
       @Override
@@ -174,6 +208,11 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     };
   }
 
+  /**
+   * Makes a ChassisSpeeds Consumer for locking onto the speaker regardless of input.
+   *
+   * @return a ChassisSpeeds Consumer that locks onto the speaker regardless of input.
+   */
   public Consumer<ChassisSpeeds> getSpeakerLockChassisSpeedsConsumer() {
     return new Consumer<ChassisSpeeds>() {
       @Override
@@ -193,6 +232,11 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     };
   }
 
+  /**
+   * Gets the radians per second to turn in for target locking in auto.
+   *
+   * @return The radians per second to turn for target lcoking on the speaker.
+   */
   public double getAutonSpeakerLockRadiansPerSecond() {
     double targetPitch = Robot.shooterCam.getSpeakerTargetPitch();
     double targetYaw = Robot.shooterCam.getSpeakerTargetYaw();
@@ -214,6 +258,13 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     return radiansPerSecond;
   }
 
+  /**
+   * Gets the yaw to turn the robot to for target locking so we shoot into the speaker.
+   *
+   * @param pitch The current pitch of the middle speaker april tag.
+   * @param defualtOffset The default offset to return if we dont have a valid curve index.
+   * @return The yaw to turn the robot to for target locking.
+   */
   public double updateVisionTargeting(double pitch, double defaultOffset) {
     int curveIndex = RobotMath.getCurveSegmentIndex(Robot.shooterCurve, pitch);
     if (curveIndex == -1) {
@@ -232,11 +283,21 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         highYawSetopint, lowYawSetpoint, highPitch, lowPitch, pitch);
   }
 
+  /**
+   * Returns the current field relative speeds but in a ChassisSpeeds object.
+   *
+   * @return the current field relative speeds in a ChassisSpeeds object.
+   */
   public ChassisSpeeds getFieldRelativeChassisSpeeds() {
     ChassisSpeeds chassisSpeeds = getKinematics().toChassisSpeeds(getModuleStates());
     return chassisSpeeds;
   }
 
+  /**
+   * Returns the current robot relative speeds but in a ChassisSpeeds object.
+   *
+   * @return the current robot relative speeds in a ChassisSpeeds object.
+   */
   public ChassisSpeeds getRobotRelativChassisSpeeds() {
     var chassisSpeeds =
         ChassisSpeeds.fromFieldRelativeSpeeds(
@@ -244,6 +305,11 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     return chassisSpeeds;
   }
 
+  /**
+   * Gets the angle of every module in degrees
+   *
+   * @return A list of every modules current angle in degrees.
+   */
   public double[] getWheelRadiusCharacterizationPosition() {
     double[] positions = new double[4];
 
