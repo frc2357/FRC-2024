@@ -4,6 +4,9 @@ import com.choreo.lib.Choreo;
 import com.choreo.lib.ChoreoTrajectory;
 import com.choreo.lib.ChoreoTrajectoryState;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.CHOREO;
@@ -67,7 +70,9 @@ public class DriveChoreoPath extends SequentialCommandGroup {
     // Set the gyro yaw to 0 and the pose x, y to the starting position of the path
     if (setPoseToStartTrajectory || m_haveSetPose) {
       m_haveSetPose = true; // if we havent set the pose yet, we set the pose.
-      addCommands(new InstantCommand(() -> setPoseForFirstAuto(m_startingState.getPose())));
+      addCommands(
+          new InstantCommand(
+              () -> setPoseForFirstAuto(m_startingState.getPose(), m_startingState.heading)));
     }
 
     addCommands(
@@ -101,8 +106,12 @@ public class DriveChoreoPath extends SequentialCommandGroup {
    *
    * <p>This should set the pose correctly, without breaking anything. (I.E. pose est stuff)
    */
-  private void setPoseForFirstAuto(Pose2d poseToSet) {
-    Robot.swerve.setPose(poseToSet);
+  private void setPoseForFirstAuto(Pose2d poseToSet, double headingRadians) {
+    var x = poseToSet.getX();
+    var y = poseToSet.getY();
+    var z = 0;
+    Robot.swerve.setPose3D(
+        new Pose3d(x, y, z, new Rotation3d(0, 0, Units.radiansToDegrees(headingRadians))));
   }
 
   @Override
