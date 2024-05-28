@@ -13,10 +13,6 @@ import frc.robot.commands.auto.paths.AmpSide4NoteWallFirst;
 import frc.robot.commands.auto.paths.AntiCitrus;
 import frc.robot.commands.auto.paths.Close3AndMiddleCenterline;
 import frc.robot.commands.auto.paths.Close3AndRUN;
-import frc.robot.commands.auto.paths.LeftClose1Speaker;
-import frc.robot.commands.auto.paths.MiddleClose1Speaker;
-import frc.robot.commands.auto.paths.RightClose1Speaker;
-import frc.robot.commands.auto.paths.ShootAndNothing;
 import frc.robot.commands.auto.paths.SourceSide3NoteNoStage;
 import frc.robot.commands.auto.paths.SourceSide4Note;
 import frc.robot.commands.util.VariableWaitCommand;
@@ -36,10 +32,6 @@ public class AutoCommandChooser {
       new SourceSide3NoteNoStage(),
       new AmpSide4Note(),
       new AmpSide4NoteWallFirst(),
-      new LeftClose1Speaker(),
-      new MiddleClose1Speaker(),
-      new RightClose1Speaker(),
-      new ShootAndNothing(),
       new Close3AndRUN(),
       new Close3AndMiddleCenterline(),
       new AntiCitrus()

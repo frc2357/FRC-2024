@@ -3,6 +3,10 @@ package frc.robot.commands.drive;
 import com.choreo.lib.Choreo;
 import com.choreo.lib.ChoreoTrajectory;
 import com.choreo.lib.ChoreoTrajectoryState;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.CHOREO;
@@ -13,6 +17,7 @@ public class DriveChoreoPath extends SequentialCommandGroup {
   private String m_pathName; // The name of the path file
   private ChoreoTrajectory m_traj; // The generated trajectory object
   private ChoreoTrajectoryState m_startingState; // The starting state of the robot
+  private static boolean m_haveSetPose = false;
 
   /**
    * A utility command to run a Choreo path correctly.
@@ -63,8 +68,11 @@ public class DriveChoreoPath extends SequentialCommandGroup {
             }));
 
     // Set the gyro yaw to 0 and the pose x, y to the starting position of the path
-    if (setPoseToStartTrajectory) {
-      addCommands(new InstantCommand(() -> Robot.swerve.setPose(m_startingState.getPose())));
+    if (setPoseToStartTrajectory || m_haveSetPose) {
+      m_haveSetPose = true; // if we havent set the pose yet, we set the pose.
+      addCommands(
+          new InstantCommand(
+              () -> setPoseForFirstAuto(m_startingState.getPose(), m_startingState.heading)));
     }
 
     addCommands(
@@ -91,6 +99,19 @@ public class DriveChoreoPath extends SequentialCommandGroup {
                 : Robot.swerve.getChassisSpeedsConsumer(),
             CHOREO.CHOREO_AUTO_MIRROR_PATHS,
             Robot.swerve));
+  }
+
+  /**
+   * The method to set the pose for the current years robot.
+   *
+   * <p>This should set the pose correctly, without breaking anything. (I.E. pose est stuff)
+   */
+  private void setPoseForFirstAuto(Pose2d poseToSet, double headingRadians) {
+    var x = poseToSet.getX();
+    var y = poseToSet.getY();
+    var z = 0;
+    Robot.swerve.setPose3D(
+        new Pose3d(x, y, z, new Rotation3d(0, 0, Units.radiansToDegrees(headingRadians))));
   }
 
   @Override

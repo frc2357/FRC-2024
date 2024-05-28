@@ -103,8 +103,7 @@ public class Robot extends TimedRobot {
 
     state = new RobotState();
 
-    // CHANGE TO FALSE TO USE CUBE BOT. DO THIS
-    swerve = true ? CompSwerveTunerConstants.DriveTrain : CubeBotTunerConstants.DriveTrain;
+    swerve = CompSwerveTunerConstants.DriveTrain;
     SmartDashboard.putData("Cross Wheels Into X", new CrossWheels());
     shooter = new Shooter();
     pivot = new Pivot();
