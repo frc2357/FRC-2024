@@ -1,6 +1,5 @@
 package frc.robot.commands.auto.paths;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.auto.PathNode;
@@ -17,7 +16,7 @@ public class BranchingPathTest extends SequentialCommandGroup {
   }
 
   @Override
-  public String toString(){
+  public String toString() {
     return "branching path print test";
   }
 }
