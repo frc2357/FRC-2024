@@ -107,11 +107,13 @@ public class DriveChoreoPath extends SequentialCommandGroup {
    * <p>This should set the pose correctly, without breaking anything. (I.E. pose est stuff)
    */
   private void setPoseForFirstAuto(Pose2d poseToSet, double headingRadians) {
+    System.out.println("[DriveChoreoPath] Set pose for the first auto. should only see this ONCE.");
     var x = poseToSet.getX();
     var y = poseToSet.getY();
     var z = 0;
     Robot.swerve.setPose3D(
         new Pose3d(x, y, z, new Rotation3d(0, 0, Units.radiansToDegrees(headingRadians))));
+    m_haveSetPose = true;
   }
 
   @Override

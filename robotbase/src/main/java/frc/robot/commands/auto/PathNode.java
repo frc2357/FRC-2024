@@ -12,15 +12,6 @@ public class PathNode extends ConditionalCommand {
    * @param onTrue The command that is passed back if the condition is true
    * @param onFalse The command that is passed back if the condition is false
    * @param condition The boolean condition that determines which branch of the path is used
-   */
-  public PathNode(Command onTrue, Command onFalse, BooleanSupplier condition) {
-    this(onTrue, onFalse, condition, "NamelessPathNode");
-  }
-
-  /**
-   * @param onTrue The command that is passed back if the condition is true
-   * @param onFalse The command that is passed back if the condition is false
-   * @param condition The boolean condition that determines which branch of the path is used
    * @param nodeName Name of the node used to print out logging things.
    */
   public PathNode(Command onTrue, Command onFalse, BooleanSupplier condition, String nodeName) {

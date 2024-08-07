@@ -354,11 +354,16 @@ public class PhotonVisionCamera extends SubsystemBase {
   }
 
   /**
-   * Gets the current number of targets seen.
-   *
    * @return The number of targets seen.
    */
   public int numberOfTargetsSeen() {
     return m_result.targets.size();
+  }
+
+  /**
+   * @return Whether or not the camera has a target.
+   */
+  public boolean hasTarget(){
+    return m_result.hasTargets();
   }
 }
