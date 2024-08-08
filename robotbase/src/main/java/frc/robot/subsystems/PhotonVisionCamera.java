@@ -363,7 +363,7 @@ public class PhotonVisionCamera extends SubsystemBase {
   /**
    * @return Whether or not the camera has a target.
    */
-  public boolean hasTarget(){
+  public boolean hasTarget() {
     return m_result.hasTargets();
   }
 }
