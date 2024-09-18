@@ -17,7 +17,6 @@ public class DriveChoreoPath extends SequentialCommandGroup {
   private String m_pathName; // The name of the path file
   private ChoreoTrajectory m_traj; // The generated trajectory object
   private ChoreoTrajectoryState m_startingState; // The starting state of the robot
-  private static boolean m_haveSetPose = false;
 
   /**
    * A utility command to run a Choreo path correctly.
@@ -68,8 +67,7 @@ public class DriveChoreoPath extends SequentialCommandGroup {
             }));
 
     // Set the gyro yaw to 0 and the pose x, y to the starting position of the path
-    if (setPoseToStartTrajectory || m_haveSetPose) {
-      m_haveSetPose = true; // if we havent set the pose yet, we set the pose.
+    if (setPoseToStartTrajectory) {
       addCommands(
           new InstantCommand(
               () -> setPoseForFirstAuto(m_startingState.getPose(), m_startingState.heading)));
@@ -113,7 +111,6 @@ public class DriveChoreoPath extends SequentialCommandGroup {
     var z = 0;
     Robot.swerve.setPose3D(
         new Pose3d(x, y, z, new Rotation3d(0, 0, Units.radiansToDegrees(headingRadians))));
-    m_haveSetPose = true;
   }
 
   @Override

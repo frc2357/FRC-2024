@@ -20,6 +20,7 @@ import frc.robot.commands.shooter.ShooterWaitForRPM;
 // travel.
 // continue this pattern until you reach ALL the notes.
 public class BranchPathSmarterWay extends SequentialCommandGroup {
+private double notePitchTolerance = 10;
   public BranchPathSmarterWay() {
     addCommands(
         // Preload on the move (future Tyson problem) + Drive to note 2
@@ -35,26 +36,26 @@ public class BranchPathSmarterWay extends SequentialCommandGroup {
         new PathNode(
             grabN1ScoreAndPosition(), // if note there, grab and score
             new DriveChoreoPath("N1ToN2"), // if not, go to next.
-            () -> isIfNoteIsInfrontOfBot(5),
+            () -> isNoteInfrontOfBot(notePitchTolerance),
             "[BP But Better] Node for N1"),
         new PathNode(
             grabN2ScoreAndPosition(), // if note there, grab and score
             new DriveChoreoPath("N2ToN3"), // if not, go to next.
-            () -> isIfNoteIsInfrontOfBot(5),
+            () -> isNoteInfrontOfBot(notePitchTolerance),
             "[BP But Better] Node for N2"),
         new PathNode(
             grabN3ScoreAndPosition(), // if note there, grab and score
             new DriveChoreoPath("N3ToN4"), // if not, go to next.
-            () -> isIfNoteIsInfrontOfBot(5),
+            () -> isNoteInfrontOfBot(notePitchTolerance),
             "[BP But Better] Node for N3"),
         new PathNode(
             grabN4ScoreAndPosition(), // if note there, grab and score
             new DriveChoreoPath("N4ToTeleopStartPosition"), // if not, go to next.
-            () -> isIfNoteIsInfrontOfBot(5),
+            () -> isNoteInfrontOfBot(notePitchTolerance),
             "[BP But Better] Node for N4"));
   }
 
-  private boolean isIfNoteIsInfrontOfBot(double maximumPitchDegrees) {
+  private boolean isNoteInfrontOfBot(double maximumPitchDegrees) {
     return Robot.intakeCam.getNoteTargetPitch() <= maximumPitchDegrees;
   }
 
@@ -122,5 +123,10 @@ public class BranchPathSmarterWay extends SequentialCommandGroup {
             new VisionTargeting(4800)),
         // position for teleop start
         new DriveChoreoPath("BPScoreN4.2"));
+  }
+
+  @Override
+  public String toString(){
+    return "Amp Side Branching Path";
   }
 }
