@@ -25,7 +25,7 @@ public class AmpSide4NoteWallFirst extends SequentialCommandGroup {
             new VisionTargeting(4800)),
         // drive to and pickup second note
         new DriveChoreoPath("AmpSide4Note1WallFirst.2", false),
-        new ParallelDeadlineGroup(new TranslateToGamepiece(3), new AutoPickup()),
+        new ParallelDeadlineGroup(new TranslateToGamepiece(3, 1), new AutoPickup()),
 
         // Drive back with note 2 and shoot
         new ParallelDeadlineGroup(

@@ -20,7 +20,8 @@ import frc.robot.commands.shooter.ShooterWaitForRPM;
 // travel.
 // continue this pattern until you reach ALL the notes.
 public class BranchPathSmarterWay extends SequentialCommandGroup {
-private double notePitchTolerance = 10;
+  private double notePitchTolerance = 5;
+
   public BranchPathSmarterWay() {
     addCommands(
         // Preload on the move (future Tyson problem) + Drive to note 2
@@ -35,34 +36,34 @@ private double notePitchTolerance = 10;
         new DriveChoreoPath("AmpSide4Note1WallFirst.2", false),
         new PathNode(
             grabN1ScoreAndPosition(), // if note there, grab and score
-            new DriveChoreoPath("N1ToN2"), // if not, go to next.
+            new DriveChoreoPath("N1ToN2.1"), // if not, go to next.
             () -> isNoteInfrontOfBot(notePitchTolerance),
-            "[BP But Better] Node for N1"),
+            "[BP] Node for N1"),
         new PathNode(
             grabN2ScoreAndPosition(), // if note there, grab and score
-            new DriveChoreoPath("N2ToN3"), // if not, go to next.
+            new DriveChoreoPath("N2ToN3.1"), // if not, go to next.
             () -> isNoteInfrontOfBot(notePitchTolerance),
-            "[BP But Better] Node for N2"),
+            "[BP] Node for N2"),
         new PathNode(
             grabN3ScoreAndPosition(), // if note there, grab and score
-            new DriveChoreoPath("N3ToN4"), // if not, go to next.
+            new DriveChoreoPath("N3ToN4.1"), // if not, go to next.
             () -> isNoteInfrontOfBot(notePitchTolerance),
-            "[BP But Better] Node for N3"),
+            "[BP] Node for N3"),
         new PathNode(
             grabN4ScoreAndPosition(), // if note there, grab and score
-            new DriveChoreoPath("N4ToTeleopStartPosition"), // if not, go to next.
+            new DriveChoreoPath("N4ToTeleopStartPosition.1"), // if not, go to next.
             () -> isNoteInfrontOfBot(notePitchTolerance),
-            "[BP But Better] Node for N4"));
+            "[BP] Node for N4"));
   }
 
   private boolean isNoteInfrontOfBot(double maximumPitchDegrees) {
-    return Robot.intakeCam.getNoteTargetPitch() <= maximumPitchDegrees;
+    return Math.abs(Robot.intakeCam.getNoteTargetPitch()) <= maximumPitchDegrees;
   }
 
   private SequentialCommandGroup grabN1ScoreAndPosition() {
     return new SequentialCommandGroup(
         // pick up N1
-        new ParallelDeadlineGroup(new TranslateToGamepiece(3), new AutoPickup()),
+        new ParallelDeadlineGroup(new TranslateToGamepiece(3, 1), new AutoPickup()),
         // drive back with N1 and shoot
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(
@@ -79,7 +80,7 @@ private double notePitchTolerance = 10;
 
   private SequentialCommandGroup grabN2ScoreAndPosition() {
     return new SequentialCommandGroup(
-        new ParallelDeadlineGroup(new TranslateToGamepiece(3), new AutoPickup()),
+        new ParallelDeadlineGroup(new TranslateToGamepiece(3, 1), new AutoPickup()),
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(
                 // drive back with N2 and shoot
@@ -126,7 +127,7 @@ private double notePitchTolerance = 10;
   }
 
   @Override
-  public String toString(){
+  public String toString() {
     return "Amp Side Branching Path";
   }
 }
