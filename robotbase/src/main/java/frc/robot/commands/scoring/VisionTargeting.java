@@ -79,7 +79,7 @@ public class VisionTargeting extends Command {
   private void updateVisionTargeting(double pitch) {
     int curveIndex = RobotMath.getCurveSegmentIndex(Robot.shooterCurve, pitch);
     if (curveIndex == -1) {
-      // System.err.println("[VisionTargeting] pitch out of range");
+      System.err.println("[VisionTargeting] pitch out of range: " + pitch);
       m_currentAngle = Double.NaN;
       m_currentRpms = Double.NaN;
       return;

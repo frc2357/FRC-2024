@@ -57,7 +57,7 @@ public class BranchPathSmarterWay extends SequentialCommandGroup {
   }
 
   private boolean isNoteInfrontOfBot(double maximumPitchDegrees) {
-    return Math.abs(Robot.intakeCam.getNoteTargetPitch()) <= maximumPitchDegrees;
+    return Robot.intakeCam.hasTarget();
   }
 
   private SequentialCommandGroup grabN1ScoreAndPosition() {
