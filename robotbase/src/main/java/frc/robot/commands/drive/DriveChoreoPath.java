@@ -72,7 +72,7 @@ public class DriveChoreoPath extends SequentialCommandGroup {
       m_haveSetPose = true; // if we havent set the pose yet, we set the pose.
       addCommands(
           new InstantCommand(
-              () -> setPoseForFirstAuto(m_startingState.getPose(), m_startingState.heading)));
+              () -> Robot.swerve.setPose(m_startingState.getPose())));
     }
 
     addCommands(

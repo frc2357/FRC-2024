@@ -22,11 +22,11 @@ public class ClimberLevelClimb extends Command {
   public void execute() {
     double axisSpeed = 0.0;
 
-    if (Robot.codriverControls.getRightTriggerAxis() > 0) {
-      axisSpeed = Robot.codriverControls.getRightTriggerAxis();
+    if (Robot.driverControls.getRightTriggerAxis() > 0) {
+      axisSpeed = Robot.driverControls.getRightTriggerAxis();
     }
-    if (Robot.codriverControls.getLeftTriggerAxis() > 0) {
-      axisSpeed = -Robot.codriverControls.getLeftTriggerAxis();
+    if (Robot.driverControls.getLeftTriggerAxis() > 0) {
+      axisSpeed = -Robot.driverControls.getLeftTriggerAxis();
     }
 
     double roll = Robot.swerve.getRoll();

@@ -1,6 +1,7 @@
 package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
@@ -55,8 +56,8 @@ public class ManualLineUpTrap extends SequentialCommandGroup {
     public void execute() {
       double axisSpeed = 0.0;
 
-      if (Robot.codriverControls.getLeftStickY() != 0) {
-        axisSpeed = -Robot.codriverControls.getLeftStickY();
+      if (Robot.driverControls.getLeftStickY() != 0) {
+        axisSpeed = -Robot.driverControls.getLeftStickY();
       }
 
       Robot.endAffector.setAxisSpeed(axisSpeed);
@@ -70,6 +71,10 @@ public class ManualLineUpTrap extends SequentialCommandGroup {
 
   public ManualLineUpTrap(Trigger continueButton, Trigger scoreButton) {
     super(
+        new InstantCommand(
+            () -> {
+              Robot.state.setClimbing(true);
+            }),
         new Print("Turning on proximity sensor. Try not to blind anybody."),
         new Print("Extending Arm, line it up with the bottom of the stage."),
         new ParallelDeadlineGroup(

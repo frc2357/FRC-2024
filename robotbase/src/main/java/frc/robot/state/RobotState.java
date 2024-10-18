@@ -19,12 +19,14 @@ public class RobotState {
   private Alliance m_alliance;
   private State m_currentState;
   private DriveControlState m_currentDriveControlState;
+  private boolean m_isClimbing;
   private PhotonVisionCamera m_targetLockCamera;
 
   public RobotState() {
     m_alliance = null;
     m_currentState = State.INIT;
     m_currentDriveControlState = DriveControlState.FIELD_RELATIVE;
+    m_isClimbing = false;
     m_targetLockCamera = Robot.shooterCam;
   }
 
@@ -78,5 +80,13 @@ public class RobotState {
 
   public PhotonVisionCamera getTargetLockCamera() {
     return m_targetLockCamera;
+  }
+
+  public boolean isClimbing() {
+    return m_isClimbing;
+  }
+
+  public void setClimbing(boolean isClimbing) {
+    m_isClimbing = isClimbing;
   }
 }
