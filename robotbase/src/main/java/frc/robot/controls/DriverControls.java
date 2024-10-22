@@ -90,26 +90,40 @@ public class DriverControls implements RumbleInterface {
 
     Trigger noLeftBumper = m_leftBumper.negate();
 
+    Trigger isClimbing =
+        new Trigger(
+            () -> {
+              return Robot.state.isClimbing();
+            });
+    Trigger notClimbing = isClimbing.negate();
     m_backButton.onTrue(new InstantCommand(() -> Robot.swerve.zeroGyro(false)));
     m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.zeroGyro(true)));
 
-    m_aButton.whileTrue(
-        new VisionlessShootingWithFeeding(Robot.shooterCurve[1][2], Robot.shooterCurve[1][1]));
+    m_aButton
+        .and(notClimbing)
+        .whileTrue(
+            new VisionlessShootingWithFeeding(Robot.shooterCurve[1][2], Robot.shooterCurve[1][1]));
     m_bButton.whileTrue(
         new VisionlessShootingWithFeeding(Robot.shooterCurve[4][2], Robot.shooterCurve[4][1]));
 
-    m_leftTrigger.onTrue(new VisionPickup());
-    m_leftTrigger.toggleOnFalse(new CancelIntakeOnEnd());
+    m_leftTrigger.and(notClimbing).onTrue(new VisionPickup());
+    m_leftTrigger.and(notClimbing).toggleOnFalse(new CancelIntakeOnEnd());
 
     m_leftBumper.whileTrue(
         new ParallelCommandGroup(new TargetLockForFeeding(), new VisionlessShooting(3650, 38)));
     m_leftBumper
         .and(m_rightTriggerShoot)
+        .and(notClimbing)
         .whileTrue(
             new SequentialCommandGroup(
                 new ShooterWaitForRPM(), new IntakeFeedToShooter().withTimeout(0.25)));
 
-    m_yButton.onTrue(new ManualLineUpTrap(m_yButton, Robot.codriverControls.m_aButton));
+    m_yButton.onTrue(
+        new ManualLineUpTrap(m_yButton, m_aButton.and(isClimbing))
+            .finallyDo(
+                () -> {
+                  Robot.state.setClimbing(false);
+                }));
     m_xButton.whileTrue(new SourceIntakeFromShooter());
 
     // scoring
@@ -117,10 +131,12 @@ public class DriverControls implements RumbleInterface {
 
     m_rightTriggerPrime
         .and(noLeftBumper)
+        .and(notClimbing)
         .whileTrue(
             new ParallelCommandGroup(new VisionTargeting(4000, true), new TargetLockOnSpeaker()));
     m_rightTriggerShoot
         .and(noLeftBumper)
+        .and(notClimbing)
         .whileTrue(
             new SequentialCommandGroup(
                 new ShooterWaitForRPM().withTimeout(1.5),
@@ -129,23 +145,36 @@ public class DriverControls implements RumbleInterface {
   }
 
   public double getX() {
-    return -modifyAxis(m_controller.getLeftX());
+    return Robot.state.isAdjusting() ? 0 : -modifyAxis(m_controller.getLeftX());
   }
 
   public double getY() {
-    return -modifyAxis(m_controller.getLeftY());
+    return Robot.state.isAdjusting() ? 0 : -modifyAxis(m_controller.getLeftY());
   }
 
   public double getLeftTrigger() {
-    return m_controller.getLeftTriggerAxis();
+    return Robot.state.isClimbing() ? 0 : m_controller.getLeftTriggerAxis();
   }
 
   public boolean isLeftTriggerPressed() {
-    return m_leftTrigger.getAsBoolean();
+    return Robot.state.isClimbing() ? false : m_leftTrigger.getAsBoolean();
   }
 
   public double getRotation() {
-    return -modifyAxis(m_controller.getRightX());
+    return Robot.state.isAdjusting() ? 0 : -modifyAxis(m_controller.getRightX());
+  }
+
+  // Only for climb, don't use ever unless Nolan says so
+  public double getLeftStickY() {
+    return m_controller.getLeftY();
+  }
+
+  public double getRightTriggerAxis() {
+    return m_controller.getRightTriggerAxis();
+  }
+
+  public double getLeftTriggerAxis() {
+    return m_controller.getLeftTriggerAxis();
   }
 
   public double deadband(double value, double deadband) {
