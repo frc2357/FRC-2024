@@ -114,7 +114,8 @@ public class DriverControls implements RumbleInterface {
     m_leftBumper.whileTrue(
         new ParallelCommandGroup(new TargetLockForFeeding(), new VisionlessShooting(3650, 38)));
     m_leftBumper
-        .and(m_rightTriggerShoot).and(notClimbing)
+        .and(m_rightTriggerShoot)
+        .and(notClimbing)
         .whileTrue(
             new SequentialCommandGroup(
                 new ShooterWaitForRPM(), new IntakeFeedToShooter().withTimeout(0.25)));
@@ -146,11 +147,11 @@ public class DriverControls implements RumbleInterface {
   }
 
   public double getX() {
-    return Robot.state.isClimbing() ? 0 : -modifyAxis(m_controller.getLeftX());
+    return Robot.state.isAdjusting() ? 0 : -modifyAxis(m_controller.getLeftX());
   }
 
   public double getY() {
-    return Robot.state.isClimbing() ? 0 : -modifyAxis(m_controller.getLeftY());
+    return Robot.state.isAdjusting() ? 0 : -modifyAxis(m_controller.getLeftY());
   }
 
   public double getLeftTrigger() {
@@ -162,7 +163,7 @@ public class DriverControls implements RumbleInterface {
   }
 
   public double getRotation() {
-    return Robot.state.isClimbing() ? 0 : -modifyAxis(m_controller.getRightX());
+    return Robot.state.isAdjusting() ? 0 : -modifyAxis(m_controller.getRightX());
   }
 
   // Only for climb, don't use ever unless Nolan says so

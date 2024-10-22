@@ -21,6 +21,7 @@ public class RobotState {
   private DriveControlState m_currentDriveControlState;
   private boolean m_isClimbing;
   private PhotonVisionCamera m_targetLockCamera;
+  private boolean m_isAdjusting;
 
   public RobotState() {
     m_alliance = null;
@@ -88,5 +89,13 @@ public class RobotState {
 
   public void setClimbing(boolean isClimbing) {
     m_isClimbing = isClimbing;
+  }
+
+  public boolean isAdjusting() {
+    return m_isAdjusting;
+  }
+
+  public void setAdjusting(boolean isAdjusting) {
+    m_isAdjusting = isAdjusting;
   }
 }
