@@ -164,7 +164,7 @@ public class DriverControls implements RumbleInterface {
     return Robot.state.isAdjusting() ? 0 : -modifyAxis(m_controller.getRightX());
   }
 
-  // Only for climb, don't use ever unless Nolan says so
+  /**Only for climb, don't use ever unless Nolan says so */ 
   public double getLeftStickY() {
     return m_controller.getLeftY();
   }
