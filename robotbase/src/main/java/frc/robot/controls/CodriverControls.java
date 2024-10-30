@@ -15,7 +15,6 @@ import frc.robot.Robot;
 import frc.robot.commands.auto.AutoShoot;
 import frc.robot.commands.climber.ClimberAxis;
 import frc.robot.commands.climber.ClimberRunThenZero;
-import frc.robot.commands.drive.CalculateWheelDiameter;
 import frc.robot.commands.endAffector.EndAffectorAxis;
 import frc.robot.commands.extensionArm.ExtensionArmAxis;
 import frc.robot.commands.extensionArm.ExtensionArmZero;

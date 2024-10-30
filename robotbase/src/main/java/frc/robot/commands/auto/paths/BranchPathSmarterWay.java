@@ -20,7 +20,8 @@ import frc.robot.commands.shooter.ShooterWaitForRPM;
 // travel.
 // continue this pattern until you reach ALL the notes.
 public class BranchPathSmarterWay extends SequentialCommandGroup {
-  private double noteYawMaximum = 12;
+  private double noteYawMaximum = 28;
+  private double notePitchMaximum = 8;
 
   public BranchPathSmarterWay() {
     addCommands(
@@ -37,33 +38,39 @@ public class BranchPathSmarterWay extends SequentialCommandGroup {
         new PathNode(
             grabN1ScoreAndPosition(), // if note there, grab and score
             new DriveChoreoPath("N1ToN2.1"), // if not, go to next.
-            () -> isNoteInfrontOfBot(noteYawMaximum),
+            () -> isNoteInfrontOfBot(noteYawMaximum, notePitchMaximum),
             "[BP] Node for N1"),
         new PathNode(
             grabN2ScoreAndPosition(), // if note there, grab and score
             new DriveChoreoPath("N2ToN3.1"), // if not, go to next.
-            () -> isNoteInfrontOfBot(20),
+            () -> isNoteInfrontOfBot(noteYawMaximum, notePitchMaximum),
             "[BP] Node for N2"),
         new PathNode(
             grabN3ScoreAndPosition(), // if note there, grab and score
             new DriveChoreoPath("N3ToN4.1"), // if not, go to next.
-            () -> isNoteInfrontOfBot(20),
+            () -> isNoteInfrontOfBot(noteYawMaximum, notePitchMaximum),
             "[BP] Node for N3"),
         new PathNode(
             grabN4ScoreAndPosition(), // if note there, grab and score
             new DriveChoreoPath("N4ToTeleopStartPosition.1"), // if not, go to next.
-            () -> isNoteInfrontOfBot(20),
+            () -> isNoteInfrontOfBot(noteYawMaximum, notePitchMaximum),
             "[BP] Node for N4"));
   }
 
-  private boolean isNoteInfrontOfBot(double maximumYaw) {
-    return Math.abs(Robot.intakeCam.getNoteTargetYaw()) <= maximumYaw;
+  private boolean isNoteInfrontOfBot(double maximumYaw, double maximumPitch) {
+    System.out.println(
+        "[BP] CURRENT CAMERA YAW: "
+            + Robot.intakeCam.getNoteTargetYaw()
+            + " | MAXIMUM ALLOWED YAW: "
+            + maximumYaw + "\n[BP] CURRENT CAMERA PITCH: " + Robot.intakeCam.getNoteTargetPitch() + " | MAX ALLOWED PITCH: " + maximumPitch);
+
+    return (Math.abs(Robot.intakeCam.getNoteTargetYaw()) <= maximumYaw) && (Math.abs(Robot.intakeCam.getNoteTargetPitch()) <= maximumPitch);
   }
 
   private SequentialCommandGroup grabN1ScoreAndPosition() {
     return new SequentialCommandGroup(
         // pick up N1
-        new ParallelDeadlineGroup(new TranslateToGamepiece(3, 1), new AutoPickup()),
+        new ParallelDeadlineGroup(new TranslateToGamepiece(3), new AutoPickup()),
         // drive back with N1 and shoot
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(
@@ -80,7 +87,7 @@ public class BranchPathSmarterWay extends SequentialCommandGroup {
 
   private SequentialCommandGroup grabN2ScoreAndPosition() {
     return new SequentialCommandGroup(
-        new ParallelDeadlineGroup(new TranslateToGamepiece(3, 1), new AutoPickup()),
+        new ParallelDeadlineGroup(new TranslateToGamepiece(3), new AutoPickup()),
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(
                 // drive back with N2 and shoot
