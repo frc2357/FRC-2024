@@ -19,11 +19,11 @@ import frc.robot.commands.shooter.ShooterWaitForRPM;
 // if it is there, grab and score. if it is not, go the next as if you scored it, but directly
 // travel.
 // continue this pattern until you reach ALL the notes.
-public class BranchPathSmarterWay extends SequentialCommandGroup {
-  private double noteYawMaximum = 28;
-  private double notePitchMaximum = 8;
+public class AmpSideBranchingPath extends SequentialCommandGroup {
+  private double noteYawToleranceDegrees = 28;
+  private double notePitchMaximumDegrees = 8;
 
-  public BranchPathSmarterWay() {
+  public AmpSideBranchingPath() {
     addCommands(
         // Preload on the move (future Tyson problem) + Drive to note 2
         new ParallelDeadlineGroup(
@@ -38,33 +38,33 @@ public class BranchPathSmarterWay extends SequentialCommandGroup {
         new PathNode(
             grabN1ScoreAndPosition(), // if note there, grab and score
             new DriveChoreoPath("N1ToN2.1"), // if not, go to next.
-            () -> isNoteInfrontOfBot(noteYawMaximum, notePitchMaximum),
+            () -> isNoteInfrontOfBot(noteYawToleranceDegrees, notePitchMaximumDegrees),
             "[BP] Node for N1"),
         new PathNode(
             grabN2ScoreAndPosition(), // if note there, grab and score
             new DriveChoreoPath("N2ToN3.1"), // if not, go to next.
-            () -> isNoteInfrontOfBot(noteYawMaximum, notePitchMaximum),
+            () -> isNoteInfrontOfBot(noteYawToleranceDegrees, notePitchMaximumDegrees),
             "[BP] Node for N2"),
         new PathNode(
             grabN3ScoreAndPosition(), // if note there, grab and score
             new DriveChoreoPath("N3ToN4.1"), // if not, go to next.
-            () -> isNoteInfrontOfBot(noteYawMaximum, notePitchMaximum),
+            () -> isNoteInfrontOfBot(noteYawToleranceDegrees, notePitchMaximumDegrees),
             "[BP] Node for N3"),
         new PathNode(
             grabN4ScoreAndPosition(), // if note there, grab and score
             new DriveChoreoPath("N4ToTeleopStartPosition.1"), // if not, go to next.
-            () -> isNoteInfrontOfBot(noteYawMaximum, notePitchMaximum),
+            () -> isNoteInfrontOfBot(noteYawToleranceDegrees, notePitchMaximumDegrees),
             "[BP] Node for N4"));
   }
 
-  private boolean isNoteInfrontOfBot(double maximumYaw, double maximumPitch) {
+  private boolean isNoteInfrontOfBot(double yawToleranceDegrees, double maximumPitchDegrees) {
     System.out.println(
         "[BP] CURRENT CAMERA YAW: "
             + Robot.intakeCam.getNoteTargetYaw()
-            + " | MAXIMUM ALLOWED YAW: "
-            + maximumYaw + "\n[BP] CURRENT CAMERA PITCH: " + Robot.intakeCam.getNoteTargetPitch() + " | MAX ALLOWED PITCH: " + maximumPitch);
+            + " | YAW TOLERANCE: "
+            + yawToleranceDegrees + "\n[BP] CURRENT CAMERA PITCH: " + Robot.intakeCam.getNoteTargetPitch() + " | MAX ALLOWED PITCH: " + maximumPitchDegrees);
 
-    return (Math.abs(Robot.intakeCam.getNoteTargetYaw()) <= maximumYaw) && (Math.abs(Robot.intakeCam.getNoteTargetPitch()) <= maximumPitch);
+    return (Math.abs(Robot.intakeCam.getNoteTargetYaw()) <= yawToleranceDegrees) && Robot.intakeCam.getNoteTargetPitch() <= maximumPitchDegrees;
   }
 
   private SequentialCommandGroup grabN1ScoreAndPosition() {

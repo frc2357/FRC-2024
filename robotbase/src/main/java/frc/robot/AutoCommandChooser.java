@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.auto.paths.AmpSide4Note;
 import frc.robot.commands.auto.paths.AmpSide4NoteWallFirst;
 import frc.robot.commands.auto.paths.AntiCitrus;
-import frc.robot.commands.auto.paths.BranchPathSmarterWay;
+import frc.robot.commands.auto.paths.AmpSideBranchingPath;
 import frc.robot.commands.auto.paths.Close3AndMiddleCenterline;
 import frc.robot.commands.auto.paths.Close3AndRUN;
 import frc.robot.commands.auto.paths.SourceSide3NoteNoStage;
@@ -37,7 +37,7 @@ public class AutoCommandChooser {
       new Close3AndRUN(),
       new Close3AndMiddleCenterline(),
       new AntiCitrus(),
-      new BranchPathSmarterWay(),
+      new AmpSideBranchingPath(),
       new DriveChoreoPath("N1ToN2")
     };
 
