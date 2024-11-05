@@ -62,9 +62,14 @@ public class AmpSideBranchingPath extends SequentialCommandGroup {
         "[BP] CURRENT CAMERA YAW: "
             + Robot.intakeCam.getNoteTargetYaw()
             + " | YAW TOLERANCE: "
-            + yawToleranceDegrees + "\n[BP] CURRENT CAMERA PITCH: " + Robot.intakeCam.getNoteTargetPitch() + " | MAX ALLOWED PITCH: " + maximumPitchDegrees);
+            + yawToleranceDegrees
+            + "\n[BP] CURRENT CAMERA PITCH: "
+            + Robot.intakeCam.getNoteTargetPitch()
+            + " | MAX ALLOWED PITCH: "
+            + maximumPitchDegrees);
 
-    return (Math.abs(Robot.intakeCam.getNoteTargetYaw()) <= yawToleranceDegrees) && Robot.intakeCam.getNoteTargetPitch() <= maximumPitchDegrees;
+    return (Math.abs(Robot.intakeCam.getNoteTargetYaw()) <= yawToleranceDegrees)
+        && Robot.intakeCam.getNoteTargetPitch() <= maximumPitchDegrees;
   }
 
   private SequentialCommandGroup grabN1ScoreAndPosition() {

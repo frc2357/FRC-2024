@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -95,10 +94,13 @@ public class DriverControls implements RumbleInterface {
             () -> {
               return Robot.state.isClimbing();
             });
-    Trigger notClimbing = isClimbing.negate();
-    m_backButton.onTrue(new InstantCommand(() -> Robot.swerve.zeroGyro(false)));
-    m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.zeroGyro(true)));
 
+    Trigger notClimbing = isClimbing.negate();
+
+    m_aButton
+        .and(notClimbing)
+        .whileTrue(
+            new VisionlessShootingWithFeeding(Robot.shooterCurve[1][2], Robot.shooterCurve[1][1]));
     m_aButton
         .and(notClimbing)
         .whileTrue(
@@ -108,16 +110,25 @@ public class DriverControls implements RumbleInterface {
 
     m_leftTrigger.and(notClimbing).onTrue(new VisionPickup());
     m_leftTrigger.and(notClimbing).toggleOnFalse(new CancelIntakeOnEnd());
+    m_leftTrigger.and(notClimbing).onTrue(new VisionPickup());
+    m_leftTrigger.and(notClimbing).toggleOnFalse(new CancelIntakeOnEnd());
 
     m_leftBumper.whileTrue(
         new ParallelCommandGroup(new TargetLockForFeeding(), new VisionlessShooting(3650, 38)));
     m_leftBumper
         .and(m_rightTriggerShoot)
         .and(notClimbing)
+        .and(notClimbing)
         .whileTrue(
             new SequentialCommandGroup(
                 new ShooterWaitForRPM(), new IntakeFeedToShooter().withTimeout(0.25)));
 
+    m_yButton.onTrue(
+        new ManualLineUpTrap(m_yButton, m_aButton.and(isClimbing))
+            .finallyDo(
+                () -> {
+                  Robot.state.setClimbing(false);
+                }));
     m_yButton.onTrue(
         new ManualLineUpTrap(m_yButton, m_aButton.and(isClimbing))
             .finallyDo(
@@ -132,10 +143,12 @@ public class DriverControls implements RumbleInterface {
     m_rightTriggerPrime
         .and(noLeftBumper)
         .and(notClimbing)
+        .and(notClimbing)
         .whileTrue(
             new ParallelCommandGroup(new VisionTargeting(4000, true), new TargetLockOnSpeaker()));
     m_rightTriggerShoot
         .and(noLeftBumper)
+        .and(notClimbing)
         .and(notClimbing)
         .whileTrue(
             new SequentialCommandGroup(
