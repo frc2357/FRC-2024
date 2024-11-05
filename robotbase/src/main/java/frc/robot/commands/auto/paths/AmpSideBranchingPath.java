@@ -21,7 +21,7 @@ import frc.robot.commands.shooter.ShooterWaitForRPM;
 // continue this pattern until you reach ALL the notes.
 public class AmpSideBranchingPath extends SequentialCommandGroup {
   private double noteYawToleranceDegrees = 28;
-  private double notePitchMaximumDegrees = 8;
+  private double notePitchMaximumDegrees = 3;
 
   public AmpSideBranchingPath() {
     addCommands(
@@ -87,7 +87,7 @@ public class AmpSideBranchingPath extends SequentialCommandGroup {
 
   private SequentialCommandGroup grabN2ScoreAndPosition() {
     return new SequentialCommandGroup(
-        new ParallelDeadlineGroup(new TranslateToGamepiece(3), new AutoPickup()),
+        new ParallelDeadlineGroup(new TranslateToGamepiece(3, 1.1), new AutoPickup()),
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(
                 // drive back with N2 and shoot
