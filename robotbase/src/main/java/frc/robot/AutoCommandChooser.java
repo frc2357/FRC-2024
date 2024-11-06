@@ -16,6 +16,7 @@ import frc.robot.commands.auto.paths.Close3AndMiddleCenterline;
 import frc.robot.commands.auto.paths.Close3AndRUN;
 import frc.robot.commands.auto.paths.SourceSide3NoteNoStage;
 import frc.robot.commands.auto.paths.SourceSide4Note;
+import frc.robot.commands.auto.paths.SourceSideBranchingPath;
 import frc.robot.commands.drive.DriveChoreoPath;
 import frc.robot.commands.util.VariableWaitCommand;
 import java.util.HashMap;
@@ -38,7 +39,8 @@ public class AutoCommandChooser {
       new Close3AndMiddleCenterline(),
       new AntiCitrus(),
       new AmpSideBranchingPath(),
-      new DriveChoreoPath("N1ToN2")
+      new SourceSideBranchingPath(),
+      new DriveChoreoPath("SourceSideStartREALLYSLOW.1", true)
     };
 
     HashMap<String, Command> commandMap = new HashMap<String, Command>(autoCommands.length + 1);
