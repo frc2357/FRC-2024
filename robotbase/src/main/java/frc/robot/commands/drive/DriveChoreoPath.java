@@ -3,10 +3,6 @@ package frc.robot.commands.drive;
 import com.choreo.lib.Choreo;
 import com.choreo.lib.ChoreoTrajectory;
 import com.choreo.lib.ChoreoTrajectoryState;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.CHOREO;
@@ -95,19 +91,6 @@ public class DriveChoreoPath extends SequentialCommandGroup {
                 : Robot.swerve.getChassisSpeedsConsumer(),
             CHOREO.CHOREO_AUTO_MIRROR_PATHS,
             Robot.swerve));
-  }
-
-  /**
-   * The method to set the pose for the current years robot.
-   *
-   * <p>This should set the pose correctly, without breaking anything. (I.E. pose est stuff)
-   */
-  private void setPoseForFirstAuto(Pose2d poseToSet, double headingRadians) {
-    var x = poseToSet.getX();
-    var y = poseToSet.getY();
-    var z = 0;
-    Robot.swerve.setPose3D(
-        new Pose3d(x, y, z, new Rotation3d(0, 0, Units.radiansToDegrees(headingRadians))));
   }
 
   @Override

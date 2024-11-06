@@ -29,6 +29,7 @@ public class RobotState {
     m_currentDriveControlState = DriveControlState.FIELD_RELATIVE;
     m_isClimbing = false;
     m_targetLockCamera = Robot.shooterCam;
+    m_isAdjusting = false;
   }
 
   public boolean isRobot(State state) {

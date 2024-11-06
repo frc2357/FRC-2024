@@ -64,12 +64,12 @@ public class Robot extends TimedRobot {
 
   private final Telemetry logger = new Telemetry();
 
-  // {ty, pivotRotations, shooterRPM, yawSetpoint}
+  // {targetPitch, pivotRotations, shooterRPM, yawSetpoint}
   public static final double[][] shooterCurve = {
     {50, 58.5, 4000, -1.1}, // Lower bound
     {8.67, 58.5, 4000, -1.1}, // center Subwoofer
     {2.7, 50.5, 4000, -1.1}, // center Subwoofer
-    {-5.08, 41.5, 4000, -2.6}, // Between Subwoofer and Podium
+    {-5.08, 41.1, 4000, -2.6}, // Between Subwoofer and Podium
     {-8.14, 37, 4500, -3.1}, // Podium
     {-14.11, 29.75, 4900, -3.5}, // Stage Apriltag
     {-19.29, 26.625, 5500, -8}, // Wing line

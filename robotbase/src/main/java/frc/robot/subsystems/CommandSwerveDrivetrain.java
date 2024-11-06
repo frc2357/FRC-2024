@@ -8,13 +8,11 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.Constants.SWERVE;
@@ -191,11 +189,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
   public void setPose(Pose2d poseToSet) {
     super.seedFieldRelative(poseToSet);
-  }
-
-  public void setPose3D(Pose3d poseToSet) {
-    super.seedFieldRelative(poseToSet.toPose2d());
-    super.getPigeon2().setYaw(Units.radiansToDegrees(poseToSet.getRotation().getAngle()));
   }
 
   /**

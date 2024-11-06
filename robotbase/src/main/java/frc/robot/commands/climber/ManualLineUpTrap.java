@@ -53,9 +53,10 @@ public class ManualLineUpTrap extends SequentialCommandGroup {
     }
 
     @Override
-    public void initialize(){
+    public void initialize() {
       Robot.state.setAdjusting(true);
     }
+
     @Override
     public void execute() {
       double axisSpeed = 0.0;
@@ -73,7 +74,7 @@ public class ManualLineUpTrap extends SequentialCommandGroup {
     }
 
     @Override
-    public void end(boolean interrupted){
+    public void end(boolean interrupted) {
       Robot.state.setAdjusting(false);
     }
   }

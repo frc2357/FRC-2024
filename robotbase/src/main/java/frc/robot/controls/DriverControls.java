@@ -98,9 +98,6 @@ public class DriverControls implements RumbleInterface {
 
     Trigger notClimbing = isClimbing.negate();
 
-    m_backButton.onTrue(new InstantCommand(() -> Robot.swerve.zeroGyro(false)));
-    m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.zeroGyro(true)));
-
     m_aButton
         .and(notClimbing)
         .whileTrue(
@@ -126,10 +123,14 @@ public class DriverControls implements RumbleInterface {
                 () -> {
                   Robot.state.setClimbing(false);
                 }));
+
     m_xButton.whileTrue(new SourceIntakeFromShooter());
 
     // scoring
     m_rightBumper.onTrue(new AmpSequence(m_rightBumper));
+
+    m_backButton.onTrue(new InstantCommand(() -> Robot.swerve.zeroGyro(false)));
+    m_startButton.onTrue(new InstantCommand(() -> Robot.swerve.zeroGyro(true)));
 
     m_rightTriggerPrime
         .and(noLeftBumper)
@@ -166,7 +167,7 @@ public class DriverControls implements RumbleInterface {
     return Robot.state.isAdjusting() ? 0 : -modifyAxis(m_controller.getRightX());
   }
 
-  // Only for climb, don't use ever unless Nolan says so
+  /** Only for climb, don't use ever unless Nolan says so */
   public double getLeftStickY() {
     return m_controller.getLeftY();
   }
@@ -197,6 +198,7 @@ public class DriverControls implements RumbleInterface {
     // Constants.SWERVE.TRANSLATION_RAMP_EXPONENT), value);
     return value;
   }
+  
 
   @Override
   public void setRumble(double intensity) {
