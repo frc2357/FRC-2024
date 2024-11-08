@@ -9,30 +9,30 @@ public class AutoTargetLockOnSpeaker extends Command {
   public int m_startingPipeline;
 
   public AutoTargetLockOnSpeaker() {
-    m_startingPipeline = Robot.intakeCam.getPipeline();
-    addRequirements(Robot.swerve, Robot.shooterCam);
+    // m_startingPipeline = Robot.intakeCam.getPipeline();
+    // addRequirements(Robot.swerve, Robot.shooterCam);
   }
 
   @Override
   public void initialize() {
-    Robot.shooterCam.setAprilTagPipelineActive();
+    // Robot.shooterCam.setAprilTagPipelineActive();
   }
 
   @Override
   public void execute() {
-    var pitch = Robot.shooterCam.getSpeakerTargetPitch();
-    if (Double.isNaN(pitch)) {
-      Robot.swerve.driveTargetLock(0, 0, 0, 0, false);
-      return;
-    }
-    int curveIndex = RobotMath.getCurveSegmentIndex(Robot.shooterCurve, pitch);
-    if (curveIndex == -1) {
-      Robot.swerve.driveTargetLock(0, 0, 0, 0, false);
-      return;
-    }
-    var targetYaw = Robot.shooterCam.getSpeakerTargetYaw();
-    var yawSetpoint = Robot.shooterCurve[curveIndex][3];
-    Robot.swerve.driveTargetLock(0, 0, !Double.isNaN(targetYaw) ? targetYaw : 0, yawSetpoint, true);
+    // var pitch = Robot.shooterCam.getSpeakerTargetPitch();
+    // if (Double.isNaN(pitch)) {
+    //   Robot.swerve.driveTargetLock(0, 0, 0, 0, false);
+    //   return;
+    // }
+    // int curveIndex = RobotMath.getCurveSegmentIndex(Robot.shooterCurve, pitch);
+    // if (curveIndex == -1) {
+    //   Robot.swerve.driveTargetLock(0, 0, 0, 0, false);
+    //   return;
+    // }
+    // var targetYaw = Robot.shooterCam.getSpeakerTargetYaw();
+    // var yawSetpoint = Robot.shooterCurve[curveIndex][3];
+    // Robot.swerve.driveTargetLock(0, 0, !Double.isNaN(targetYaw) ? targetYaw : 0, yawSetpoint, true);
   }
 
   @Override
@@ -42,7 +42,7 @@ public class AutoTargetLockOnSpeaker extends Command {
 
   @Override
   public void end(boolean interupted) {
-    Robot.swerve.stopMotors();
-    Robot.intakeCam.setPipeline(m_startingPipeline);
+    Robot.swerve.stopMotors(); //TODO: change this back
+    // Robot.intakeCam.setPipeline(m_startingPipeline);
   }
 }

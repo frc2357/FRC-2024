@@ -1,9 +1,16 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkBase.ControlType;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkPIDController;
+
+import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.ClosedLoopConfig;
+import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.SparkMax;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -14,19 +21,19 @@ import frc.robot.util.Utility;
 public class Shooter extends SubsystemBase {
   private double m_targetRPM;
 
-  private CANSparkMax m_topShooterMotor;
-  private CANSparkMax m_bottomShooterMotor;
+  private SparkMax m_topShooterMotor;
+  private SparkMax m_bottomShooterMotor;
 
-  private SparkPIDController m_topPIDController;
-  private SparkPIDController m_bottomPIDController;
+  private SparkClosedLoopController m_topPIDController;
+  private SparkClosedLoopController m_bottomPIDController;
 
   private ShooterCurveTuner m_curveTuner;
 
   public Shooter() {
     m_topShooterMotor =
-        new CANSparkMax(Constants.CAN_ID.TOP_SHOOTER_MOTOR_ID, MotorType.kBrushless);
+        new SparkMax(Constants.CAN_ID.TOP_SHOOTER_MOTOR_ID, MotorType.kBrushless);
     m_bottomShooterMotor =
-        new CANSparkMax(Constants.CAN_ID.BOTTOM_SHOOTER_MOTOR_ID, MotorType.kBrushless);
+        new SparkMax(Constants.CAN_ID.BOTTOM_SHOOTER_MOTOR_ID, MotorType.kBrushless);
     m_curveTuner = new ShooterCurveTuner();
 
     m_targetRPM = Double.NaN;
@@ -35,37 +42,23 @@ public class Shooter extends SubsystemBase {
   }
 
   public void configure() {
-    m_topShooterMotor.setInverted(Constants.SHOOTER.TOP_MOTOR_INVERTED);
-    m_bottomShooterMotor.setInverted(Constants.SHOOTER.BOTTOM_MOTOR_INVERTED);
+    ClosedLoopConfig topPIDConfig = new ClosedLoopConfig().pidf(SHOOTER.TOP_MOTOR_P, SHOOTER.TOP_MOTOR_I, SHOOTER.TOP_MOTOR_D, SHOOTER.TOP_MOTOR_FF).outputRange(-1, 1);
+    
+    ClosedLoopConfig bottomPIDConfig = new ClosedLoopConfig().pidf(SHOOTER.BOTTOM_MOTOR_P, SHOOTER.BOTTOM_MOTOR_I, SHOOTER.BOTTOM_MOTOR_D, SHOOTER.BOTTOM_MOTOR_FF).outputRange(-1, 1);
 
-    m_topShooterMotor.setOpenLoopRampRate(Constants.SHOOTER.RAMP_RATE);
-    m_topShooterMotor.enableVoltageCompensation(12);
-    m_topShooterMotor.setIdleMode(Constants.SHOOTER.IDLE_MODE);
-    m_topShooterMotor.setSmartCurrentLimit(
-        Constants.SHOOTER.TOP_MOTOR_STALL_LIMIT_AMPS, Constants.SHOOTER.TOP_MOTOR_FREE_LIMIT_AMPS);
+    SparkBaseConfig topMotorConfig = new SparkMaxConfig()
+    .inverted(SHOOTER.TOP_MOTOR_INVERTED).openLoopRampRate(SHOOTER.RAMP_RATE).voltageCompensation(12).idleMode(SHOOTER.IDLE_MODE)
+    .smartCurrentLimit(SHOOTER.TOP_MOTOR_STALL_LIMIT_AMPS, SHOOTER.TOP_MOTOR_FREE_LIMIT_AMPS).apply(topPIDConfig);
+    
+    SparkBaseConfig bottomMotorConfig = new SparkMaxConfig()
+    .inverted(SHOOTER.BOTTOM_MOTOR_INVERTED).openLoopRampRate(SHOOTER.RAMP_RATE).voltageCompensation(12).idleMode(SHOOTER.IDLE_MODE)
+    .smartCurrentLimit(SHOOTER.BOTTOM_MOTOR_STALL_LIMIT_AMPS, SHOOTER.BOTTOM_MOTOR_FREE_LIMIT_AMPS).apply(bottomPIDConfig);
 
-    m_bottomShooterMotor.setOpenLoopRampRate(Constants.SHOOTER.RAMP_RATE);
-    m_bottomShooterMotor.enableVoltageCompensation(12);
-    m_bottomShooterMotor.setIdleMode(Constants.SHOOTER.IDLE_MODE);
-    m_bottomShooterMotor.setSmartCurrentLimit(
-        Constants.SHOOTER.BOTTOM_MOTOR_STALL_LIMIT_AMPS,
-        Constants.SHOOTER.BOTTOM_MOTOR_FREE_LIMIT_AMPS);
-
-    m_topPIDController = m_topShooterMotor.getPIDController();
-    m_bottomPIDController = m_bottomShooterMotor.getPIDController();
-
-    m_topPIDController.setP(Constants.SHOOTER.TOP_MOTOR_P);
-    m_topPIDController.setI(Constants.SHOOTER.TOP_MOTOR_I);
-    m_topPIDController.setD(Constants.SHOOTER.TOP_MOTOR_D);
-    m_topPIDController.setFF(Constants.SHOOTER.TOP_MOTOR_FF);
-
-    m_bottomPIDController.setP(Constants.SHOOTER.BOTTOM_MOTOR_P);
-    m_bottomPIDController.setI(Constants.SHOOTER.BOTTOM_MOTOR_I);
-    m_bottomPIDController.setD(Constants.SHOOTER.BOTTOM_MOTOR_D);
-    m_bottomPIDController.setFF(Constants.SHOOTER.BOTTOM_MOTOR_FF);
-
-    m_topPIDController.setOutputRange(-1, 1);
-    m_bottomPIDController.setOutputRange(-1, 1);
+    m_topPIDController = m_topShooterMotor.getClosedLoopController();
+    m_bottomPIDController = m_bottomShooterMotor.getClosedLoopController();
+    
+    m_topShooterMotor.configure(topMotorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+    m_bottomShooterMotor.configure(bottomMotorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
   }
 
   public void setRPM(double topRPM) {

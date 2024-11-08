@@ -1,53 +1,51 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkBase.ControlType;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
+
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxAlternateEncoder;
-import com.revrobotics.SparkPIDController;
+import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.AlternateEncoderConfig;
+import com.revrobotics.spark.config.ClosedLoopConfig;
+import com.revrobotics.spark.config.EncoderConfig;
+import com.revrobotics.spark.config.MAXMotionConfig;
+import com.revrobotics.spark.config.SmartMotionConfig;
+import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkMaxAlternateEncoder;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.EXTENSION_ARM;
 import frc.robot.util.Utility;
 
 public class ExtensionArm extends SubsystemBase {
-  private CANSparkMax m_motor;
-  private SparkPIDController m_PIDController;
+  private SparkMax m_motor;
+  private SparkClosedLoopController m_PIDController;
   private RelativeEncoder m_encoder;
   private double m_targetRotations;
 
   public ExtensionArm() {
-    m_motor = new CANSparkMax(Constants.CAN_ID.TRAP_AMP_ARM_MOTOR_ID, MotorType.kBrushless);
+    m_motor = new SparkMax(Constants.CAN_ID.TRAP_AMP_ARM_MOTOR_ID, MotorType.kBrushless);
     configure();
   }
 
   private void configure() {
-    m_motor.setInverted(EXTENSION_ARM.MOTOR_IS_INVERTED);
-    m_motor.setIdleMode(EXTENSION_ARM.MOTOR_IDLE_MODE);
-    m_motor.setSmartCurrentLimit(
-        EXTENSION_ARM.MOTOR_STALL_LIMIT_AMPS, EXTENSION_ARM.MOTOR_FREE_LIMIT_AMPS);
+    MAXMotionConfig maxMotionConfig = new MAXMotionConfig().maxVelocity(EXTENSION_ARM.SMART_MOTION_MAX_VEL_RPM).maxAcceleration(EXTENSION_ARM.SMART_MOTION_MAX_ACC_RPM).allowedClosedLoopError(EXTENSION_ARM.SMART_MOTION_ALLOWED_ERROR);
+    
+    ClosedLoopConfig PIDConfig = new ClosedLoopConfig().pidf(EXTENSION_ARM.MOTOR_PID_P, EXTENSION_ARM.MOTOR_PID_I, EXTENSION_ARM.MOTOR_PID_D, EXTENSION_ARM.MOTOR_PID_FF)
+    .feedbackSensor(FeedbackSensor.kAlternateOrExternalEncoder).outputRange(-1, 1).apply(maxMotionConfig);
+    
+    AlternateEncoderConfig altEncoderConfig = new AlternateEncoderConfig().inverted(EXTENSION_ARM.ENCODER_INVERTED);
+    
+    SparkBaseConfig motorConfig = new SparkMaxConfig().inverted(EXTENSION_ARM.MOTOR_IS_INVERTED).idleMode(EXTENSION_ARM.MOTOR_IDLE_MODE).smartCurrentLimit(EXTENSION_ARM.MOTOR_STALL_LIMIT_AMPS, EXTENSION_ARM.MOTOR_FREE_LIMIT_AMPS).apply(PIDConfig);
+    
+    
+    m_encoder = m_motor.getAlternateEncoder();
 
-    // m_motor.enableVoltageCompensation(12);
-
-    m_encoder = m_motor.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, 8192);
-    m_encoder.setInverted(Constants.EXTENSION_ARM.ENCODER_INVERTED);
-
-    m_PIDController = m_motor.getPIDController();
-
-    m_PIDController.setP(EXTENSION_ARM.MOTOR_PID_P);
-    m_PIDController.setI(EXTENSION_ARM.MOTOR_PID_I);
-    m_PIDController.setD(EXTENSION_ARM.MOTOR_PID_D);
-    m_PIDController.setFF(EXTENSION_ARM.MOTOR_PID_FF);
-
-    m_PIDController.setFeedbackDevice(m_encoder);
-
-    m_PIDController.setOutputRange(-1, 1);
-    m_PIDController.setSmartMotionMaxVelocity(EXTENSION_ARM.SMART_MOTION_MAX_VEL_RPM, 0);
-    m_PIDController.setSmartMotionMinOutputVelocity(EXTENSION_ARM.SMART_MOTION_MIN_VEL_RPM, 0);
-    m_PIDController.setSmartMotionMaxAccel(EXTENSION_ARM.SMART_MOTION_MAX_ACC_RPM, 0);
-    m_PIDController.setSmartMotionAllowedClosedLoopError(
-        EXTENSION_ARM.SMART_MOTION_ALLOWED_ERROR, 0);
+    m_PIDController = m_motor.getClosedLoopController();
   }
 
   public void setSpeed(double speed) {
@@ -57,7 +55,7 @@ public class ExtensionArm extends SubsystemBase {
 
   public void setTargetRotations(double targetRotations) {
     m_targetRotations = targetRotations;
-    m_PIDController.setReference(m_targetRotations, ControlType.kSmartMotion);
+    m_PIDController.setReference(m_targetRotations, ControlType.kMAXMotionPositionControl);
   }
 
   public void stop() {
@@ -71,11 +69,11 @@ public class ExtensionArm extends SubsystemBase {
   }
 
   public double getRotations() {
-    return m_encoder.getPosition();
+    return m_encoder.getPosition() * -1; // DO NOT CHANGE! rev is stupid and we cant invert the alt encoder
   }
 
   public double getVelocity() {
-    return m_encoder.getVelocity();
+    return m_encoder.getVelocity() * -1; // DO NOT CHANGE! rev is stupid and we cant invert the alt encoder
   }
 
   public boolean isAtTargetRotations() {

@@ -1,17 +1,17 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.StatusCode;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.ctre.phoenix6.swerve.SwerveDrivetrain;
+import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
+import com.ctre.phoenix6.swerve.SwerveModule;
+import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.ctre.phoenix6.swerve.SwerveModuleConstants;
+import com.ctre.phoenix6.swerve.SwerveRequest;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
@@ -27,8 +27,8 @@ import java.util.function.Supplier;
  */
 public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsystem {
 
-  private final SwerveRequest.ApplyChassisSpeeds chassisSpeedRequest =
-      new SwerveRequest.ApplyChassisSpeeds();
+  private final SwerveRequest.ApplyRobotSpeeds robotSpeedRequest =
+      new SwerveRequest.ApplyRobotSpeeds();
 
   private final SwerveRequest.FieldCentric fieldRelative =
       new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.Velocity);
@@ -139,8 +139,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   /**
    * @return A list of module positions in the order Front Left, Front Right, Back Left, Back Right
    */
-  public SwerveModulePosition[] getModulePositions() {
-    return super.m_modulePositions;
+  public Translation2d[] getModulePositions() {
+    return super.getModuleLocations();
   }
 
   /**
@@ -161,10 +161,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     return super.getState().Pose;
   }
 
-  private SwerveDriveKinematics getKinematics() {
-    return super.m_kinematics;
-  }
-
   public void zeroGyro(boolean flip) {
     StatusCode code = super.getPigeon2().setYaw(flip ? 180 : 0);
     System.out.println("[GYRO] Zeroed to " + (flip ? 180 : 0) + ": " + code.toString());
@@ -181,14 +177,14 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   /** Stops the motors in a way that should make them not jingle. */
   public void stopMotors() {
     driveFieldRelative(0, 0, 0);
-    for (SwerveModule module : super.Modules) {
+    for (SwerveModule module : super.getModules()) {
       module.getDriveMotor().stopMotor(); // anti-jingle
       module.getSteerMotor().stopMotor(); // remove to bring back the jingle (dont do it)
     }
   }
 
   public void setPose(Pose2d poseToSet) {
-    super.seedFieldRelative(poseToSet);
+    super.resetPose(poseToSet);
   }
 
   /**
@@ -202,7 +198,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         for (SwerveModuleState state : moduleStates) {
           state.speedMetersPerSecond += Constants.SWERVE.STATIC_FEEDFORWARD_METERS_PER_SECOND;
         }
-        setControl(chassisSpeedRequest.withSpeeds(getKinematics().toChassisSpeeds(moduleStates)));
+        setControl(robotSpeedRequest.withSpeeds(getKinematics().toChassisSpeeds(moduleStates)));
       }
     };
   }
@@ -226,7 +222,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         for (SwerveModuleState state : moduleStates) {
           state.speedMetersPerSecond += Constants.SWERVE.STATIC_FEEDFORWARD_METERS_PER_SECOND;
         }
-        setControl(chassisSpeedRequest.withSpeeds(getKinematics().toChassisSpeeds(moduleStates)));
+        setControl(robotSpeedRequest.withSpeeds(getKinematics().toChassisSpeeds(moduleStates)));
       }
     };
   }
@@ -237,8 +233,11 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
    * @return The radians per second to turn for target lcoking on the speaker.
    */
   public double getAutonSpeakerLockRadiansPerSecond() {
-    double targetPitch = Robot.shooterCam.getSpeakerTargetPitch();
-    double targetYaw = Robot.shooterCam.getSpeakerTargetYaw();
+    // double targetPitch = Robot.shooterCam.getSpeakerTargetPitch();
+    // double targetYaw = Robot.shooterCam.getSpeakerTargetYaw();
+    double targetPitch = Double.NaN;
+    double targetYaw = Double.NaN; //TODO: change back once PV has 2025 beta
+
 
     if (Double.isNaN(targetPitch) || Double.isNaN(targetYaw)) return Double.NaN;
 
@@ -313,7 +312,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     double[] positions = new double[4];
 
     for (int i = 0; i < positions.length; i++) {
-      positions[i] = getModulePositions()[i].angle.getDegrees();
+      positions[i] = getModulePositions()[i].getAngle().getDegrees();
     }
 
     return positions;

@@ -1,11 +1,22 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkBase.ControlType;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkAbsoluteEncoder;
-import com.revrobotics.SparkPIDController;
+import com.ctre.phoenix6.configs.FeedbackConfigs;
+import com.revrobotics.jni.CANSparkJNI;
+import com.revrobotics.spark.SparkAbsoluteEncoder;
+import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkLowLevel.PeriodicFrame;
+import com.revrobotics.spark.config.AbsoluteEncoderConfig;
+import com.revrobotics.spark.config.ClosedLoopConfig;
+import com.revrobotics.spark.config.SignalsConfig;
+import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -13,13 +24,13 @@ import frc.robot.Constants.PIVOT;
 import frc.robot.util.Utility;
 
 public class Pivot extends SubsystemBase {
-  private CANSparkMax m_pivotMotor;
-  private SparkPIDController m_pivotPIDController;
+  private SparkMax m_pivotMotor;
+  private SparkClosedLoopController m_pivotPIDController;
   private SparkAbsoluteEncoder m_absoluteEncoder;
   private double m_targetAngle;
 
   public Pivot() {
-    m_pivotMotor = new CANSparkMax(Constants.CAN_ID.PIVOT_MOTOR_ID, MotorType.kBrushless);
+    m_pivotMotor = new SparkMax(Constants.CAN_ID.PIVOT_MOTOR_ID, MotorType.kBrushless);
     m_targetAngle = Double.NaN;
     configure();
 
@@ -33,29 +44,22 @@ public class Pivot extends SubsystemBase {
   }
 
   private void configure() {
+    m_absoluteEncoder = m_pivotMotor.getAbsoluteEncoder();
+    m_pivotPIDController = m_pivotMotor.getClosedLoopController();
+    ClosedLoopConfig pivotPIDConfig = new ClosedLoopConfig().pidf(PIVOT.PIVOT_P, PIVOT.PIVOT_I, PIVOT.PIVOT_D, PIVOT.PIVOT_FF).outputRange(-1,1).feedbackSensor(FeedbackSensor.kAbsoluteEncoder);
     m_pivotMotor.setInverted(PIVOT.MOTOR_INVERTED);
-    m_pivotMotor.setIdleMode(PIVOT.IDLE_MODE);
-    m_pivotMotor.setSmartCurrentLimit(PIVOT.MOTOR_STALL_LIMIT_AMPS, PIVOT.MOTOR_FREE_LIMIT_AMPS);
-    m_pivotMotor.enableVoltageCompensation(12);
-    m_pivotMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus5, 20);
 
-    m_pivotPIDController = m_pivotMotor.getPIDController();
+    AbsoluteEncoderConfig pivotAbsoluteEncoderConfig = new AbsoluteEncoderConfig().inverted(PIVOT.ENCODER_INVERTED).positionConversionFactor(PIVOT.ENCODER_POSITION_CONVERSION_FACTOR).velocityConversionFactor(PIVOT.ENCODER_VELOCITY_CONVERSION_FACTOR);
 
-    m_pivotPIDController.setP(PIVOT.PIVOT_P);
-    m_pivotPIDController.setI(PIVOT.PIVOT_I);
-    m_pivotPIDController.setD(PIVOT.PIVOT_D);
-    m_pivotPIDController.setFF(PIVOT.PIVOT_FF);
-
-    m_pivotPIDController.setOutputRange(-1, 1);
-
-    m_absoluteEncoder = m_pivotMotor.getAbsoluteEncoder(SparkAbsoluteEncoder.Type.kDutyCycle);
-    m_absoluteEncoder.setInverted(PIVOT.ENCODER_INVERTED);
-    m_absoluteEncoder.setPositionConversionFactor(PIVOT.ENCODER_POSITION_CONVERSION_FACTOR);
-    m_absoluteEncoder.setVelocityConversionFactor(PIVOT.ENCODER_VELOCITY_CONVERSION_FACTOR);
-    m_pivotMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus5, 20);
-    m_pivotMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus6, 20);
-
-    m_pivotPIDController.setFeedbackDevice(m_absoluteEncoder);
+    SparkBaseConfig pivotBaseConfig = new SparkMaxConfig()
+      .inverted(PIVOT.MOTOR_INVERTED)
+      .idleMode(PIVOT.IDLE_MODE)
+      .smartCurrentLimit(PIVOT.MOTOR_STALL_LIMIT_AMPS, PIVOT.MOTOR_FREE_LIMIT_AMPS)
+      .voltageCompensation(12)
+      .apply(pivotPIDConfig)
+      .apply(pivotAbsoluteEncoderConfig);
+    
+    m_pivotMotor.configure(pivotBaseConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
   }
 
   public boolean isSettingAngle() {
@@ -107,9 +111,9 @@ public class Pivot extends SubsystemBase {
   }
 
   public void setZero() {
-    double currentOffset = m_absoluteEncoder.getZeroOffset();
-    double newOffset = getCurrentAngle() + currentOffset - Constants.PIVOT.MIN_PIVOT_ANGLE;
-    newOffset %= 360;
+    // double currentOffset = m_absoluteEncoder.getZeroOffset();
+    // double newOffset = getCurrentAngle() + currentOffset - Constants.PIVOT.MIN_PIVOT_ANGLE;
+    // newOffset %= 360;
     // setZeroOffset(newOffset);
     System.out.println("[Pivot] Zero Not Set. Set the zero manually");
   }

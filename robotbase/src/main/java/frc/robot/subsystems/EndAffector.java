@@ -1,9 +1,15 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
+import edu.wpi.first.units.measure.MomentOfInertia;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,7 +20,7 @@ import frc.robot.Constants.END_AFFECTOR;
 
 public class EndAffector extends SubsystemBase {
 
-  private CANSparkMax m_motor;
+  private SparkMax m_motor;
 
   private DigitalInput m_proximitySensor;
   private DigitalOutput m_proximitySensorPower;
@@ -22,7 +28,7 @@ public class EndAffector extends SubsystemBase {
   private Debouncer m_debouncer;
 
   public EndAffector() {
-    m_motor = new CANSparkMax(CAN_ID.END_AFFECTOR_MOTOR_ID, MotorType.kBrushed);
+    m_motor = new SparkMax(CAN_ID.END_AFFECTOR_MOTOR_ID, MotorType.kBrushed);
 
     m_proximitySensor = new DigitalInput(DIGITAL_INPUT.END_AFFECTOR_PROXIMITY_SENSOR_ID);
     m_proximitySensorPower =
@@ -34,11 +40,8 @@ public class EndAffector extends SubsystemBase {
   }
 
   private void configure() {
-    m_motor.setInverted(END_AFFECTOR.IS_INVERTED);
-    m_motor.setIdleMode(END_AFFECTOR.IDLE_MODE);
-    m_motor.setSmartCurrentLimit(
-        END_AFFECTOR.MOTOR_STALL_LIMIT_AMPS, END_AFFECTOR.MOTOR_FREE_LIMIT_AMPS);
-    m_motor.enableVoltageCompensation(12);
+    SparkBaseConfig motorConfig = new SparkMaxConfig().inverted(END_AFFECTOR.IS_INVERTED).idleMode(END_AFFECTOR.IDLE_MODE).smartCurrentLimit(END_AFFECTOR.MOTOR_STALL_LIMIT_AMPS, END_AFFECTOR.MOTOR_FREE_LIMIT_AMPS).voltageCompensation(12);
+    m_motor.configure(motorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
   }
 
   public void setAxisSpeed(double axisSpeed) {
