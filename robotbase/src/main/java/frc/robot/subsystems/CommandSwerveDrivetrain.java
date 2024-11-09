@@ -188,31 +188,22 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
   }
 
   /**
-   * @return A ChassisSpeeds Consumer which applies a feedforward to its inputs.
+   * DO NOT USE THIS OUTSIDE OF AUTO DRIVING! This is intended for Choreo only!
    */
-  public Consumer<ChassisSpeeds> getChassisSpeedsConsumer() {
-    return new Consumer<ChassisSpeeds>() {
-      @Override
-      public void accept(ChassisSpeeds speeds) {
-        SwerveModuleState[] moduleStates = getKinematics().toSwerveModuleStates(speeds);
-        for (SwerveModuleState state : moduleStates) {
-          state.speedMetersPerSecond += Constants.SWERVE.STATIC_FEEDFORWARD_METERS_PER_SECOND;
-        }
-        setControl(robotSpeedRequest.withSpeeds(getKinematics().toChassisSpeeds(moduleStates)));
-      }
-    };
+  public void autonDriveWithFeedForward(ChassisSpeeds speeds) {
+    SwerveModuleState[] moduleStates = getKinematics().toSwerveModuleStates(speeds);
+    for (SwerveModuleState state : moduleStates) {
+      state.speedMetersPerSecond += Constants.SWERVE.STATIC_FEEDFORWARD_METERS_PER_SECOND;
+    }
+    setControl(robotSpeedRequest.withSpeeds(getKinematics().toChassisSpeeds(moduleStates)));
   }
 
   /**
-   * Makes a ChassisSpeeds Consumer for locking onto the speaker regardless of input.
+   * Consumes ChassisSpeeds to lockonto the speaker, for overriding Choreo heading.
    *
-   * @return a ChassisSpeeds Consumer that locks onto the speaker regardless of input.
+   * DO NOT USE OUTSIDE OF AUTO STUFF
    */
-  public Consumer<ChassisSpeeds> getSpeakerLockChassisSpeedsConsumer() {
-    return new Consumer<ChassisSpeeds>() {
-      @Override
-      public void accept(ChassisSpeeds speeds) {
-
+  public void autonDriveWithTargetLock(ChassisSpeeds speeds) {
         double rotation = getAutonSpeakerLockRadiansPerSecond();
         if (!Double.isNaN(rotation)) {
           speeds.omegaRadiansPerSecond = rotation;
@@ -224,9 +215,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         }
         setControl(robotSpeedRequest.withSpeeds(getKinematics().toChassisSpeeds(moduleStates)));
       }
-    };
-  }
-
   /**
    * Gets the radians per second to turn in for target locking in auto.
    *
