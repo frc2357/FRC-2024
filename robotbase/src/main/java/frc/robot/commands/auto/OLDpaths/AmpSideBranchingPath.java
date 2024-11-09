@@ -28,13 +28,13 @@ public class AmpSideBranchingPath extends SequentialCommandGroup {
         // Preload on the move + Drive to note 2
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(
-                new DriveChoreoPath("AmpSide4Note1WallFirst.1", true),
+                new DriveChoreoPath("AmpSide4Note1WallFirst",0, true),
                 new ParallelCommandGroup(new TargetLockOnSpeaker(true), new ShooterWaitForRPM())
                     .withTimeout(SWERVE.AUTO_TARGET_LOCK_TIMEOUT_SECONDS),
                 new IntakeFeedToShooter().withTimeout(0.2)),
             new VisionTargeting(4800)),
         // checking N2
-        new DriveChoreoPath("AmpSide4Note1WallFirst.2", false),
+        new DriveChoreoPath("AmpSide4Note1WallFirst", 1, false),
         new PathNode(
             grabN1ScoreAndPosition(), // if note there, grab and score
             new DriveChoreoPath("N1ToN2.1"), // if not, go to next.
@@ -80,7 +80,7 @@ public class AmpSideBranchingPath extends SequentialCommandGroup {
         // drive back with N1 and shoot
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(
-                new DriveChoreoPath("AmpSide4Note2WallFirst.1", false)
+                new DriveChoreoPath("AmpSide4Note2WallFirst")
                     .deadlineWith(new AutoPickup()),
                 new ParallelCommandGroup(new TargetLockOnSpeaker(true), new ShooterWaitForRPM())
                     .withTimeout(SWERVE.AUTO_TARGET_LOCK_TIMEOUT_SECONDS),
@@ -88,7 +88,7 @@ public class AmpSideBranchingPath extends SequentialCommandGroup {
             new VisionTargeting(4800)),
 
         // position for N2
-        new DriveChoreoPath("AmpSide4Note2WallFirst.2", false));
+        new DriveChoreoPath("AmpSide4Note2WallFirst", 1));
   }
 
   private SequentialCommandGroup grabN2ScoreAndPosition() {
@@ -97,14 +97,14 @@ public class AmpSideBranchingPath extends SequentialCommandGroup {
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(
                 // drive back with N2 and shoot
-                new DriveChoreoPath("AmpSide4Note3WallFirst.1", false)
+                new DriveChoreoPath("AmpSide4Note3WallFirst")
                     .deadlineWith(new AutoPickup()),
                 new ParallelCommandGroup(new TargetLockOnSpeaker(true), new ShooterWaitForRPM())
                     .withTimeout(SWERVE.AUTO_TARGET_LOCK_TIMEOUT_SECONDS),
                 new IntakeFeedToShooter().withTimeout(0.2)),
             new VisionTargeting(4800)),
         // position for N3
-        new DriveChoreoPath("AmpSide4Note3WallFirst.2"));
+        new DriveChoreoPath("AmpSide4Note3WallFirst", 1));
   }
 
   private SequentialCommandGroup grabN3ScoreAndPosition() {
@@ -120,7 +120,7 @@ public class AmpSideBranchingPath extends SequentialCommandGroup {
                 new IntakeFeedToShooter().withTimeout(0.2)),
             new VisionTargeting(4800)),
         // position for N4
-        new DriveChoreoPath("AmpSide4Note4.2"));
+        new DriveChoreoPath("AmpSide4Note4", 1));
   }
 
   private SequentialCommandGroup grabN4ScoreAndPosition() {
@@ -130,13 +130,13 @@ public class AmpSideBranchingPath extends SequentialCommandGroup {
         // drive back and score N3
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(
-                new DriveChoreoPath("BPScoreN4.1"),
+                new DriveChoreoPath("BPScoreN4", 0),
                 new ParallelCommandGroup(new TargetLockOnSpeaker(true), new ShooterWaitForRPM())
                     .withTimeout(SWERVE.AUTO_TARGET_LOCK_TIMEOUT_SECONDS),
                 new IntakeFeedToShooter().withTimeout(0.2)),
             new VisionTargeting(4800)),
         // position for teleop start
-        new DriveChoreoPath("BPScoreN4.2"));
+        new DriveChoreoPath("BPScoreN4", 1));
   }
 
   @Override

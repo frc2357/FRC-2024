@@ -39,7 +39,7 @@ public class AutoCommandChooser {
       // new Close3AndMiddleCenterline(),
       // new AntiCitrus(),
       // new AmpSideBranchingPath(),
-      // new SourceSideBranchingPath(), // Do not use these until further notice.
+      // new SourceSideBranchingPath(), // These will not work until adapted to 2025 code.
     };
 
     HashMap<String, Command> commandMap = new HashMap<String, Command>(autoCommands.length + 1);

@@ -1,15 +1,8 @@
 package frc.robot.commands.drive;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.MissingFormatArgumentException;
-import java.util.function.BiConsumer;
-
-import com.reduxrobotics.canand.CanandDeviceDetails.Msg;
-
 import choreo.Choreo;
 import choreo.auto.AutoFactory;
-import choreo.auto.AutoLoop;
+import choreo.auto.AutoTrajectory;
 import choreo.auto.AutoFactory.AutoBindings;
 import choreo.trajectory.SwerveSample;
 import choreo.trajectory.Trajectory;
@@ -28,7 +21,8 @@ public class DriveChoreoPath extends SequentialCommandGroup {
   private TrajectorySample<SwerveSample> m_startingState; // The starting state of the robot
   private Pose2d m_startingPose; // The starting pose of the robot
   private boolean m_targetLock; // Whether or not this specific path should target lock or not
-  private AutoFactory m_autoFactory =
+  private int m_splitIndex;
+  private final AutoFactory m_autoFactory =
    Choreo.createAutoFactory(Robot.swerve, 
    () -> Robot.swerve.getPose(), 
    (Pose2d pose, SwerveSample sample) -> choreoController(pose, sample), 
@@ -48,40 +42,53 @@ public class DriveChoreoPath extends SequentialCommandGroup {
     }
   }
   /**
-   * A utility command to run a Choreo path without using the Trigger API.
+   * A utility command to start a Choreo path without using the Trigger API.
    *
    * @param trajectoryFileName The name of the path file with '.traj' excluded.
    */
   public DriveChoreoPath(String trajectoryFileName) {
     // Overloaded constructor, sets the gyro yaw to zero and pose x, y to starting
     // position
-    this(trajectoryFileName, false);
-    m_autoFactory.trajectoryCommand(trajectoryFileName);
+    this(trajectoryFileName, 0);
   }
 
   /**
-   * A utility command to run a Choreo path without using the Trigger API.
+   * A utility command to start a Choreo path without using the Trigger API.
    * @param trajectoryFileName The name of the path file with '.traj' excluded.
-   * @param pathName The name of the path, is returned in the toString for the auto command chooser.
    */
-  public DriveChoreoPath(String trajectoryFileName, boolean setPoseToStartTrajectory) {
+  public DriveChoreoPath(String trajectoryFileName, int splitIndex) {
     // Overloaded constructor, sets the gyro yaw to zero and pose x, y to starting
     // position
-    this(trajectoryFileName, setPoseToStartTrajectory, false);
+    this(trajectoryFileName, splitIndex, false);
   }
 
   /**
-   * A utility command to run a Choreo path without using the Trigger API.
+   * A utility command to start a Choreo path without using the Trigger API.
+   * @param trajectoryFileName The name of the path file with '.traj' excluded.
+   */
+  public DriveChoreoPath(String trajectoryFileName, int splitIndex, boolean setPoseToStartTrajectory) {
+    // Overloaded constructor, sets the gyro yaw to zero and pose x, y to starting
+    // position
+    this(trajectoryFileName, 0, setPoseToStartTrajectory, false);
+  }
+
+  /**
+   * A utility command to start a Choreo path without using the Trigger API.<p>
+   * You still need to use {@link #noTriggers()} or {@link #withTriggers()} to actually run the path, due to
+   * how we handle Choreo
    *
    * @param trajectoryFileName The name of the path file with '.traj' excluded.
+   * @param splitIndex The split of the path to use. Must be at least 0.
    * @param setPoseToStartTrajectory Whether or not to set the robot pose to the paths starting
    *     trajectory.
    */
+  @SuppressWarnings("unchecked")
   public DriveChoreoPath(
-      String trajectoryFileName, boolean setPoseToStartTrajectory, boolean targetLock) {
+      String trajectoryFileName, int splitIndex, boolean setPoseToStartTrajectory, boolean targetLock) {
     m_targetLock = targetLock;
+    m_splitIndex = splitIndex;
+    m_pathName = trajectoryFileName.split(".")[0];// removes anything that could messup the code.
     m_traj = ((Trajectory<SwerveSample>) Choreo.loadTrajectory(trajectoryFileName).orElseThrow()); // Loads choreo file into trajctory object
-    m_pathName = trajectoryFileName;
     addCommands(
         new InstantCommand(
           () -> {
@@ -106,16 +113,27 @@ public class DriveChoreoPath extends SequentialCommandGroup {
                 Robot.swerve.driveFieldRelative(
                     m_startingState.getChassisSpeeds().vxMetersPerSecond,
                     m_startingState.getChassisSpeeds().vyMetersPerSecond,
-                    m_startingState.getChassisSpeeds().omegaRadiansPerSecond)),
-        // The library provided choreo command
-        // Runs the actual path
-        new InstantCommand(
-            () -> System.out.println("[DriveChoreoPath] RUNNING PATH: " + m_pathName)));
-        m_autoFactory.trajectory(m_traj, m_autoFactory.newLoop(trajectoryFileName)).cmd();//this should run it in a
-        //compatible way, so we can use the trigger API, and not use the trigger API.
+                    m_startingState.getChassisSpeeds().omegaRadiansPerSecond))
+    );
   }
 
+  /**
+   * This runs the path with no triggers, and should allow use of the triggers API in other sections of the path.
+   */
+  public void noTriggers(){
+    addCommands( 
+      new InstantCommand(
+        () -> System.out.println("[DriveChoreoPath] RUNNING PATH: " + m_pathName)),
+        m_autoFactory.trajectory(m_pathName, m_autoFactory.newLoop(m_pathName)).cmd()
+    );//this should run it in a
+  //compatible way, so we can choose to use the trigger API for some sections, and not for others in a single path.
+  }
 
+  public AutoTrajectory withTriggers(){
+    addCommands(new InstantCommand(
+        () -> System.out.println("[DriveChoreoPath] RUNNING PATH: " + m_pathName)));
+    return m_autoFactory.trajectory(m_pathName, m_autoFactory.newLoop(m_pathName));
+  }
 
   @Override
   public String toString() {

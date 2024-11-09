@@ -34,8 +34,8 @@ public class SourceSideBranchingPath extends SequentialCommandGroup {
         // Preload on the move + Drive to N5
         new ParallelDeadlineGroup(
             new ConditionalCommand(
-                new DriveChoreoPath("SourceSide4Note1Blue.1", true),
-                new DriveChoreoPath("SourceSide4Note1Red.1", true),
+                new DriveChoreoPath("SourceSide4Note1Blue", 0, true),
+                new DriveChoreoPath("SourceSide4Note1Red", 0, true),
                 () -> Robot.state.getAlliance() == Alliance.Blue),
             new SequentialCommandGroup(
                 new WaitCommand(0.75), new IntakeFeedToShooter().withTimeout(0.25)),
@@ -88,7 +88,7 @@ public class SourceSideBranchingPath extends SequentialCommandGroup {
         // drive back and score N4
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(
-                new DriveChoreoPath("SourceSide4Note2.1"),
+                new DriveChoreoPath("SourceSide4Note2", 0),
                 new ParallelCommandGroup(new TargetLockOnSpeaker(true), new ShooterWaitForRPM())
                     .withTimeout(SWERVE.AUTO_TARGET_LOCK_TIMEOUT_SECONDS),
                 new IntakeFeedToShooter().withTimeout(0.2)),
@@ -137,14 +137,14 @@ public class SourceSideBranchingPath extends SequentialCommandGroup {
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(
                 // drive back with N2 and shoot
-                new DriveChoreoPath("AmpSide4Note3WallFirst.1", false)
+                new DriveChoreoPath("AmpSide4Note3WallFirst", 0, false)
                     .deadlineWith(new AutoPickup()),
                 new ParallelCommandGroup(new TargetLockOnSpeaker(true), new ShooterWaitForRPM())
                     .withTimeout(SWERVE.AUTO_TARGET_LOCK_TIMEOUT_SECONDS),
                 new IntakeFeedToShooter().withTimeout(0.2)),
             new VisionTargeting(4800)),
         // position for N3
-        new DriveChoreoPath("AmpSide4Note3WallFirst.2"));
+        new DriveChoreoPath("AmpSide4Note3WallFirst", 1));
   }
 
   @Override

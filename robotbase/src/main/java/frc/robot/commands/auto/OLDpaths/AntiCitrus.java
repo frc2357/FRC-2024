@@ -21,7 +21,7 @@ public class AntiCitrus extends SequentialCommandGroup {
     super(
         // Preload on the move (future Tyson problem) + Drive to note 2
         new ParallelDeadlineGroup(
-            new DriveChoreoPath("AntiCitrus1Blue.1", true),
+            new DriveChoreoPath("AntiCitrus1Blue", 0, true),
             new SequentialCommandGroup(
                 new WaitCommand(0.75), new IntakeFeedToShooter().withTimeout(0.25)),
             new PivotHoldAngle(35.5),
@@ -34,7 +34,7 @@ public class AntiCitrus extends SequentialCommandGroup {
         // Drive back with note 2 and shoot
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(
-                new DriveChoreoPath("AntiCitrus2.1", false).deadlineWith(new AutoPickup()),
+                new DriveChoreoPath("AntiCitrus2", 0, false).deadlineWith(new AutoPickup()),
                 new ParallelCommandGroup(new TargetLockOnSpeaker(true), new ShooterWaitForRPM())
                     .withTimeout(1.5),
                 new IntakeFeedToShooter().withTimeout(1)),

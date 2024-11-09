@@ -18,7 +18,6 @@ import frc.robot.Constants;
 import frc.robot.Constants.SWERVE;
 import frc.robot.Robot;
 import frc.robot.util.RobotMath;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**

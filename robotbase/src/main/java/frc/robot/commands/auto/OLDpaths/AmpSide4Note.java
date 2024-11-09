@@ -18,37 +18,37 @@ public class AmpSide4Note extends SequentialCommandGroup {
         // Preload on the move (future Tyson problem) + Drive to note 2
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(
-                new DriveChoreoPath("AmpSide4Note1.1", true),
+                new DriveChoreoPath("AmpSide4Note1", 0,true),
                 new ParallelCommandGroup(new TargetLockOnSpeaker(true), new ShooterWaitForRPM())
                     .withTimeout(SWERVE.AUTO_TARGET_LOCK_TIMEOUT_SECONDS),
                 new IntakeFeedToShooter().withTimeout(0.2)),
             new VisionTargeting(4800)),
         // drive to and pickup second note
-        new DriveChoreoPath("AmpSide4Note1.2", false),
+        new DriveChoreoPath("AmpSide4Note1", 1,false),
         new ParallelDeadlineGroup(new TranslateToGamepiece(3), new AutoPickup()),
 
         // Drive back with note 2 and shoot
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(
-                new DriveChoreoPath("AmpSide4Note2.1", false, false).deadlineWith(new AutoPickup()),
+                new DriveChoreoPath("AmpSide4Note2", 0, false, false).deadlineWith(new AutoPickup()),
                 new ParallelCommandGroup(new TargetLockOnSpeaker(true), new ShooterWaitForRPM())
                     .withTimeout(SWERVE.AUTO_TARGET_LOCK_TIMEOUT_SECONDS),
                 new IntakeFeedToShooter().withTimeout(0.2)),
             new VisionTargeting(4800)),
 
         // Drive to and pickup third note
-        new DriveChoreoPath("AmpSide4Note2.2", false),
+        new DriveChoreoPath("AmpSide4Note2", 1,false),
         new ParallelDeadlineGroup(new TranslateToGamepiece(3), new AutoPickup()),
 
         // Drive back with note 3 and shoot
         new ParallelDeadlineGroup(
             new SequentialCommandGroup(
-                new DriveChoreoPath("AmpSide4Note3.1", false, false).deadlineWith(new AutoPickup()),
+                new DriveChoreoPath("AmpSide4Note3", 0, false, false).deadlineWith(new AutoPickup()),
                 new ParallelCommandGroup(new TargetLockOnSpeaker(true), new ShooterWaitForRPM())
                     .withTimeout(SWERVE.AUTO_TARGET_LOCK_TIMEOUT_SECONDS),
                 new IntakeFeedToShooter().withTimeout(0.2)),
             new VisionTargeting(4800)),
-        new DriveChoreoPath("AmpSide4Note3.2"),
+        new DriveChoreoPath("AmpSide4Note3", 1),
         new ParallelDeadlineGroup(new TranslateToGamepiece(3), new AutoPickup())
         // Drive back with note 4 and shoot
         // new ParallelDeadlineGroup(
