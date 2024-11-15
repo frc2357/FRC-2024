@@ -105,10 +105,11 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     m_curveTuner.updateCurveValues();
-    SmartDashboard.putNumber("Top RPM", getTopVelocity());
-    SmartDashboard.putNumber("Bottom RPM", getBottomVelocity());
-    SmartDashboard.putBoolean("Top Shooter Running", Math.abs(getTopVelocity()) >= 500);
-    SmartDashboard.putBoolean("Bottom Shooter Running", Math.abs(getBottomVelocity()) >= 500);
+    // SmartDashboard.putNumber("Top RPM", getTopVelocity());
+    // SmartDashboard.putNumber("Bottom RPM", getBottomVelocity());
+    // SmartDashboard.putBoolean("Top Shooter Running", Math.abs(getTopVelocity()) >= 500);
+    // SmartDashboard.putBoolean("Bottom Shooter Running", Math.abs(getBottomVelocity()) >= 500);
+    //TODO: SmartDashboard stuff if we want it
   }
 
   public double[] getShooterCurveRow() {

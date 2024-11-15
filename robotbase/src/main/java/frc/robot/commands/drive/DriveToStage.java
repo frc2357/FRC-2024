@@ -23,80 +23,79 @@ public class DriveToStage extends Command {
 
   @Override
   public void initialize() {
-  //   // Robot.shooterCam.setAprilTagPipelineActive();
+    Robot.shooterCam.setAprilTagPipelineActive();
 
-  //   // reset pids
-  //   m_pitchController.setTolerance(SWERVE.VISION_PITCH_TOLERANCE);
-  //   m_pitchController.setSetpoint(SWERVE.STAGE_PITCH_SETPOINT);
-  //   m_pitchController.reset();
-  //   m_yawController.setTolerance(SWERVE.VISION_YAW_TOLERANCE);
-  //   m_yawController.setSetpoint(SWERVE.STAGE_YAW_SETPOINT);
-  //   m_yawController.reset();
+    // reset pids
+    m_pitchController.setTolerance(SWERVE.VISION_PITCH_TOLERANCE);
+    m_pitchController.setSetpoint(SWERVE.STAGE_PITCH_SETPOINT);
+    m_pitchController.reset();
+    m_yawController.setTolerance(SWERVE.VISION_YAW_TOLERANCE);
+    m_yawController.setSetpoint(SWERVE.STAGE_YAW_SETPOINT);
+    m_yawController.reset();
 
-  //   m_rotationController.setTolerance(SWERVE.VISION_ROTATION_TOLERANCE_RADIANS);
-  //   m_rotationController.setSetpoint(DriveUtility.getStageRotationGoal());
-  //   m_rotationController.enableContinuousInput(-Math.PI, Math.PI);
-  //   m_rotationController.reset();
+    m_rotationController.setTolerance(SWERVE.VISION_ROTATION_TOLERANCE_RADIANS);
+    m_rotationController.setSetpoint(DriveUtility.getStageRotationGoal());
+    m_rotationController.enableContinuousInput(-Math.PI, Math.PI);
+    m_rotationController.reset();
   }
 
   @Override
   public void execute() {
-    // // Rotation
-    // double rotation =
-    //     DriveUtility.calculateRotationError(
-    //         Robot.swerve.getPose().getRotation().getRadians(), m_rotationController.getSetpoint());
-    // double rotationRadiansPerSecond = m_rotationController.calculate(rotation);
-    // double rotationFeedforward =
-    //     Math.copySign(SWERVE.PIGEON_ROTATION_FEEDFORWARD, rotationRadiansPerSecond);
+    // Rotation
+    double rotation =
+        DriveUtility.calculateRotationError(
+            Robot.swerve.getPose().getRotation().getRadians(), m_rotationController.getSetpoint());
+    double rotationRadiansPerSecond = m_rotationController.calculate(rotation);
+    double rotationFeedforward =
+        Math.copySign(SWERVE.PIGEON_ROTATION_FEEDFORWARD, rotationRadiansPerSecond);
 
-    // rotationRadiansPerSecond += rotationFeedforward;
-    // if (rotation == m_rotationController.getSetpoint()) {
-    //   rotationRadiansPerSecond = 0;
-    // }
+    rotationRadiansPerSecond += rotationFeedforward;
+    if (rotation == m_rotationController.getSetpoint()) {
+      rotationRadiansPerSecond = 0;
+    }
 
-    // // Translation
-    // double yaw = Robot.shooterCam.getStageTargetYaw();
+    // Translation
+    double yaw = Robot.shooterCam.getStageTargetYaw();
 
-    // // If rotation goal hasn't been set, try again
-    // if (Double.isNaN(m_rotationController.getSetpoint())) {
-    //   m_rotationController.setSetpoint(DriveUtility.getStageRotationGoal());
-    // }
-    // if (Double.isNaN(yaw)) {
-    //   System.out.println("[DriveToStage] No STAGE Detected");
-    //   Robot.swerve.driveRobotRelative(0.0, 0.0, rotationRadiansPerSecond);
-    //   return;
-    // }
+    // If rotation goal hasn't been set, try again
+    if (Double.isNaN(m_rotationController.getSetpoint())) {
+      m_rotationController.setSetpoint(DriveUtility.getStageRotationGoal());
+    }
+    if (Double.isNaN(yaw)) {
+      System.out.println("[DriveToStage] No STAGE Detected");
+      Robot.swerve.driveRobotRelative(0.0, 0.0, rotationRadiansPerSecond);
+      return;
+    }
 
-    // double pitch = Robot.shooterCam.getStageTargetPitch();
+    double pitch = Robot.shooterCam.getStageTargetPitch();
 
-    // yaw =
-    //     DriveUtility.adjustYawForApriltag(
-    //         yaw,
-    //         pitch,
-    //         rotation - m_rotationController.getSetpoint(),
-    //         SWERVE.STAGE_PITCH_SETPOINT,
-    //         SWERVE.VISION_CLOSE_PITCH,
-    //         SWERVE.VISION_YAW_TOLERANCE);
-    // pitch =
-    //     DriveUtility.adjustPitchForApriltag(
-    //         pitch, SWERVE.STAGE_PITCH_SETPOINT, SWERVE.VISION_PITCH_TOLERANCE);
+    yaw =
+        DriveUtility.adjustYawForApriltag(
+            yaw,
+            pitch,
+            rotation - m_rotationController.getSetpoint(),
+            SWERVE.STAGE_PITCH_SETPOINT,
+            SWERVE.VISION_CLOSE_PITCH,
+            SWERVE.VISION_YAW_TOLERANCE);
+    pitch =
+        DriveUtility.adjustPitchForApriltag(
+            pitch, SWERVE.STAGE_PITCH_SETPOINT, SWERVE.VISION_PITCH_TOLERANCE);
 
-    // double xMetersPerSecond = m_yawController.calculate(yaw);
-    // double yMetersPerSecond = m_pitchController.calculate(pitch);
-    // // Robot.swerve.driveRobotRelative(0, 0, rotationRadiansPerSecond);
-    // Robot.swerve.driveRobotRelative(-yMetersPerSecond, -xMetersPerSecond, rotationRadiansPerSecond);
+    double xMetersPerSecond = m_yawController.calculate(yaw);
+    double yMetersPerSecond = m_pitchController.calculate(pitch);
+    // Robot.swerve.driveRobotRelative(0, 0, rotationRadiansPerSecond);
+    Robot.swerve.driveRobotRelative(-yMetersPerSecond, -xMetersPerSecond, rotationRadiansPerSecond);
   }
 
   @Override
   public boolean isFinished() {
-    // return (m_pitchController.atSetpoint()
-    //     && m_yawController.atSetpoint()
-    //     && m_rotationController.atSetpoint());
-    return true;
+    return (m_pitchController.atSetpoint()
+        && m_yawController.atSetpoint()
+        && m_rotationController.atSetpoint());
   }
 
   @Override
   public void end(boolean interrupted) {
-    Robot.swerve.stopMotors(); //TODO: change this back
+    Robot.swerve.stopMotors();
   }
 }

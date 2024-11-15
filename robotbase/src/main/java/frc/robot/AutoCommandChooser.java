@@ -8,16 +8,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SelectCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.auto.OLDpaths.AmpSide4Note;
-import frc.robot.commands.auto.OLDpaths.AmpSide4NoteWallFirst;
-import frc.robot.commands.auto.OLDpaths.AmpSideBranchingPath;
-import frc.robot.commands.auto.OLDpaths.AntiCitrus;
-import frc.robot.commands.auto.OLDpaths.Close3AndMiddleCenterline;
-import frc.robot.commands.auto.OLDpaths.Close3AndRUN;
-import frc.robot.commands.auto.OLDpaths.SourceSide3NoteNoStage;
-import frc.robot.commands.auto.OLDpaths.SourceSide4Note;
-import frc.robot.commands.auto.OLDpaths.SourceSideBranchingPath;
-import frc.robot.commands.drive.DriveChoreoPath;
 import frc.robot.commands.util.VariableWaitCommand;
 import java.util.HashMap;
 
@@ -39,7 +29,7 @@ public class AutoCommandChooser {
       // new Close3AndMiddleCenterline(),
       // new AntiCitrus(),
       // new AmpSideBranchingPath(),
-      // new SourceSideBranchingPath(), // These will not work until adapted to 2025 code.
+      // new SourceSideBranchingPath(), // These will not work until adapted to 2025 code. which i dont want to do.
     };
 
     HashMap<String, Command> commandMap = new HashMap<String, Command>(autoCommands.length + 1);

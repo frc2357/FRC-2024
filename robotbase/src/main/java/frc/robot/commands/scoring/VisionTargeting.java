@@ -34,33 +34,33 @@ public class VisionTargeting extends Command {
 
   @Override
   public void execute() {
-    // double yaw = Robot.shooterCam.getSpeakerTargetYaw();
+    double yaw = Robot.shooterCam.getSpeakerTargetYaw();
 
-    // // checks whether or not the yaw is NaN, as that would mean the camera has not seen that tag, or
-    // // that tags data has expired.
-    // if (Double.isNaN(yaw)) {
-    //   Robot.shooter.setRPM(m_defaultRPMs);
-    //   Robot.leds.setNoSpeakerTarget();
-    //   if (m_rumble) {
-    //     Robot.driverControls.setRumble(0.3);
-    //   }
-    //   return;
-    // }
-    // Robot.leds.setHasSpeakerTarget(); // sets the LEDs to signal we have a valid target
-    // if (m_rumble) { // stops any controller rumble
-    //   Robot.driverControls.setRumble(0);
-    // }
+    // checks whether or not the yaw is NaN, as that would mean the camera has not seen that tag, or
+    // that tags data has expired.
+    if (Double.isNaN(yaw)) {
+      Robot.shooter.setRPM(m_defaultRPMs);
+      Robot.leds.setNoSpeakerTarget();
+      if (m_rumble) {
+        Robot.driverControls.setRumble(0.3);
+      }
+      return;
+    }
+    Robot.leds.setHasSpeakerTarget(); // sets the LEDs to signal we have a valid target
+    if (m_rumble) { // stops any controller rumble
+      Robot.driverControls.setRumble(0);
+    }
 
-    // // gets the pitch of the speaker target, we dont need to check for NaN this time because its
-    // // already done above.
-    // double pitch = Robot.shooterCam.getSpeakerTargetPitch();
-    // updateVisionTargeting(pitch);
-    // Robot.pivot.setAngle(m_currentAngle);
-    // Robot.shooter.setRPM(m_currentRpms);
+    // gets the pitch of the speaker target, we dont need to check for NaN this time because its
+    // already done above.
+    double pitch = Robot.shooterCam.getSpeakerTargetPitch();
+    updateVisionTargeting(pitch);
+    Robot.pivot.setAngle(m_currentAngle);
+    Robot.shooter.setRPM(m_currentRpms);
 
-    // SmartDashboard.putNumber("camera pitch", pitch);
-    // SmartDashboard.putNumber("Pivot vision setpoint", m_currentAngle);
-    // SmartDashboard.putNumber("Shooter vision RPMs", m_currentRpms); //TODO: change this back
+    SmartDashboard.putNumber("camera pitch", pitch);
+    SmartDashboard.putNumber("Pivot vision setpoint", m_currentAngle);
+    SmartDashboard.putNumber("Shooter vision RPMs", m_currentRpms); 
   }
 
   @Override

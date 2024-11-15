@@ -13,20 +13,19 @@ public class AutoWaitForTargeting extends Command {
   // do not want to modify activley working code at comp
   @Override
   public boolean isFinished() {
-    // var pitch = Robot.shooterCam.getSpeakerTargetPitch();
-    // if (Double.isNaN(pitch)) {
-    //   return true;
-    // }
-    // int curveIndex = RobotMath.getCurveSegmentIndex(Robot.shooterCurve, pitch);
-    // if (curveIndex == -1) {
-    //   curveIndex = 0;
-    // }
-    // var targetYaw = Robot.shooterCam.getSpeakerTargetYaw();
-    // var yawSetpoint = Robot.shooterCurve[curveIndex][3];
-    // return Robot.shooter.isAtTargetSpeed()
-    //     && Robot.pivot.isPivotAtAngle()
-    //     && !Double.isNaN(targetYaw)
-    //     && Utility.isWithinTolerance(targetYaw, yawSetpoint, SWERVE.AUTO_TARGET_LOCK_YAW_TOLERANCE);
-    return true;
-  } // TODO: change this back
+    var pitch = Robot.shooterCam.getSpeakerTargetPitch();
+    if (Double.isNaN(pitch)) {
+      return true;
+    }
+    int curveIndex = RobotMath.getCurveSegmentIndex(Robot.shooterCurve, pitch);
+    if (curveIndex == -1) {
+      curveIndex = 0;
+    }
+    var targetYaw = Robot.shooterCam.getSpeakerTargetYaw();
+    var yawSetpoint = Robot.shooterCurve[curveIndex][3];
+    return Robot.shooter.isAtTargetSpeed()
+        && Robot.pivot.isPivotAtAngle()
+        && !Double.isNaN(targetYaw)
+        && Utility.isWithinTolerance(targetYaw, yawSetpoint, SWERVE.AUTO_TARGET_LOCK_YAW_TOLERANCE);
+  }
 }
