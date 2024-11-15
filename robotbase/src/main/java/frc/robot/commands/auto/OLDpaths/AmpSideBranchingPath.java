@@ -58,19 +58,18 @@ public class AmpSideBranchingPath extends SequentialCommandGroup {
   }
 
   private boolean isNoteInfrontOfBot(double yawToleranceDegrees, double maximumPitchDegrees) {
-    // System.out.println(
-    //     "[BP] CURRENT CAMERA YAW: "
-    //         + Robot.intakeCam.getNoteTargetYaw()
-    //         + " | YAW TOLERANCE: "
-    //         + yawToleranceDegrees
-    //         + "\n[BP] CURRENT CAMERA PITCH: "
-    //         + Robot.intakeCam.getNoteTargetPitch()
-    //         + " | MAX ALLOWED PITCH: "
-    //         + maximumPitchDegrees);
+    System.out.println(
+        "[BP] CURRENT CAMERA YAW: "
+            + Robot.intakeCam.getNoteTargetYaw()
+            + " | YAW TOLERANCE: "
+            + yawToleranceDegrees
+            + "\n[BP] CURRENT CAMERA PITCH: "
+            + Robot.intakeCam.getNoteTargetPitch()
+            + " | MAX ALLOWED PITCH: "
+            + maximumPitchDegrees);
 
-    // return (Math.abs(Robot.intakeCam.getNoteTargetYaw()) <= yawToleranceDegrees)
-    //     && Robot.intakeCam.getNoteTargetPitch() <= maximumPitchDegrees;
-    return false; //TODO: change this back
+    return (Math.abs(Robot.intakeCam.getNoteTargetYaw()) <= yawToleranceDegrees)
+        && Robot.intakeCam.getNoteTargetPitch() <= maximumPitchDegrees;
   }
 
   private SequentialCommandGroup grabN1ScoreAndPosition() {

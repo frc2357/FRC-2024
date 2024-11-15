@@ -14,6 +14,8 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import java.util.function.BooleanSupplier;
 
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 /**
@@ -383,8 +385,6 @@ public final class Constants {
 
     public static final IdleMode MOTOR_IDLE_MODE = IdleMode.kBrake;
 
-    // TODO: Tune arm amp limits + PID + smart motion + Zeroing constants
-
     public static final int MOTOR_STALL_LIMIT_AMPS = 40;
     public static final int MOTOR_FREE_LIMIT_AMPS = 40;
 
@@ -433,20 +433,20 @@ public final class Constants {
     public static final double VISIONLESS_SHOT_WAIT_TO_FIRE_SECONDS = 1.5;
   }
 
-  // public static final class PHOTON_VISION {
-  //   public static final AprilTagFieldLayout APRIL_TAG_FIELD_LAYOUT =
-  //       AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
-  //   public static final PoseStrategy POSE_STRATEGY = PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
+  public static final class PHOTON_VISION {
+    public static final AprilTagFieldLayout APRIL_TAG_FIELD_LAYOUT =
+        AprilTagFieldLayout.loadField(AprilTagFields.k2024Crescendo);
+    public static final PoseStrategy POSE_STRATEGY = PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
 
-  //   public static final double MAX_ANGLE = 45;
+    public static final double MAX_ANGLE = 45;
 
-  //   public static final String LOST_CONNECTION_ERROR_MESSAGE =
-  //       "----------\nPHOTON VISION HAS LOST CONNECTION!\nVISION RESULTS WILL NOT BE UPDATED!\n----------";
-  //   public static final String CONNECTION_REGAINED_NOFICATION_MESSAGE =
-  //       "**********\nPhoton Vision has regained connection!\nVision results will now be updated.\n**********";
+    public static final String LOST_CONNECTION_ERROR_MESSAGE =
+        "----------\nPHOTON VISION HAS LOST CONNECTION!\nVISION RESULTS WILL NOT BE UPDATED!\n----------";
+    public static final String CONNECTION_REGAINED_NOFICATION_MESSAGE =
+        "**********\nPhoton Vision has regained connection!\nVision results will now be updated.\n**********";
 
-  //   public static final double BEST_TARGET_PITCH_TOLERANCE_DEGREES = 5;
-  // }  ***** COMMENTED OUT, PHOTONLIB CURRENTLY HAS NO 2025 BETA AS OF 11/7/2024 *****
+    public static final double BEST_TARGET_PITCH_TOLERANCE_DEGREES = 5;
+  }
 
   public static final class SHOOTER_PHOTON_CAMERA {
     public static final String NAME = "shooter camera";

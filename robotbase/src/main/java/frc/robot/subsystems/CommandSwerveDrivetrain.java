@@ -220,11 +220,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
    * @return The radians per second to turn for target lcoking on the speaker.
    */
   public double getAutonSpeakerLockRadiansPerSecond() {
-    // double targetPitch = Robot.shooterCam.getSpeakerTargetPitch();
-    // double targetYaw = Robot.shooterCam.getSpeakerTargetYaw();
-    double targetPitch = Double.NaN;
-    double targetYaw = Double.NaN; //TODO: change back once PV has 2025 beta
-
+    double targetPitch = Robot.shooterCam.getSpeakerTargetPitch();
+    double targetYaw = Robot.shooterCam.getSpeakerTargetYaw();
 
     if (Double.isNaN(targetPitch) || Double.isNaN(targetYaw)) return Double.NaN;
 

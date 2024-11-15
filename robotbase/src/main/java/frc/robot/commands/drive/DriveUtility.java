@@ -56,46 +56,44 @@ public class DriveUtility {
   }
 
   public static double getAmpRotationGoal() {
-    // boolean redAmpValid =
-    //     Robot.shooterCam.isValidTarget(
-    //         APRIL_TAG_IDS.RED_AMP, SHOOTER_PHOTON_CAMERA.AMP_TARGET_TIMEOUT_MS);
-    // boolean blueAmpValid =
-    //     Robot.shooterCam.isValidTarget(
-    //         APRIL_TAG_IDS.BLUE_AMP, SHOOTER_PHOTON_CAMERA.AMP_TARGET_TIMEOUT_MS);
+    boolean redAmpValid =
+        Robot.shooterCam.isValidTarget(
+            APRIL_TAG_IDS.RED_AMP, SHOOTER_PHOTON_CAMERA.AMP_TARGET_TIMEOUT_MS);
+    boolean blueAmpValid =
+        Robot.shooterCam.isValidTarget(
+            APRIL_TAG_IDS.BLUE_AMP, SHOOTER_PHOTON_CAMERA.AMP_TARGET_TIMEOUT_MS);
 
-    // if (redAmpValid && blueAmpValid) {
-    //   DriverStation.reportError("How in the world do you see both amps at the same time", false);
-    //   return Double.NaN;
-    // } else if (blueAmpValid) {
-    //   return SWERVE.BLUE_AMP_ROTATION_SETPOINT_RADIANS;
-    // } else if (redAmpValid) {
-    //   return SWERVE.RED_AMP_ROTATION_SETPOINT_RADIANS;
-    // } else {
-    //   System.err.println("No Amp target");
-    //   return Double.NaN;
-    // }
-    return Double.NaN;
+    if (redAmpValid && blueAmpValid) {
+      DriverStation.reportError("How in the world do you see both amps at the same time", false);
+      return Double.NaN;
+    } else if (blueAmpValid) {
+      return SWERVE.BLUE_AMP_ROTATION_SETPOINT_RADIANS;
+    } else if (redAmpValid) {
+      return SWERVE.RED_AMP_ROTATION_SETPOINT_RADIANS;
+    } else {
+      System.err.println("No Amp target");
+      return Double.NaN;
+    }
   }
 
   public static double getStageRotationGoal() {
-    // int bestTagId = Robot.shooterCam.getBestTargetFiducialId();
+    int bestTagId = Robot.shooterCam.getBestTargetFiducialId();
 
-    // switch (bestTagId) {
-    //   case APRIL_TAG_IDS.BLUE_STAGE_LEFT:
-    //     return SWERVE.BLUE_LEFT_STAGE_ROTATION_SETPOINT_RADIANS;
-    //   case APRIL_TAG_IDS.BLUE_STAGE_RIGHT:
-    //     return SWERVE.BLUE_RIGHT_STAGE_ROTATION_SETPOINT_RADIANS;
-    //   case APRIL_TAG_IDS.BLUE_STAGE_MIDDLE:
-    //     return SWERVE.BLUE_CENTER_STAGE_ROTATION_SETPOINT_RADIANS;
-    //   case APRIL_TAG_IDS.RED_STAGE_LEFT:
-    //     return SWERVE.RED_LEFT_STAGE_ROTATION_SETPOINT_RADIANS;
-    //   case APRIL_TAG_IDS.RED_STAGE_RIGHT:
-    //     return SWERVE.RED_RIGHT_STAGE_ROTATION_SETPOINT_RADIANS;
-    //   case APRIL_TAG_IDS.RED_STAGE_MIDDLE:
-    //     return SWERVE.RED_CENTER_STAGE_ROTATION_SETPOINT_RADIANS;
-    //   default:
-    //     return Double.NaN;
-    // }
-    return Double.NaN;
-  }//TODO: change this back
+    switch (bestTagId) {
+      case APRIL_TAG_IDS.BLUE_STAGE_LEFT:
+        return SWERVE.BLUE_LEFT_STAGE_ROTATION_SETPOINT_RADIANS;
+      case APRIL_TAG_IDS.BLUE_STAGE_RIGHT:
+        return SWERVE.BLUE_RIGHT_STAGE_ROTATION_SETPOINT_RADIANS;
+      case APRIL_TAG_IDS.BLUE_STAGE_MIDDLE:
+        return SWERVE.BLUE_CENTER_STAGE_ROTATION_SETPOINT_RADIANS;
+      case APRIL_TAG_IDS.RED_STAGE_LEFT:
+        return SWERVE.RED_LEFT_STAGE_ROTATION_SETPOINT_RADIANS;
+      case APRIL_TAG_IDS.RED_STAGE_RIGHT:
+        return SWERVE.RED_RIGHT_STAGE_ROTATION_SETPOINT_RADIANS;
+      case APRIL_TAG_IDS.RED_STAGE_MIDDLE:
+        return SWERVE.RED_CENTER_STAGE_ROTATION_SETPOINT_RADIANS;
+      default:
+        return Double.NaN;
+    }
+  }
 }

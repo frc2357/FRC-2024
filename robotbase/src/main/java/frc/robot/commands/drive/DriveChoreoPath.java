@@ -41,6 +41,7 @@ public class DriveChoreoPath extends SequentialCommandGroup {
       Robot.swerve.autonDriveWithFeedForward(speeds);
     }
   }
+  
   /**
    * A utility command to start a Choreo path without using the Trigger API.
    *
@@ -124,7 +125,7 @@ public class DriveChoreoPath extends SequentialCommandGroup {
     addCommands( 
       new InstantCommand(
         () -> System.out.println("[DriveChoreoPath] RUNNING PATH: " + m_pathName)),
-        m_autoFactory.trajectory(m_pathName, m_autoFactory.newLoop(m_pathName)).cmd()
+        m_autoFactory.trajectory(m_pathName, m_splitIndex, m_autoFactory.voidLoop()).cmd()
     );//this should run it in a
   //compatible way, so we can choose to use the trigger API for some sections, and not for others in a single path.
   }
@@ -132,7 +133,7 @@ public class DriveChoreoPath extends SequentialCommandGroup {
   public AutoTrajectory withTriggers(){
     addCommands(new InstantCommand(
         () -> System.out.println("[DriveChoreoPath] RUNNING PATH: " + m_pathName)));
-    return m_autoFactory.trajectory(m_pathName, m_autoFactory.newLoop(m_pathName));
+    return m_autoFactory.trajectory(m_pathName, m_splitIndex, m_autoFactory.newLoop(m_pathName));
   }
 
   @Override

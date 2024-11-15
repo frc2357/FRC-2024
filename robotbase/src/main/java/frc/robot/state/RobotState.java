@@ -2,7 +2,7 @@ package frc.robot.state;
 
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Robot;
-// import frc.robot.subsystems.PhotonVisionCamera;
+import frc.robot.subsystems.PhotonVisionCamera;
 
 public class RobotState {
   public static enum State {
@@ -20,7 +20,7 @@ public class RobotState {
   private State m_currentState;
   private DriveControlState m_currentDriveControlState;
   private boolean m_isClimbing;
-  // private PhotonVisionCamera m_targetLockCamera;
+  private PhotonVisionCamera m_targetLockCamera;
   private boolean m_isAdjusting;
 
   public RobotState() {
@@ -28,7 +28,7 @@ public class RobotState {
     m_currentState = State.INIT;
     m_currentDriveControlState = DriveControlState.FIELD_RELATIVE;
     m_isClimbing = false;
-    // m_targetLockCamera = Robot.shooterCam;
+    m_targetLockCamera = Robot.shooterCam;
     m_isAdjusting = false;
   }
 
@@ -76,13 +76,13 @@ public class RobotState {
     m_currentState = newState;
   }
 
-  // public void setTargetLockCamera(PhotonVisionCamera targetLockCamera) {
-  //   m_targetLockCamera = targetLockCamera;
-  // }
+  public void setTargetLockCamera(PhotonVisionCamera targetLockCamera) {
+    m_targetLockCamera = targetLockCamera;
+  }
 
-  // public PhotonVisionCamera getTargetLockCamera() {
-  //   return m_targetLockCamera;
-  // }
+  public PhotonVisionCamera getTargetLockCamera() {
+    return m_targetLockCamera;
+  }
 
   public boolean isClimbing() {
     return m_isClimbing;
