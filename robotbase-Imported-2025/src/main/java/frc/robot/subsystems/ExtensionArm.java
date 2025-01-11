@@ -7,9 +7,9 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.AlternateEncoderConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.MAXMotionConfig;
-import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.units.Units;
@@ -22,7 +22,7 @@ import frc.robot.Constants.EXTENSION_ARM;
 import frc.robot.util.Utility;
 
 public class ExtensionArm extends SubsystemBase {
-  private Angle m_targetRotations;
+  private Angle m_targetRotations = Units.Rotations.of(Double.NaN);
 
   private SparkMax m_motor;
   private SparkClosedLoopController m_PIDController;
@@ -42,55 +42,42 @@ public class ExtensionArm extends SubsystemBase {
         .maxAcceleration(EXTENSION_ARM.SMART_MOTION_MAX_ACC_RPM)
         .allowedClosedLoopError(EXTENSION_ARM.SMART_MOTION_ALLOWED_ERROR);
 
-    SparkBaseConfig motorConfig = new SparkMaxConfig().inverted(EXTENSION_ARM.MOTOR_IS_INVERTED).voltageCompensation(12)
-        .idleMode(EXTENSION_ARM.MOTOR_IDLE_MODE)
-        .smartCurrentLimit(EXTENSION_ARM.MOTOR_STALL_LIMIT_AMPS, EXTENSION_ARM.MOTOR_FREE_LIMIT_AMPS);
+    SparkMaxConfig motorConfig = new SparkMaxConfig();
 
-    motorConfig.encoder.countsPerRevolution(1).inverted(EXTENSION_ARM.ENCODER_INVERTED);
+    AlternateEncoderConfig encoderConfig = new AlternateEncoderConfig().inverted(EXTENSION_ARM.ENCODER_INVERTED)
+        .countsPerRevolution(8196);
 
     motorConfig.closedLoop
-        .pidf(EXTENSION_ARM.MOTOR_PID_P, EXTENSION_ARM.MOTOR_PID_I, EXTENSION_ARM.MOTOR_PID_D,
+        .pidf(EXTENSION_ARM.MOTOR_PID_P, EXTENSION_ARM.MOTOR_PID_I,
+            EXTENSION_ARM.MOTOR_PID_D,
             EXTENSION_ARM.MOTOR_PID_FF)
-        .outputRange(-1, 1).feedbackSensor(FeedbackSensor.kAlternateOrExternalEncoder).apply(maxMotionConfig);
+        .outputRange(-1,
+            1)
+        .feedbackSensor(FeedbackSensor.kAlternateOrExternalEncoder).apply(maxMotionConfig);
 
-    m_motor.configure(motorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+    motorConfig.apply(encoderConfig);
 
-    // MAXMotionConfig maxMotionConfig = new
-    // MAXMotionConfig().maxVelocity(EXTENSION_ARM.SMART_MOTION_MAX_VEL_RPM).maxAcceleration(EXTENSION_ARM.SMART_MOTION_MAX_ACC_RPM).allowedClosedLoopError(EXTENSION_ARM.SMART_MOTION_ALLOWED_ERROR);
+    motorConfig.inverted(EXTENSION_ARM.MOTOR_IS_INVERTED).idleMode(EXTENSION_ARM.MOTOR_IDLE_MODE)
+        .smartCurrentLimit(EXTENSION_ARM.MOTOR_STALL_LIMIT_AMPS, EXTENSION_ARM.MOTOR_FREE_LIMIT_AMPS);
 
-    // ClosedLoopConfig PIDConfig = new
-    // ClosedLoopConfig().pidf(EXTENSION_ARM.MOTOR_PID_P, EXTENSION_ARM.MOTOR_PID_I,
-    // EXTENSION_ARM.MOTOR_PID_D, EXTENSION_ARM.MOTOR_PID_FF)
-    // .feedbackSensor(FeedbackSensor.kAlternateOrExternalEncoder).outputRange(-1,
-    // 1).apply(maxMotionConfig);
+    m_motor.configure(motorConfig, ResetMode.kNoResetSafeParameters,
+        PersistMode.kNoPersistParameters);
 
-    // AlternateEncoderConfig altEncoderConfig = new
-    // AlternateEncoderConfig().inverted(EXTENSION_ARM.ENCODER_INVERTED);
-
-    // SparkBaseConfig motorConfig = new
-    // SparkMaxConfig().inverted(EXTENSION_ARM.MOTOR_IS_INVERTED).idleMode(EXTENSION_ARM.MOTOR_IDLE_MODE).smartCurrentLimit(EXTENSION_ARM.MOTOR_STALL_LIMIT_AMPS,
-    // EXTENSION_ARM.MOTOR_FREE_LIMIT_AMPS).apply(PIDConfig);
-
-    // m_motor.configure(motorConfig, ResetMode.kNoResetSafeParameters,
-    // PersistMode.kNoPersistParameters);
-    // m_encoder = m_motor.getAlternateEncoder();
-
-    // m_PIDController = m_motor.getClosedLoopController();
   }
 
-  private void setTargetRotations(double targetRotations) {
-    m_targetRotations = Units.Revolutions.of(targetRotations);
-    m_PIDController.setReference(targetRotations, ControlType.kMAXMotionPositionControl);
+  private void setTargetRotations(Angle targetRotations) {
+    m_targetRotations = targetRotations;
+    m_PIDController.setReference(targetRotations.in(Units.Rotations), ControlType.kMAXMotionPositionControl);
   }
 
   public void setAxisSpeed(double speed) {
-    m_targetRotations = null;
+    m_targetRotations = Units.Rotations.of(Double.NaN);
     speed *= EXTENSION_ARM.AXIS_MAX_SPEED;
     m_motor.set(speed);
   }
 
   public void stop() {
-    m_targetRotations = null;
+    m_targetRotations = Units.Rotations.of(Double.NaN);
     m_motor.stopMotor();
   }
 
@@ -100,32 +87,34 @@ public class ExtensionArm extends SubsystemBase {
 
   public boolean isAtTargetRotations() {
     return Utility.isWithinTolerance(
-        getRotations().in(Units.Revolutions),
-        m_targetRotations.in(Units.Revolutions),
+        getRotations().in(Units.Rotations),
+        m_targetRotations.in(Units.Rotations),
         EXTENSION_ARM.SMART_MOTION_ALLOWED_ERROR);
   }
 
   public Angle getRotations() {
-    return Units.Revolutions.of(m_encoder.getPosition());
+    return Units.Rotations.of(m_encoder.getPosition());
   }
 
   public Distance getExtensionDistance() {
-    return EXTENSION_ARM.DISTANCE_TRAVELED_PER_MOTOR_ROTATION.times(getRotations().in(Units.Revolutions));
+    return EXTENSION_ARM.MOTOR_PULLEY_CIRCUMFERENCE.times(getRotations().in(Units.Rotations));
   }
 
   public void setExtensionDistance(Distance distance) {
-    Angle rotations = Units.Revolutions
-        .of(distance.div(EXTENSION_ARM.DISTANCE_TRAVELED_PER_MOTOR_ROTATION).magnitude());
+    Angle rotations = Units.Rotations
+        .of(distance.div(EXTENSION_ARM.MOTOR_PULLEY_CIRCUMFERENCE).magnitude());
+    System.out.println(rotations.in(Units.Rotations));
     setExtensionRotations(rotations);
   }
 
   public void setExtensionRotations(Angle rotations) {
-    setTargetRotations(rotations.in(Units.Revolutions));
+    System.out.println(rotations.in(Units.Rotations));
+    setTargetRotations(rotations);
   }
 
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Extension arm distance (inches)", getExtensionDistance().in(Units.Inches));
-    SmartDashboard.putNumber("Extension arm rotations (revs)", getRotations().in(Units.Revolutions));
+    SmartDashboard.putNumber("Extension arm rotations (revs)", getRotations().in(Units.Rotations));
   }
 }

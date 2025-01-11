@@ -1,5 +1,6 @@
 package frc.robot.controls;
 
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Axis;
@@ -10,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Robot;
+import frc.robot.commands.extensionArm.ExtensionArmMoveToDistance;
 import frc.robot.commands.extensionArm.ExtensionArmAxis;
 import frc.robot.controls.util.AxisInterface;
 import frc.robot.controls.util.AxisThresholdTrigger;
@@ -215,6 +217,8 @@ public class CodriverControls implements RumbleInterface {
             () -> {
               Robot.extensionArm.setZero();
             }));
+
+    downDPadAndX.whileTrue(new ExtensionArmMoveToDistance(Units.Feet.of(.5)));
     // downDPadAndB.whileTrue(new ExtensionArmZero());
 
     // downDPadAndRightTrigger.whileTrue(new

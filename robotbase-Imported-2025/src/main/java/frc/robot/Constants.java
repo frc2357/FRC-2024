@@ -378,8 +378,7 @@ public final class Constants {
 
   public static final class EXTENSION_ARM {
     public static final double GEAR_RATIO = 1.0 / 16.0;
-    public static final Distance MOTOR_PULLEY_CIRCUMFERENCE = Units.Inches.of(1.08 + Math.PI);
-    public static final Distance DISTANCE_TRAVELED_PER_MOTOR_ROTATION = MOTOR_PULLEY_CIRCUMFERENCE.times(GEAR_RATIO);
+    public static final Distance MOTOR_PULLEY_CIRCUMFERENCE = Units.Inches.of(1.0830709 * Math.PI);
 
     public static final boolean MOTOR_IS_INVERTED = false;
     public static final boolean ENCODER_INVERTED = true;
@@ -389,15 +388,15 @@ public final class Constants {
     public static final int MOTOR_STALL_LIMIT_AMPS = 40;
     public static final int MOTOR_FREE_LIMIT_AMPS = 40;
 
-    public static final double MOTOR_PID_P = 0.003;
+    public static final double MOTOR_PID_P = 0.1;
     public static final double MOTOR_PID_I = 0;
     public static final double MOTOR_PID_D = 0;
-    public static final double MOTOR_PID_FF = 0.000005;
+    public static final double MOTOR_PID_FF = 0.0001;
 
     public static final int SMART_MOTION_MAX_VEL_RPM = 5600;
     public static final int SMART_MOTION_MIN_VEL_RPM = 0;
     public static final int SMART_MOTION_MAX_ACC_RPM = 50000;
-    public static final double SMART_MOTION_ALLOWED_ERROR = 0.1;
+    public static final double SMART_MOTION_ALLOWED_ERROR = 0.05;
 
     public static final double AXIS_MAX_SPEED = 0.75;
 
