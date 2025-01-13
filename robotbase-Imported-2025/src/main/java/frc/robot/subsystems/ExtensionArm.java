@@ -97,12 +97,12 @@ public class ExtensionArm extends SubsystemBase {
   }
 
   public Distance getExtensionDistance() {
-    return EXTENSION_ARM.MOTOR_PULLEY_CIRCUMFERENCE.times(getRotations().in(Units.Rotations));
+    return EXTENSION_ARM.MOTOR_PULLEY_PITCH_CIRCUMFERENCE.times(getRotations().in(Units.Rotations));
   }
 
   public void setExtensionDistance(Distance distance) {
     Angle rotations = Units.Rotations
-        .of(distance.div(EXTENSION_ARM.MOTOR_PULLEY_CIRCUMFERENCE).magnitude());
+        .of(distance.div(EXTENSION_ARM.MOTOR_PULLEY_PITCH_CIRCUMFERENCE).magnitude());
     System.out.println(rotations.in(Units.Rotations));
     setExtensionRotations(rotations);
   }
